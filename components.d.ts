@@ -11,10 +11,14 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ActionButton: typeof import('./src/components/extensions/components/ActionButton/index.vue')['default']
+    Bold: typeof import('./src/components/extensions/components/ToolBarItems/Bold.vue')['default']
     Components: typeof import('./src/components/index.vue')['default']
     Editor: typeof import('./src/components/Editor.vue')['default']
+    ElButton: typeof import('element-plus/es')['ElButton']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SvgIcon: typeof import('./src/components/extensions/components/SvgIcon/index.vue')['default']
     TipTapEditor: typeof import('./src/components/TipTapEditor.vue')['default']
     ToolBar: typeof import('./src/components/ToolBar.vue')['default']
   }
