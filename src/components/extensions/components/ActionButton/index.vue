@@ -1,13 +1,24 @@
 <template>
-  <el-button :class="['action-button', { 'is-active': isActive() }]" :disabled="disabled" @click="action">
-    <slot>
-      <SvgIcon v-if="icon" :icon="icon" />
-      <span v-else>{{ text }}</span>
-    </slot>
-  </el-button>
+  <NButton
+    :class="['action-button', { 'is-active': isActive() }]"
+    :disabled="disabled"
+    text
+    @click="action"
+  >
+    <NTooltip trigger="hover" size="small">
+      <template #trigger>
+        <SvgIcon :path="icon" :size="24" />
+      </template>
+      {{ text }}
+    </NTooltip>
+    <slot />
+  </NButton>
 </template>
 
 <script setup lang="ts">
+import { NButton, NTooltip } from "naive-ui";
+import SvgIcon from "../SvgIcon/index.vue";
+
 type ButtonProps = {
   disabled: boolean;
   icon: string;
@@ -27,9 +38,15 @@ const props = defineProps<ButtonProps>();
   cursor: pointer;
   padding: 4px;
   border-radius: 4px;
+  outline: none;
 }
 
-.is-active {
-  background-color: #e0e0e0;
+.action-button:hover {
+  color: var(--n-text-color) !important;
+  background-color: #f0f0f0 !important;
+}
+
+.action-button.is-active {
+  background-color: #e0e0e0 !important;
 }
 </style>

@@ -9,22 +9,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "^2.3.2",
-    "@mdi/js": "^7.4.47",
+    "@tiptap/core": "^3.27.1",
+    "@tiptap/extension-table": "^3.27.1",
     "@tiptap/extensions": "^3.27.1",
     "@tiptap/pm": "^3.27.1",
     "@tiptap/starter-kit": "^3.27.1",
     "@tiptap/vue-3": "^3.27.1",
-    "element-plus": "^2.14.2",
     "vue": "^3.5.34"
   },
   "devDependencies": {
+    "@mdi/js": "^7.4.47",
     "@types/node": "^24.12.3",
     "@vitejs/plugin-vue": "^6.0.6",
     "@vue/tsconfig": "^0.9.1",
+    "naive-ui": "^2.44.1",
     "typescript": "~6.0.2",
     "unplugin-auto-import": "^21.0.0",
-    "unplugin-vue-components": "^32.1.0",
     "vite": "^8.0.12",
     "vue-tsc": "^3.2.8"
   }

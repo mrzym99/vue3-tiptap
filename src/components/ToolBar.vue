@@ -1,7 +1,11 @@
 <template>
   <div class="toolbar">
     <div class="tiptap-toolbar">
-      <component v-for="item in toolBarItemList" :is="item" :editor="editor"></component>
+      <component
+        v-for="item in toolBarItemList"
+        :is="item"
+        :editor="editor"
+      ></component>
     </div>
   </div>
 </template>
@@ -17,3 +21,10 @@ const props = defineProps({
   },
 });
 </script>
+
+<style scoped>
+.tiptap-toolbar {
+  display: flex;
+  gap: 2px;
+}
+</style>

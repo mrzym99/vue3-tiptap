@@ -2,7 +2,9 @@
   <div class="tiptap-box" v-if="editor">
     <ToolBar :editor="editor" />
     <EditorContent class="tiptap-editor" :editor="editor" />
-    <span v-if="props.maxLength" class="max-limit"> {{ editor.getText().length }} / {{ props.maxLength }} </span>
+    <span v-if="props.maxLength" class="max-limit">
+      {{ editor.getText().length }} / {{ props.maxLength }}
+    </span>
   </div>
 </template>
 
@@ -11,7 +13,7 @@ import ToolBar from "./ToolBar.vue";
 // https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
 import { useEditor, EditorContent, Editor } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
-
+import { TableKit } from "@tiptap/extension-table";
 import { checkLimit } from "./utils";
 
 const props = defineProps({
@@ -29,7 +31,14 @@ const modelValue = defineModel<string>({ required: true });
 
 const editor = useEditor({
   content: modelValue.value,
-  extensions: [StarterKit],
+  extensions: [
+    StarterKit,
+    TableKit.configure({
+      table: {
+        resizable: true,
+      },
+    }),
+  ],
   editable: !props.disabled,
   onCreate: ({ editor }) => {
     checkLimit(editor as Editor, props.maxLength);
@@ -69,11 +78,6 @@ watch(
   overflow: hidden;
 }
 
-.tiptap-toolbar {
-  display: flex;
-  gap: 8px;
-}
-
 .tiptap-editor {
   min-height: 0;
   flex: 1;
@@ -90,17 +94,62 @@ watch(
   overflow-y: auto;
 }
 
-button {
-  width: 32px;
-  height: 32px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
+table {
+  border-collapse: collapse;
+  margin: 0;
+  overflow: hidden;
+  table-layout: fixed;
+  width: 100%;
+
+  td,
+  th {
+    border: 1px solid #d0d7de;
+    box-sizing: border-box;
+    min-width: 1em;
+    padding: 6px 8px;
+    position: relative;
+    vertical-align: top;
+
+    > * {
+      margin-bottom: 0;
+    }
+  }
+
+  th {
+    background-color: #f6f8fa;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .selectedCell:after {
+    background: #d0d7de;
+    content: "";
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 2;
+  }
+
+  .column-resize-handle {
+    background-color: #805ad5;
+    bottom: -2px;
+    pointer-events: none;
+    position: absolute;
+    right: -2px;
+    top: 0;
+    width: 4px;
+  }
 }
 
-.is-active {
-  background-color: #e0e0e0;
+.tableWrapper {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+.resize-cursor {
+  cursor: col-resize;
 }
 </style>
