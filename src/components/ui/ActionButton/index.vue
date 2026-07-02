@@ -2,16 +2,15 @@
   <NButton
     :class="['action-button', { 'is-active': isActive() }]"
     :disabled="disabled"
-    text
-    @click="action"
+    tooltip
+    @click="handleClick"
   >
     <NTooltip trigger="hover" size="small">
       <template #trigger>
         <SvgIcon :path="icon" :size="24" />
       </template>
-      {{ text }}
+      {{ tooltip }}
     </NTooltip>
-    <slot />
   </NButton>
 </template>
 
@@ -22,11 +21,17 @@ import SvgIcon from "../SvgIcon/index.vue";
 type ButtonProps = {
   disabled: boolean;
   icon: string;
-  text: string;
+  tooltip: string;
   isActive: () => boolean;
-  action: () => void;
+  action?: () => void;
 };
 const props = defineProps<ButtonProps>();
+
+const handleClick = () => {
+  if (props.action) {
+    props.action();
+  }
+}
 </script>
 
 <style scoped>
@@ -42,7 +47,7 @@ const props = defineProps<ButtonProps>();
 }
 
 .action-button:hover {
-  color: var(--n-text-color) !important;
+  color: var(--n-tooltip-color) !important;
   background-color: #f0f0f0 !important;
 }
 

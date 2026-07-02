@@ -7,7 +7,7 @@ content.value = `shjd dhjkdnkad dsdjasdajkdas`;
 </script>
 
 <template>
-  <div style="height: 100vh; width: 80%; margin: 0 auto">
+  <div style="height: 100vh; width: 80%; margin: 0 auto; padding: 10vh 0">
     <TipTapEditor v-model="content" :max-length="5000" style="height: 60vh" />
     <br />
     Content:

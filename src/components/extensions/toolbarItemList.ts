@@ -1,5 +1,6 @@
-import Bold from "@/components/extensions/components/ToolBarItems/Bold.vue";
+import Bold from "@/components/extensions/components/Bold.vue";
+import TestMenu from "@/components/extensions/components/TestMenu.vue";
 
-const toolBarItemList = [Bold];
+const toolBarItemList = [Bold, TestMenu];
 
 export default toolBarItemList;
