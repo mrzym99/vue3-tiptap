@@ -1,20 +1,22 @@
 <template>
-  <div class="tiptap-box" v-if="editor">
-    <ToolBar :editor="editor" />
-    <EditorContent class="tiptap-editor" :editor="editor" />
-    <span v-if="props.maxLength" class="max-limit">
-      {{ editor.getText().length }} / {{ props.maxLength }}
-    </span>
-  </div>
+  <ThemeProvider :theme="theme">
+    <div class="tiptap-box" v-if="editor">
+      <ToolBar :editor="editor" />
+      <EditorContent class="tiptap-editor" :editor="editor" />
+      <span v-if="props.maxLength" class="max-limit"> {{ editor.getText().length }} / {{ props.maxLength }} </span>
+    </div>
+  </ThemeProvider>
 </template>
 
 <script setup lang="ts">
-import ToolBar from "./ToolBar.vue";
+import ThemeProvider from './ui/ThemeProvider/index.vue'
+import ToolBar from './ToolBar.vue'
 // https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
-import { useEditor, EditorContent, Editor } from "@tiptap/vue-3";
-import StarterKit from "@tiptap/starter-kit";
-import { TableKit } from "@tiptap/extension-table";
-import { checkLimit } from "./utils";
+import { useEditor, EditorContent, Editor } from '@tiptap/vue-3'
+import StarterKit from '@tiptap/starter-kit'
+import { TableKit } from '@tiptap/extension-table'
+import { checkLimit } from './utils'
+import type { ThemeName } from '@/types/theme.ts'
 
 const props = defineProps({
   maxLength: {
@@ -25,9 +27,13 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
+  theme: {
+    type: String as PropType<ThemeName>,
+    default: 'light',
+  },
+})
 
-const modelValue = defineModel<string>({ required: true });
+const modelValue = defineModel<string>({ required: true })
 
 const editor = useEditor({
   content: modelValue.value,
@@ -41,43 +47,36 @@ const editor = useEditor({
   ],
   editable: !props.disabled,
   onCreate: ({ editor }) => {
-    checkLimit(editor as Editor, props.maxLength);
-    modelValue.value = editor.getHTML();
+    checkLimit(editor as Editor, props.maxLength)
+    modelValue.value = editor.getHTML()
   },
   onUpdate: ({ editor }) => {
-    const maxLength = props.maxLength;
-    checkLimit(editor as Editor, maxLength);
-    modelValue.value = editor.getHTML();
+    const maxLength = props.maxLength
+    checkLimit(editor as Editor, maxLength)
+    modelValue.value = editor.getHTML()
   },
-});
+})
 
 watch(
   () => modelValue.value,
   (newValue) => {
-    if (!editor.value) return;
+    if (!editor.value) return
 
-    const isSame = newValue === editor.value.getHTML();
-    if (isSame) return;
-    editor.value.commands.setContent(newValue);
+    const isSame = newValue === editor.value.getHTML()
+    if (isSame) return
+    editor.value.commands.setContent(newValue)
   },
-);
+)
 
 watch(
   () => props.disabled,
   (newValue) => {
-    if (!editor.value) return;
-    editor.value.setEditable(!newValue);
+    if (!editor.value) return
+    editor.value.setEditable(!newValue)
   },
-);
+)
 </script>
 <style>
-.tiptap-box {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  overflow: hidden;
-}
-
 .tiptap-editor {
   min-height: 0;
   flex: 1;
@@ -88,7 +87,9 @@ watch(
 .tiptap {
   flex: 1;
   outline: none;
-  border: 1px solid #ccc;
+  color: var(--naive-tiptap-color-text);
+  border: 1px solid var(--naive-tiptap-color-border);
+  background-color: var(--naive-tiptap-color-bg);
   border-radius: 4px;
   padding: 12px;
   overflow-y: auto;
@@ -103,7 +104,7 @@ table {
 
   td,
   th {
-    border: 1px solid #d0d7de;
+    border: 1px solid var(--naive-tiptap-color-border);
     box-sizing: border-box;
     min-width: 1em;
     padding: 6px 8px;
@@ -116,14 +117,14 @@ table {
   }
 
   th {
-    background-color: #f6f8fa;
+    background-color: var(--naive-tiptap-color-bg);
     font-weight: bold;
     text-align: left;
   }
 
   .selectedCell:after {
-    background: #d0d7de;
-    content: "";
+    background: var(--naive-tiptap-color-border);
+    content: '';
     left: 0;
     right: 0;
     top: 0;

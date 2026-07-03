@@ -46,12 +46,12 @@ const handleClick = () => {
   outline: none;
 }
 
-.action-button:hover {
+/* .action-button:hover {
   color: var(--n-tooltip-color) !important;
   background-color: #f0f0f0 !important;
 }
 
 .action-button.is-active {
   background-color: #e0e0e0 !important;
-}
+} */
 </style>
