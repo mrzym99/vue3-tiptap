@@ -1,13 +1,13 @@
 <template>
   <NButton
-    :class="['action-button', { 'is-active': isActive() }]"
+    :class="['action-button', { 'is-active': isActive?.() }]"
     :disabled="disabled"
-    tooltip
+    :tooltip="tooltip"
     @click="handleClick"
   >
     <NTooltip trigger="hover" size="small">
       <template #trigger>
-        <SvgIcon :path="icon" :size="24" />
+        <SvgIcon :path="getIcon(icon)" :size="24" />
       </template>
       {{ tooltip }}
     </NTooltip>
@@ -17,19 +17,14 @@
 <script setup lang="ts">
 import { NButton, NTooltip } from "naive-ui";
 import SvgIcon from "../SvgIcon/index.vue";
+import type { ActionButtonProps } from "./props";
+import { getIcon } from "@/components/utils.ts";
 
-type ButtonProps = {
-  disabled: boolean;
-  icon: string;
-  tooltip: string;
-  isActive: () => boolean;
-  action?: () => void;
-};
-const props = defineProps<ButtonProps>();
+const props = defineProps<ActionButtonProps>();
 
 const handleClick = () => {
   if (props.action) {
-    props.action();
+    props.action()
   }
 }
 </script>
@@ -46,12 +41,11 @@ const handleClick = () => {
   outline: none;
 }
 
-/* .action-button:hover {
-  color: var(--n-tooltip-color) !important;
-  background-color: #f0f0f0 !important;
+.action-button:hover {
+  background-color: var(--naive-tiptap-btn--bg-hover);
 }
 
 .action-button.is-active {
-  background-color: #e0e0e0 !important;
-} */
+  background-color: var(--naive-tiptap-btn--bg-active)
+}
 </style>

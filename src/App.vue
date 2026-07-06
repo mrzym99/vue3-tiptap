@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // @ts-ignore - Vue SFC module declaration is not available in this setup
 import TipTapEditor from "./components/index.vue";
-import type { ThemeName } from "./types/theme.ts";
+import type { ThemeName } from "./types";
 const content = ref("");
 
 content.value = `shjd dhjkdnkad dsdjasdajkdas`;

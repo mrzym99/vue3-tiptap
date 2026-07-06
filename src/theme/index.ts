@@ -1,4 +1,4 @@
-import type { ThemeName } from '@/types/theme'
+import type { ThemeName } from '@/types'
 import { lightTheme } from './light'
 import { darkTheme } from './dark'
 import { baseTheme } from './base'
@@ -15,10 +15,6 @@ function getTheme(theme: ThemeName) {
   }
 }
 
-Object.entries(baseTheme).forEach(([key, value]) => {
-  document.documentElement.style.setProperty(key, value)
-})
-
 export function applyTheme(themeName: ThemeName) {
   if (currentTheme === themeName) {
     return
@@ -30,3 +26,11 @@ export function applyTheme(themeName: ThemeName) {
     document.documentElement.style.setProperty(key, value)
   })
 }
+
+function applyBaseTheme() {
+  Object.entries(baseTheme).forEach(([key, value]) => {
+    document.documentElement.style.setProperty(key, value)
+  })
+}
+
+applyBaseTheme()

@@ -1,11 +1,11 @@
 <template>
   <NPopover trigger="click" size="small" :show-arrow="false" placement="bottom-start">
     <template #trigger>
-      <ActionButton :disabled="disabled" :icon="icon" :tooltip="tooltip" :isActive="() => false" />
+      <ActionButton :editor="editor" :disabled="disabled" :icon="icon" :tooltip="tooltip" :isActive="() => false" />
     </template>
     <NList>
       <NListItem v-for="(item, i) in items" :key="i">
-        <SvgIcon :path="item.icon" size="24" />
+        <SvgIcon :path="getIcon(item.icon)" size="24" />
       </NListItem>
     </NList>
   </NPopover>
@@ -13,25 +13,12 @@
 
 <script setup lang="ts">
 import ActionButton from '../ActionButton/index.vue'
-import { NList, NPopover,NListItem } from 'naive-ui'
+import { NList, NPopover, NListItem } from 'naive-ui'
 import SvgIcon from '../SvgIcon/index.vue'
+import type { ActionButtonMenuProps } from './props.ts'
+import { getIcon } from '@/components/utils.ts'
 
-type ButtonProps = {
-  disabled: boolean
-  icon: string
-  tooltip: string
-  items?: ItemProps[]
-}
-
-type ItemProps = {
-  label: string
-  icon: string
-  disabled: boolean
-  isActive: () => boolean
-  action: () => void
-}
-const props = defineProps<ButtonProps>()
+const props = defineProps<ActionButtonMenuProps>()
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

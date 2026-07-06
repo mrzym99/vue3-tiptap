@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import { NConfigProvider, darkTheme } from 'naive-ui'
-import type { ThemeName } from '@/types/theme.ts'
+import type { ThemeName } from '@/types'
 import { applyTheme, themeOverrides } from '@/theme'
 
 const props = defineProps({

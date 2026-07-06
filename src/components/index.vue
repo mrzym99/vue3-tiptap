@@ -16,7 +16,7 @@ import { useEditor, EditorContent, Editor } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import { TableKit } from '@tiptap/extension-table'
 import { checkLimit } from './utils'
-import type { ThemeName } from '@/types/theme.ts'
+import type { ThemeName } from '@/types'
 
 const props = defineProps({
   maxLength: {
