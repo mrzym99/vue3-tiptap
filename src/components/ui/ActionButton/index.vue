@@ -31,13 +31,13 @@ const handleClick = () => {
 
 <style scoped>
 .action-button {
-  width: 32px;
-  height: 32px;
+  width: var(--naive-tiptap-btn-size);
+  height: var(--naive-tiptap-btn-size);
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
+  padding: var(--naive-tiptap-padding-sm);
+  border-radius: var(--naive-tiptap-border-radius-sm);
   outline: none;
 }
 

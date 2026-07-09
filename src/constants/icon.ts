@@ -1,7 +1,19 @@
-import { mdiFormatBold, mdiClose, mdiCircle } from '@mdi/js'
+import {
+  mdiFormatBold,
+  mdiClose,
+  mdiCircle,
+  mdiFormatAlignCenter,
+  mdiFormatAlignLeft,
+  mdiFormatAlignRight,
+  mdiFormatAlignJustify,
+} from '@mdi/js'
 
 export interface ToolbarIcons {
   bold: string
+  alignCenter: string
+  alignLeft: string
+  alignRight: string
+  alignJustify: string
 }
 
 export interface OtherIcons {
@@ -15,4 +27,8 @@ export const icons: IconsOptions = {
   bold: mdiFormatBold,
   circle: mdiCircle,
   close: mdiClose,
+  alignCenter: mdiFormatAlignCenter,
+  alignLeft: mdiFormatAlignLeft,
+  alignRight: mdiFormatAlignRight,
+  alignJustify: mdiFormatAlignJustify,
 }

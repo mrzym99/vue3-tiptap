@@ -17,4 +17,7 @@ export const themeOverrides: GlobalThemeOverrides = {
     borderFocus: 'none',
     borderDisabled: 'none',
   },
+  Popover: {
+   padding: 'var(--naive-tiptap-padding-sm)',
+  },
 }

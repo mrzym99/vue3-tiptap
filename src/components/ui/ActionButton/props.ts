@@ -4,7 +4,7 @@ import type { Editor } from "@tiptap/core";
 export type ActionButtonProps = {
   editor: Editor;
   icon?: keyof IconsOptions;
-  tooltip?: string;
+  tooltip: string;
   disabled?: boolean;
   color?: string;
   action?: () => void;

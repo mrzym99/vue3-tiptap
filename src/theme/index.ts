@@ -19,7 +19,6 @@ export function applyTheme(themeName: ThemeName) {
   if (currentTheme === themeName) {
     return
   }
-  console.log('applyTheme', themeName)
   const theme = getTheme(themeName)
   currentTheme = themeName
   Object.entries(theme).forEach(([key, value]) => {
