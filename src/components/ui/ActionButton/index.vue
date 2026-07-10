@@ -5,9 +5,12 @@
     :tooltip="tooltip"
     @click="handleClick"
   >
-    <NTooltip trigger="hover" size="small">
+    <NTooltip trigger="hover" size="small" :disabled="disabled">
       <template #trigger>
-        <SvgIcon :path="getIcon(icon)" :size="24" />
+        <div class="icon-container">
+          <SvgIcon :path="getIcon(icon)" :size="24" />
+          <slot name="suffix" />
+        </div>
       </template>
       {{ tooltip }}
     </NTooltip>
@@ -15,12 +18,12 @@
 </template>
 
 <script setup lang="ts">
-import { NButton, NTooltip } from "naive-ui";
-import SvgIcon from "../SvgIcon/index.vue";
-import type { ActionButtonProps } from "./props";
-import { getIcon } from "@/components/utils.ts";
+import { NButton, NTooltip } from 'naive-ui'
+import SvgIcon from '../SvgIcon/index.vue'
+import type { ActionButtonProps } from './props'
+import { getIcon } from '@/components/utils.ts'
 
-const props = defineProps<ActionButtonProps>();
+const props = defineProps<ActionButtonProps>()
 
 const handleClick = () => {
   if (props.action) {
@@ -41,11 +44,18 @@ const handleClick = () => {
   outline: none;
 }
 
-.action-button:hover {
+.action-button:hover:not(:disabled) {
   background-color: var(--naive-tiptap-btn--bg-hover);
 }
 
 .action-button.is-active {
-  background-color: var(--naive-tiptap-btn--bg-active)
+  background-color: var(--naive-tiptap-btn--bg-active);
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--naive-tiptap-gap-sm);
 }
 </style>

@@ -17,6 +17,7 @@ import StarterKit from '@tiptap/starter-kit'
 import { TableKit } from '@tiptap/extension-table'
 import { checkLimit } from './utils'
 import type { ThemeName } from '@/types'
+import { TextAlign } from '@tiptap/extension-text-align'
 
 const props = defineProps({
   maxLength: {
@@ -44,6 +45,9 @@ const editor = useEditor({
         resizable: true,
       },
     }),
+    TextAlign.configure({
+      types: ['heading', 'paragraph'],
+    })
   ],
   editable: !props.disabled,
   onCreate: ({ editor }) => {

@@ -6,6 +6,7 @@ import {
   mdiFormatAlignLeft,
   mdiFormatAlignRight,
   mdiFormatAlignJustify,
+  mdiChevronDown,
 } from '@mdi/js'
 
 export interface ToolbarIcons {
@@ -14,6 +15,7 @@ export interface ToolbarIcons {
   alignLeft: string
   alignRight: string
   alignJustify: string
+  dropdown: string
 }
 
 export interface OtherIcons {
@@ -31,4 +33,5 @@ export const icons: IconsOptions = {
   alignLeft: mdiFormatAlignLeft,
   alignRight: mdiFormatAlignRight,
   alignJustify: mdiFormatAlignJustify,
+  dropdown: mdiChevronDown,
 }

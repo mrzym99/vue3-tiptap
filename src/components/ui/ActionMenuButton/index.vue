@@ -1,10 +1,21 @@
 <template>
   <NPopover trigger="click" size="small" :show-arrow="false" placement="bottom-start">
     <template #trigger>
-      <ActionButton :editor="editor" :disabled="active.disabled" :icon="active.icon" :tooltip="active.label" :isActive="active.isActive" />
+      <ActionButton :editor="editor" :disabled="disabled" :icon="active.icon" :tooltip="active.label">
+        <template #suffix>
+          <slot name="suffix" />
+        </template>
+      </ActionButton>
     </template>
     <NList hoverable clickable :show-divider="false">
-      <NListItem class="action-menu-item" v-for="(item, i) in items" :key="i">
+      <NListItem
+        :class="['action-menu-item', { active: item.isActive() }]"
+        v-for="(item, i) in items"
+        :key="i"
+        :disabled="item.disabled"
+        :active="item.isActive()"
+        @click="item.action?.()"
+      >
         <SvgIcon :path="getIcon(item.icon)" size="24" />
         <span>{{ item.label }}</span>
       </NListItem>
@@ -23,7 +34,7 @@ import type { ActionMenuButtonItem } from './type.ts'
 const props = defineProps<ActionButtonMenuProps>()
 
 const active = computed<ActionMenuButtonItem>(() => {
-  const find = props.items.find(k => k.isActive())
+  const find = props.items.find((k) => k.isActive())
   if (find) {
     return {
       ...find,
@@ -46,5 +57,10 @@ const active = computed<ActionMenuButtonItem>(() => {
   display: flex;
   align-items: center;
   gap: var(--naive-tiptap-gap);
+}
+
+/* Increase active weight to override hover */
+.action-menu-item.active.active {
+  background-color: var(--naive-tiptap-btn--bg-active);
 }
 </style>
