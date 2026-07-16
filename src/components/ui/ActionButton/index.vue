@@ -34,7 +34,7 @@ const handleClick = () => {
 
 <style scoped>
 .action-button {
-  width: var(--naive-tiptap-btn-size);
+  min-width: var(--naive-tiptap-btn-size);
   height: var(--naive-tiptap-btn-size);
   background: none;
   border: none;

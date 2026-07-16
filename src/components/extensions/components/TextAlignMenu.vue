@@ -1,5 +1,5 @@
 <template>
-  <ActionMenuButton :editor="editor" icon="alignCenter" :disabled="disabled" :items="options" tooltip="Bold">
+  <ActionMenuButton :editor="editor" icon="alignCenter" :disabled="disabled" :is-active="isActive" :items="options" tooltip="Bold">
     <template #suffix>
       <SvgIcon :path="getIcon('dropdown')" size="24" />
     </template>

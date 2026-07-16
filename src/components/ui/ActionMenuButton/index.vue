@@ -1,7 +1,7 @@
 <template>
   <NPopover trigger="click" size="small" :show-arrow="false" placement="bottom-start">
     <template #trigger>
-      <ActionButton :editor="editor" :disabled="disabled" :icon="active.icon" :tooltip="active.label">
+      <ActionButton :editor="editor" :is-active="() => isActive" :disabled="disabled" :icon="active.icon" :tooltip="active.label">
         <template #suffix>
           <slot name="suffix" />
         </template>

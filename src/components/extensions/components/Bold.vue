@@ -1,7 +1,7 @@
 <template>
   <ActionButton
     :editor="editor"
-    :action="() => editor.chain().focus().setTextAlign('right').run()"
+    :action="() => editor.chain().focus().toggleBold().run()"
     icon="bold"
     :disabled="!editor.can().toggleBold()"
     :is-active="() => editor.isActive('bold') || false"
