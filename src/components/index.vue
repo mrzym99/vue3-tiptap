@@ -3,21 +3,24 @@
     <div class="tiptap-box" v-if="editor">
       <ToolBar :editor="editor" />
       <EditorContent class="tiptap-editor" :editor="editor" />
-      <span v-if="props.maxLength" class="max-limit"> {{ editor.getText().length }} / {{ props.maxLength }} </span>
+      <span v-if="props.maxLength" class="max-limit">
+        {{ editor.getText().length }} / {{ props.maxLength }}
+      </span>
     </div>
   </ThemeProvider>
 </template>
 
 <script setup lang="ts">
-import ThemeProvider from './ui/ThemeProvider/index.vue'
-import ToolBar from './ToolBar.vue'
+import ThemeProvider from "./ui/ThemeProvider/index.vue";
+import ToolBar from "./ToolBar.vue";
 // https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
-import { useEditor, EditorContent, Editor } from '@tiptap/vue-3'
-import StarterKit from '@tiptap/starter-kit'
-import { TableKit } from '@tiptap/extension-table'
-import { checkLimit } from './utils'
-import type { ThemeName } from '@/types'
-import { TextAlign } from '@tiptap/extension-text-align'
+import { useEditor, EditorContent, Editor } from "@tiptap/vue-3";
+import StarterKit from "@tiptap/starter-kit";
+import { TableKit } from "@tiptap/extension-table";
+import { checkLimit } from "./utils";
+import type { ThemeName } from "@/types";
+import { TextAlign } from "@tiptap/extension-text-align";
+import { Bold } from "./extensions/Bold.ts";
 
 const props = defineProps({
   maxLength: {
@@ -30,55 +33,57 @@ const props = defineProps({
   },
   theme: {
     type: String as PropType<ThemeName>,
-    default: 'light',
+    default: "light",
   },
-})
+});
 
-const modelValue = defineModel<string>({ required: true })
+const modelValue = defineModel<string>({ required: true });
 
 const editor = useEditor({
   content: modelValue.value,
   extensions: [
     StarterKit,
-    TableKit.configure({
-      table: {
-        resizable: true,
-      },
-    }),
-    TextAlign.configure({
-      types: ['heading', 'paragraph'],
-    })
+    Bold,
+    // TableKit.configure({
+    //   table: {
+    //     resizable: true,
+    //   },
+    // }),
+    // TextAlign.configure({
+    //   types: ["heading", "paragraph"],
+    // }),
   ],
   editable: !props.disabled,
   onCreate: ({ editor }) => {
-    checkLimit(editor as Editor, props.maxLength)
-    modelValue.value = editor.getHTML()
+    checkLimit(editor as Editor, props.maxLength);
+    modelValue.value = editor.getHTML();
+    console.log("editor created", editor.extensionManager.extensions);
   },
   onUpdate: ({ editor }) => {
-    const maxLength = props.maxLength
-    checkLimit(editor as Editor, maxLength)
-    modelValue.value = editor.getHTML()
+    const maxLength = props.maxLength;
+    checkLimit(editor as Editor, maxLength);
+    modelValue.value = editor.getHTML();
   },
-})
+});
 
 watch(
   () => modelValue.value,
   (newValue) => {
-    if (!editor.value) return
+    if (!editor.value) return;
 
-    const isSame = newValue === editor.value.getHTML()
-    if (isSame) return
-    editor.value.commands.setContent(newValue)
+    const isSame = newValue === editor.value.getHTML();
+    if (isSame) return;
+    editor.value.commands.setContent(newValue);
   },
-)
+);
 
 watch(
   () => props.disabled,
   (newValue) => {
-    if (!editor.value) return
-    editor.value.setEditable(!newValue)
+    if (!editor.value) return;
+    editor.value.setEditable(!newValue);
   },
-)
+);
 </script>
 <style>
 .tiptap-editor {
@@ -128,7 +133,7 @@ table {
 
   .selectedCell:after {
     background: var(--naive-tiptap-color-border);
-    content: '';
+    content: "";
     left: 0;
     right: 0;
     top: 0;

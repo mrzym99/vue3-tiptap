@@ -1,6 +1,6 @@
-import Bold from "@/components/extensions/components/Bold.vue";
-import TextAlignMenu from "@/components/extensions/components/TextAlignMenu.vue";
+import BoldButton from "@/components/extensions/components/buttons/BoldButton.vue";
+// import TextAlignMenu from "@/components/extensions/components/menuButtons/TextAlignMenu.vue";
 
-const toolBarItemList = [Bold, TextAlignMenu];
+const toolBarItemList = [BoldButton];
 
 export default toolBarItemList;

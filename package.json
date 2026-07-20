@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tiptap/core": "^3.27.1",
+    "@tiptap/extension-bold": "^3.28.0",
     "@tiptap/extension-table": "^3.27.1",
     "@tiptap/extension-text-align": "^3.27.3",
     "@tiptap/extensions": "^3.27.1",
