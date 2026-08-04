@@ -11,16 +11,21 @@
 </template>
 
 <script setup lang="ts">
-import ThemeProvider from "./ui/ThemeProvider/index.vue";
-import ToolBar from "./ToolBar.vue";
+import ThemeProvider from "@/components/ui-common/theme-provider/index.vue";
+import ToolBar from "@/components/ui-editor/tool-bar/index.vue";
 // https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
 import { useEditor, EditorContent, Editor } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import { TableKit } from "@tiptap/extension-table";
 import { checkLimit } from "./utils";
 import type { ThemeName } from "@/types";
-import { TextAlign } from "@tiptap/extension-text-align";
+import Document from "@tiptap/extension-document";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
+
 import { Bold } from "./extensions/Bold.ts";
+import { TextAlign } from "./extensions/TextAlign.ts";
+// import { TextAlign } from "@tiptap/extension-text-align";
 
 const props = defineProps({
   maxLength: {
@@ -42,22 +47,24 @@ const modelValue = defineModel<string>({ required: true });
 const editor = useEditor({
   content: modelValue.value,
   extensions: [
-    StarterKit,
+    // StarterKit,
+    Document, // 文档根节点
+    Paragraph, // 段落
+    Text, // 文本
     Bold,
+    TextAlign.configure({
+      types: ["heading", "paragraph"],
+    }),
     // TableKit.configure({
     //   table: {
     //     resizable: true,
     //   },
-    // }),
-    // TextAlign.configure({
-    //   types: ["heading", "paragraph"],
     // }),
   ],
   editable: !props.disabled,
   onCreate: ({ editor }) => {
     checkLimit(editor as Editor, props.maxLength);
     modelValue.value = editor.getHTML();
-    console.log("editor created", editor.extensionManager.extensions);
   },
   onUpdate: ({ editor }) => {
     const maxLength = props.maxLength;

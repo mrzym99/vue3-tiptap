@@ -8,7 +8,7 @@
     <NTooltip trigger="hover" size="small" :disabled="disabled">
       <template #trigger>
         <div class="icon-container">
-          <SvgIcon :path="getIcon(icon)" :size="24" />
+          <component :is="icon" size="24px" />
           <slot name="suffix" />
         </div>
       </template>
@@ -18,18 +18,16 @@
 </template>
 
 <script setup lang="ts">
-import { NButton, NTooltip } from 'naive-ui'
-import SvgIcon from '../SvgIcon/index.vue'
-import type { ActionButtonProps } from './props'
-import { getIcon } from '@/components/utils.ts'
+import { NButton, NTooltip } from "naive-ui";
+import type { ActionButtonProps } from "./props";
 
-const props = defineProps<ActionButtonProps>()
+const props = defineProps<ActionButtonProps>();
 
 const handleClick = () => {
   if (props.action) {
-    props.action()
+    props.action();
   }
-}
+};
 </script>
 
 <style scoped>

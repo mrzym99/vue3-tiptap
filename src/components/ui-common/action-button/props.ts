@@ -1,9 +1,9 @@
-import type { IconsOptions } from "@/constants";
 import type { Editor } from "@tiptap/core";
+import type { Component } from "vue";
 
 export type ActionButtonProps = {
   editor: Editor;
-  icon?: keyof IconsOptions;
+  icon?: Component;
   tooltip: string;
   disabled?: boolean;
   color?: string;

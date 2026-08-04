@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { Bold as TiptapBold } from "@tiptap/extension-bold";
 
-import BoldButton from "./components/buttons/BoldButton.vue";
+import BoldButton from "@/components/ui-editor/buttons/BoldButton.vue";
 
 export interface BoldOptions
   extends TiptapBoldOptions, GeneralOptions<BoldOptions> {}

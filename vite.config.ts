@@ -1,7 +1,9 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import { resolve } from "path";
 import AutoImport from "unplugin-auto-import/vite";
+import { resolve, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -13,6 +15,14 @@ export default defineConfig({
       eslintrc: {
         enabled: true, // generate .eslintrc-auto-import.json
       },
+    }),
+    VueI18nPlugin({
+      /* options */
+      // locale messages resource pre-compile option
+      include: resolve(
+        dirname(fileURLToPath(import.meta.url)),
+        "./src/locales/**",
+      ),
     }),
   ],
   resolve: {

@@ -1,7 +1,18 @@
 <template>
-  <NPopover trigger="click" size="small" :show-arrow="false" placement="bottom-start">
+  <NPopover
+    trigger="click"
+    size="small"
+    :show-arrow="false"
+    placement="bottom-start"
+  >
     <template #trigger>
-      <ActionButton :editor="editor" :is-active="() => isActive" :disabled="disabled" :icon="active.icon" :tooltip="active.label">
+      <ActionButton
+        :editor="editor"
+        :is-active="() => isActive"
+        :disabled="disabled"
+        :icon="active.icon"
+        :tooltip="active.label"
+      >
         <template #suffix>
           <slot name="suffix" />
         </template>
@@ -16,7 +27,7 @@
         :active="item.isActive()"
         @click="item.action?.()"
       >
-        <SvgIcon :path="getIcon(item.icon)" size="24" />
+        <component :is="item.icon" size="24px" />
         <span>{{ item.label }}</span>
       </NListItem>
     </NList>
@@ -24,32 +35,30 @@
 </template>
 
 <script setup lang="ts">
-import ActionButton from '../ActionButton/index.vue'
-import { NList, NPopover, NListItem } from 'naive-ui'
-import SvgIcon from '../SvgIcon/index.vue'
-import type { ActionButtonMenuProps } from './props.ts'
-import { getIcon } from '@/components/utils.ts'
-import type { ActionMenuButtonItem } from './type.ts'
+import ActionButton from "../action-button/index.vue";
+import { NList, NPopover, NListItem } from "naive-ui";
+import type { ActionButtonMenuProps } from "./props.ts";
+import type { ActionMenuButtonItem } from "./type.ts";
 
-const props = defineProps<ActionButtonMenuProps>()
+const props = defineProps<ActionButtonMenuProps>();
 
 const active = computed<ActionMenuButtonItem>(() => {
-  const find = props.items.find((k) => k.isActive())
+  const find = props.items.find((k) => k.isActive());
   if (find) {
     return {
       ...find,
       icon: find.icon ? find.icon : props.icon,
-    }
+    };
   }
 
   const item: ActionMenuButtonItem = {
     label: props.tooltip,
     icon: props.icon,
     isActive: () => false,
-  }
+  };
 
-  return item
-})
+  return item;
+});
 </script>
 
 <style scoped>
