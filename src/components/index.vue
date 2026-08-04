@@ -15,8 +15,8 @@ import ThemeProvider from "@/components/ui-common/theme-provider/index.vue";
 import ToolBar from "@/components/ui-editor/tool-bar/index.vue";
 // https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
 import { useEditor, EditorContent, Editor } from "@tiptap/vue-3";
-import StarterKit from "@tiptap/starter-kit";
-import { TableKit } from "@tiptap/extension-table";
+// import StarterKit from "@tiptap/starter-kit";
+// import { TableKit } from "@tiptap/extension-table";
 import { checkLimit } from "./utils";
 import type { ThemeName } from "@/types";
 import Document from "@tiptap/extension-document";

@@ -1,4 +1,3 @@
-import type { IconsOptions } from "@/constants";
 import type { Editor, Extension } from "@tiptap/core";
 
 export * from "./theme";
@@ -40,7 +39,7 @@ export interface ButtonViewReturnComponentProps {
   /** Whether it is in the active state */
   isActive?: () => boolean;
   /** Button icon */
-  icon?: keyof IconsOptions;
+  icon?: Component;
   /** Text displayed on hover */
   tooltip?: string;
   [x: string]: any;
