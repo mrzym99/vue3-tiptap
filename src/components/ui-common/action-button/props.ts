@@ -10,3 +10,8 @@ export type ActionButtonProps = {
   action?: () => void;
   isActive?: () => boolean;
 };
+
+export type ExtActionButtonProps = {
+  editor: Editor;
+  t: (path: string) => string;
+};

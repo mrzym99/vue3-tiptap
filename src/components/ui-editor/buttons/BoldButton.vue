@@ -5,19 +5,14 @@
     :icon="RiBold"
     :disabled="!editor.can().toggleBold()"
     :is-active="() => editor.isActive('bold') || false"
-    tooltip="Bold"
+    :tooltip="t('bold')"
   />
 </template>
 
 <script lang="ts" setup>
 import { RiBold } from "@remixicon/vue";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
-import type { Editor } from "@tiptap/vue-3";
+import type { ExtActionButtonProps } from "@/components/ui-common/action-button/props";
 
-const props = defineProps({
-  editor: {
-    type: Object as PropType<Editor>,
-    required: true,
-  },
-});
+const props = defineProps<ExtActionButtonProps>();
 </script>

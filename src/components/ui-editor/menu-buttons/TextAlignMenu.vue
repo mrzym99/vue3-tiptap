@@ -5,7 +5,7 @@
     :disabled="disabled"
     :is-active="isActive"
     :items="options"
-    tooltip="Text Align"
+    :tooltip="t('textAlign')"
   >
     <template #suffix>
       <RiArrowDropDownLine size="24px" />
@@ -22,19 +22,9 @@ import {
   RiArrowDropDownLine,
 } from "@remixicon/vue";
 import ActionMenuButton from "@/components/ui-common/action-menu-button/index.vue";
-import type { Editor } from "@tiptap/vue-3";
+import type { ExtActionButtonProps } from "@/components/ui-common/action-button/props";
 
-const props = defineProps({
-  editor: {
-    type: Object as PropType<Editor>,
-    required: true,
-  },
-  t: {
-    type: Function as any,
-    require: true,
-  },
-});
-
+const props = defineProps<ExtActionButtonProps>();
 function createOption(label: string, icon: any, align: string) {
   return {
     label,
@@ -53,11 +43,12 @@ function toggleAlign(align: string) {
   }
 }
 
+const t = props.t;
 const options = computed(() => [
-  createOption(props.t("alignLeft"), RiAlignLeft, "left"),
-  createOption(props.t("alignCenter"), RiAlignCenter, "center"),
-  createOption(props.t("alignRight"), RiAlignRight, "right"),
-  createOption(props.t("alignJustify"), RiAlignJustify, "justify"),
+  createOption(t("alignLeft"), RiAlignLeft, "left"),
+  createOption(t("alignCenter"), RiAlignCenter, "center"),
+  createOption(t("alignRight"), RiAlignRight, "right"),
+  createOption(t("alignJustify"), RiAlignJustify, "justify"),
 ]);
 
 const disabled = computed(() => options.value.every((item) => item.disabled));
