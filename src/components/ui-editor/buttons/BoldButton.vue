@@ -12,7 +12,7 @@
 <script lang="ts" setup>
 import { RiBold } from "@remixicon/vue";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
-import type { ExtActionButtonProps } from "@/components/ui-common/action-button/props";
+import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
-const props = defineProps<ExtActionButtonProps>();
+const props = defineProps<EXTActionButtonProps>();
 </script>

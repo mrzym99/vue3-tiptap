@@ -33,6 +33,10 @@ const menus = computed(() => {
 <style scoped>
 .tiptap-toolbar {
   display: flex;
-  gap: 2px;
+  gap: var(--naive-tiptap-gap-xs);
+  outline: none;
+  border-bottom: 1px solid var(--naive-tiptap-color-border);
+  padding: var(--naive-tiptap-padding-xs);
+  overflow-y: auto;
 }
 </style>

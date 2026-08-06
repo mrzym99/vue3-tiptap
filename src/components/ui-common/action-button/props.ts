@@ -11,7 +11,7 @@ export type ActionButtonProps = {
   isActive?: () => boolean;
 };
 
-export type ExtActionButtonProps = {
+export type EXTActionButtonProps = {
   editor: Editor;
   t: (path: string) => string;
 };

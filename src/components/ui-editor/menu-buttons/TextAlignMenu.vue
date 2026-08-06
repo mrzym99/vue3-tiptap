@@ -22,9 +22,9 @@ import {
   RiArrowDropDownLine,
 } from "@remixicon/vue";
 import ActionMenuButton from "@/components/ui-common/action-menu-button/index.vue";
-import type { ExtActionButtonProps } from "@/components/ui-common/action-button/props";
+import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
-const props = defineProps<ExtActionButtonProps>();
+const props = defineProps<EXTActionButtonProps>();
 function createOption(label: string, icon: any, align: string) {
   return {
     label,

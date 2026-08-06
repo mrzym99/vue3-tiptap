@@ -2,10 +2,15 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   color: var(--naive-tiptap-color-text);
   background-color: var(--naive-tiptap-color-bg);
-  transition: color .3s var(--naive-tiptap-bezier), background-color .3s var(--naive-tiptap-bezier), opacity .3s var(--naive-tiptap-bezier), border-color .3s var(--naive-tiptap-bezier);
+  transition:
+    color 0.3s var(--naive-tiptap-bezier),
+    background-color 0.3s var(--naive-tiptap-bezier),
+    opacity 0.3s var(--naive-tiptap-bezier),
+    border-color 0.3s var(--naive-tiptap-bezier);
 }

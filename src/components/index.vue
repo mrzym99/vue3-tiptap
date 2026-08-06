@@ -2,7 +2,7 @@
   <ThemeProvider :theme="theme">
     <div class="tiptap-box" v-if="editor">
       <ToolBar :editor="editor" />
-      <EditorContent class="tiptap-editor" :editor="editor" />
+      <EditorContent :editor="editor" />
       <span v-if="props.maxLength" class="max-limit">
         {{ editor.getText().length }} / {{ props.maxLength }}
       </span>
@@ -13,8 +13,9 @@
 <script setup lang="ts">
 import ThemeProvider from "@/components/ui-common/theme-provider/index.vue";
 import ToolBar from "@/components/ui-editor/tool-bar/index.vue";
+import EditorContent from "@/components/ui-editor/editor-content/index.vue";
 // https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
-import { useEditor, EditorContent, Editor } from "@tiptap/vue-3";
+import { useEditor, Editor } from "@tiptap/vue-3";
 // import StarterKit from "@tiptap/starter-kit";
 // import { TableKit } from "@tiptap/extension-table";
 import { checkLimit } from "./utils";
@@ -24,6 +25,7 @@ import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 
 import { Bold } from "./extensions/Bold.ts";
+import { Italic } from "./extensions/Italic.ts";
 import { TextAlign } from "./extensions/TextAlign.ts";
 // import { TextAlign } from "@tiptap/extension-text-align";
 
@@ -55,6 +57,7 @@ const editor = useEditor({
     TextAlign.configure({
       types: ["heading", "paragraph"],
     }),
+    Italic,
     // TableKit.configure({
     //   table: {
     //     resizable: true,
@@ -92,81 +95,20 @@ watch(
   },
 );
 </script>
-<style>
-.tiptap-editor {
-  min-height: 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.tiptap {
-  flex: 1;
-  outline: none;
-  color: var(--naive-tiptap-color-text);
+<style scoped>
+.tiptap-box {
+  position: relative;
+  height: 100%;
   border: 1px solid var(--naive-tiptap-color-border);
-  background-color: var(--naive-tiptap-color-bg);
-  border-radius: 4px;
-  padding: 12px;
-  overflow-y: auto;
+  border-radius: var(--naive-tiptap-border-radius-sm);
 }
 
-table {
-  border-collapse: collapse;
-  margin: 0;
-  overflow: hidden;
-  table-layout: fixed;
-  width: 100%;
-
-  td,
-  th {
-    border: 1px solid var(--naive-tiptap-color-border);
-    box-sizing: border-box;
-    min-width: 1em;
-    padding: 6px 8px;
-    position: relative;
-    vertical-align: top;
-
-    > * {
-      margin-bottom: 0;
-    }
-  }
-
-  th {
-    background-color: var(--naive-tiptap-color-bg);
-    font-weight: bold;
-    text-align: left;
-  }
-
-  .selectedCell:after {
-    background: var(--naive-tiptap-color-border);
-    content: "";
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    pointer-events: none;
-    position: absolute;
-    z-index: 2;
-  }
-
-  .column-resize-handle {
-    background-color: #805ad5;
-    bottom: -2px;
-    pointer-events: none;
-    position: absolute;
-    right: -2px;
-    top: 0;
-    width: 4px;
-  }
-}
-
-.tableWrapper {
-  margin: 1.5rem 0;
-  overflow-x: auto;
-}
-
-.resize-cursor {
-  cursor: col-resize;
+.max-limit {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: var(--naive-tiptap-font-size-sm);
+  color: var(--naive-tiptap-color-text-3);
+  padding: var(--naive-tiptap-padding-xs);
 }
 </style>
