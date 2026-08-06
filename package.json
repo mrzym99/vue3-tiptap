@@ -13,6 +13,7 @@
     "@tiptap/core": "^3.27.1",
     "@tiptap/extension-bold": "^3.28.0",
     "@tiptap/extension-document": "^3.29.2",
+    "@tiptap/extension-italic": "^3.29.2",
     "@tiptap/extension-paragraph": "^3.29.2",
     "@tiptap/extension-table": "^3.27.1",
     "@tiptap/extension-text": "^3.29.2",
