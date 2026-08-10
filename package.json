@@ -11,6 +11,7 @@
   "dependencies": {
     "@remixicon/vue": "^4.9.0",
     "@tiptap/core": "^3.27.1",
+    "@tiptap/extension-blockquote": "^3.29.2",
     "@tiptap/extension-bold": "^3.28.0",
     "@tiptap/extension-document": "^3.29.2",
     "@tiptap/extension-italic": "^3.29.2",
@@ -18,6 +19,7 @@
     "@tiptap/extension-table": "^3.27.1",
     "@tiptap/extension-text": "^3.29.2",
     "@tiptap/extension-text-align": "^3.27.3",
+    "@tiptap/extension-underline": "^3.29.2",
     "@tiptap/extensions": "^3.27.1",
     "@tiptap/pm": "^3.27.1",
     "@tiptap/starter-kit": "^3.27.1",

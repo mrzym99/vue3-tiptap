@@ -24,9 +24,12 @@ import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 
-import { Bold } from "./extensions/Bold.ts";
-import { Italic } from "./extensions/Italic.ts";
-import { TextAlign } from "./extensions/TextAlign.ts";
+// import { Bold } from "./extensions/Bold.ts";
+// import { Italic } from "./extensions/Italic.ts";
+// import { TextAlign } from "./extensions/TextAlign.ts";
+// import { Underline } from "./extensions/Underline.ts";
+// import { Blockquote } from "./extensions/Blockquote.ts";
+import customExtensions from "@/components/extensions/index.ts";
 // import { TextAlign } from "@tiptap/extension-text-align";
 
 const props = defineProps({
@@ -53,16 +56,12 @@ const editor = useEditor({
     Document, // 文档根节点
     Paragraph, // 段落
     Text, // 文本
-    Bold,
-    TextAlign.configure({
-      types: ["heading", "paragraph"],
-    }),
-    Italic,
     // TableKit.configure({
     //   table: {
     //     resizable: true,
     //   },
     // }),
+    ...customExtensions,
   ],
   editable: !props.disabled,
   onCreate: ({ editor }) => {

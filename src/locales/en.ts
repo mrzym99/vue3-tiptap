@@ -7,4 +7,5 @@ export default {
   alignRight: "Align Right",
   alignCenter: "Align Center",
   alignJustify: "Align Justify",
+  blockquote: "Blockquote",
 };

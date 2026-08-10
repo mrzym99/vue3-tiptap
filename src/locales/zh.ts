@@ -7,4 +7,5 @@ export default {
   alignRight: "右对齐",
   alignCenter: "居中对齐",
   alignJustify: "两端对齐",
+  blockquote: "引用",
 };

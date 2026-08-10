@@ -88,5 +88,11 @@ const props = defineProps({
   .resize-cursor {
     cursor: col-resize;
   }
+
+  blockquote {
+    border-left: 3px solid var(--naive-tiptap-color-border);
+    margin: 1.5rem 0;
+    padding-left: 1rem;
+  }
 }
 </style>
