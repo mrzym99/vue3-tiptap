@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// @ts-ignore - Vue SFC module declaration is not available in this setup
 import TipTapEditor from "./components/index.vue";
 import { useLocale } from "./hooks/useLocale.ts";
 import type { ThemeName } from "./types";
@@ -22,7 +21,7 @@ const toggleLocale = () => {
   <div style="height: 100vh; width: 80%; margin: 0 auto; padding: 10vh 0">
     <TipTapEditor
       v-model="content"
-      :max-length="5000"
+      :max-length="20"
       style="height: 60vh"
       :theme="theme"
     />

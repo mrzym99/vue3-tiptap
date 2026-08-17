@@ -94,5 +94,13 @@ const props = defineProps({
     margin: 1.5rem 0;
     padding-left: 1rem;
   }
+
+  p.is-editor-empty:first-child::before {
+    color: var(--naive-tiptap-color-text-3);
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
 }
 </style>

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { Editor } from "@tiptap/vue-3";
+import type { ButtonView, ButtonViewReturn, TranslateFn } from "@/types";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
+const translate = t as TranslateFn;
 
 const props = defineProps({
   editor: {
@@ -10,21 +12,23 @@ const props = defineProps({
     required: true,
   },
   button: {
-    type: Function as PropType<
-      ({ editor, t }: { editor: Editor; t: any }) => {
-        component: any;
-        componentProps: Record<string, any>;
-      }
-    >,
+    type: Function as PropType<ButtonView>,
     required: true,
   },
 });
 
-const button = computed(() => {
-  return props.button({ editor: props.editor, t });
+// A single extension may return one button or an array of buttons
+const buttons = computed<ButtonViewReturn[]>(() => {
+  const result = props.button({ editor: props.editor, t: translate });
+  return Array.isArray(result) ? result : [result];
 });
 </script>
 
 <template>
-  <component :is="button.component" v-bind="button.componentProps" />
+  <component
+    v-for="(btn, index) in buttons"
+    :key="index"
+    :is="btn.component"
+    v-bind="btn.componentProps"
+  />
 </template>

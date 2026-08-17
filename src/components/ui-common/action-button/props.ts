@@ -1,5 +1,6 @@
 import type { Editor } from "@tiptap/core";
 import type { Component } from "vue";
+import type { TranslateFn } from "@/types";
 
 export type ActionButtonProps = {
   editor: Editor;
@@ -13,5 +14,5 @@ export type ActionButtonProps = {
 
 export type EXTActionButtonProps = {
   editor: Editor;
-  t: (path: string) => string;
+  t: TranslateFn;
 };

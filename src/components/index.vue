@@ -4,7 +4,7 @@
       <ToolBar :editor="editor" />
       <EditorContent :editor="editor" />
       <span v-if="props.maxLength" class="max-limit">
-        {{ editor.getText().length }} / {{ props.maxLength }}
+        {{ getEditorTextLength(editor) }} / {{ props.maxLength }}
       </span>
     </div>
   </ThemeProvider>
@@ -15,70 +15,84 @@ import ThemeProvider from "@/components/ui-common/theme-provider/index.vue";
 import ToolBar from "@/components/ui-editor/tool-bar/index.vue";
 import EditorContent from "@/components/ui-editor/editor-content/index.vue";
 // https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
-import { useEditor, Editor } from "@tiptap/vue-3";
-// import StarterKit from "@tiptap/starter-kit";
-// import { TableKit } from "@tiptap/extension-table";
-import { checkLimit } from "./utils";
-import type { ThemeName } from "@/types";
+import { useEditor } from "@tiptap/vue-3";
+import type { EditorEvents } from "@tiptap/core";
+import { checkLimit, getEditorTextLength } from "./utils";
+import type { TipTapEditorProps } from "@/types";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
-
-// import { Bold } from "./extensions/Bold.ts";
-// import { Italic } from "./extensions/Italic.ts";
-// import { TextAlign } from "./extensions/TextAlign.ts";
-// import { Underline } from "./extensions/Underline.ts";
-// import { Blockquote } from "./extensions/Blockquote.ts";
+import Placeholder from "@tiptap/extension-placeholder";
 import customExtensions from "@/components/extensions/index.ts";
-// import { TextAlign } from "@tiptap/extension-text-align";
 
-const props = defineProps({
-  maxLength: {
-    type: Number,
-    default: 0,
+const props = withDefaults(
+  defineProps<
+    Pick<
+      TipTapEditorProps,
+      "maxLength" | "disabled" | "theme" | "placeholder" | "autofocus"
+    >
+  >(),
+  {
+    maxLength: 0,
+    disabled: false,
+    theme: "light",
+    placeholder: undefined,
+    autofocus: false,
   },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-  theme: {
-    type: String as PropType<ThemeName>,
-    default: "light",
-  },
-});
+);
+
+const emit = defineEmits<{
+  focus: [payload: EditorEvents["focus"]];
+  blur: [payload: EditorEvents["blur"]];
+}>();
 
 const modelValue = defineModel<string>({ required: true });
+
+// Value that changed before the editor instance was ready (useEditor creates
+// the instance on mount, so the initial watcher run may race with it)
+let pendingContent: string | undefined;
 
 const editor = useEditor({
   content: modelValue.value,
   extensions: [
-    // StarterKit,
     Document, // 文档根节点
     Paragraph, // 段落
     Text, // 文本
-    // TableKit.configure({
-    //   table: {
-    //     resizable: true,
-    //   },
-    // }),
+    Placeholder.configure({
+      placeholder: props.placeholder ?? "",
+    }),
     ...customExtensions,
   ],
   editable: !props.disabled,
+  autofocus: props.autofocus,
   onCreate: ({ editor }) => {
-    checkLimit(editor as Editor, props.maxLength);
-    modelValue.value = editor.getHTML();
+    // Apply a value that changed before the editor was created
+    if (pendingContent !== undefined && pendingContent !== editor.getHTML()) {
+      editor.commands.setContent(pendingContent, { emitUpdate: false });
+    }
+    // Only write back when the initial content actually got truncated —
+    // otherwise an empty document would immediately rewrite the parent
+    // value from "" to "<p></p>".
+    if (props.maxLength && getEditorTextLength(editor) > props.maxLength) {
+      checkLimit(editor, props.maxLength);
+      modelValue.value = editor.getHTML();
+    }
   },
   onUpdate: ({ editor }) => {
-    const maxLength = props.maxLength;
-    checkLimit(editor as Editor, maxLength);
+    checkLimit(editor, props.maxLength);
     modelValue.value = editor.getHTML();
   },
+  onFocus: (props) => emit("focus", props),
+  onBlur: (props) => emit("blur", props),
 });
 
 watch(
   () => modelValue.value,
   (newValue) => {
-    if (!editor.value) return;
+    if (!editor.value) {
+      pendingContent = newValue;
+      return;
+    }
 
     const isSame = newValue === editor.value.getHTML();
     if (isSame) return;

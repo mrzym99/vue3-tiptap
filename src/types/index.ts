@@ -1,4 +1,6 @@
-import type { Editor, Extension } from "@tiptap/core";
+import type { Component } from "vue";
+import type { Editor } from "@tiptap/core";
+import type { ThemeName } from "./theme";
 
 export * from "./theme";
 
@@ -31,6 +33,31 @@ export type ExtensionNameKeys =
   | "fullscreen";
 
 /**
+ * Props of the `TipTapEditor` component (modelValue is handled by v-model).
+ */
+export interface TipTapEditorProps {
+  /** Max number of characters, 0 means unlimited */
+  maxLength?: number;
+  /** Whether editing is disabled (read-only) */
+  disabled?: boolean;
+  /** Theme mode */
+  theme?: ThemeName;
+  /** Placeholder text shown when the document is empty */
+  placeholder?: string;
+  /** Whether to focus the editor on mount */
+  autofocus?: boolean;
+}
+
+/**
+ * Translation function compatible with the basic vue-i18n `t` signature.
+ */
+export type TranslateFn = (
+  key: string,
+  named?: Record<string, unknown> | number,
+  plural?: number,
+) => string;
+
+/**
  * Represents the props for the ButtonView component.
  */
 export interface ButtonViewReturnComponentProps {
@@ -42,34 +69,31 @@ export interface ButtonViewReturnComponentProps {
   icon?: Component;
   /** Text displayed on hover */
   tooltip?: string;
-  [x: string]: any;
 }
 
 /**
  * Represents the general options for Tiptap extensions.
  */
-export interface GeneralOptions<T> {
+export interface GeneralOptions {
   /** Button view function */
-  button: ButtonView<T>;
+  button: ButtonView;
 }
 
 /**
  * Represents the ButtonView function.
  */
-export interface ButtonView<T = any> {
-  (options: ButtonViewParams<T>): ButtonViewReturn | ButtonViewReturn[];
+export interface ButtonView {
+  (options: ButtonViewParams): ButtonViewReturn | ButtonViewReturn[];
 }
 
 /**
  * Represents the parameters for the ButtonView function.
  */
-export interface ButtonViewParams<T = any> {
+export interface ButtonViewParams {
   /** Editor object */
   editor: Editor;
-  /** Extension object */
-  extension: Extension<T>;
   /** Translation function */
-  t: (path: string) => string;
+  t: TranslateFn;
 }
 
 /**
@@ -77,9 +101,9 @@ export interface ButtonViewParams<T = any> {
  */
 export interface ButtonViewReturn {
   /** Component */
-  component: unknown;
-  /** Component props */
-  componentProps: ButtonViewReturnComponentProps;
+  component: Component;
+  /** Component props (forwarded to the button component) */
+  componentProps?: Record<string, unknown>;
   /** Component slots */
   componentSlots?: ButtonViewReturnComponentSlots;
 }
@@ -89,6 +113,6 @@ export interface ButtonViewReturn {
  */
 export interface ButtonViewReturnComponentSlots {
   /** Dialog slot */
-  dialog: () => any;
-  [x: string]: () => any;
+  dialog?: () => any;
+  [x: string]: (() => any) | undefined;
 }

@@ -6,7 +6,7 @@ import { Blockquote as TiptapBlockquote } from "@tiptap/extension-blockquote";
 import BlockquoteButton from "@/components/ui-editor/buttons/BlockquoteButton.vue";
 
 export interface BlockquoteOptions
-  extends TiptapBlockquoteOptions, GeneralOptions<BlockquoteOptions> {}
+  extends TiptapBlockquoteOptions, GeneralOptions {}
 
 export const Blockquote =
   /* @__PURE__ */ TiptapBlockquote.extend<BlockquoteOptions>({

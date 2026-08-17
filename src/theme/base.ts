@@ -10,4 +10,5 @@ export const baseTheme: Theme = {
   "--naive-tiptap-padding-lg": "12px",
   "--naive-tiptap-border-radius-sm": "4px",
   "--naive-tiptap-gap": "8px",
+  "--naive-tiptap-font-size-sm": "12px",
 };

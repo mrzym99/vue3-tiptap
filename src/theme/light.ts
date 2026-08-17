@@ -6,4 +6,5 @@ export const lightTheme: Theme = {
   '--naive-tiptap-btn--bg-hover': '#CDCDCD',
   '--naive-tiptap-btn--bg-active': '#D5D5D5',
   '--naive-tiptap-color-border': '#CCCCCC',
+  '--naive-tiptap-color-text-3': '#86909C',
 }

@@ -1,5 +1,5 @@
-import type { ButtonViewReturnComponentProps } from "@/types";
 import type { Component } from "vue";
+import type { ButtonViewReturnComponentProps } from "@/types";
 
 export interface ActionMenuButtonItem {
   label: string;

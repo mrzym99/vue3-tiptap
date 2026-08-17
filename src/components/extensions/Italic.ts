@@ -6,7 +6,7 @@ import { Italic as TiptapItalic } from "@tiptap/extension-italic";
 import ItalicButton from "@/components/ui-editor/buttons/ItalicButton.vue";
 
 export interface ItalicOptions
-  extends TiptapItalicOptions, GeneralOptions<ItalicOptions> {}
+  extends TiptapItalicOptions, GeneralOptions {}
 
 export const Italic = /* @__PURE__ */ TiptapItalic.extend<ItalicOptions>({
   addOptions() {
