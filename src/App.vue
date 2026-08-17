@@ -19,12 +19,7 @@ const toggleLocale = () => {
   <button @click="toggleTheme">切换主题</button>
   <button @click="toggleLocale">切换语言</button>
   <div style="height: 100vh; width: 80%; margin: 0 auto; padding: 10vh 0">
-    <TipTapEditor
-      v-model="content"
-      :max-length="20"
-      style="height: 60vh"
-      :theme="theme"
-    />
+    <TipTapEditor v-model="content" style="height: 60vh" :theme="theme" />
     <br />
     Content:
     <br />

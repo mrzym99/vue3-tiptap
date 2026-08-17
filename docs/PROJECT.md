@@ -11,7 +11,7 @@
 | 分类       | 技术                                          | 说明                             |
 | ---------- | --------------------------------------------- | -------------------------------- |
 | 框架       | Vue 3.5（`<script setup>` + Composition API） | 应用与组件框架                   |
-| 编辑器内核 | TipTap 3.x（`@tiptap/vue-3` / `@tiptap/pm`）  | 基于 ProseMirror 的编辑器        |
+| 编辑器内核 | TipTap 3.30（`@tiptap/vue-3` / `@tiptap/pm`）  | 基于 ProseMirror 的编辑器        |
 | 构建工具   | Vite 8                                        | 开发服务器与打包                 |
 | 语言       | TypeScript ~6.0                               | 全量类型约束                     |
 | UI 组件库  | naive-ui 2.x                                  | 按钮、提示、下拉、弹层等基础组件 |
@@ -58,15 +58,24 @@ tip-tap-editor/
     │   ├── utils.ts            # 工具函数（checkLimit 字数限制）
     │   ├── extensions/         # 自定义 TipTap 扩展（每个扩展自带工具栏按钮）
     │   │   ├── index.ts        # 扩展集合入口
-    │   │   ├── Bold.ts / Italic.ts / Underline.ts / Blockquote.ts / TextAlign.ts
+    │   │   ├── Bold / Italic / Strike / Underline / Code / Highlight
+    │   │   ├── Subscript / Superscript / Heading / HorizontalRule
+    │   │   ├── BulletList / OrderedList / TaskList / Link / CodeBlock / Details
+    │   │   ├── Image / Youtube / Audio / Twitch / FileHandler
+    │   │   ├── TextStyle / Color / FontFamily / Typography / Table
+    │   │   ├── FindAndReplace / InvisibleCharacters / Focus / UniqueId / NodeRange
+    │   │   ├── Blockquote / TextAlign / HardBreak（每扩展一个文件）
     │   ├── ui-editor/          # 编辑器 UI 层
     │   │   ├── tool-bar/       # 工具栏（自动收集扩展按钮）
-    │   │   ├── buttons/        # 简单功能按钮（加粗/斜体/下划线/引用）
-    │   │   ├── menu-buttons/   # 下拉菜单按钮（文本对齐）
+    │   │   ├── buttons/        # 简单功能按钮 + 弹窗按钮（链接/查找替换等）
+    │   │   ├── menu-buttons/   # 下拉菜单按钮（标题/对齐/颜色/字体/表格）
+    │   │   ├── bubble-menu/    # 选中文字的气泡格式条
+    │   │   ├── floating-menu/  # 空行左侧的浮动插入菜单
     │   │   └── editor-content/ # 编辑区容器与内容样式
     │   └── ui-common/          # 通用 UI 基础组件
     │       ├── action-button/      # 工具栏基础按钮（含 tooltip/active 态）
     │       ├── action-menu-button/ # 下拉菜单按钮（基于 NPopover + NList）
+    │       ├── url-dialog-button/  # URL 输入弹窗按钮（图片/视频/音频等复用）
     │       └── theme-provider/     # naive-ui 主题提供者（浅色/深色）
     ├── theme/                  # 主题体系（CSS 变量）
     │   ├── base.ts / light.ts / dark.ts / index.ts / overwirte.ts
@@ -151,13 +160,41 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 
 ## 6. 当前已支持的编辑能力
 
-| 扩展               | 来源                                                                  | 工具栏形态                    |
-| ------------------ | --------------------------------------------------------------------- | ----------------------------- |
-| Bold 加粗          | 自定义（基于 @tiptap/extension-bold）                                 | 图标按钮                      |
-| Italic 斜体        | 自定义（基于 @tiptap/extension-italic）                               | 图标按钮                      |
-| Underline 下划线   | 自定义（基于 @tiptap/extension-underline）                            | 图标按钮                      |
-| Blockquote 引用    | 自定义（基于 @tiptap/extension-blockquote）                           | 图标按钮                      |
-| TextAlign 文本对齐 | 自定义（基于 @tiptap/extension-text-align，作用于 paragraph） | 下拉菜单按钮（左/中/右/两端） |
+| 扩展 | 来源 | 工具栏形态 |
+| --- | --- | --- |
+| Bold 加粗 | 自定义（基于 @tiptap/extension-bold） | 图标按钮 |
+| Italic 斜体 | 自定义（基于 @tiptap/extension-italic） | 图标按钮 |
+| Underline 下划线 | 自定义（基于 @tiptap/extension-underline） | 图标按钮 |
+| Strike 删除线 | 自定义（基于 @tiptap/extension-strike） | 图标按钮 |
+| Code 行内代码 | 自定义（基于 @tiptap/extension-code） | 图标按钮 |
+| Highlight 高亮 | 自定义（基于 @tiptap/extension-highlight） | 图标按钮 |
+| Subscript 下标 | 自定义（基于 @tiptap/extension-subscript） | 图标按钮 |
+| Superscript 上标 | 自定义（基于 @tiptap/extension-superscript） | 图标按钮 |
+| Heading 标题 | 自定义（基于 @tiptap/extension-heading，H1/H2/H3） | 下拉菜单按钮（正文/H1/H2/H3） |
+| BulletList 无序列表 | 自定义（基于 @tiptap/extension-list） | 图标按钮 |
+| OrderedList 有序列表 | 自定义（基于 @tiptap/extension-list） | 图标按钮 |
+| TaskList 任务列表 | 自定义（基于 @tiptap/extension-list） | 图标按钮 |
+| Link 链接 | 自定义（基于 @tiptap/extension-link，自动识别/粘贴链接） | 弹窗按钮（输入 URL） |
+| CodeBlock 代码块 | 自定义（基于 @tiptap/extension-code-block） | 图标按钮 |
+| Details 折叠块 | 自定义（基于 @tiptap/extension-details） | 图标按钮 |
+| Image 图片 | 自定义（基于 @tiptap/extension-image） | URL 弹窗按钮（也可拖拽/粘贴图片文件） |
+| Youtube 视频 | 自定义（基于 @tiptap/extension-youtube） | URL 弹窗按钮 |
+| Audio 音频 | 自定义（基于 @tiptap/extension-audio） | URL 弹窗按钮 |
+| Twitch 直播 | 自定义（基于 @tiptap/extension-twitch） | URL 弹窗按钮 |
+| Color 文字颜色 | 自定义（基于 @tiptap/extension-text-style 的 Color） | 颜色选择菜单（NColorPicker） |
+| FontFamily 字体 | 自定义（基于 @tiptap/extension-text-style 的 FontFamily） | 下拉菜单（无衬线/衬线/等宽/雅黑） |
+| Table 表格 | 自定义（基于 @tiptap/extension-table 的 TableKit，可调整列宽） | 下拉菜单（插入/行列/合并/表头/删除） |
+| FindAndReplace 查找替换 | 自定义（基于 @tiptap/extension-find-and-replace） | 弹窗面板（查找/替换/全部/前后跳转） |
+| InvisibleCharacters 隐藏字符 | 自定义（基于 @tiptap/extension-invisible-characters） | 图标按钮（切换） |
+| BubbleMenu 气泡菜单 | @tiptap/vue-3 的 BubbleMenu 组件 | 选中文字浮现格式条 |
+| FloatingMenu 浮动菜单 | @tiptap/vue-3 的 FloatingMenu 组件 | 空行左侧浮现插入菜单 |
+| HorizontalRule 分隔线 | 自定义（基于 @tiptap/extension-horizontal-rule） | 图标按钮 |
+| Typography 排版替换 | @tiptap/extension-typography | 无按钮（智能替换） |
+| Focus 聚焦高亮 | @tiptap/extension-focus | 无按钮（聚焦块描边） |
+| UniqueId 唯一 ID | @tiptap/extension-unique-id | 无按钮（节点 id 属性） |
+| Blockquote 引用 | 自定义（基于 @tiptap/extension-blockquote） | 图标按钮 |
+| TextAlign 文本对齐 | 自定义（基于 @tiptap/extension-text-align，作用于 heading/paragraph） | 下拉菜单按钮（左/中/右/两端） |
+| HardBreak 硬换行 | @tiptap/extension-hard-break（Shift+Enter） | 无按钮（快捷键） |
 
 ## 7. 设计要点与约定
 
@@ -169,7 +206,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 
 ## 8. 扩展建议 / 路线图
 
-- 基于 `src/types/index.ts` 中 `ExtensionNameKeys` 的枚举，可继续接入：标题 Heading、列表（有序/无序/任务）、链接 Link、图片 Image、表格 Table（扩展依赖已就绪，样式已内置，仅需启用）、历史记录 Undo/Redo、代码块、全屏等；
+- 基于 `src/types/index.ts` 中 `ExtensionNameKeys` 的枚举，可继续接入：列表（有序/无序/任务）、链接 Link、图片 Image、表格 Table（扩展依赖已就绪，样式已内置，仅需启用）、代码块、气泡菜单、查找替换、Emoji、@提及、数学公式等；集成清单与分阶段计划见 `docs/tiptap-extensions-integration-plan.md`；
 - `StarterKit` 已作为依赖引入但暂未启用，可按需替换当前的逐节点注册方式；
 - 可抽取为独立 npm 包 / Vue 组件库，暴露统一的扩展注册 API；
 - 可补充 TableKit（可调整列宽）等高级能力的完整 UI。

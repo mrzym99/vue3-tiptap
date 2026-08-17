@@ -3,6 +3,8 @@
     <div class="tiptap-box" v-if="editor">
       <ToolBar :editor="editor" />
       <EditorContent :editor="editor" />
+      <BubbleMenuBar :editor="editor" />
+      <FloatingMenuBar :editor="editor" />
       <span v-if="props.maxLength" class="max-limit">
         {{ getEditorTextLength(editor) }} / {{ props.maxLength }}
       </span>
@@ -14,6 +16,8 @@
 import ThemeProvider from "@/components/ui-common/theme-provider/index.vue";
 import ToolBar from "@/components/ui-editor/tool-bar/index.vue";
 import EditorContent from "@/components/ui-editor/editor-content/index.vue";
+import BubbleMenuBar from "@/components/ui-editor/bubble-menu/index.vue";
+import FloatingMenuBar from "@/components/ui-editor/floating-menu/index.vue";
 // https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
 import { useEditor } from "@tiptap/vue-3";
 import type { EditorEvents } from "@tiptap/core";

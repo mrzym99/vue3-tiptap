@@ -30,6 +30,137 @@ const props = defineProps({
   padding: 0 var(--naive-tiptap-padding-lg);
   overflow-y: auto;
 
+  h1,
+  h2,
+  h3 {
+    line-height: 1.3;
+    margin: 1.5rem 0 0.75rem;
+    font-weight: bold;
+  }
+
+  h1 {
+    font-size: 1.8em;
+  }
+
+  h2 {
+    font-size: 1.4em;
+  }
+
+  h3 {
+    font-size: 1.2em;
+  }
+
+  code {
+    background-color: var(--naive-tiptap-btn--bg-hover);
+    border-radius: var(--naive-tiptap-border-radius-sm);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9em;
+    padding: 0.2em 0.4em;
+  }
+
+  mark {
+    background-color: #faf594;
+    border-radius: 0.2em;
+    padding: 0.1em 0.2em;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--naive-tiptap-color-border);
+    margin: 1.5rem 0;
+  }
+
+  ul,
+  ol {
+    margin: 0.75rem 0;
+    padding-left: 1.5rem;
+  }
+
+  li {
+    margin: 0.25rem 0;
+  }
+
+  /* task list */
+  ul[data-type="taskList"] {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  ul[data-type="taskList"] li {
+    display: flex;
+    align-items: center;
+    gap: var(--naive-tiptap-gap);
+  }
+
+  ul[data-type="taskList"] li > label {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  ul[data-type="taskList"] li > div {
+    flex: 1;
+  }
+
+  ul[data-type="taskList"] input[type="checkbox"] {
+    accent-color: var(--naive-tiptap-color-text);
+    cursor: pointer;
+    margin: 0;
+  }
+
+  /* code block */
+  pre {
+    background-color: var(--naive-tiptap-btn--bg-hover);
+    border-radius: var(--naive-tiptap-border-radius-sm);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    margin: 0.75rem 0;
+    overflow-x: auto;
+    padding: var(--naive-tiptap-padding-lg);
+  }
+
+  pre code {
+    background: none;
+    font-size: 0.9em;
+    padding: 0;
+  }
+
+  /* details */
+  details {
+    border: 1px solid var(--naive-tiptap-color-border);
+    border-radius: var(--naive-tiptap-border-radius-sm);
+    margin: 0.75rem 0;
+    padding: 0 0.75rem;
+  }
+
+  details summary {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0.5rem 0;
+  }
+
+  /* media */
+  img {
+    border-radius: var(--naive-tiptap-border-radius-sm);
+    height: auto;
+    margin: 0.75rem 0;
+    max-width: 100%;
+  }
+
+  audio {
+    margin: 0.75rem 0;
+    width: 100%;
+  }
+
+  iframe {
+    border: none;
+    max-width: 100%;
+  }
+
+  /* focus extension: highlight the active block */
+  .has-focus {
+    border-radius: var(--naive-tiptap-border-radius-sm);
+    box-shadow: 0 0 0 2px var(--naive-tiptap-color-border);
+  }
+
   table {
     border-collapse: collapse;
     margin: 0;
