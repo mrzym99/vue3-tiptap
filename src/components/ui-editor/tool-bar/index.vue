@@ -30,7 +30,7 @@ const menus = computed(() => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .tiptap-toolbar {
   display: flex;
   flex-wrap: wrap;

@@ -94,7 +94,7 @@ function removeLink() {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .link-button {
   min-width: var(--naive-tiptap-btn-size);
   height: var(--naive-tiptap-btn-size);

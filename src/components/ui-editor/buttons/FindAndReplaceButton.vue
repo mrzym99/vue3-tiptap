@@ -98,7 +98,7 @@ function clear() {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .fr-button {
   min-width: var(--naive-tiptap-btn-size);
   height: var(--naive-tiptap-btn-size);

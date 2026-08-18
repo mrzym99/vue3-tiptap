@@ -30,7 +30,7 @@ const handleClick = () => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .action-button {
   min-width: var(--naive-tiptap-btn-size);
   height: var(--naive-tiptap-btn-size);

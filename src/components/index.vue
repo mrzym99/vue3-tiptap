@@ -112,7 +112,7 @@ watch(
   },
 );
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .tiptap-box {
   position: relative;
   height: 100%;

@@ -63,6 +63,7 @@
     "@vue/tsconfig": "^0.9.1",
     "happy-dom": "^20.11.2",
     "naive-ui": "^2.44.1",
+    "sass": "^1.102.0",
     "typescript": "~6.0.2",
     "unplugin-auto-import": "^21.0.0",
     "vite": "^8.0.12",

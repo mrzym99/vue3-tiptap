@@ -50,7 +50,7 @@ function clearColor() {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .color-button {
   min-width: var(--naive-tiptap-btn-size);
   height: var(--naive-tiptap-btn-size);

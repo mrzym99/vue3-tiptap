@@ -61,7 +61,7 @@ const active = computed<ActionMenuButtonItem>(() => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 :deep(.n-list-item__main) {
   display: flex;
   align-items: center;

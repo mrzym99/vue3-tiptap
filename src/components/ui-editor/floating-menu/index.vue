@@ -29,7 +29,7 @@ const { t: translate } = useI18n();
 const t = translate as TranslateFn;
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .floating-menu-box {
   display: flex;
   align-items: center;
