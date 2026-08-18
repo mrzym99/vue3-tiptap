@@ -23,5 +23,17 @@ export default defineConfig({
     alias: {
       "@": resolve(__dirname, "src"),
     },
+    // Force single copies of ProseMirror / Tiptap core — duplicated
+    // prosemirror-model breaks node wrapping/splitting (Enter → new paragraph)
+    dedupe: [
+      "prosemirror-model",
+      "prosemirror-state",
+      "prosemirror-transform",
+      "prosemirror-view",
+      "prosemirror-keymap",
+      "prosemirror-commands",
+      "@tiptap/pm",
+      "@tiptap/core",
+    ],
   },
 });

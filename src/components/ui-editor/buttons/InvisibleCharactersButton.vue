@@ -15,10 +15,10 @@ import type { EXTActionButtonProps } from "@/components/ui-common/action-button/
 
 const props = defineProps<EXTActionButtonProps>();
 
-const isShowInvisible = () =>
-  (
-    props.editor.storage.invisibleCharacters as
-      | { showInvisibleCharacters?: boolean }
-      | undefined
-  )?.showInvisibleCharacters === true;
+const isShowInvisible = () => {
+  const storage = props.editor.storage.invisibleCharacters as
+    | { visibility?: () => boolean }
+    | undefined;
+  return storage?.visibility?.() === true;
+};
 </script>

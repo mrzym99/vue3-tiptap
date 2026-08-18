@@ -61,6 +61,7 @@
     "@types/node": "^24.12.3",
     "@vitejs/plugin-vue": "^6.0.6",
     "@vue/tsconfig": "^0.9.1",
+    "happy-dom": "^20.11.2",
     "naive-ui": "^2.44.1",
     "typescript": "~6.0.2",
     "unplugin-auto-import": "^21.0.0",

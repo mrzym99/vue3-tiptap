@@ -13,7 +13,10 @@ export const InvisibleCharacters =
     {
       addOptions() {
         return {
+          // NOTE: default is `visible: true`, which shows paragraph marks (¶)
+          // on every block right away — keep hidden until toggled by the button.
           ...(this.parent?.() as TiptapInvisibleCharactersOptions),
+          visible: false,
           button: ({ editor, t }) => ({
             component: InvisibleCharactersButton,
             componentProps: {

@@ -214,8 +214,10 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 ## 9. 已知事项
 
 - 演示页 `App.vue` 中初始内容为占位文本，正式使用时应由业务方传入；
-- 代码中存在部分被注释的扩展/表格代码（`StarterKit`、`TableKit`），属于演进中的预留能力；
+- 代码中存在部分被注释的扩展/表格代码（`StarterKit`），属于演进中的预留能力；
 - 字数限制与字数统计统一使用「可见字符数」口径（`getEditorTextLength`，不含换行与 HTML 标签）：**按 Enter 换行不计入字数**，内容满额时换行不会导致字数虚增，超限输入会被精确截断（基于文档 position 计算截断点）；
+- `InvisibleCharacters`（隐藏字符）默认关闭（`visible: false`），需点击工具栏按钮手动开启——该扩展官方默认是 `visible: true`，直接注册会导致每个段落显示 ¶ 标记；
+- `pnpm-workspace.yaml` 中配置了 `overrides: prosemirror-model: ^1.25.11`，且 `vite.config.ts` 的 `resolve.dedupe` 强制 `prosemirror-model` / `@tiptap/pm` / `@tiptap/core` 等单一副本：双重保险避免出现多份 `prosemirror-model`（ProseMirror 官方警告：重复副本会导致「节点拆分/包裹失败」，表现为按 Enter 无法换行，报 `Can not convert ... to a Fragment (looks like multiple versions of prosemirror-model)`）；
 
 ---
 

@@ -20,6 +20,7 @@ export default {
   linkPlaceholder: "输入链接地址（https://…）",
   linkApply: "应用",
   linkRemove: "移除链接",
+  linkHint: "链接已启用：接下来输入的文字会自动带上链接（或先选中文字再插入）",
   codeBlock: "代码块",
   details: "折叠块",
   image: "图片",

@@ -30,6 +30,9 @@
           {{ t("linkRemove") }}
         </NButton>
       </div>
+      <div v-if="showHint" class="link-hint">
+        {{ t("linkHint") }}
+      </div>
     </div>
   </NPopover>
 </template>
@@ -43,6 +46,7 @@ const props = defineProps<EXTActionButtonProps>();
 
 const show = ref(false);
 const href = ref("");
+const showHint = ref(false);
 
 const isLinkActive = computed(() => props.editor.isActive("link"));
 const currentHref = computed(
@@ -56,19 +60,32 @@ const disabled = computed(
 watch(show, (visible) => {
   if (visible) {
     href.value = currentHref.value ?? "";
+    showHint.value = false;
   }
 });
 
 function applyLink() {
   const value = href.value.trim();
   if (!value) return;
+
+  const { from, to } = props.editor.state.selection;
+  const hasSelection = from !== to;
+
   props.editor
     .chain()
     .focus()
     .extendMarkRange("link")
     .setLink({ href: value })
     .run();
-  show.value = false;
+
+  if (hasSelection) {
+    // text is wrapped immediately — close the popover
+    show.value = false;
+  } else {
+    // collapsed selection: the link applies to subsequently typed text
+    // (tiptap storedMarks). Keep the popover open and tell the user.
+    showHint.value = true;
+  }
 }
 
 function removeLink() {
@@ -110,5 +127,11 @@ function removeLink() {
   display: flex;
   gap: var(--naive-tiptap-gap);
   justify-content: flex-end;
+}
+
+.link-hint {
+  font-size: var(--naive-tiptap-font-size-sm);
+  color: var(--naive-tiptap-color-text-3);
+  line-height: 1.4;
 }
 </style>

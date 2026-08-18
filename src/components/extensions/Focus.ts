@@ -6,5 +6,5 @@ import { Focus as TiptapFocus } from "@tiptap/extension-focus";
  */
 export const Focus = TiptapFocus.configure({
   className: "has-focus",
-  mode: "all",
+  mode: "shallowest",
 });

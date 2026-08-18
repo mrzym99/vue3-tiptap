@@ -1,2 +1,7 @@
 allowBuilds:
   esbuild: true
+
+# Unify ProseMirror versions to avoid duplicate prosemirror-model copies
+# (duplicates break node wrapping/splitting — e.g. Enter to create a paragraph)
+overrides:
+  prosemirror-model: ^1.25.11

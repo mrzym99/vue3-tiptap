@@ -20,6 +20,7 @@ export default {
   linkPlaceholder: "Enter link URL (https://…)",
   linkApply: "Apply",
   linkRemove: "Remove link",
+  linkHint: "Link enabled: text you type next will be linked (or select text first)",
   codeBlock: "Code Block",
   details: "Details",
   image: "Image",
