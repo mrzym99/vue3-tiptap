@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Editor } from "@tiptap/vue-3";
 import type { ButtonView, ButtonViewReturn, TranslateFn } from "@/types";
-import { useI18n } from "vue-i18n";
+import { useTiptapLocale } from "@/locales";
 
-const { t } = useI18n();
+const { t } = useTiptapLocale();
 const translate = t as TranslateFn;
 
 const props = defineProps({

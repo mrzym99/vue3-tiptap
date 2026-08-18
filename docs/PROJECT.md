@@ -16,7 +16,7 @@
 | 语言       | TypeScript ~6.0                               | 全量类型约束                     |
 | UI 组件库  | naive-ui 2.x                                  | 按钮、提示、下拉、弹层等基础组件 |
 | 图标       | @remixicon/vue                                | 工具栏图标                       |
-| 国际化     | vue-i18n 11 + @intlify/unplugin-vue-i18n      | 中英文语言包                     |
+| 国际化     | 内置轻量 i18n（zh/en + provide/inject）     | 不依赖 vue-i18n，宿主零要求       |
 | 样式       | SCSS（sass） + CSS 变量 + 主题体系          | 浅色 / 深色主题，全部样式已迁移为 SCSS |
 | 包管理     | pnpm                                          | 依赖管理                         |
 
@@ -42,17 +42,21 @@ pnpm preview
 
 ```
 tip-tap-editor/
-├── index.html                  # 入口 HTML
-├── package.json                # 依赖与脚本
-├── vite.config.ts              # Vite 配置（别名 @ -> src、自动导入、i18n 插件）
+├── index.html                  # 入口 HTML（演示页）
+├── package.json                # 依赖与脚本（含 build:lib 库构建）
+├── vite.config.ts              # 应用构建配置（别名 @ -> src、自动导入、dedupe）
+├── vite.lib.config.ts          # 库构建配置（ESM/CJS + 单 CSS）
 ├── tsconfig.json               # TypeScript 工程引用
+├── tsconfig.lib.json           # 库 d.ts 生成配置
 ├── auto-imports.d.ts           # unplugin-auto-import 生成的类型声明
 ├── public/                     # 静态资源（favicon、icons）
-├── dist/                       # 构建产物
+├── dist/                       # 应用/库构建产物
+├── examples/host/              # 本地宿主验证示例（file: 链接消费库）
 └── src/
-    ├── main.ts                 # 应用入口（注册 i18n 后挂载）
+    ├── index.ts                # ★ 库入口（组件/扩展/主题/类型 + Vue Plugin）
+    ├── main.ts                 # 应用入口（演示页）
     ├── App.vue                 # 演示页：主题/语言切换 + 编辑器示例
-    ├── style.scss / reset.scss # 全局样式与重置（SCSS）
+    ├── style.scss / reset.scss # 全局样式与重置（SCSS，仅演示页）
     ├── components/
     │   ├── index.vue           # ★ 核心导出组件 TipTapEditor
     │   ├── utils.ts            # 工具函数（checkLimit 字数限制）
@@ -79,9 +83,8 @@ tip-tap-editor/
     │       └── theme-provider/     # naive-ui 主题提供者（浅色/深色）
     ├── theme/                  # 主题体系（CSS 变量）
     │   ├── base.ts / light.ts / dark.ts / index.ts / overwirte.ts
-    ├── locales/                # i18n 语言包（zh / en）
-    ├── plugins/i18.ts          # vue-i18n 实例（本地存储 + 浏览器语言探测）
-    ├── hooks/useLocale.ts      # 语言读写 Hook（持久化到 localStorage）
+    ├── locales/                # 内置轻量 i18n（zh/en 语言包 + context/inject）
+    │   ├── index.ts / zh.ts / en.ts
     └── types/                  # 全局类型定义（扩展选项、按钮视图、主题等）
 ```
 
@@ -149,10 +152,11 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 
 ### 5.5 国际化（i18n）
 
-- `plugins/i18.ts`：创建 vue-i18n 实例，语言优先级为 **localStorage（`app_language`）> 浏览器语言**，回退语言为中文；
-- `hooks/useLocale.ts`：提供 `locale` / `setLocale`，切换时持久化到 `localStorage`；
-- 语言包位于 `src/locales/zh.ts` / `en.ts`，目前覆盖加粗、斜体、下划线、文本对齐、引用等词条；
-- 按钮组件通过扩展 `button` 回调中的 `t` 函数获取翻译文本。
+- **内置轻量 i18n，不依赖 vue-i18n**：`src/locales/index.ts` 提供自包含的 `LocaleContext`（响应式 `locale` + `t(key)` + `setLocale`）；
+- `TipTapEditor` 组件通过 `locale` prop 控制语言（缺省时按浏览器语言自动检测），并用 `provide` 注入子树；
+- 子组件通过 `useTiptapLocale()` 读取（`RenderItem`、`bubble-menu`、`floating-menu`、`url-dialog-button`）；
+- 语言包位于 `src/locales/zh.ts` / `en.ts`，覆盖全部工具栏词条；
+- 扩展按钮通过扩展 `button` 回调中的 `t` 函数获取翻译文本。
 
 ### 5.6 编辑区样式
 

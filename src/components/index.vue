@@ -20,9 +20,12 @@ import BubbleMenuBar from "@/components/ui-editor/bubble-menu/index.vue";
 import FloatingMenuBar from "@/components/ui-editor/floating-menu/index.vue";
 // https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
 import { useEditor } from "@tiptap/vue-3";
-import type { EditorEvents } from "@tiptap/core";
+import type { Editor } from "@tiptap/core";
+import type { Transaction } from "@tiptap/pm/state";
 import { checkLimit, getEditorTextLength } from "./utils";
 import type { TipTapEditorProps } from "@/types";
+import type { LocaleName } from "@/locales";
+import { createLocaleContext, detectLocale, provideTiptapLocale } from "@/locales";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
@@ -34,7 +37,10 @@ const props = withDefaults(
     Pick<
       TipTapEditorProps,
       "maxLength" | "disabled" | "theme" | "placeholder" | "autofocus"
-    >
+    > & {
+      /** UI language of the toolbar/menus (auto-detected when omitted) */
+      locale?: LocaleName;
+    }
   >(),
   {
     maxLength: 0,
@@ -42,12 +48,23 @@ const props = withDefaults(
     theme: "light",
     placeholder: undefined,
     autofocus: false,
+    locale: undefined,
   },
 );
 
+// Self-contained locale context (no vue-i18n / global instance needed)
+const localeContext = createLocaleContext(props.locale ?? detectLocale());
+watch(
+  () => props.locale,
+  (next) => {
+    if (next) localeContext.setLocale(next);
+  },
+);
+provideTiptapLocale(localeContext);
+
 const emit = defineEmits<{
-  focus: [payload: EditorEvents["focus"]];
-  blur: [payload: EditorEvents["blur"]];
+  focus: [payload: { editor: Editor; event: FocusEvent; transaction: Transaction }];
+  blur: [payload: { editor: Editor; event: FocusEvent; transaction: Transaction }];
 }>();
 
 const modelValue = defineModel<string>({ required: true });

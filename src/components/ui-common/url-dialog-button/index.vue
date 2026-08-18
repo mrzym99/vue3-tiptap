@@ -34,7 +34,7 @@
 import type { Component } from "vue";
 import type { Editor } from "@tiptap/core";
 import { NButton, NInput, NPopover } from "naive-ui";
-import { useI18n } from "vue-i18n";
+import { useTiptapLocale } from "@/locales";
 
 const props = withDefaults(
   defineProps<{
@@ -52,7 +52,7 @@ const props = withDefaults(
   },
 );
 
-const { t } = useI18n();
+const { t } = useTiptapLocale();
 
 const show = ref(false);
 const value = ref("");

@@ -17,8 +17,7 @@
 <script lang="ts" setup>
 import { BubbleMenu } from "@tiptap/vue-3/menus";
 import type { Editor } from "@tiptap/vue-3";
-import { useI18n } from "vue-i18n";
-import type { TranslateFn } from "@/types";
+import { useTiptapLocale } from "@/locales";
 import BoldButton from "@/components/ui-editor/buttons/BoldButton.vue";
 import ItalicButton from "@/components/ui-editor/buttons/ItalicButton.vue";
 import StrikeButton from "@/components/ui-editor/buttons/StrikeButton.vue";
@@ -27,8 +26,7 @@ import LinkButton from "@/components/ui-editor/buttons/LinkButton.vue";
 
 defineProps<{ editor: Editor }>();
 
-const { t: translate } = useI18n();
-const t = translate as TranslateFn;
+const { t } = useTiptapLocale();
 </script>
 
 <style lang="scss" scoped>

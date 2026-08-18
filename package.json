@@ -1,12 +1,32 @@
 {
   "name": "tip-tap-editor",
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Vue 3 rich text editor built on TipTap with an auto-collected toolbar, themes and i18n.",
+  "license": "MIT",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "files": ["dist"],
+  "keywords": ["vue", "vue3", "tiptap", "rich-text", "editor", "wysiwyg"],
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
+    "build:lib": "rm -rf dist && vue-tsc -p tsconfig.lib.json && vite build --config vite.lib.config.ts",
+    "prepublishOnly": "pnpm build:lib",
     "preview": "vite preview"
+  },
+  "peerDependencies": {
+    "naive-ui": "^2.44.0",
+    "vue": "^3.5.0"
   },
   "dependencies": {
     "@remixicon/vue": "^4.9.0",
@@ -52,12 +72,9 @@
     "@tiptap/extensions": "^3.30.1",
     "@tiptap/pm": "^3.30.1",
     "@tiptap/starter-kit": "^3.30.1",
-    "@tiptap/vue-3": "^3.30.1",
-    "vue": "^3.5.34",
-    "vue-i18n": "^11.4.8"
+    "@tiptap/vue-3": "^3.30.1"
   },
   "devDependencies": {
-    "@intlify/unplugin-vue-i18n": "^11.2.4",
     "@types/node": "^24.12.3",
     "@vitejs/plugin-vue": "^6.0.6",
     "@vue/tsconfig": "^0.9.1",
@@ -67,6 +84,7 @@
     "typescript": "~6.0.2",
     "unplugin-auto-import": "^21.0.0",
     "vite": "^8.0.12",
+    "vue": "^3.5.34",
     "vue-tsc": "^3.2.8"
   }
 }

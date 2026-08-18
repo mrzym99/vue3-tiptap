@@ -1,0 +1,3 @@
+# Marks this directory as a standalone pnpm workspace, independent from the
+# parent tip-tap-editor repo.
+packages: []

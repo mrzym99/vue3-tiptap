@@ -16,8 +16,7 @@
 <script lang="ts" setup>
 import { FloatingMenu } from "@tiptap/vue-3/menus";
 import type { Editor } from "@tiptap/vue-3";
-import { useI18n } from "vue-i18n";
-import type { TranslateFn } from "@/types";
+import { useTiptapLocale } from "@/locales";
 import HeadingMenu from "@/components/ui-editor/menu-buttons/HeadingMenu.vue";
 import HorizontalRuleButton from "@/components/ui-editor/buttons/HorizontalRuleButton.vue";
 import BulletListButton from "@/components/ui-editor/buttons/BulletListButton.vue";
@@ -25,8 +24,7 @@ import TaskListButton from "@/components/ui-editor/buttons/TaskListButton.vue";
 
 defineProps<{ editor: Editor }>();
 
-const { t: translate } = useI18n();
-const t = translate as TranslateFn;
+const { t } = useTiptapLocale();
 </script>
 
 <style lang="scss" scoped>
