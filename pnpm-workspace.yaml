@@ -1,8 +1,13 @@
 allowBuilds:
-  '@parcel/watcher': set this to true or false
+  # sass 的可选原生 watcher：不需要，保持禁用
+  '@parcel/watcher': false
   esbuild: true
 
 # Unify ProseMirror versions to avoid duplicate prosemirror-model copies
 # (duplicates break node wrapping/splitting — e.g. Enter to create a paragraph)
 overrides:
   prosemirror-model: ^1.25.11
+
+# pnpm 11 tries to purge node_modules on every run when build scripts are
+# ignored; disable that auto-check so dev/build run without extra flags.
+verifyDepsBeforeRun: false

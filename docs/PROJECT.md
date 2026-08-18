@@ -17,7 +17,7 @@
 | UI 组件库  | naive-ui 2.x                                  | 按钮、提示、下拉、弹层等基础组件 |
 | 图标       | @remixicon/vue                                | 工具栏图标                       |
 | 国际化     | vue-i18n 11 + @intlify/unplugin-vue-i18n      | 中英文语言包                     |
-| 样式       | CSS 变量 + 主题体系                           | 浅色 / 深色主题                  |
+| 样式       | SCSS（sass） + CSS 变量 + 主题体系          | 浅色 / 深色主题，全部样式已迁移为 SCSS |
 | 包管理     | pnpm                                          | 依赖管理                         |
 
 ## 3. 快速开始
@@ -52,7 +52,7 @@ tip-tap-editor/
 └── src/
     ├── main.ts                 # 应用入口（注册 i18n 后挂载）
     ├── App.vue                 # 演示页：主题/语言切换 + 编辑器示例
-    ├── style.css / reset.css   # 全局样式与重置
+    ├── style.scss / reset.scss # 全局样式与重置（SCSS）
     ├── components/
     │   ├── index.vue           # ★ 核心导出组件 TipTapEditor
     │   ├── utils.ts            # 工具函数（checkLimit 字数限制）
