@@ -1,18 +1,20 @@
 import type { App, Plugin } from "vue";
 
+import "./components/ui-common/styles.scss";
+
 import TipTapEditor from "./components/index.vue";
 import builtinExtensions from "./components/extensions";
 
-import { applyTheme, themeOverrides } from "./theme";
+import { applyTheme } from "./theme";
 
 export * from "./types";
 export type { LocaleName, LocaleT, LocaleContext } from "./locales";
 
-export { TipTapEditor, builtinExtensions, applyTheme, themeOverrides };
+export { TipTapEditor, builtinExtensions, applyTheme };
 
 /**
  * Install as a Vue plugin:
- *   app.use(TipTapEditorPlugin, { /* options *​/ })
+ *   app.use(TipTapEditorPlugin)
  */
 const TipTapEditorPlugin: Plugin = {
   install(app: App) {

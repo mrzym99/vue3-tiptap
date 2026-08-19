@@ -1,35 +1,27 @@
-import type { ThemeName } from '@/types'
-import { lightTheme } from './light'
-import { darkTheme } from './dark'
-import { baseTheme } from './base'
-export { themeOverrides } from './overwirte'
+import type { Theme, ThemeName } from "@/types";
+import { lightTheme } from "./light";
+import { darkTheme } from "./dark";
+import { baseTheme } from "./base";
 
-let currentTheme: ThemeName | undefined = undefined
-
-function getTheme(theme: ThemeName) {
-  switch (theme) {
-    case 'light':
-      return lightTheme
-    case 'dark':
-      return darkTheme
-  }
+function getTheme(name: ThemeName): Theme {
+  return name === "dark" ? darkTheme : lightTheme;
 }
 
-export function applyTheme(themeName: ThemeName) {
-  if (currentTheme === themeName) {
-    return
-  }
-  const theme = getTheme(themeName)
-  currentTheme = themeName
-  Object.entries(theme).forEach(([key, value]) => {
-    document.documentElement.style.setProperty(key, value)
-  })
+/**
+ * Apply theme CSS variables to a target element (defaults to the document root).
+ *
+ * - base tokens (sizes / radius / spacing) are always applied
+ * - color tokens come from the selected built-in theme (`light` | `dark`)
+ *
+ * Scoping to an element (e.g. the component root) makes multiple editor
+ * instances with different themes independent of each other.
+ */
+export function applyTheme(
+  name: ThemeName,
+  target: HTMLElement = document.documentElement,
+) {
+  const merged: Theme = { ...baseTheme, ...getTheme(name) };
+  Object.entries(merged).forEach(([key, value]) => {
+    target.style.setProperty(key, value);
+  });
 }
-
-function applyBaseTheme() {
-  Object.entries(baseTheme).forEach(([key, value]) => {
-    document.documentElement.style.setProperty(key, value)
-  })
-}
-
-applyBaseTheme()

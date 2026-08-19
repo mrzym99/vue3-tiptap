@@ -6,11 +6,11 @@ html,
 body {
   margin: 0;
   padding: 0;
-  color: var(--naive-tiptap-color-text);
-  background-color: var(--naive-tiptap-color-bg);
+  color: var(--tiptap-color-text);
+  background-color: var(--tiptap-color-bg);
   transition:
-    color 0.3s var(--naive-tiptap-bezier),
-    background-color 0.3s var(--naive-tiptap-bezier),
-    opacity 0.3s var(--naive-tiptap-bezier),
-    border-color 0.3s var(--naive-tiptap-bezier);
+    color 0.3s var(--tiptap-bezier),
+    background-color 0.3s var(--tiptap-bezier),
+    opacity 0.3s var(--tiptap-bezier),
+    border-color 0.3s var(--tiptap-bezier);
 }

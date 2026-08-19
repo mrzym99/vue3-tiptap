@@ -1,45 +1,45 @@
 <template>
-  <NPopover
+  <Popover
     v-model:show="show"
     trigger="click"
     placement="bottom-start"
-    :show-arrow="false"
     :disabled="disabled"
   >
     <template #trigger>
-      <NButton
+      <button
+        type="button"
         class="link-button"
         :class="{ 'is-active': isLinkActive }"
         :disabled="disabled"
       >
         <RiLink size="24px" />
-      </NButton>
+      </button>
     </template>
     <div class="link-popover">
-      <NInput
-        v-model:value="href"
-        size="small"
+      <input
+        v-model="href"
+        class="tiptap-input"
         :placeholder="t('linkPlaceholder')"
         @keydown.enter.prevent="applyLink"
       />
       <div class="link-actions">
-        <NButton size="tiny" type="primary" @click="applyLink">
+        <button type="button" class="tiptap-btn tiptap-btn--primary" @click="applyLink">
           {{ t("linkApply") }}
-        </NButton>
-        <NButton v-if="isLinkActive" size="tiny" @click="removeLink">
+        </button>
+        <button v-if="isLinkActive" type="button" class="tiptap-btn" @click="removeLink">
           {{ t("linkRemove") }}
-        </NButton>
+        </button>
       </div>
       <div v-if="showHint" class="link-hint">
         {{ t("linkHint") }}
       </div>
     </div>
-  </NPopover>
+  </Popover>
 </template>
 
 <script lang="ts" setup>
 import { RiLink } from "@remixicon/vue";
-import { NButton, NInput, NPopover } from "naive-ui";
+import Popover from "@/components/ui-common/popover/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
 const props = defineProps<EXTActionButtonProps>();
@@ -96,42 +96,47 @@ function removeLink() {
 
 <style lang="scss" scoped>
 .link-button {
-  min-width: var(--naive-tiptap-btn-size);
-  height: var(--naive-tiptap-btn-size);
+  align-items: center;
   background: none;
   border: none;
+  border-radius: var(--tiptap-border-radius-sm);
   cursor: pointer;
-  padding: var(--naive-tiptap-padding-sm);
-  border-radius: var(--naive-tiptap-border-radius-sm);
-  outline: none;
   display: inline-flex;
-  align-items: center;
+  height: var(--tiptap-btn-size);
   justify-content: center;
-}
+  min-width: var(--tiptap-btn-size);
+  outline: none;
+  padding: var(--tiptap-padding-sm);
 
-.link-button:hover:not(:disabled) {
-  background-color: var(--naive-tiptap-btn--bg-hover);
-}
+  &:hover:not(:disabled) {
+    background-color: var(--tiptap-btn--bg-hover);
+  }
 
-.link-button.is-active {
-  background-color: var(--naive-tiptap-btn--bg-active);
+  &.is-active {
+    background-color: var(--tiptap-btn--bg-active);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }
 
 .link-popover {
   display: flex;
   flex-direction: column;
-  gap: var(--naive-tiptap-gap);
+  gap: var(--tiptap-gap);
 }
 
 .link-actions {
   display: flex;
-  gap: var(--naive-tiptap-gap);
+  gap: var(--tiptap-gap);
   justify-content: flex-end;
 }
 
 .link-hint {
-  font-size: var(--naive-tiptap-font-size-sm);
-  color: var(--naive-tiptap-color-text-3);
+  font-size: var(--tiptap-font-size-sm);
+  color: var(--tiptap-color-text-3);
   line-height: 1.4;
 }
 </style>

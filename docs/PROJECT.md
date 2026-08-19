@@ -14,10 +14,10 @@
 | 编辑器内核 | TipTap 3.30（`@tiptap/vue-3` / `@tiptap/pm`）  | 基于 ProseMirror 的编辑器        |
 | 构建工具   | Vite 8                                        | 开发服务器与打包                 |
 | 语言       | TypeScript ~6.0                               | 全量类型约束                     |
-| UI 组件库  | naive-ui 2.x                                  | 按钮、提示、下拉、弹层等基础组件 |
+| UI 基础组件 | 自研（@floating-ui/dom 定位）                 | Popover/Tooltip/菜单/色板，零 UI 框架依赖 |
 | 图标       | @remixicon/vue                                | 工具栏图标                       |
 | 国际化     | 内置轻量 i18n（zh/en + provide/inject）     | 不依赖 vue-i18n，宿主零要求       |
-| 样式       | SCSS（sass） + CSS 变量 + 主题体系          | 浅色 / 深色主题，全部样式已迁移为 SCSS |
+| 样式       | SCSS（sass） + CSS 变量主题体系             | 浅色 / 深色 / 自定义主题，变量作用域化 |
 | 包管理     | pnpm                                          | 依赖管理                         |
 
 ## 3. 快速开始
@@ -80,7 +80,10 @@ tip-tap-editor/
     │       ├── action-button/      # 工具栏基础按钮（含 tooltip/active 态）
     │       ├── action-menu-button/ # 下拉菜单按钮（基于 NPopover + NList）
     │       ├── url-dialog-button/  # URL 输入弹窗按钮（图片/视频/音频等复用）
-    │       └── theme-provider/     # naive-ui 主题提供者（浅色/深色）
+    │       ├── popover/            # 通用弹层（@floating-ui/dom 定位、外部点击/Esc 关闭）
+    │       ├── tooltip/            # 悬停提示
+    │       ├── styles.scss          # 公共 UI 样式（按钮/输入框/菜单项）
+    │       └── theme-provider/      # 主题提供者（CSS 变量作用域化）
     ├── theme/                  # 主题体系（CSS 变量）
     │   ├── base.ts / light.ts / dark.ts / index.ts / overwirte.ts
     ├── locales/                # 内置轻量 i18n（zh/en 语言包 + context/inject）
@@ -145,8 +148,8 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 - `theme/base.ts`：基础尺寸 / 圆角 / 间距变量；
 - `theme/light.ts` / `theme/dark.ts`：浅色、深色的颜色变量；
 - `theme/index.ts`：`applyTheme()` 将主题 CSS 变量写入 `document.documentElement` 的 style 上；
-- `theme/overwirte.ts`：naive-ui 的 `GlobalThemeOverrides`，使 naive-ui 组件（按钮、Popover）的颜色跟随编辑器 CSS 变量；
-- `theme-provider`：根据 `theme` prop 选择 naive-ui 深色主题，并自动应用 CSS 变量。
+- `theme/index.ts`：`applyTheme()` 将主题 CSS 变量写入目标元素（默认 `document.documentElement`，组件内传根节点实现**作用域化**——多实例不同主题互不干扰）；
+- `theme-provider`：根据 `theme` prop 应用变量（支持 `'light' | 'dark' | 自定义变量对象`）。
 
 所有主题变量以 `--naive-tiptap-*` 前缀命名，类型由 `src/types/theme.ts` 约束（`--naive-tiptap-${string}`）。
 
@@ -205,7 +208,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 1. **功能与 UI 解耦**：扩展定义能力，`button` 选项定义 UI，工具栏只做「收集 + 渲染」；
 2. **HTML 作为交换格式**：`v-model` 传递 HTML 字符串，编辑器中仅注册基础节点（Document / Paragraph / Text），复杂内容由扩展补齐；
 3. **可插拔扩展集**：`src/components/extensions/index.ts` 是扩展的唯一入口，新增能力在此注册即可；
-4. **统一主题变量**：所有 UI 颜色、尺寸均通过 `--naive-tiptap-*` CSS 变量驱动，naive-ui 通过 overrides 接入同一套变量；
+4. **统一主题变量**：所有 UI 颜色、尺寸均通过 `--tiptap-*` CSS 变量驱动（基础 token + 语义 token），主题可作用域到组件根节点；
 5. **完整的类型约束**：扩展选项、按钮视图等均有对应 TS 类型（`src/types/`），开发时享受类型提示。
 
 ## 8. 扩展建议 / 路线图

@@ -33,6 +33,7 @@ export default {
   twitchPlaceholder: "Twitch 链接",
   insert: "插入",
   color: "文字颜色",
+  colorCustom: "自定义",
   colorClear: "清除颜色",
   fontFamily: "字体",
   fontDefault: "默认字体",

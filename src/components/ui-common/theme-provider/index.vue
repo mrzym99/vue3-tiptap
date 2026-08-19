@@ -1,30 +1,36 @@
 <template>
-  <NConfigProvider :theme="NaiveTheme" :theme-overrides="themeOverrides">
-    <slot></slot>
-  </NConfigProvider>
+  <div ref="rootEl" class="tiptap-theme-root">
+    <slot />
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { NConfigProvider, darkTheme } from 'naive-ui'
-import type { ThemeName } from '@/types'
-import { applyTheme, themeOverrides } from '@/theme'
+import type { ThemeName } from "@/types";
+import { applyTheme } from "@/theme";
 
 const props = defineProps({
   theme: {
     type: String as PropType<ThemeName>,
-    default: 'light',
+    default: "light",
   },
-})
+});
 
-const NaiveTheme = computed(() => (props.theme === 'dark' ? darkTheme : null))
+const rootEl = ref<HTMLElement | null>(null);
 
-watch(
-  () => props.theme,
-  (newValue) => {
-    applyTheme(newValue)
-  },
-  {
-    immediate: true,
-  },
-)
+function syncTheme() {
+  if (rootEl.value) {
+    applyTheme(props.theme, rootEl.value);
+  }
+}
+
+onMounted(syncTheme);
+watch(() => props.theme, syncTheme);
 </script>
+
+<style lang="scss" scoped>
+.tiptap-theme-root {
+  height: 100%;
+  color: var(--tiptap-color-text);
+  background-color: var(--tiptap-color-bg);
+}
+</style>

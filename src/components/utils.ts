@@ -1,3 +1,4 @@
+import type { Toolbar } from "@/types";
 import type { Editor } from "@tiptap/core";
 
 /**
@@ -59,4 +60,24 @@ export function checkLimit(editor: Editor, maxLength: number) {
   if (cutPos !== null && cutPos < doc.content.size) {
     editor.commands.deleteRange({ from: cutPos, to: doc.content.size });
   }
+}
+
+/**
+ * Resolve a Toolbar config against the full button-key list.
+ * Returns the final ordered list of keys (user order preserved).
+ */
+export function resolveToolbar(
+  toolbar: Toolbar | undefined,
+  allKeys: string[],
+): string[] {
+  if (!toolbar) return allKeys;
+  const exclude = !Array.isArray(toolbar) ? toolbar.exclude : undefined;
+  const source = Array.isArray(toolbar)
+    ? toolbar
+    : (toolbar.include ?? allKeys);
+  return source.filter((key) => {
+    if (!allKeys.includes(key)) return false; // unknown key
+    if (exclude && exclude.includes(key)) return false;
+    return true;
+  });
 }

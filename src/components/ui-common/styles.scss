@@ -1,0 +1,83 @@
+// Shared UI primitives for the editor (buttons / inputs / menu items).
+// Global classes — imported once from the library entry, styled with
+// `--tiptap-*` theme tokens.
+
+.tiptap-btn {
+  background-color: var(--tiptap-btn--bg-hover);
+  border: none;
+  border-radius: var(--tiptap-border-radius-sm);
+  color: var(--tiptap-color-text);
+  cursor: pointer;
+  font-size: var(--tiptap-font-size-sm);
+  line-height: 1.4;
+  padding: var(--tiptap-padding-xs) var(--tiptap-padding-sm);
+  transition: background-color 0.2s var(--tiptap-bezier);
+
+  &:hover:not(:disabled) {
+    background-color: var(--tiptap-btn--bg-active);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.tiptap-btn--primary {
+  background-color: var(--tiptap-color-text);
+  color: var(--tiptap-color-bg);
+
+  &:hover:not(:disabled) {
+    background-color: var(--tiptap-color-text);
+    opacity: 0.85;
+  }
+}
+
+.tiptap-input {
+  background-color: var(--tiptap-input-bg);
+  border: 1px solid var(--tiptap-input-border);
+  border-radius: var(--tiptap-input-radius);
+  box-sizing: border-box;
+  color: var(--tiptap-input-text);
+  font-size: var(--tiptap-font-size-sm);
+  outline: none;
+  padding: var(--tiptap-input-padding);
+  transition: border-color 0.2s var(--tiptap-bezier);
+  width: 100%;
+
+  &::placeholder {
+    color: var(--tiptap-color-text-3);
+  }
+
+  &:focus {
+    border-color: var(--tiptap-input-border-hover);
+  }
+}
+
+.tiptap-menu-item {
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: var(--tiptap-border-radius-sm);
+  color: var(--tiptap-color-text);
+  cursor: pointer;
+  display: flex;
+  font-size: var(--tiptap-font-size-sm);
+  gap: var(--tiptap-gap);
+  padding: var(--tiptap-padding-sm) var(--tiptap-padding-md);
+  text-align: left;
+  width: 100%;
+
+  &:hover:not(:disabled) {
+    background-color: var(--tiptap-btn--bg-hover);
+  }
+
+  &.active {
+    background-color: var(--tiptap-btn--bg-active);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}

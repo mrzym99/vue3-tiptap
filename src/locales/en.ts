@@ -33,6 +33,7 @@ export default {
   twitchPlaceholder: "Twitch URL",
   insert: "Insert",
   color: "Text Color",
+  colorCustom: "Custom",
   colorClear: "Clear Color",
   fontFamily: "Font Family",
   fontDefault: "Default",

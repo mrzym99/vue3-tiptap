@@ -1,24 +1,25 @@
 <template>
-  <NButton
-    :class="['action-button', { 'is-active': isActive?.() }]"
+  <button
+    type="button"
+    class="action-button"
+    :class="{ 'is-active': isActive?.() }"
     :disabled="disabled"
-    :tooltip="tooltip"
     @click="handleClick"
   >
-    <NTooltip trigger="hover" size="small" :disabled="disabled">
+    <Tooltip :disabled="disabled || !tooltip">
       <template #trigger>
-        <div class="icon-container">
+        <span class="icon-container">
           <component :is="icon" size="24px" />
           <slot name="suffix" />
-        </div>
+        </span>
       </template>
       {{ tooltip }}
-    </NTooltip>
-  </NButton>
+    </Tooltip>
+  </button>
 </template>
 
 <script setup lang="ts">
-import { NButton, NTooltip } from "naive-ui";
+import Tooltip from "@/components/ui-common/tooltip/index.vue";
 import type { ActionButtonProps } from "./props";
 
 const props = defineProps<ActionButtonProps>();
@@ -32,28 +33,36 @@ const handleClick = () => {
 
 <style lang="scss" scoped>
 .action-button {
-  min-width: var(--naive-tiptap-btn-size);
-  height: var(--naive-tiptap-btn-size);
+  align-items: center;
   background: none;
   border: none;
+  border-radius: var(--tiptap-border-radius-sm);
   cursor: pointer;
-  padding: var(--naive-tiptap-padding-sm);
-  border-radius: var(--naive-tiptap-border-radius-sm);
+  display: inline-flex;
+  height: var(--tiptap-btn-size);
+  justify-content: center;
+  min-width: var(--tiptap-btn-size);
   outline: none;
-}
+  padding: var(--tiptap-padding-sm);
 
-.action-button:hover:not(:disabled) {
-  background-color: var(--naive-tiptap-btn--bg-hover);
-}
+  &:hover:not(:disabled) {
+    background-color: var(--tiptap-btn--bg-hover);
+  }
 
-.action-button.is-active {
-  background-color: var(--naive-tiptap-btn--bg-active);
+  &.is-active {
+    background-color: var(--tiptap-btn--bg-active);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }
 
 .icon-container {
-  display: flex;
   align-items: center;
+  display: flex;
+  gap: var(--tiptap-gap-sm, var(--tiptap-gap));
   justify-content: center;
-  gap: var(--naive-tiptap-gap-sm);
 }
 </style>

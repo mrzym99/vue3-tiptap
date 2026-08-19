@@ -1,40 +1,36 @@
 <template>
-  <NPopover
-    v-model:show="show"
-    trigger="click"
-    placement="bottom-start"
-    :show-arrow="false"
-  >
+  <Popover v-model:show="show" trigger="click" placement="bottom-start">
     <template #trigger>
-      <NButton
+      <button
+        type="button"
         class="url-dialog-button"
         :class="{ 'is-active': isActive?.() }"
         :disabled="disabled"
       >
         <component :is="icon" size="24px" />
-      </NButton>
+      </button>
     </template>
     <div class="url-dialog-popover">
-      <NInput
-        v-model:value="value"
-        size="small"
+      <input
+        v-model="value"
+        class="tiptap-input"
         :placeholder="placeholder"
         @keydown.enter.prevent="submit"
       />
       <div class="url-dialog-actions">
-        <NButton size="tiny" type="primary" @click="submit">
+        <button type="button" class="tiptap-btn tiptap-btn--primary" @click="submit">
           {{ applyText }}
-        </NButton>
+        </button>
       </div>
     </div>
-  </NPopover>
+  </Popover>
 </template>
 
 <script setup lang="ts">
 import type { Component } from "vue";
 import type { Editor } from "@tiptap/core";
-import { NButton, NInput, NPopover } from "naive-ui";
-import { useTiptapLocale } from "@/locales";
+import Popover from "@/components/ui-common/popover/index.vue";
+import { useTiptapLocale, type LocaleT } from "@/locales";
 
 const props = withDefaults(
   defineProps<{
@@ -46,6 +42,8 @@ const props = withDefaults(
     disabled?: boolean;
     isActive?: () => boolean;
     onSubmit: (url: string) => void;
+    /** Received from extension button props; internal i18n is used instead */
+    t?: LocaleT;
   }>(),
   {
     applyLabel: undefined,
@@ -70,36 +68,41 @@ function submit() {
 
 <style lang="scss" scoped>
 .url-dialog-button {
-  min-width: var(--naive-tiptap-btn-size);
-  height: var(--naive-tiptap-btn-size);
+  align-items: center;
   background: none;
   border: none;
+  border-radius: var(--tiptap-border-radius-sm);
   cursor: pointer;
-  padding: var(--naive-tiptap-padding-sm);
-  border-radius: var(--naive-tiptap-border-radius-sm);
-  outline: none;
   display: inline-flex;
-  align-items: center;
+  height: var(--tiptap-btn-size);
   justify-content: center;
-}
+  min-width: var(--tiptap-btn-size);
+  outline: none;
+  padding: var(--tiptap-padding-sm);
 
-.url-dialog-button:hover:not(:disabled) {
-  background-color: var(--naive-tiptap-btn--bg-hover);
-}
+  &:hover:not(:disabled) {
+    background-color: var(--tiptap-btn--bg-hover);
+  }
 
-.url-dialog-button.is-active {
-  background-color: var(--naive-tiptap-btn--bg-active);
+  &.is-active {
+    background-color: var(--tiptap-btn--bg-active);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }
 
 .url-dialog-popover {
   display: flex;
   flex-direction: column;
-  gap: var(--naive-tiptap-gap);
+  gap: var(--tiptap-gap);
 }
 
 .url-dialog-actions {
   display: flex;
-  gap: var(--naive-tiptap-gap);
+  gap: var(--tiptap-gap);
   justify-content: flex-end;
 }
 </style>

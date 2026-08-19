@@ -1,8 +1,9 @@
 <template>
-  <div class="toolbar" v-if="props.editor">
+  <div class="toolbar" v-if="props.editor && menus.length">
     <div class="tiptap-toolbar">
       <RenderItem
         v-for="item in menus"
+        :key="item.name"
         :editor="props.editor"
         :button="item.options.button"
       />
@@ -13,6 +14,8 @@
 <script setup lang="ts">
 import type { Editor } from "@tiptap/vue-3";
 import type { PropType } from "vue";
+import type { Toolbar } from "@/types";
+import { resolveToolbar } from "@/components/utils";
 import RenderItem from "./RenderItem.vue";
 
 const props = defineProps({
@@ -20,13 +23,21 @@ const props = defineProps({
     type: Object as PropType<Editor>,
     required: true,
   },
+  toolbar: {
+    type: [Array, Object] as PropType<Toolbar | undefined>,
+    default: undefined,
+  },
 });
 
 const menus = computed(() => {
-  const buttons = props.editor.extensionManager.extensions.filter(
+  const all = props.editor.extensionManager.extensions.filter(
     (extension) => extension.options.button,
   );
-  return buttons;
+  const keys = resolveToolbar(
+    props.toolbar,
+    all.map((extension) => extension.name),
+  );
+  return all.filter((extension) => keys.includes(extension.name));
 });
 </script>
 
@@ -35,9 +46,9 @@ const menus = computed(() => {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--naive-tiptap-gap-xs);
+  gap: var(--tiptap-gap-xs);
   outline: none;
-  border-bottom: 1px solid var(--naive-tiptap-color-border);
-  padding: var(--naive-tiptap-padding-xs);
+  border-bottom: 1px solid var(--tiptap-color-border);
+  padding: var(--tiptap-padding-xs);
 }
 </style>

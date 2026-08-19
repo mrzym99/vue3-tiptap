@@ -1,10 +1,5 @@
 <template>
-  <NPopover
-    trigger="click"
-    size="small"
-    :show-arrow="false"
-    placement="bottom-start"
-  >
+  <Popover trigger="click" placement="bottom-start">
     <template #trigger>
       <ActionButton
         :editor="editor"
@@ -18,25 +13,26 @@
         </template>
       </ActionButton>
     </template>
-    <NList hoverable clickable :show-divider="false">
-      <NListItem
-        :class="['action-menu-item', { active: item.isActive() }]"
+    <div class="action-menu">
+      <button
         v-for="(item, i) in items"
         :key="i"
+        type="button"
+        class="tiptap-menu-item"
+        :class="{ active: item.isActive() }"
         :disabled="item.disabled"
-        :active="item.isActive()"
         @click="item.action?.()"
       >
         <component :is="item.icon" size="24px" />
         <span>{{ item.label }}</span>
-      </NListItem>
-    </NList>
-  </NPopover>
+      </button>
+    </div>
+  </Popover>
 </template>
 
 <script setup lang="ts">
 import ActionButton from "../action-button/index.vue";
-import { NList, NPopover, NListItem } from "naive-ui";
+import Popover from "@/components/ui-common/popover/index.vue";
 import type { ActionButtonMenuProps } from "./props.ts";
 import type { ActionMenuButtonItem } from "./type.ts";
 
@@ -62,14 +58,10 @@ const active = computed<ActionMenuButtonItem>(() => {
 </script>
 
 <style lang="scss" scoped>
-:deep(.n-list-item__main) {
+.action-menu {
   display: flex;
-  align-items: center;
-  gap: var(--naive-tiptap-gap);
-}
-
-/* Increase active weight to override hover */
-.action-menu-item.active.active {
-  background-color: var(--naive-tiptap-btn--bg-active);
+  flex-direction: column;
+  gap: var(--tiptap-gap-xs);
+  min-width: 160px;
 }
 </style>

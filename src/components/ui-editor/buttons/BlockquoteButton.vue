@@ -15,5 +15,4 @@ import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
 const props = defineProps<EXTActionButtonProps>();
-console.log("props", props);
 </script>

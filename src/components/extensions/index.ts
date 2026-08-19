@@ -9,7 +9,7 @@ import { Color } from "./Color";
 import { Details, DetailsSummary, DetailsContent } from "./Details";
 import { FileHandler } from "./FileHandler";
 import { FindAndReplace } from "./FindAndReplace";
-import { Focus } from "./Focus";
+// import { Focus } from "./Focus";
 import { FontFamily } from "./FontFamily";
 import { HardBreak } from "./HardBreak";
 import { Heading } from "./Heading";
@@ -83,7 +83,7 @@ export default [
   // 编辑体验
   FindAndReplace,
   InvisibleCharacters,
-  Focus,
+  // Focus,
   UniqueId,
   NodeRange,
   HardBreak,

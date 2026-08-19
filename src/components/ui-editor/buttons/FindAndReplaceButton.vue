@@ -1,54 +1,54 @@
 <template>
-  <NPopover
+  <Popover
     v-model:show="show"
     trigger="click"
     placement="bottom-start"
-    :show-arrow="false"
   >
     <template #trigger>
-      <NButton
+      <button
+        type="button"
         class="fr-button"
         :class="{ 'is-active': hasResults }"
       >
         <RiSearchLine size="24px" />
-      </NButton>
+      </button>
     </template>
     <div class="fr-panel">
       <div class="fr-row">
-        <NInput
-          v-model:value="searchTerm"
-          size="small"
+        <input
+          v-model="searchTerm"
+          class="tiptap-input"
           :placeholder="t('findPlaceholder')"
           @keydown.enter.prevent="goNext"
         />
         <span class="fr-count">{{ totalResults }}</span>
       </div>
       <div class="fr-row">
-        <NInput
-          v-model:value="replaceTerm"
-          size="small"
+        <input
+          v-model="replaceTerm"
+          class="tiptap-input"
           :placeholder="t('replacePlaceholder')"
           @keydown.enter.prevent="replaceOne"
         />
       </div>
       <div class="fr-actions">
-        <NButton size="tiny" @click="goPrev">{{ t("prevMatch") }}</NButton>
-        <NButton size="tiny" @click="goNext">{{ t("nextMatch") }}</NButton>
-        <NButton size="tiny" type="primary" @click="replaceOne">
+        <button type="button" class="tiptap-btn" @click="goPrev">{{ t("prevMatch") }}</button>
+        <button type="button" class="tiptap-btn" @click="goNext">{{ t("nextMatch") }}</button>
+        <button type="button" class="tiptap-btn tiptap-btn--primary" @click="replaceOne">
           {{ t("replace") }}
-        </NButton>
-        <NButton size="tiny" @click="replaceAll">
+        </button>
+        <button type="button" class="tiptap-btn" @click="replaceAll">
           {{ t("replaceAll") }}
-        </NButton>
-        <NButton size="tiny" @click="clear">{{ t("clear") }}</NButton>
+        </button>
+        <button type="button" class="tiptap-btn" @click="clear">{{ t("clear") }}</button>
       </div>
     </div>
-  </NPopover>
+  </Popover>
 </template>
 
 <script lang="ts" setup>
 import { RiSearchLine } from "@remixicon/vue";
-import { NButton, NInput, NPopover } from "naive-ui";
+import Popover from "@/components/ui-common/popover/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
 const props = defineProps<EXTActionButtonProps>();
@@ -100,50 +100,50 @@ function clear() {
 
 <style lang="scss" scoped>
 .fr-button {
-  min-width: var(--naive-tiptap-btn-size);
-  height: var(--naive-tiptap-btn-size);
+  align-items: center;
   background: none;
   border: none;
+  border-radius: var(--tiptap-border-radius-sm);
   cursor: pointer;
-  padding: var(--naive-tiptap-padding-sm);
-  border-radius: var(--naive-tiptap-border-radius-sm);
-  outline: none;
   display: inline-flex;
-  align-items: center;
+  height: var(--tiptap-btn-size);
   justify-content: center;
-}
+  min-width: var(--tiptap-btn-size);
+  outline: none;
+  padding: var(--tiptap-padding-sm);
 
-.fr-button:hover:not(:disabled) {
-  background-color: var(--naive-tiptap-btn--bg-hover);
-}
+  &:hover:not(:disabled) {
+    background-color: var(--tiptap-btn--bg-hover);
+  }
 
-.fr-button.is-active {
-  background-color: var(--naive-tiptap-btn--bg-active);
+  &.is-active {
+    background-color: var(--tiptap-btn--bg-active);
+  }
 }
 
 .fr-panel {
   display: flex;
   flex-direction: column;
-  gap: var(--naive-tiptap-gap);
+  gap: var(--tiptap-gap);
   min-width: 240px;
 }
 
 .fr-row {
-  display: flex;
   align-items: center;
-  gap: var(--naive-tiptap-gap);
+  display: flex;
+  gap: var(--tiptap-gap);
 }
 
 .fr-count {
-  font-size: var(--naive-tiptap-font-size-sm);
-  color: var(--naive-tiptap-color-text-3);
+  color: var(--tiptap-color-text-3);
+  font-size: var(--tiptap-font-size-sm);
   white-space: nowrap;
 }
 
 .fr-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--naive-tiptap-gap);
+  gap: var(--tiptap-gap);
   justify-content: flex-end;
 }
 </style>

@@ -26,9 +26,9 @@ const props = defineProps({
   .tiptap {
     flex: 1;
     outline: none;
-    color: var(--naive-tiptap-color-text);
-    background-color: var(--naive-tiptap-color-bg);
-    padding: 0 var(--naive-tiptap-padding-lg);
+    color: var(--tiptap-color-text);
+    background-color: var(--tiptap-color-bg);
+    padding: 0 var(--tiptap-padding-lg);
     overflow-y: auto;
 
     h1,
@@ -52,8 +52,8 @@ const props = defineProps({
     }
 
     code {
-      background-color: var(--naive-tiptap-btn--bg-hover);
-      border-radius: var(--naive-tiptap-border-radius-sm);
+      background-color: var(--tiptap-btn--bg-hover);
+      border-radius: var(--tiptap-border-radius-sm);
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 0.9em;
       padding: 0.2em 0.4em;
@@ -67,7 +67,7 @@ const props = defineProps({
 
     hr {
       border: none;
-      border-top: 1px solid var(--naive-tiptap-color-border);
+      border-top: 1px solid var(--tiptap-color-border);
       margin: 1.5rem 0;
     }
 
@@ -90,7 +90,7 @@ const props = defineProps({
     ul[data-type="taskList"] li {
       display: flex;
       align-items: center;
-      gap: var(--naive-tiptap-gap);
+      gap: var(--tiptap-gap);
     }
 
     ul[data-type="taskList"] li > label {
@@ -103,19 +103,19 @@ const props = defineProps({
     }
 
     ul[data-type="taskList"] input[type="checkbox"] {
-      accent-color: var(--naive-tiptap-color-text);
+      accent-color: var(--tiptap-color-text);
       cursor: pointer;
       margin: 0;
     }
 
     /* code block */
     pre {
-      background-color: var(--naive-tiptap-btn--bg-hover);
-      border-radius: var(--naive-tiptap-border-radius-sm);
+      background-color: var(--tiptap-btn--bg-hover);
+      border-radius: var(--tiptap-border-radius-sm);
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       margin: 0.75rem 0;
       overflow-x: auto;
-      padding: var(--naive-tiptap-padding-lg);
+      padding: var(--tiptap-padding-lg);
     }
 
     pre code {
@@ -126,8 +126,8 @@ const props = defineProps({
 
     /* details */
     details {
-      border: 1px solid var(--naive-tiptap-color-border);
-      border-radius: var(--naive-tiptap-border-radius-sm);
+      border: 1px solid var(--tiptap-color-border);
+      border-radius: var(--tiptap-border-radius-sm);
       margin: 0.75rem 0;
       padding: 0 0.75rem;
     }
@@ -140,7 +140,7 @@ const props = defineProps({
 
     /* media */
     img {
-      border-radius: var(--naive-tiptap-border-radius-sm);
+      border-radius: var(--tiptap-border-radius-sm);
       height: auto;
       margin: 0.75rem 0;
       max-width: 100%;
@@ -158,8 +158,8 @@ const props = defineProps({
 
     /* focus extension: highlight the active block */
     .has-focus {
-      border-radius: var(--naive-tiptap-border-radius-sm);
-      box-shadow: 0 0 0 2px var(--naive-tiptap-color-border);
+      border-radius: var(--tiptap-border-radius-sm);
+      box-shadow: 0 0 0 2px var(--tiptap-color-border);
     }
 
     table {
@@ -171,7 +171,7 @@ const props = defineProps({
 
       td,
       th {
-        border: 1px solid var(--naive-tiptap-color-border);
+        border: 1px solid var(--tiptap-color-border);
         box-sizing: border-box;
         min-width: 1em;
         padding: 6px 8px;
@@ -184,13 +184,13 @@ const props = defineProps({
       }
 
       th {
-        background-color: var(--naive-tiptap-color-bg);
+        background-color: var(--tiptap-color-bg);
         font-weight: bold;
         text-align: left;
       }
 
       .selectedCell:after {
-        background: var(--naive-tiptap-color-border);
+        background: var(--tiptap-color-border);
         content: "";
         left: 0;
         right: 0;
@@ -222,13 +222,13 @@ const props = defineProps({
     }
 
     blockquote {
-      border-left: 3px solid var(--naive-tiptap-color-border);
+      border-left: 3px solid var(--tiptap-color-border);
       margin: 1.5rem 0;
       padding-left: 1rem;
     }
 
     p.is-editor-empty:first-child::before {
-      color: var(--naive-tiptap-color-text-3);
+      color: var(--tiptap-color-text-3);
       content: attr(data-placeholder);
       float: left;
       height: 0;

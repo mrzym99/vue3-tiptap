@@ -46,7 +46,25 @@ export interface TipTapEditorProps {
   placeholder?: string;
   /** Whether to focus the editor on mount */
   autofocus?: boolean;
+  /**
+   * Toolbar button selection. Keys are extension names
+   * (e.g. "bold", "heading", "textAlign", "table", "image").
+   * - `string[]`: render only these buttons, in this order
+   * - `{ include?, exclude? }`: include filters to a subset (default: all),
+   *   exclude removes specific buttons
+   * - `undefined`: render all buttons (default)
+   */
+  toolbar?: Toolbar;
+  /** Bubble-menu selection, falls back to `toolbar` when omitted */
+  bubbleMenu?: Toolbar;
+  /** Floating-menu selection, falls back to `toolbar` when omitted */
+  floatingMenu?: Toolbar;
 }
+
+/**
+ * Which toolbar buttons to render. Keys are extension names.
+ */
+export type Toolbar = string[] | { include?: string[]; exclude?: string[] };
 
 /**
  * Translation function compatible with the basic vue-i18n `t` signature.

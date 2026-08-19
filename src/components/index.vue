@@ -1,10 +1,16 @@
 <template>
   <ThemeProvider :theme="theme">
     <div class="tiptap-box" v-if="editor">
-      <ToolBar :editor="editor" />
+      <ToolBar :editor="editor" :toolbar="props.toolbar" />
       <EditorContent :editor="editor" />
-      <BubbleMenuBar :editor="editor" />
-      <FloatingMenuBar :editor="editor" />
+      <BubbleMenuBar
+        :editor="editor"
+        :toolbar="props.bubbleMenu ?? props.toolbar"
+      />
+      <FloatingMenuBar
+        :editor="editor"
+        :toolbar="props.floatingMenu ?? props.toolbar"
+      />
       <span v-if="props.maxLength" class="max-limit">
         {{ getEditorTextLength(editor) }} / {{ props.maxLength }}
       </span>
@@ -25,7 +31,11 @@ import type { Transaction } from "@tiptap/pm/state";
 import { checkLimit, getEditorTextLength } from "./utils";
 import type { TipTapEditorProps } from "@/types";
 import type { LocaleName } from "@/locales";
-import { createLocaleContext, detectLocale, provideTiptapLocale } from "@/locales";
+import {
+  createLocaleContext,
+  detectLocale,
+  provideTiptapLocale,
+} from "@/locales";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
@@ -36,7 +46,14 @@ const props = withDefaults(
   defineProps<
     Pick<
       TipTapEditorProps,
-      "maxLength" | "disabled" | "theme" | "placeholder" | "autofocus"
+      | "maxLength"
+      | "disabled"
+      | "theme"
+      | "placeholder"
+      | "autofocus"
+      | "toolbar"
+      | "bubbleMenu"
+      | "floatingMenu"
     > & {
       /** UI language of the toolbar/menus (auto-detected when omitted) */
       locale?: LocaleName;
@@ -49,6 +66,9 @@ const props = withDefaults(
     placeholder: undefined,
     autofocus: false,
     locale: undefined,
+    toolbar: undefined,
+    bubbleMenu: undefined,
+    floatingMenu: undefined,
   },
 );
 
@@ -63,8 +83,12 @@ watch(
 provideTiptapLocale(localeContext);
 
 const emit = defineEmits<{
-  focus: [payload: { editor: Editor; event: FocusEvent; transaction: Transaction }];
-  blur: [payload: { editor: Editor; event: FocusEvent; transaction: Transaction }];
+  focus: [
+    payload: { editor: Editor; event: FocusEvent; transaction: Transaction },
+  ];
+  blur: [
+    payload: { editor: Editor; event: FocusEvent; transaction: Transaction },
+  ];
 }>();
 
 const modelValue = defineModel<string>({ required: true });
@@ -133,16 +157,16 @@ watch(
 .tiptap-box {
   position: relative;
   height: 100%;
-  border: 1px solid var(--naive-tiptap-color-border);
-  border-radius: var(--naive-tiptap-border-radius-sm);
+  border: 1px solid var(--tiptap-color-border);
+  border-radius: var(--tiptap-border-radius-sm);
 }
 
 .max-limit {
   position: absolute;
   bottom: 0;
   right: 0;
-  font-size: var(--naive-tiptap-font-size-sm);
-  color: var(--naive-tiptap-color-text-3);
-  padding: var(--naive-tiptap-padding-xs);
+  font-size: var(--tiptap-font-size-sm);
+  color: var(--tiptap-color-text-3);
+  padding: var(--tiptap-padding-xs);
 }
 </style>
