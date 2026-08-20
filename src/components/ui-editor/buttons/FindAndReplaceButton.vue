@@ -1,9 +1,5 @@
 <template>
-  <Popover
-    v-model:show="show"
-    trigger="click"
-    placement="bottom-start"
-  >
+  <Popover v-model:show="show" trigger="click" placement="bottom-start">
     <template #trigger>
       <button
         type="button"
@@ -32,15 +28,25 @@
         />
       </div>
       <div class="fr-actions">
-        <button type="button" class="tiptap-btn" @click="goPrev">{{ t("prevMatch") }}</button>
-        <button type="button" class="tiptap-btn" @click="goNext">{{ t("nextMatch") }}</button>
-        <button type="button" class="tiptap-btn tiptap-btn--primary" @click="replaceOne">
+        <button type="button" class="tiptap-btn" @click="goPrev">
+          {{ t("prevMatch") }}
+        </button>
+        <button type="button" class="tiptap-btn" @click="goNext">
+          {{ t("nextMatch") }}
+        </button>
+        <button
+          type="button"
+          class="tiptap-btn tiptap-btn--primary"
+          @click="replaceOne"
+        >
           {{ t("replace") }}
         </button>
         <button type="button" class="tiptap-btn" @click="replaceAll">
           {{ t("replaceAll") }}
         </button>
-        <button type="button" class="tiptap-btn" @click="clear">{{ t("clear") }}</button>
+        <button type="button" class="tiptap-btn" @click="clear">
+          {{ t("clear") }}
+        </button>
       </div>
     </div>
   </Popover>
@@ -58,17 +64,29 @@ const searchTerm = ref("");
 const replaceTerm = ref("");
 
 const results = computed(
-  () => (props.editor.storage.findAndReplace as { results: unknown[] } | undefined)?.results ?? [],
+  () =>
+    (props.editor.storage.findAndReplace as { results: unknown[] } | undefined)
+      ?.results ?? [],
 );
 const totalResults = computed(() => results.value.length);
 const hasResults = computed(() => totalResults.value > 0);
 
 function goNext() {
-  props.editor.chain().focus().setSearchTerm(searchTerm.value).goToNextResult().run();
+  props.editor
+    .chain()
+    .focus()
+    .setSearchTerm(searchTerm.value)
+    .goToNextResult()
+    .run();
 }
 
 function goPrev() {
-  props.editor.chain().focus().setSearchTerm(searchTerm.value).goToPreviousResult().run();
+  props.editor
+    .chain()
+    .focus()
+    .setSearchTerm(searchTerm.value)
+    .goToPreviousResult()
+    .run();
 }
 
 function replaceOne() {
@@ -102,8 +120,9 @@ function clear() {
 .fr-button {
   align-items: center;
   background: none;
+  color: var(--tiptap-color-text);
   border: none;
-  border-radius: var(--tiptap-border-radius-sm);
+  border-radius: var(--tiptap-border-radius-md);
   cursor: pointer;
   display: inline-flex;
   height: var(--tiptap-btn-size);

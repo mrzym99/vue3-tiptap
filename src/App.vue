@@ -9,6 +9,7 @@ const theme = ref<ThemeName>("light");
 const locale = ref<LocaleName>("zh");
 const toggleTheme = () => {
   theme.value = theme.value === "light" ? "dark" : "light";
+  document.documentElement.classList.toggle("dark");
 };
 const toggleLocale = () => {
   locale.value = locale.value === "zh" ? "en" : "zh";

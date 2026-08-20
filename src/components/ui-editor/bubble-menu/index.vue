@@ -60,8 +60,8 @@ const visibleButtons = computed(() => {
   gap: var(--tiptap-gap-xs);
   background-color: var(--tiptap-color-bg);
   border: 1px solid var(--tiptap-color-border);
-  border-radius: var(--tiptap-border-radius-sm);
-  padding: var(--tiptap-padding-xs);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  border-radius: var(--tiptap-border-radius-md);
+  padding: var(--tiptap-padding-sm);
+  box-shadow: var(--tiptap-popover-shadow);
 }
 </style>

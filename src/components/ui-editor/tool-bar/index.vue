@@ -43,12 +43,13 @@ const menus = computed(() => {
 
 <style lang="scss" scoped>
 .tiptap-toolbar {
+  color: var(--tiptap-color-text);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--tiptap-gap-xs);
   outline: none;
   border-bottom: 1px solid var(--tiptap-color-border);
-  padding: var(--tiptap-padding-xs);
+  padding: var(--tiptap-padding-sm);
 }
 </style>

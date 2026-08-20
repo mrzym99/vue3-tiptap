@@ -30,7 +30,6 @@ watch(() => props.theme, syncTheme);
 <style lang="scss" scoped>
 .tiptap-theme-root {
   height: 100%;
-  color: var(--tiptap-color-text);
-  background-color: var(--tiptap-color-bg);
+  scrollbar-width: thin;
 }
 </style>

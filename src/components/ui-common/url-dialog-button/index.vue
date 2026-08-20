@@ -18,7 +18,11 @@
         @keydown.enter.prevent="submit"
       />
       <div class="url-dialog-actions">
-        <button type="button" class="tiptap-btn tiptap-btn--primary" @click="submit">
+        <button
+          type="button"
+          class="tiptap-btn tiptap-btn--primary"
+          @click="submit"
+        >
           {{ applyText }}
         </button>
       </div>
@@ -70,8 +74,9 @@ function submit() {
 .url-dialog-button {
   align-items: center;
   background: none;
+  color: var(--tiptap-color-text);
   border: none;
-  border-radius: var(--tiptap-border-radius-sm);
+  border-radius: var(--tiptap-border-radius-md);
   cursor: pointer;
   display: inline-flex;
   height: var(--tiptap-btn-size);

@@ -158,7 +158,12 @@ watch(
   position: relative;
   height: 100%;
   border: 1px solid var(--tiptap-color-border);
-  border-radius: var(--tiptap-border-radius-sm);
+  border-radius: var(--tiptap-border-radius-lg);
+  color: var(--tiptap-color-text);
+  background-color: var(--tiptap-color-bg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .max-limit {
@@ -167,6 +172,6 @@ watch(
   right: 0;
   font-size: var(--tiptap-font-size-sm);
   color: var(--tiptap-color-text-3);
-  padding: var(--tiptap-padding-xs);
+  padding: var(--tiptap-padding-sm);
 }
 </style>

@@ -1,16 +1,27 @@
 * {
   box-sizing: border-box;
+  scrollbar-width: thin;
+}
+
+:root {
+  --app-color-background: #f5f4f4;
+  --app-color-text: #151413;
+}
+
+:root.dark {
+  --app-color-background: #000000;
+  --app-color-text: #fafafa;
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
-  color: var(--tiptap-color-text);
-  background-color: var(--tiptap-color-bg);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--app-color-text);
+  background-color: var(--app-color-background);
   transition:
-    color 0.3s var(--tiptap-bezier),
-    background-color 0.3s var(--tiptap-bezier),
-    opacity 0.3s var(--tiptap-bezier),
-    border-color 0.3s var(--tiptap-bezier);
+    color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }

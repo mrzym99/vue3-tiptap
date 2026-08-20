@@ -13,7 +13,7 @@
         </template>
       </ActionButton>
     </template>
-    <div class="action-menu">
+    <div class="tiptap-action-menu">
       <button
         v-for="(item, i) in items"
         :key="i"
@@ -58,10 +58,38 @@ const active = computed<ActionMenuButtonItem>(() => {
 </script>
 
 <style lang="scss" scoped>
-.action-menu {
+.tiptap-action-menu {
   display: flex;
   flex-direction: column;
   gap: var(--tiptap-gap-xs);
-  min-width: 160px;
+  min-width: 100px;
+}
+
+.tiptap-menu-item {
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: var(--tiptap-border-radius-md);
+  color: var(--tiptap-color-text);
+  cursor: pointer;
+  display: flex;
+  font-size: var(--tiptap-font-size-sm);
+  gap: var(--tiptap-gap);
+  padding: var(--tiptap-padding-sm) var(--tiptap-padding-md);
+  text-align: left;
+  width: 100%;
+
+  &:hover:not(:disabled) {
+    background-color: var(--tiptap-menu-item-hover);
+  }
+
+  &.active {
+    background-color: var(--tiptap-menu-item-active);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }
 </style>

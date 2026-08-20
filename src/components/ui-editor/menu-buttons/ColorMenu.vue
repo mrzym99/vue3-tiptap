@@ -81,8 +81,9 @@ function clearColor() {
 .color-button {
   align-items: center;
   background: none;
+  color: var(--tiptap-color-text);
   border: none;
-  border-radius: var(--tiptap-border-radius-sm);
+  border-radius: var(--tiptap-border-radius-md);
   cursor: pointer;
   display: inline-flex;
   height: var(--tiptap-btn-size);
@@ -114,7 +115,7 @@ function clearColor() {
 
 .color-swatch {
   border: 1px solid var(--tiptap-color-border);
-  border-radius: var(--tiptap-border-radius-sm);
+  border-radius: var(--tiptap-border-radius-md);
   cursor: pointer;
   height: 24px;
   padding: 0;
@@ -139,7 +140,7 @@ function clearColor() {
 .color-custom input[type="color"] {
   background: none;
   border: 1px solid var(--tiptap-color-border);
-  border-radius: var(--tiptap-border-radius-sm);
+  border-radius: var(--tiptap-border-radius-md);
   cursor: pointer;
   height: 24px;
   padding: 0;

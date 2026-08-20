@@ -22,15 +22,8 @@
 
 <script lang="ts" setup>
 import { ref, watch, nextTick, onMounted, onBeforeUnmount } from "vue";
-import {
-  computePosition,
-  autoUpdate,
-  offset,
-  flip,
-  shift,
-  type Placement,
-  type Middleware,
-} from "@floating-ui/dom";
+import type { Placement } from "@floating-ui/dom";
+import { useFloating } from "@/components/ui-common/floating/useFloating";
 
 const props = withDefaults(
   defineProps<{
@@ -59,21 +52,12 @@ const emit = defineEmits<{ "update:show": [value: boolean] }>();
 const triggerEl = ref<HTMLElement | null>(null);
 const floatingEl = ref<HTMLElement | null>(null);
 const show = ref(props.show);
-// `position: fixed` keeps the popover inside the component tree (CSS vars
-// and scoped styles keep working) while escaping overflow clipping.
-const floatingStyle = ref<Record<string, string>>({
-  position: "fixed",
-  left: "0px",
-  top: "0px",
-  zIndex: "var(--tiptap-z-popover)",
-});
 
-let cleanupAutoUpdate: (() => void) | null = null;
-
-function stopAutoUpdate() {
-  cleanupAutoUpdate?.();
-  cleanupAutoUpdate = null;
-}
+const { floatingStyle, start: startFloating, stop: stopFloating } = useFloating(
+  triggerEl,
+  floatingEl,
+  { placement: props.placement, offset: props.offset },
+);
 
 // External (v-model:show) changes mirror into internal state.
 watch(
@@ -85,20 +69,14 @@ watch(
 
 watch(show, async (v) => {
   emit("update:show", v);
-  stopAutoUpdate();
-  if (!v) return;
+  if (!v) {
+    stopFloating();
+    return;
+  }
   // The floating element is rendered by `v-if="show"` — it only exists after
   // the next DOM flush, so wait for nextTick before measuring/positioning.
   await nextTick();
-  if (!triggerEl.value || !floatingEl.value) return;
-  await position();
-  // Keep following scroll / resize / content changes.
-  cleanupAutoUpdate = autoUpdate(
-    triggerEl.value,
-    floatingEl.value,
-    () => position(),
-    { ancestorScroll: true, ancestorResize: true, elementResize: true },
-  );
+  startFloating();
 });
 
 watch(
@@ -107,25 +85,6 @@ watch(
     if (v) show.value = false;
   },
 );
-
-async function position() {
-  if (!triggerEl.value || !floatingEl.value) return;
-  const middleware: Middleware[] = [
-    offset(props.offset),
-    flip(),
-    shift({ padding: 8 }),
-  ];
-  const { x, y } = await computePosition(triggerEl.value, floatingEl.value, {
-    placement: props.placement,
-    strategy: "fixed",
-    middleware,
-  });
-  floatingStyle.value = {
-    ...floatingStyle.value,
-    left: `${x}px`,
-    top: `${y}px`,
-  };
-}
 
 // --- interactions ---
 let hoverTimer: number | null = null;
@@ -154,16 +113,16 @@ function onLeave() {
   hoverTimer = setTimeout(() => (show.value = false), 120);
 }
 
+// click-mode only: close on outside click / Esc
 function onDocMousedown(e: MouseEvent) {
-  if (!show.value) return;
+  if (!show.value || props.trigger !== "click") return;
   const target = e.target as Node;
-  if (triggerEl.value?.contains(target) || floatingEl.value?.contains(target))
-    return;
+  if (triggerEl.value?.contains(target) || floatingEl.value?.contains(target)) return;
   show.value = false;
 }
 
 function onKeydown(e: KeyboardEvent) {
-  if (e.key === "Escape") show.value = false;
+  if (props.trigger === "click" && e.key === "Escape") show.value = false;
 }
 
 onMounted(() => {
@@ -175,7 +134,7 @@ onBeforeUnmount(() => {
   document.removeEventListener("mousedown", onDocMousedown);
   document.removeEventListener("keydown", onKeydown);
   clearHoverTimer();
-  stopAutoUpdate();
+  stopFloating();
 });
 </script>
 
@@ -187,9 +146,9 @@ onBeforeUnmount(() => {
 .tiptap-popover {
   background-color: var(--tiptap-popover-bg);
   border: 1px solid var(--tiptap-popover-border);
-  border-radius: var(--tiptap-border-radius-sm);
+  border-radius: var(--tiptap-border-radius-md);
   box-shadow: var(--tiptap-popover-shadow);
-  color: var(--tiptap-color-text);
+  color: var(--tiptap-popover-text);
   padding: var(--tiptap-padding-sm);
 }
 </style>

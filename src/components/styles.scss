@@ -3,18 +3,18 @@
 // `--tiptap-*` theme tokens.
 
 .tiptap-btn {
-  background-color: var(--tiptap-btn--bg-hover);
+  background-color: var(--tiptap-menu-item-hover);
   border: none;
-  border-radius: var(--tiptap-border-radius-sm);
+  border-radius: var(--tiptap-border-radius-md);
   color: var(--tiptap-color-text);
   cursor: pointer;
   font-size: var(--tiptap-font-size-sm);
   line-height: 1.4;
-  padding: var(--tiptap-padding-xs) var(--tiptap-padding-sm);
+  padding: var(--tiptap-padding-sm) var(--tiptap-padding-sm);
   transition: background-color 0.2s var(--tiptap-bezier);
 
   &:hover:not(:disabled) {
-    background-color: var(--tiptap-btn--bg-active);
+    background-color: var(--tiptap-menu-item-active);
   }
 
   &:disabled {
@@ -42,42 +42,18 @@
   font-size: var(--tiptap-font-size-sm);
   outline: none;
   padding: var(--tiptap-input-padding);
-  transition: border-color 0.2s var(--tiptap-bezier);
+  transition:
+    border-color 0.15s var(--tiptap-bezier),
+    box-shadow 0.15s var(--tiptap-bezier);
   width: 100%;
 
   &::placeholder {
-    color: var(--tiptap-color-text-3);
+    color: var(--tiptap-input-placeholder);
   }
 
   &:focus {
     border-color: var(--tiptap-input-border-hover);
-  }
-}
-
-.tiptap-menu-item {
-  align-items: center;
-  background: none;
-  border: none;
-  border-radius: var(--tiptap-border-radius-sm);
-  color: var(--tiptap-color-text);
-  cursor: pointer;
-  display: flex;
-  font-size: var(--tiptap-font-size-sm);
-  gap: var(--tiptap-gap);
-  padding: var(--tiptap-padding-sm) var(--tiptap-padding-md);
-  text-align: left;
-  width: 100%;
-
-  &:hover:not(:disabled) {
-    background-color: var(--tiptap-btn--bg-hover);
-  }
-
-  &.active {
-    background-color: var(--tiptap-btn--bg-active);
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--tiptap-input-border-hover) 25%, transparent);
   }
 }

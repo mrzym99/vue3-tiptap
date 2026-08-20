@@ -35,8 +35,9 @@ const handleClick = () => {
 .action-button {
   align-items: center;
   background: none;
+  color: var(--tiptap-color-text);
   border: none;
-  border-radius: var(--tiptap-border-radius-sm);
+  border-radius: var(--tiptap-border-radius-md);
   cursor: pointer;
   display: inline-flex;
   height: var(--tiptap-btn-size);

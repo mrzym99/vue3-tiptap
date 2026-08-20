@@ -18,6 +18,7 @@ const props = defineProps({
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: auto;
 }
 </style>
 
@@ -28,39 +29,42 @@ const props = defineProps({
     outline: none;
     color: var(--tiptap-color-text);
     background-color: var(--tiptap-color-bg);
+    font-size: 15px;
+    line-height: 1.75;
     padding: 0 var(--tiptap-padding-lg);
     overflow-y: auto;
 
     h1,
     h2,
     h3 {
+      font-weight: 650;
       line-height: 1.3;
-      margin: 1.5rem 0 0.75rem;
-      font-weight: bold;
+      letter-spacing: -0.01em;
+      margin: 1.6rem 0 0.7rem;
     }
 
     h1 {
-      font-size: 1.8em;
+      font-size: 1.7em;
     }
 
     h2 {
-      font-size: 1.4em;
+      font-size: 1.35em;
     }
 
     h3 {
-      font-size: 1.2em;
+      font-size: 1.15em;
     }
 
     code {
       background-color: var(--tiptap-btn--bg-hover);
-      border-radius: var(--tiptap-border-radius-sm);
+      border-radius: var(--tiptap-border-radius-md);
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 0.9em;
-      padding: 0.2em 0.4em;
+      font-size: 0.88em;
+      padding: 0.15em 0.35em;
     }
 
     mark {
-      background-color: #faf594;
+      background-color: var(--tiptap-mark-bg);
       border-radius: 0.2em;
       padding: 0.1em 0.2em;
     }
@@ -68,7 +72,7 @@ const props = defineProps({
     hr {
       border: none;
       border-top: 1px solid var(--tiptap-color-border);
-      margin: 1.5rem 0;
+      margin: 1.75rem 0;
     }
 
     ul,
@@ -111,9 +115,11 @@ const props = defineProps({
     /* code block */
     pre {
       background-color: var(--tiptap-btn--bg-hover);
-      border-radius: var(--tiptap-border-radius-sm);
+      border-radius: var(--tiptap-border-radius-md);
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      margin: 0.75rem 0;
+      font-size: 0.9em;
+      line-height: 1.6;
+      margin: 0.9rem 0;
       overflow-x: auto;
       padding: var(--tiptap-padding-lg);
     }
@@ -127,7 +133,7 @@ const props = defineProps({
     /* details */
     details {
       border: 1px solid var(--tiptap-color-border);
-      border-radius: var(--tiptap-border-radius-sm);
+      border-radius: var(--tiptap-border-radius-md);
       margin: 0.75rem 0;
       padding: 0 0.75rem;
     }
@@ -140,7 +146,7 @@ const props = defineProps({
 
     /* media */
     img {
-      border-radius: var(--tiptap-border-radius-sm);
+      border-radius: var(--tiptap-border-radius-md);
       height: auto;
       margin: 0.75rem 0;
       max-width: 100%;
@@ -158,7 +164,7 @@ const props = defineProps({
 
     /* focus extension: highlight the active block */
     .has-focus {
-      border-radius: var(--tiptap-border-radius-sm);
+      border-radius: var(--tiptap-border-radius-md);
       box-shadow: 0 0 0 2px var(--tiptap-color-border);
     }
 
@@ -223,8 +229,11 @@ const props = defineProps({
 
     blockquote {
       border-left: 3px solid var(--tiptap-color-border);
+      border-radius: 0 var(--tiptap-border-radius-md)
+        var(--tiptap-border-radius-md) 0;
+      color: var(--tiptap-color-text-3);
       margin: 1.5rem 0;
-      padding-left: 1rem;
+      padding: 0.1rem 1rem;
     }
 
     p.is-editor-empty:first-child::before {

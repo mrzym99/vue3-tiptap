@@ -23,10 +23,19 @@
         @keydown.enter.prevent="applyLink"
       />
       <div class="link-actions">
-        <button type="button" class="tiptap-btn tiptap-btn--primary" @click="applyLink">
+        <button
+          type="button"
+          class="tiptap-btn tiptap-btn--primary"
+          @click="applyLink"
+        >
           {{ t("linkApply") }}
         </button>
-        <button v-if="isLinkActive" type="button" class="tiptap-btn" @click="removeLink">
+        <button
+          v-if="isLinkActive"
+          type="button"
+          class="tiptap-btn"
+          @click="removeLink"
+        >
           {{ t("linkRemove") }}
         </button>
       </div>
@@ -53,7 +62,13 @@ const currentHref = computed(
   () => props.editor.getAttributes("link").href as string | undefined,
 );
 const disabled = computed(
-  () => !props.editor.can().chain().focus().setLink({ href: "https://example.com" }).run(),
+  () =>
+    !props.editor
+      .can()
+      .chain()
+      .focus()
+      .setLink({ href: "https://example.com" })
+      .run(),
 );
 
 // Prefill the input with the current link href when the popover opens
@@ -98,8 +113,9 @@ function removeLink() {
 .link-button {
   align-items: center;
   background: none;
+  color: var(--tiptap-color-text);
   border: none;
-  border-radius: var(--tiptap-border-radius-sm);
+  border-radius: var(--tiptap-border-radius-md);
   cursor: pointer;
   display: inline-flex;
   height: var(--tiptap-btn-size);
