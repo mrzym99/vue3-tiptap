@@ -1,20 +1,27 @@
 // Shared UI primitives for the editor (buttons / inputs / menu items).
 // Global classes — imported once from the library entry, styled with
-// `--tiptap-*` theme tokens.
+// `--tiptap-*` theme tokens (Notion Style, see docs/style/notion.md).
+// Rules applied: transparent button base, hover/active only deepen bg
+// (#efedea / #e3e1db), no translate/scale, 150ms transitions.
 
 .tiptap-btn {
-  background-color: var(--tiptap-menu-item-hover);
+  background-color: var(--tiptap-btn-bg, transparent);
   border: none;
   border-radius: var(--tiptap-border-radius-md);
   color: var(--tiptap-color-text);
   cursor: pointer;
   font-size: var(--tiptap-font-size-sm);
+  font-weight: 500;
   line-height: 1.4;
-  padding: var(--tiptap-padding-sm) var(--tiptap-padding-sm);
-  transition: background-color 0.2s var(--tiptap-bezier);
+  padding: 6px 12px;
+  transition: background-color 150ms ease;
 
   &:hover:not(:disabled) {
-    background-color: var(--tiptap-menu-item-active);
+    background-color: var(--tiptap-btn-bg-hover);
+  }
+
+  &:active:not(:disabled) {
+    background-color: var(--tiptap-btn-bg-active);
   }
 
   &:disabled {
@@ -24,12 +31,15 @@
 }
 
 .tiptap-btn--primary {
-  background-color: var(--tiptap-color-text);
-  color: var(--tiptap-color-bg);
+  background-color: var(--tiptap-btn-primary-bg);
+  color: var(--tiptap-btn-primary-text);
 
   &:hover:not(:disabled) {
-    background-color: var(--tiptap-color-text);
-    opacity: 0.85;
+    background-color: var(--tiptap-btn-primary-bg-hover);
+  }
+
+  &:active:not(:disabled) {
+    background-color: var(--tiptap-btn-primary-bg-hover);
   }
 }
 
@@ -43,8 +53,8 @@
   outline: none;
   padding: var(--tiptap-input-padding);
   transition:
-    border-color 0.15s var(--tiptap-bezier),
-    box-shadow 0.15s var(--tiptap-bezier);
+    border-color 150ms ease,
+    box-shadow 150ms ease;
   width: 100%;
 
   &::placeholder {
@@ -53,7 +63,6 @@
 
   &:focus {
     border-color: var(--tiptap-input-border-hover);
-    box-shadow: 0 0 0 3px
-      color-mix(in srgb, var(--tiptap-input-border-hover) 25%, transparent);
+    box-shadow: 0 0 0 2px var(--tiptap-focus-ring);
   }
 }

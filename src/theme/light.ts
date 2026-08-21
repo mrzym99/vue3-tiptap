@@ -1,44 +1,92 @@
 import type { Theme } from "@/types";
 
 /**
- * Light theme — popover/input/menu follow the theme via base colors;
- * only the tooltip is fixed (black bg, white text) in base.ts.
+ * Light theme — Notion Style (docs/style/notion.md).
  *
- * Values extracted from the TT design system:
- *   bg:         --white / --tt-bg-color
- *   text:       --tt-gray-light-900  rgba(34, 35, 37, 1)
- *   text-3:     --tt-gray-light-500  rgba(125, 127, 130, 1)
- *   border:     --tt-border-color    rgba(37, 39, 45, 0.10)
- *   btn hover:  --tt-gray-light-a-100
- *   btn active: --tt-gray-light-a-200
- *   shadow:     --tt-shadow-elevated-md (light)
+ * Palette (verified with the style doc):
+ *   bg canvas:  #f7f6f3  (Notion beige)
+ *   bg:         #ffffff
+ *   hover:      #efedea  (Block Highlighting, ~5% brightness shift)
+ *   active:     #e3e1db  (Micro-click, no translate/scale)
+ *   text:       #37352f  (Notion dark gray)
+ *   border:     #e5e5e5  (Tailwind v4 gray-200)
+ *   focus ring: #2eaadc  at 30% (Notion blue, per review)
+ *
+ * Old token names (--tiptap-btn--bg-* , --tiptap-color-text-3) are kept as
+ * aliases so existing components keep working unchanged.
  */
 export const lightTheme: Theme = {
-  "--tiptap-color-text": "rgba(34, 35, 37, 1)",
+  // --- surfaces ---
   "--tiptap-color-bg": "#FFFFFF",
-  "--tiptap-color-border": "rgba(37, 39, 45, 0.10)",
-  "--tiptap-color-text-3": "rgba(125, 127, 130, 1)",
-  "--tiptap-btn--bg-hover": "rgba(15, 22, 36, 0.05)",
-  "--tiptap-btn--bg-active": "rgba(37, 39, 45, 0.10)",
+  "--tiptap-color-bg-canvas": "#F7F6F3",
+  "--tiptap-color-bg-hover": "#EFEDEA",
+  "--tiptap-color-bg-active": "#E3E1DB",
+  "--tiptap-color-bg-subtle": "#F5F5F5", // gray-100
+
+  // --- text ---
+  "--tiptap-color-text": "#37352F",
+  "--tiptap-color-text-secondary": "#525252", // gray-600
+  "--tiptap-color-text-muted": "#A3A3A3", // gray-400
+
+  // --- borders ---
+  "--tiptap-color-border": "#E5E5E5", // gray-200
+  "--tiptap-color-border-strong": "#D4D4D4", // gray-300
+
+  // --- accents (text + soft bg) ---
+  "--tiptap-accent-blue": "#2EAADC",
+  "--tiptap-accent-red": "#EB5757",
+  "--tiptap-accent-green": "#0F7B6C",
+  "--tiptap-accent-yellow": "#DFAB01",
+  "--tiptap-accent-blue-bg": "#EFF6FF", // blue-50
+  "--tiptap-accent-red-bg": "#FEF2F2", // red-50
+  "--tiptap-accent-green-bg": "#F0FDF4", // green-50
+  "--tiptap-accent-yellow-bg": "#FEFCE8", // yellow-50
+
+  // --- buttons (transparent default, hover/active only deepen bg) ---
+  "--tiptap-btn-bg": "transparent",
+  "--tiptap-btn-bg-hover": "#EFEDEA",
+  "--tiptap-btn-bg-active": "#E3E1DB",
+  "--tiptap-btn-primary-bg": "#2EAADC",
+  "--tiptap-btn-primary-bg-hover": "#2699C6",
+  "--tiptap-btn-primary-text": "#FFFFFF",
+  "--tiptap-btn-secondary-bg": "#F5F5F5", // gray-100
+  "--tiptap-btn-secondary-text": "#404040", // gray-700
+
+  // --- interaction feedback ---
+  "--tiptap-focus-ring": "rgba(46, 170, 220, 0.30)",
+  "--tiptap-selection-bg": "rgba(46, 170, 220, 0.20)",
+  "--tiptap-drag-handle": "rgba(55, 53, 47, 0.35)",
 
   // popover / menu (follow the theme)
   "--tiptap-popover-bg": "var(--tiptap-color-bg)",
   "--tiptap-popover-text": "var(--tiptap-color-text)",
   "--tiptap-popover-border": "var(--tiptap-color-border)",
   "--tiptap-popover-shadow":
-    "0px 16px 48px 0px rgba(17, 24, 39, 0.04), 0px 12px 24px 0px rgba(17, 24, 39, 0.04), 0px 6px 8px 0px rgba(17, 24, 39, 0.02), 0px 2px 3px 0px rgba(17, 24, 39, 0.02)",
+    "0 1px 3px rgba(15, 15, 15, 0.13), 0 4px 16px rgba(15, 15, 15, 0.05)",
 
   // menu item (follow the theme)
-  "--tiptap-menu-item-hover": "var(--tiptap-btn--bg-hover)",
-  "--tiptap-menu-item-active": "var(--tiptap-btn--bg-active)",
+  "--tiptap-menu-item-hover": "var(--tiptap-color-bg-hover)",
+  "--tiptap-menu-item-active": "var(--tiptap-color-bg-active)",
 
   // input (follow the theme)
   "--tiptap-input-bg": "var(--tiptap-color-bg)",
   "--tiptap-input-border": "var(--tiptap-color-border)",
-  "--tiptap-input-border-hover": "rgba(47, 50, 55, 0.20)",
+  "--tiptap-input-border-hover": "var(--tiptap-accent-blue)",
   "--tiptap-input-text": "var(--tiptap-color-text)",
-  "--tiptap-input-placeholder": "var(--tiptap-color-text-3)",
+  "--tiptap-input-placeholder": "var(--tiptap-color-text-muted)",
 
-  // mark / highlight (functional color)
-  "--tiptap-mark-bg": "#fde68a",
+  // content elements
+  "--tiptap-mark-bg": "#FDE68A",
+  "--tiptap-link-color": "var(--tiptap-accent-blue)",
+  "--tiptap-code-bg": "var(--tiptap-color-bg-subtle)",
+  "--tiptap-code-text": "var(--tiptap-color-text)",
+
+  // --- fixed tooltip colors (black bg + white text, same value in both themes) ---
+  "--tiptap-tooltip-bg": "#111111",
+  "--tiptap-tooltip-text": "#FFFFFF",
+
+  // --- backward-compatible aliases (used by existing components) ---
+  "--tiptap-color-text-3": "var(--tiptap-color-text-muted)",
+  "--tiptap-btn--bg-hover": "var(--tiptap-color-bg-hover)",
+  "--tiptap-btn--bg-active": "var(--tiptap-color-bg-active)",
 };

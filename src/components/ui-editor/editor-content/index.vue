@@ -29,7 +29,10 @@ const props = defineProps({
     outline: none;
     color: var(--tiptap-color-text);
     background-color: var(--tiptap-color-bg);
-    font-size: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+      Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+      sans-serif;
+    font-size: 16px;
     line-height: 1.75;
     padding: 0 var(--tiptap-padding-lg);
     overflow-y: auto;
@@ -37,7 +40,7 @@ const props = defineProps({
     h1,
     h2,
     h3 {
-      font-weight: 650;
+      font-weight: 600;
       line-height: 1.3;
       letter-spacing: -0.01em;
       margin: 1.6rem 0 0.7rem;
@@ -56,8 +59,9 @@ const props = defineProps({
     }
 
     code {
-      background-color: var(--tiptap-btn--bg-hover);
+      background-color: var(--tiptap-code-bg);
       border-radius: var(--tiptap-border-radius-md);
+      color: var(--tiptap-code-text);
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 0.88em;
       padding: 0.15em 0.35em;
@@ -107,15 +111,16 @@ const props = defineProps({
     }
 
     ul[data-type="taskList"] input[type="checkbox"] {
-      accent-color: var(--tiptap-color-text);
+      accent-color: var(--tiptap-accent-blue);
       cursor: pointer;
       margin: 0;
     }
 
     /* code block */
     pre {
-      background-color: var(--tiptap-btn--bg-hover);
+      background-color: var(--tiptap-code-bg);
       border-radius: var(--tiptap-border-radius-md);
+      color: var(--tiptap-code-text);
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 0.9em;
       line-height: 1.6;
@@ -140,7 +145,7 @@ const props = defineProps({
 
     details summary {
       cursor: pointer;
-      font-weight: bold;
+      font-weight: 600;
       padding: 0.5rem 0;
     }
 
@@ -165,7 +170,7 @@ const props = defineProps({
     /* focus extension: highlight the active block */
     .has-focus {
       border-radius: var(--tiptap-border-radius-md);
-      box-shadow: 0 0 0 2px var(--tiptap-color-border);
+      box-shadow: 0 0 0 2px var(--tiptap-focus-ring);
     }
 
     table {
@@ -191,12 +196,12 @@ const props = defineProps({
 
       th {
         background-color: var(--tiptap-color-bg);
-        font-weight: bold;
+        font-weight: 600;
         text-align: left;
       }
 
       .selectedCell:after {
-        background: var(--tiptap-color-border);
+        background: var(--tiptap-selection-bg);
         content: "";
         left: 0;
         right: 0;
@@ -208,7 +213,7 @@ const props = defineProps({
       }
 
       .column-resize-handle {
-        background-color: #805ad5;
+        background-color: var(--tiptap-accent-blue);
         bottom: -2px;
         pointer-events: none;
         position: absolute;
@@ -231,13 +236,13 @@ const props = defineProps({
       border-left: 3px solid var(--tiptap-color-border);
       border-radius: 0 var(--tiptap-border-radius-md)
         var(--tiptap-border-radius-md) 0;
-      color: var(--tiptap-color-text-3);
+      color: var(--tiptap-color-text-muted);
       margin: 1.5rem 0;
       padding: 0.1rem 1rem;
     }
 
     p.is-editor-empty:first-child::before {
-      color: var(--tiptap-color-text-3);
+      color: var(--tiptap-color-text-muted);
       content: attr(data-placeholder);
       float: left;
       height: 0;

@@ -2,7 +2,7 @@
   <BubbleMenu
     v-if="editor && visibleButtons.length"
     :editor="editor"
-    :tippy-options="{ duration: 100, maxWidth: 'none' }"
+    :tippy-options="{ duration: 150, maxWidth: 'none' }"
   >
     <div class="bubble-menu-box">
       <component

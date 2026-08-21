@@ -8,17 +8,29 @@ content.value = `shjd dhjkdnkad dsdjasdajkdas`;
 const theme = ref<ThemeName>("light");
 const locale = ref<LocaleName>("zh");
 const toggleTheme = () => {
-  theme.value = theme.value === "light" ? "dark" : "light";
   document.documentElement.classList.toggle("dark");
-};
-const toggleLocale = () => {
-  locale.value = locale.value === "zh" ? "en" : "zh";
 };
 </script>
 
 <template>
-  <button @click="toggleTheme">切换主题</button>
-  <button @click="toggleLocale">切换语言</button>
+  <div class="app-bar">
+    <div>
+      主题
+      <select class="app-select" v-model="theme" @change="toggleTheme">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+    </div>
+
+    <div>
+      语言
+      <select class="app-select" v-model="locale">
+        <option value="zh">中文</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+  </div>
+
   <div style="height: 100vh; width: 80%; margin: 0 auto; padding: 10vh 0">
     <TipTapEditor
       v-model="content"
@@ -32,3 +44,23 @@ const toggleLocale = () => {
     <div style="word-break: break-word" v-html="content"></div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.app-bar {
+  padding: 8px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.app-select {
+  padding: 3px 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  color: var(--app-color-text);
+  background: var(--app-color-btn-bg);
+  outline: none;
+  border: 1px solid var(--app-color-border);
+}
+</style>

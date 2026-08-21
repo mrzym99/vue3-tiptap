@@ -93,11 +93,11 @@ function clearColor() {
   padding: var(--tiptap-padding-sm);
 
   &:hover:not(:disabled) {
-    background-color: var(--tiptap-btn--bg-hover);
+    background-color: var(--tiptap-btn-bg-hover);
   }
 
   &.is-active {
-    background-color: var(--tiptap-btn--bg-active);
+    background-color: var(--tiptap-btn-bg-active);
   }
 }
 
@@ -119,14 +119,18 @@ function clearColor() {
   cursor: pointer;
   height: 24px;
   padding: 0;
+  transition: filter 150ms ease;
   width: 24px;
 
+  /* hover: only brighten the swatch — no border/shadow/translate/scale
+     changes (Notion: hover feedback must be background-only) */
   &:hover {
-    transform: scale(1.1);
+    filter: brightness(1.1);
   }
 
+  /* selected state: blue ring, mirrors focus-ring pattern */
   &.active {
-    box-shadow: 0 0 0 2px var(--tiptap-color-text);
+    box-shadow: 0 0 0 2px var(--tiptap-accent-blue);
   }
 }
 

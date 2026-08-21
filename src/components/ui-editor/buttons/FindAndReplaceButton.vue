@@ -132,11 +132,11 @@ function clear() {
   padding: var(--tiptap-padding-sm);
 
   &:hover:not(:disabled) {
-    background-color: var(--tiptap-btn--bg-hover);
+    background-color: var(--tiptap-btn-bg-hover);
   }
 
   &.is-active {
-    background-color: var(--tiptap-btn--bg-active);
+    background-color: var(--tiptap-btn-bg-active);
   }
 }
 
@@ -154,7 +154,7 @@ function clear() {
 }
 
 .fr-count {
-  color: var(--tiptap-color-text-3);
+  color: var(--tiptap-color-text-muted);
   font-size: var(--tiptap-font-size-sm);
   white-space: nowrap;
 }

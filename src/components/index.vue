@@ -158,7 +158,7 @@ watch(
   position: relative;
   height: 100%;
   border: 1px solid var(--tiptap-color-border);
-  border-radius: var(--tiptap-border-radius-lg);
+  border-radius: var(--tiptap-border-radius-md);
   color: var(--tiptap-color-text);
   background-color: var(--tiptap-color-bg);
   display: flex;
@@ -171,7 +171,7 @@ watch(
   bottom: 0;
   right: 0;
   font-size: var(--tiptap-font-size-sm);
-  color: var(--tiptap-color-text-3);
+  color: var(--tiptap-color-text-muted);
   padding: var(--tiptap-padding-sm);
 }
 </style>

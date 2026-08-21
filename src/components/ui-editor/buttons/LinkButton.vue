@@ -125,11 +125,11 @@ function removeLink() {
   padding: var(--tiptap-padding-sm);
 
   &:hover:not(:disabled) {
-    background-color: var(--tiptap-btn--bg-hover);
+    background-color: var(--tiptap-btn-bg-hover);
   }
 
   &.is-active {
-    background-color: var(--tiptap-btn--bg-active);
+    background-color: var(--tiptap-btn-bg-active);
   }
 
   &:disabled {
@@ -152,7 +152,7 @@ function removeLink() {
 
 .link-hint {
   font-size: var(--tiptap-font-size-sm);
-  color: var(--tiptap-color-text-3);
+  color: var(--tiptap-color-text-muted);
   line-height: 1.4;
 }
 </style>

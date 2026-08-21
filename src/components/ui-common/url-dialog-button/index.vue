@@ -86,11 +86,11 @@ function submit() {
   padding: var(--tiptap-padding-sm);
 
   &:hover:not(:disabled) {
-    background-color: var(--tiptap-btn--bg-hover);
+    background-color: var(--tiptap-btn-bg-hover);
   }
 
   &.is-active {
-    background-color: var(--tiptap-btn--bg-active);
+    background-color: var(--tiptap-btn-bg-active);
   }
 
   &:disabled {

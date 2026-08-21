@@ -1,12 +1,12 @@
 import type { Theme } from "@/types";
 
 /**
- * Base tokens: non-color values (sizes/radius/spacing/motion/z-index) plus
- * the FIXED tooltip colors (black bg + white text) — tooltip intentionally
- * does NOT follow the theme, unlike the popover which does (see light/dark).
+ * Base tokens: non-color values only (sizes/radius/spacing/z-index).
+ * All colors live in the concrete themes (light.ts / dark.ts) — including the
+ * FIXED tooltip colors (black bg + white text), which both themes set to the
+ * same value so the tooltip does not follow the theme, unlike the popover.
  */
 export const baseTheme: Theme = {
-  "--tiptap-bezier": "cubic-bezier(0.4, 0, 0.2, 1)",
   "--tiptap-btn-size": "32px",
   "--tiptap-gap-xs": "2px",
   "--tiptap-gap-sm": "4px",
@@ -20,12 +20,8 @@ export const baseTheme: Theme = {
   "--tiptap-gap": "8px",
   "--tiptap-font-size-sm": "12px",
 
-  // --- fixed tooltip colors (black bg, white text, theme-independent) ---
-  "--tiptap-tooltip-bg": "#111111",
-  "--tiptap-tooltip-text": "#FFFFFF",
-  "--tiptap-tooltip-radius": "8px",
-
   // --- non-color, theme-independent values ---
+  "--tiptap-tooltip-radius": "8px",
   "--tiptap-z-popover": "1000",
   "--tiptap-input-radius": "8px",
   "--tiptap-input-padding": "6px 10px",
