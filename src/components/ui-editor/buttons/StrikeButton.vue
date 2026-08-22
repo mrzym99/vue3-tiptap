@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { RiStrikethrough } from "@remixicon/vue";
+import RiStrikethrough from "~icons/lucide/strikethrough";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 

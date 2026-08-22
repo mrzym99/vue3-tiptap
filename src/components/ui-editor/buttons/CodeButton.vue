@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { RiCodeSSlashLine } from "@remixicon/vue";
+import RiCodeSSlashLine from "~icons/lucide/code";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 

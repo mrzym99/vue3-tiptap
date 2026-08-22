@@ -7,7 +7,7 @@
         :class="{ 'is-active': isActive?.() }"
         :disabled="disabled"
       >
-        <component :is="icon" size="24px" />
+        <component :is="icon" />
       </button>
     </template>
     <div class="url-dialog-popover">

@@ -8,19 +8,17 @@
     :tooltip="t('textAlign')"
   >
     <template #suffix>
-      <RiArrowDropDownLine size="24px" />
+      <RiArrowDropDownLine />
     </template>
   </ActionMenuButton>
 </template>
 
 <script lang="ts" setup>
-import {
-  RiAlignCenter,
-  RiAlignLeft,
-  RiAlignRight,
-  RiAlignJustify,
-  RiArrowDropDownLine,
-} from "@remixicon/vue";
+import RiAlignCenter from "~icons/lucide/align-center";
+import RiAlignLeft from "~icons/lucide/align-left";
+import RiAlignRight from "~icons/lucide/align-right";
+import RiAlignJustify from "~icons/lucide/align-justify";
+import RiArrowDropDownLine from "~icons/lucide/chevron-down";
 import ActionMenuButton from "@/components/ui-common/action-menu-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 

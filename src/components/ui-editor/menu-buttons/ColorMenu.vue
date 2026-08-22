@@ -6,7 +6,7 @@
         class="color-button"
         :class="{ 'is-active': isColorActive }"
       >
-        <RiFontColor size="24px" />
+        <RiFontColor />
       </button>
     </template>
     <div class="color-popover">
@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import { RiFontColor } from "@remixicon/vue";
+import RiFontColor from "~icons/lucide/palette";
 import Popover from "@/components/ui-common/popover/index.vue";
 import TiptapButton from "@/components/ui-common/button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";

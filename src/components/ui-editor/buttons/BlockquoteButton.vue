@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { RiDoubleQuotesL } from "@remixicon/vue";
+import RiDoubleQuotesL from "~icons/lucide/quote";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 

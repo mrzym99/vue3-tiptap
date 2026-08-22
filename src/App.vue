@@ -52,7 +52,6 @@ const toggleTheme = () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
 }
 .app-select {
   padding: 3px 5px;

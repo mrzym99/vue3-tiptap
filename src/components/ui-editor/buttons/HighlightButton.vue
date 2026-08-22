@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { RiMarkPenLine } from "@remixicon/vue";
+import RiMarkPenLine from "~icons/lucide/highlighter";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 

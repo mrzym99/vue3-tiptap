@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
+import Icons from "unplugin-icons/vite";
 import { resolve } from "node:path";
 
 // https://vite.dev/config/
@@ -13,6 +14,11 @@ export default defineConfig({
       eslintrc: {
         enabled: true, // generate .eslintrc-auto-import.json
       },
+    }),
+    Icons({
+      compiler: "vue3",
+      // Keep the icon at 1em so its rendered size follows the host font-size
+      // on-demand icon imports resolve from ~icons/<collection>/<name>
     }),
   ],
   resolve: {

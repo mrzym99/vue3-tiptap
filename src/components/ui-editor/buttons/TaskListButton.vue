@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { RiTaskLine } from "@remixicon/vue";
+import RiTaskLine from "~icons/lucide/list-checks";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 

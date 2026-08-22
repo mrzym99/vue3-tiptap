@@ -8,24 +8,21 @@
     :tooltip="t('fontFamily')"
   >
     <template #suffix>
-      <RiArrowDropDownLine size="24px" />
+      <RiArrowDropDownLine />
     </template>
   </ActionMenuButton>
 </template>
 
 <script lang="ts" setup>
-import {
-  RiFontFamily,
-  RiArrowDropDownLine,
-} from "@remixicon/vue";
+import RiFontFamily from "~icons/lucide/type";
+import RiArrowDropDownLine from "~icons/lucide/chevron-down";
 import ActionMenuButton from "@/components/ui-common/action-menu-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 import type { ActionMenuButtonItem } from "@/components/ui-common/action-menu-button/type";
 
 const props = defineProps<EXTActionButtonProps>();
 
-const SANS =
-  'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+const SANS = 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 const SERIF = 'Georgia, "Times New Roman", serif';
 const MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 const YAHEI = '"Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif';
@@ -42,7 +39,12 @@ function createOption(
     label,
     icon: RiFontFamily,
     action: set,
-    disabled: !props.editor.can().chain().focus().setFontFamily(fontFamily ?? SANS).run(),
+    disabled: !props.editor
+      .can()
+      .chain()
+      .focus()
+      .setFontFamily(fontFamily ?? SANS)
+      .run(),
     isActive: () =>
       fontFamily === undefined
         ? !props.editor.getAttributes("textStyle").fontFamily

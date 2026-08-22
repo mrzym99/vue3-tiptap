@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { RiListUnordered } from "@remixicon/vue";
+import RiListUnordered from "~icons/lucide/list";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 

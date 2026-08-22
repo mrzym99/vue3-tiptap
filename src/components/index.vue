@@ -40,7 +40,7 @@ import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import Placeholder from "@tiptap/extension-placeholder";
-import customExtensions from "@/components/extensions/index.ts";
+import Extensions from "@/components/extensions/index.ts";
 
 const props = withDefaults(
   defineProps<
@@ -96,7 +96,6 @@ const modelValue = defineModel<string>({ required: true });
 // Value that changed before the editor instance was ready (useEditor creates
 // the instance on mount, so the initial watcher run may race with it)
 let pendingContent: string | undefined;
-
 const editor = useEditor({
   content: modelValue.value,
   extensions: [
@@ -106,7 +105,7 @@ const editor = useEditor({
     Placeholder.configure({
       placeholder: props.placeholder ?? "",
     }),
-    ...customExtensions,
+    ...Extensions,
   ],
   editable: !props.disabled,
   autofocus: props.autofocus,

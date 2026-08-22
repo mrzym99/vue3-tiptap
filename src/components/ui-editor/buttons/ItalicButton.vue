@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { RiItalic } from "@remixicon/vue";
+import RiItalic from "~icons/lucide/italic";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 

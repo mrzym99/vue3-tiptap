@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import { RiEraserLine } from "@remixicon/vue";
+import RiEraserLine from "~icons/lucide/eraser";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 

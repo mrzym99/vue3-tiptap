@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { RiUnderline } from "@remixicon/vue";
+import RiUnderline from "~icons/lucide/underline";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 

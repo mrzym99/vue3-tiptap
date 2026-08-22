@@ -2,7 +2,7 @@ import type { ImageOptions as TiptapImageOptions } from "@tiptap/extension-image
 import type { GeneralOptions } from "@/types";
 
 import { Image as TiptapImage } from "@tiptap/extension-image";
-import { RiImageLine } from "@remixicon/vue";
+import RiImageLine from "~icons/lucide/image";
 import UrlDialogButton from "@/components/ui-common/url-dialog-button/index.vue";
 
 export interface ImageOptions extends TiptapImageOptions, GeneralOptions {}

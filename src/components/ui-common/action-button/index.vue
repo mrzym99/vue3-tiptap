@@ -9,7 +9,7 @@
     <Tooltip :disabled="disabled || !tooltip">
       <template #trigger>
         <span class="icon-container">
-          <component :is="icon" size="24px" />
+          <component :is="icon" />
           <slot name="suffix" />
         </span>
       </template>
@@ -45,6 +45,7 @@ const handleClick = () => {
   min-width: var(--tiptap-btn-size);
   outline: none;
   padding: var(--tiptap-padding-sm);
+  font-size: var(--tiptap-font-size);
 
   &:hover:not(:disabled) {
     background-color: var(--tiptap-btn--bg-hover);

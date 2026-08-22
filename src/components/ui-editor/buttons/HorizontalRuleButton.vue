@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { RiSeparator } from "@remixicon/vue";
+import RiSeparator from "~icons/lucide/separator-horizontal";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 

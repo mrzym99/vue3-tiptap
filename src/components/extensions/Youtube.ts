@@ -2,7 +2,7 @@ import type { YoutubeOptions as TiptapYoutubeOptions } from "@tiptap/extension-y
 import type { GeneralOptions } from "@/types";
 
 import { Youtube as TiptapYoutube } from "@tiptap/extension-youtube";
-import { RiYoutubeLine } from "@remixicon/vue";
+import RiYoutubeLine from "~icons/lucide/youtube";
 import UrlDialogButton from "@/components/ui-common/url-dialog-button/index.vue";
 
 export interface YoutubeOptions extends TiptapYoutubeOptions, GeneralOptions {}

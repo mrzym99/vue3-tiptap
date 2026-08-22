@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { RiSubscript } from "@remixicon/vue";
+import RiSubscript from "~icons/lucide/subscript";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 

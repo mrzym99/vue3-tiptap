@@ -46,9 +46,7 @@ function onClick(event: MouseEvent) {
   color: var(--tiptap-color-text);
   cursor: pointer;
   font-size: var(--tiptap-font-size);
-  font-weight: 500;
-  line-height: 1.4;
-  padding: 6px 12px;
+  padding: var(--tiptap-padding-sm) var(--tiptap-padding-md);
   transition: background-color 150ms ease;
 
   &:hover:not(:disabled) {

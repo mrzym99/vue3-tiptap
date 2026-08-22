@@ -8,23 +8,23 @@
     :tooltip="t('table')"
   >
     <template #suffix>
-      <RiArrowDropDownLine size="24px" />
+      <RiArrowDropDownLine />
     </template>
   </ActionMenuButton>
 </template>
 
 <script lang="ts" setup>
-import {
-  RiTableLine,
-  RiArrowDropDownLine,
-  RiAddLine,
-  RiSubtractLine,
-  RiArrowDownLine,
-  RiArrowRightLine,
-  RiMergeCellsHorizontal,
-  RiSplitCellsHorizontal,
-  RiDeleteBinLine,
-} from "@remixicon/vue";
+// Table actions use tabler icons; merge/split cells have no tabler
+// equivalent, so they fall back to lucide.
+import RiTableLine from "~icons/tabler/table";
+import RiArrowDropDownLine from "~icons/tabler/chevron-down";
+import RiAddLine from "~icons/tabler/plus";
+import RiSubtractLine from "~icons/tabler/minus";
+import RiArrowDownLine from "~icons/tabler/arrow-down";
+import RiArrowRightLine from "~icons/tabler/arrow-right";
+import RiMergeCellsHorizontal from "~icons/lucide/table-cells-merge";
+import RiSplitCellsHorizontal from "~icons/lucide/table-cells-split";
+import RiDeleteBinLine from "~icons/tabler/trash";
 import ActionMenuButton from "@/components/ui-common/action-menu-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 import type { ActionMenuButtonItem } from "@/components/ui-common/action-menu-button/type";

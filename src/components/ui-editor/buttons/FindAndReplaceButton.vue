@@ -6,7 +6,7 @@
         class="fr-button"
         :class="{ 'is-active': hasResults }"
       >
-        <RiSearchLine size="24px" />
+        <RiSearchLine />
       </button>
     </template>
     <div class="fr-panel">
@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-import { RiSearchLine } from "@remixicon/vue";
+import RiSearchLine from "~icons/lucide/search";
 import Popover from "@/components/ui-common/popover/index.vue";
 import TiptapButton from "@/components/ui-common/button/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";

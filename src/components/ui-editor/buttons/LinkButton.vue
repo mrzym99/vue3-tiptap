@@ -12,7 +12,7 @@
         :class="{ 'is-active': isLinkActive }"
         :disabled="disabled"
       >
-        <RiLink size="24px" />
+        <RiLink />
       </button>
     </template>
     <div class="link-popover">
@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-import { RiLink } from "@remixicon/vue";
+import RiLink from "~icons/lucide/link";
 import Popover from "@/components/ui-common/popover/index.vue";
 import TiptapButton from "@/components/ui-common/button/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
@@ -115,6 +115,7 @@ function removeLink() {
   min-width: var(--tiptap-btn-size);
   outline: none;
   padding: var(--tiptap-padding-sm);
+  font-size: var(--tiptap-font-size);
 
   &:hover:not(:disabled) {
     background-color: var(--tiptap-btn-bg-hover);

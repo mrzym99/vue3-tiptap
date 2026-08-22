@@ -23,7 +23,7 @@
         :disabled="item.disabled"
         @click="item.action?.()"
       >
-        <component :is="item.icon" size="24px" />
+        <component :is="item.icon" />
         <span>{{ item.label }}</span>
       </button>
     </div>

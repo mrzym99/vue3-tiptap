@@ -8,19 +8,17 @@
     :tooltip="t('heading')"
   >
     <template #suffix>
-      <RiArrowDropDownLine size="24px" />
+      <RiArrowDropDownLine />
     </template>
   </ActionMenuButton>
 </template>
 
 <script lang="ts" setup>
-import {
-  RiH1,
-  RiH2,
-  RiH3,
-  RiParagraph,
-  RiArrowDropDownLine,
-} from "@remixicon/vue";
+import RiH1 from "~icons/lucide/heading-1";
+import RiH2 from "~icons/lucide/heading-2";
+import RiH3 from "~icons/lucide/heading-3";
+import RiParagraph from "~icons/lucide/pilcrow";
+import RiArrowDropDownLine from "~icons/lucide/chevron-down";
 import ActionMenuButton from "@/components/ui-common/action-menu-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 import type { ActionMenuButtonItem } from "@/components/ui-common/action-menu-button/type";
