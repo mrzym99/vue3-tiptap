@@ -30,14 +30,9 @@
         />
         <span>{{ t("colorCustom") }}</span>
       </label>
-      <button
-        v-if="currentColor"
-        type="button"
-        class="tiptap-btn"
-        @click="clearColor"
-      >
+      <TiptapButton v-if="currentColor" @click="clearColor">
         {{ t("colorClear") }}
-      </button>
+      </TiptapButton>
     </div>
   </Popover>
 </template>
@@ -45,6 +40,7 @@
 <script lang="ts" setup>
 import { RiFontColor } from "@remixicon/vue";
 import Popover from "@/components/ui-common/popover/index.vue";
+import TiptapButton from "@/components/ui-common/button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
 const props = defineProps<EXTActionButtonProps>();
@@ -137,7 +133,7 @@ function clearColor() {
 .color-custom {
   align-items: center;
   display: flex;
-  font-size: var(--tiptap-font-size-sm);
+  font-size: var(--tiptap-font-size);
   gap: var(--tiptap-gap);
 }
 

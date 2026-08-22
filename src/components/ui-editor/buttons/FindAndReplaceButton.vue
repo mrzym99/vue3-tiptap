@@ -11,42 +11,36 @@
     </template>
     <div class="fr-panel">
       <div class="fr-row">
-        <input
+        <TiptapInput
           v-model="searchTerm"
-          class="tiptap-input"
           :placeholder="t('findPlaceholder')"
           @keydown.enter.prevent="goNext"
         />
         <span class="fr-count">{{ totalResults }}</span>
       </div>
       <div class="fr-row">
-        <input
+        <TiptapInput
           v-model="replaceTerm"
-          class="tiptap-input"
           :placeholder="t('replacePlaceholder')"
           @keydown.enter.prevent="replaceOne"
         />
       </div>
       <div class="fr-actions">
-        <button type="button" class="tiptap-btn" @click="goPrev">
+        <TiptapButton @click="goPrev">
           {{ t("prevMatch") }}
-        </button>
-        <button type="button" class="tiptap-btn" @click="goNext">
+        </TiptapButton>
+        <TiptapButton @click="goNext">
           {{ t("nextMatch") }}
-        </button>
-        <button
-          type="button"
-          class="tiptap-btn tiptap-btn--primary"
-          @click="replaceOne"
-        >
+        </TiptapButton>
+        <TiptapButton variant="primary" @click="replaceOne">
           {{ t("replace") }}
-        </button>
-        <button type="button" class="tiptap-btn" @click="replaceAll">
+        </TiptapButton>
+        <TiptapButton @click="replaceAll">
           {{ t("replaceAll") }}
-        </button>
-        <button type="button" class="tiptap-btn" @click="clear">
+        </TiptapButton>
+        <TiptapButton @click="clear">
           {{ t("clear") }}
-        </button>
+        </TiptapButton>
       </div>
     </div>
   </Popover>
@@ -55,6 +49,8 @@
 <script lang="ts" setup>
 import { RiSearchLine } from "@remixicon/vue";
 import Popover from "@/components/ui-common/popover/index.vue";
+import TiptapButton from "@/components/ui-common/button/index.vue";
+import TiptapInput from "@/components/ui-common/input/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
 const props = defineProps<EXTActionButtonProps>();
@@ -155,7 +151,7 @@ function clear() {
 
 .fr-count {
   color: var(--tiptap-color-text-muted);
-  font-size: var(--tiptap-font-size-sm);
+  font-size: var(--tiptap-font-size);
   white-space: nowrap;
 }
 

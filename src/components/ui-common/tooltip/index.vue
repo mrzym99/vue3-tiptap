@@ -39,11 +39,14 @@ const triggerEl = ref<HTMLElement | null>(null);
 const floatingEl = ref<HTMLElement | null>(null);
 const show = ref(false);
 
-const { floatingStyle, start: startFloating, stop: stopFloating } = useFloating(
-  triggerEl,
-  floatingEl,
-  { placement: props.placement, offset: 6 },
-);
+const {
+  floatingStyle,
+  start: startFloating,
+  stop: stopFloating,
+} = useFloating(triggerEl, floatingEl, {
+  placement: props.placement,
+  offset: 6,
+});
 
 watch(show, async (v) => {
   if (!v) {
@@ -91,9 +94,9 @@ onBeforeUnmount(() => {
   border-radius: var(--tiptap-tooltip-radius);
   box-shadow: var(--tiptap-popover-shadow);
   color: var(--tiptap-tooltip-text);
-  font-size: var(--tiptap-font-size-sm);
+  font-size: var(--tiptap-font-size);
   line-height: 1.4;
-  padding: var(--tiptap-padding-xs) var(--tiptap-padding-sm);
+  padding: var(--tiptap-padding-md);
   white-space: nowrap;
   z-index: var(--tiptap-z-popover);
 }

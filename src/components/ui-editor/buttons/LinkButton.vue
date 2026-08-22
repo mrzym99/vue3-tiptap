@@ -16,28 +16,18 @@
       </button>
     </template>
     <div class="link-popover">
-      <input
+      <TiptapInput
         v-model="href"
-        class="tiptap-input"
         :placeholder="t('linkPlaceholder')"
         @keydown.enter.prevent="applyLink"
       />
       <div class="link-actions">
-        <button
-          type="button"
-          class="tiptap-btn tiptap-btn--primary"
-          @click="applyLink"
-        >
+        <TiptapButton variant="primary" @click="applyLink">
           {{ t("linkApply") }}
-        </button>
-        <button
-          v-if="isLinkActive"
-          type="button"
-          class="tiptap-btn"
-          @click="removeLink"
-        >
+        </TiptapButton>
+        <TiptapButton v-if="isLinkActive" @click="removeLink">
           {{ t("linkRemove") }}
-        </button>
+        </TiptapButton>
       </div>
       <div v-if="showHint" class="link-hint">
         {{ t("linkHint") }}
@@ -49,6 +39,8 @@
 <script lang="ts" setup>
 import { RiLink } from "@remixicon/vue";
 import Popover from "@/components/ui-common/popover/index.vue";
+import TiptapButton from "@/components/ui-common/button/index.vue";
+import TiptapInput from "@/components/ui-common/input/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
 const props = defineProps<EXTActionButtonProps>();
@@ -151,7 +143,7 @@ function removeLink() {
 }
 
 .link-hint {
-  font-size: var(--tiptap-font-size-sm);
+  font-size: var(--tiptap-font-size);
   color: var(--tiptap-color-text-muted);
   line-height: 1.4;
 }

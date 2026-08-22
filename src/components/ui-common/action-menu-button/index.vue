@@ -73,7 +73,7 @@ const active = computed<ActionMenuButtonItem>(() => {
   color: var(--tiptap-color-text);
   cursor: pointer;
   display: flex;
-  font-size: var(--tiptap-font-size-sm);
+  font-size: var(--tiptap-font-size);
   gap: var(--tiptap-gap);
   padding: var(--tiptap-padding-sm) var(--tiptap-padding-md);
   text-align: left;

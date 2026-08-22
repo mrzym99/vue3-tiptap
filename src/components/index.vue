@@ -170,7 +170,7 @@ watch(
   position: absolute;
   bottom: 0;
   right: 0;
-  font-size: var(--tiptap-font-size-sm);
+  font-size: var(--tiptap-font-size);
   color: var(--tiptap-color-text-muted);
   padding: var(--tiptap-padding-sm);
 }

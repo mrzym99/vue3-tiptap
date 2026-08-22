@@ -11,20 +11,15 @@
       </button>
     </template>
     <div class="url-dialog-popover">
-      <input
+      <TiptapInput
         v-model="value"
-        class="tiptap-input"
         :placeholder="placeholder"
         @keydown.enter.prevent="submit"
       />
       <div class="url-dialog-actions">
-        <button
-          type="button"
-          class="tiptap-btn tiptap-btn--primary"
-          @click="submit"
-        >
+        <TiptapButton variant="primary" @click="submit">
           {{ applyText }}
-        </button>
+        </TiptapButton>
       </div>
     </div>
   </Popover>
@@ -34,6 +29,8 @@
 import type { Component } from "vue";
 import type { Editor } from "@tiptap/core";
 import Popover from "@/components/ui-common/popover/index.vue";
+import TiptapButton from "@/components/ui-common/button/index.vue";
+import TiptapInput from "@/components/ui-common/input/index.vue";
 import { useTiptapLocale, type LocaleT } from "@/locales";
 
 const props = withDefaults(

@@ -1,7 +1,5 @@
 import type { App, Plugin } from "vue";
 
-import "./components/ui-common/styles.scss";
-
 import TipTapEditor from "./components/index.vue";
 import builtinExtensions from "./components/extensions";
 
