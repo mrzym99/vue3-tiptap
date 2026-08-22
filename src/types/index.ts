@@ -49,10 +49,12 @@ export interface TipTapEditorProps {
   /**
    * Toolbar button selection. Keys are extension names
    * (e.g. "bold", "heading", "textAlign", "table", "image").
+   * - `string`: TinyMCE-style layout, e.g. "bold italic | underline strike"
+   *   (space-separated keys, `|` groups buttons with a separator)
    * - `string[]`: render only these buttons, in this order
    * - `{ include?, exclude? }`: include filters to a subset (default: all),
    *   exclude removes specific buttons
-   * - `undefined`: render all buttons (default)
+   * - `undefined`: use the default toolbar layout
    */
   toolbar?: Toolbar;
   /** Bubble-menu selection, falls back to `toolbar` when omitted */
@@ -62,9 +64,30 @@ export interface TipTapEditorProps {
 }
 
 /**
- * Which toolbar buttons to render. Keys are extension names.
+ * Toolbar configuration.
+ *
+ * - `string`: TinyMCE-style — space-separated button keys, `|` divides groups
+ *   (e.g. `"bold italic | underline strike"`). Unknown keys are ignored.
+ * - `string[]`: render only these buttons, in this order
+ * - `{ include?, exclude? }`: include filters to a subset (default: all),
+ *   exclude removes specific buttons
+ * - `undefined`: use {@link defaultToolbar}
  */
-export type Toolbar = string[] | { include?: string[]; exclude?: string[] };
+export type Toolbar =
+  | string
+  | string[]
+  | { include?: string[]; exclude?: string[] };
+
+/**
+ * Default toolbar layout, TinyMCE-style.
+ * Space-separated button keys; `|` renders a group separator.
+ * Keys are Tiptap extension names (e.g. "bold", "heading", "table", "image").
+ */
+export const defaultToolbar =
+  "bold italic strike underline | code highlight subscript superscript | " +
+  "heading horizontalRule blockquote textAlign | bulletList orderedList taskList | " +
+  "link codeBlock details | image youtube audio twitch | color fontFamily | " +
+  "table | findAndReplace invisibleCharacters";
 
 /**
  * Translation function compatible with the basic vue-i18n `t` signature.

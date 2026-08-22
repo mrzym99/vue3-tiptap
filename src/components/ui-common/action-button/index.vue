@@ -1,21 +1,21 @@
 <template>
-  <button
-    type="button"
-    class="action-button"
-    :class="{ 'is-active': isActive?.() }"
-    :disabled="disabled"
-    @click="handleClick"
-  >
-    <Tooltip :disabled="disabled || !tooltip">
-      <template #trigger>
+  <Tooltip :disabled="disabled || !tooltip">
+    <template #trigger>
+      <button
+        type="button"
+        class="action-button"
+        :class="{ 'is-active': isActive?.() }"
+        :disabled="disabled"
+        @click="handleClick"
+      >
         <span class="icon-container">
           <component :is="icon" />
           <slot name="suffix" />
         </span>
-      </template>
-      {{ tooltip }}
-    </Tooltip>
-  </button>
+      </button>
+    </template>
+    {{ tooltip }}
+  </Tooltip>
 </template>
 
 <script setup lang="ts">
@@ -62,8 +62,8 @@ const handleClick = () => {
 }
 
 .icon-container {
-  align-items: center;
   display: flex;
+  align-items: center;
   gap: var(--tiptap-gap-sm, var(--tiptap-gap));
   justify-content: center;
 }

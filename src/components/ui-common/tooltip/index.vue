@@ -45,7 +45,7 @@ const {
   stop: stopFloating,
 } = useFloating(triggerEl, floatingEl, {
   placement: props.placement,
-  offset: 6,
+  offset: 8,
 });
 
 watch(show, async (v) => {
@@ -96,7 +96,7 @@ onBeforeUnmount(() => {
   color: var(--tiptap-tooltip-text);
   font-size: var(--tiptap-font-size);
   line-height: 1.4;
-  padding: var(--tiptap-padding-md);
+  padding: var(--tiptap-padding-sm) var(--tiptap-padding-md);
   white-space: nowrap;
   z-index: var(--tiptap-z-popover);
 }

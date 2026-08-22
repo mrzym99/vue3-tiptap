@@ -43,7 +43,7 @@ const buttons: { key: string; component: Component }[] = [
 ];
 
 const visibleButtons = computed(() => {
-  const keys = resolveToolbar(
+  const { keys } = resolveToolbar(
     props.toolbar,
     buttons.map((b) => b.key),
   );
