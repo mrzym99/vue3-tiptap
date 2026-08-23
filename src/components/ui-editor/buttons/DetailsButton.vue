@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import RiExpandUpDownLine from "~icons/lucide/chevrons-up-down";
+import RiExpandUpDownLine from "~icons/lucide/list-collapse";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 

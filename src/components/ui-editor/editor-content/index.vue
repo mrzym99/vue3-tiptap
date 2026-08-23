@@ -134,12 +134,51 @@ const props = defineProps({
       padding: 0;
     }
 
-    /* details */
-    details {
+    /* details (toggle block) */
+    div[data-type="details"] {
       border: 1px solid var(--tiptap-color-border);
       border-radius: var(--tiptap-border-radius-md);
+      display: flex;
       margin: 0.75rem 0;
-      padding: 0 0.75rem;
+      padding: var(--tiptap-padding-xs) var(--tiptap-padding-md);
+      transition: background-color 150ms ease;
+
+      /* toggle button (chevron) injected by the Details node view */
+      > button[data-open] {
+        align-items: center;
+        align-self: flex-start;
+        background: none;
+        border: none;
+        border-radius: var(--tiptap-border-radius-md);
+        color: var(--tiptap-color-text-muted);
+        cursor: pointer;
+        display: inline-flex;
+        flex: 0 0 auto;
+        justify-content: center;
+        margin-top: var(--tiptap-padding-sm);
+        padding: var(--tiptap-padding-xs);
+        transition: background-color 150ms ease, color 150ms ease;
+
+        &:hover {
+          background-color: var(--tiptap-btn-bg-hover);
+          color: var(--tiptap-color-text);
+        }
+      }
+
+      /* content wrapper (summary + content block) */
+      > div:last-child {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+
+      /* folded state: hide the content block, keep the summary header */
+      &:not(.is-open) [data-type="detailsContent"] {
+        display: none;
+      }
+
+      &.is-open {
+        background-color: var(--tiptap-color-bg);
+      }
     }
 
     details summary {
