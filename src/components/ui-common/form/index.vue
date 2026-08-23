@@ -106,7 +106,7 @@ defineExpose({ validateField, validateAll, errors, formEl });
   display: flex;
   flex-direction: column;
   gap: var(--tiptap-gap);
-  min-width: 220px;
+  min-width: var(--tiptap-min-width);
 }
 
 .form-actions {

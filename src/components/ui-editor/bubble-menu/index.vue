@@ -2,6 +2,7 @@
   <BubbleMenu
     v-if="editor && visibleButtons.length"
     :editor="editor"
+    :should-show="shouldShow"
     :tippy-options="{ duration: 150, maxWidth: 'none' }"
   >
     <div class="bubble-menu-box">
@@ -19,6 +20,8 @@
 <script lang="ts" setup>
 import { BubbleMenu } from "@tiptap/vue-3/menus";
 import type { Editor } from "@tiptap/vue-3";
+import type { EditorState } from "@tiptap/pm/state";
+import type { EditorView } from "@tiptap/pm/view";
 import type { Component } from "vue";
 import type { Toolbar } from "@/types";
 import { resolveToolbar } from "@/components/utils";
@@ -51,6 +54,25 @@ const visibleButtons = computed(() => {
   );
   return buttons.filter((b) => keys.includes(b.key));
 });
+
+/**
+ * Hide the text-selection bubble menu while the caret is inside a link —
+ * clicking a link opens the toolbar link button's popover instead.
+ * (`editor` is typed loosely: tiptap's shouldShow passes its own Editor
+ *  subclass, which differs from the @tiptap/vue-3 Editor type.)
+ */
+function shouldShow({ editor: e }: {
+  editor: any;
+  element: HTMLElement;
+  view: EditorView;
+  state: EditorState;
+  oldState?: EditorState;
+  from: number;
+  to: number;
+}) {
+  if (e.isActive("link")) return false;
+  return e.state.selection.from !== e.state.selection.to;
+}
 </script>
 
 <style lang="scss" scoped>

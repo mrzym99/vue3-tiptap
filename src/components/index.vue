@@ -7,6 +7,7 @@
         :editor="editor"
         :toolbar="props.bubbleMenu ?? props.toolbar"
       />
+      <LinkBubbleMenu :editor="editor" />
       <FloatingMenuBar
         :editor="editor"
         :toolbar="props.floatingMenu ?? props.toolbar"
@@ -23,6 +24,7 @@ import ThemeProvider from "@/components/ui-common/theme-provider/index.vue";
 import ToolBar from "@/components/ui-editor/tool-bar/index.vue";
 import EditorContent from "@/components/ui-editor/editor-content/index.vue";
 import BubbleMenuBar from "@/components/ui-editor/bubble-menu/index.vue";
+import LinkBubbleMenu from "@/components/ui-editor/link-bubble-menu/index.vue";
 import FloatingMenuBar from "@/components/ui-editor/floating-menu/index.vue";
 // https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
 import { useEditor } from "@tiptap/vue-3";

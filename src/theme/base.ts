@@ -25,4 +25,6 @@ export const baseTheme: Theme = {
   "--tiptap-z-popover": "1000",
   "--tiptap-input-radius": "8px",
   "--tiptap-input-padding": "6px 10px",
+
+  "--tiptap-min-width": "220px",
 };

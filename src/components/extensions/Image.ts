@@ -19,6 +19,7 @@ export const Image = /* @__PURE__ */ TiptapImage.extend<ImageOptions>({
           icon: RiImageLine,
           tooltip: t("image"),
           placeholder: t("imagePlaceholder"),
+          resizeAble: true,
           onSubmit: (payload: {
             src: string;
             width?: number;

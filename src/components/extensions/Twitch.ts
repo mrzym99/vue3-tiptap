@@ -19,6 +19,7 @@ export const Twitch = /* @__PURE__ */ TiptapTwitch.extend<TwitchOptions>({
           icon: RiTwitchLine,
           tooltip: t("twitch"),
           placeholder: t("twitchPlaceholder"),
+          resizeAble: true,
           onSubmit: (payload: {
             src: string;
             width?: number;

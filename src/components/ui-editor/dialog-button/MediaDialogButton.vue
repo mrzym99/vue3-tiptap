@@ -27,7 +27,7 @@
             />
           </template>
         </FormItem>
-        <div class="media-dialog-form-dimensions">
+        <div class="media-dialog-form-dimensions" v-if="resizeAble">
           <FormItem name="width" class="media-dialog-form-field">
             <template #default="{ id }">
               <TiptapInput
@@ -67,7 +67,6 @@
 import type { Component } from "vue";
 import type { Editor } from "@tiptap/core";
 import ActionDialogButton from "@/components/ui-common/dialog-button/index.vue";
-import MediaDialogForm from "@/components/ui-editor/dialog-button/media-dialog-form.vue";
 import { ref } from "vue";
 import Form from "@/components/ui-common/form/index.vue";
 import type { FormRule } from "@/components/ui-common/form/types";
@@ -78,9 +77,7 @@ import { useTiptapLocale, type LocaleT } from "@/locales";
 
 /**
  * Toolbar button that opens a media-insert dialog (URL + optional width/height).
- * Wraps {@link ActionDialogButton} with the built-in {@link MediaDialogForm}.
- *
- * Submit payload: `{ src, width?, height? }` — the popover closes on submit.
+ * The form validates (URL required) before submitting `{ src, width?, height? }`.
  */
 const props = withDefaults(
   defineProps<{
@@ -90,6 +87,7 @@ const props = withDefaults(
     placeholder?: string;
     applyLabel?: string;
     disabled?: boolean;
+    resizeAble?: boolean;
     isActive?: () => boolean;
     onSubmit: (payload: {
       src: string;
@@ -103,6 +101,7 @@ const props = withDefaults(
     placeholder: "",
     applyLabel: undefined,
     disabled: false,
+    resizeAble: false,
   },
 );
 

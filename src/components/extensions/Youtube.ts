@@ -13,6 +13,7 @@ export const Youtube = /* @__PURE__ */ TiptapYoutube.extend<YoutubeOptions>({
       ...(this.parent?.() as TiptapYoutubeOptions),
       controls: true,
       nocookie: false,
+      resizeAble: true,
       button: ({ editor, t }) => ({
         component: MediaDialogButton,
         componentProps: {
