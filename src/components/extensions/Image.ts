@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { Image as TiptapImage } from "@tiptap/extension-image";
 import RiImageLine from "~icons/lucide/image";
-import UrlDialogButton from "@/components/ui-common/url-dialog-button/index.vue";
+import MediaDialogButton from "@/components/ui-editor/dialog-button/MediaDialogButton.vue";
 
 export interface ImageOptions extends TiptapImageOptions, GeneralOptions {}
 
@@ -12,15 +12,18 @@ export const Image = /* @__PURE__ */ TiptapImage.extend<ImageOptions>({
     return {
       ...(this.parent?.() as TiptapImageOptions),
       button: ({ editor, t }) => ({
-        component: UrlDialogButton,
+        component: MediaDialogButton,
         componentProps: {
           editor,
           t,
           icon: RiImageLine,
           tooltip: t("image"),
           placeholder: t("imagePlaceholder"),
-          onSubmit: (url: string) =>
-            editor.chain().focus().setImage({ src: url }).run(),
+          onSubmit: (payload: {
+            src: string;
+            width?: number;
+            height?: number;
+          }) => editor.chain().focus().setImage(payload).run(),
         },
       }),
     };

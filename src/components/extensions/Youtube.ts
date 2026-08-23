@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { Youtube as TiptapYoutube } from "@tiptap/extension-youtube";
 import RiYoutubeLine from "~icons/lucide/youtube";
-import UrlDialogButton from "@/components/ui-common/url-dialog-button/index.vue";
+import MediaDialogButton from "@/components/ui-editor/dialog-button/MediaDialogButton.vue";
 
 export interface YoutubeOptions extends TiptapYoutubeOptions, GeneralOptions {}
 
@@ -14,15 +14,18 @@ export const Youtube = /* @__PURE__ */ TiptapYoutube.extend<YoutubeOptions>({
       controls: true,
       nocookie: false,
       button: ({ editor, t }) => ({
-        component: UrlDialogButton,
+        component: MediaDialogButton,
         componentProps: {
           editor,
           t,
           icon: RiYoutubeLine,
           tooltip: t("youtube"),
           placeholder: t("youtubePlaceholder"),
-          onSubmit: (url: string) =>
-            editor.chain().focus().setYoutubeVideo({ src: url }).run(),
+          onSubmit: (payload: {
+            src: string;
+            width?: number;
+            height?: number;
+          }) => editor.chain().focus().setYoutubeVideo(payload).run(),
         },
       }),
     };

@@ -157,7 +157,9 @@ const props = defineProps({
         justify-content: center;
         margin-top: var(--tiptap-padding-sm);
         padding: var(--tiptap-padding-xs);
-        transition: background-color 150ms ease, color 150ms ease;
+        transition:
+          background-color 150ms ease,
+          color 150ms ease;
 
         &:hover {
           background-color: var(--tiptap-btn-bg-hover);
@@ -290,8 +292,6 @@ const props = defineProps({
     div[data-youtube-video] iframe {
       border: 2px solid var(--tiptap-color-border);
       outline: none;
-      min-width: 200px;
-      min-height: 200px;
       display: block;
     }
   }
