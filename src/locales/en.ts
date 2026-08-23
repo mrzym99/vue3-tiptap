@@ -35,6 +35,8 @@ export default {
   twitch: "Twitch",
   twitchPlaceholder: "Twitch URL",
   insert: "Insert",
+  mediaDelete: "Delete",
+  media: "Media",
   mediaWidth: "Width",
   mediaHeight: "Height",
   mediaUrlRequired: "Please enter a URL",

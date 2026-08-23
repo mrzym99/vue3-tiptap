@@ -293,6 +293,14 @@ const props = defineProps({
       border: 2px solid var(--tiptap-color-border);
       outline: none;
       display: block;
+      cursor: move;
+    }
+
+    div[data-twitch-video] iframe {
+      border: 2px solid var(--tiptap-color-border);
+      outline: none;
+      display: block;
+      cursor: move;
     }
   }
 }

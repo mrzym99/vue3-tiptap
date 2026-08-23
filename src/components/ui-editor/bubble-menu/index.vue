@@ -56,8 +56,8 @@ const visibleButtons = computed(() => {
 });
 
 /**
- * Hide the text-selection bubble menu while the caret is inside a link —
- * clicking a link opens the toolbar link button's popover instead.
+ * Hide the text-selection bubble menu while the caret is inside a link or a
+ * media node — the dedicated link/media bubbles take over there.
  * (`editor` is typed loosely: tiptap's shouldShow passes its own Editor
  *  subclass, which differs from the @tiptap/vue-3 Editor type.)
  */
@@ -71,6 +71,8 @@ function shouldShow({ editor: e }: {
   to: number;
 }) {
   if (e.isActive("link")) return false;
+  if (e.isActive("image") || e.isActive("youtube")) return false;
+  if (e.isActive("audio") || e.isActive("twitch")) return false;
   return e.state.selection.from !== e.state.selection.to;
 }
 </script>

@@ -105,10 +105,6 @@ const props = withDefaults(
   },
 );
 
-const emit = defineEmits<{
-  submit: [payload: { src: string; width?: number; height?: number }];
-}>();
-
 const { t } = useTiptapLocale();
 
 const formRef = ref<InstanceType<typeof Form> | null>(null);
@@ -136,11 +132,15 @@ const toNumber = (value: string) => {
 };
 
 function onSubmitInner(values: Record<string, unknown>) {
-  emit("submit", {
+  props.onSubmit({
     src: String(values.src).trim(),
     width: toNumber(String(values.width ?? "")),
     height: toNumber(String(values.height ?? "")),
   });
+  // Reset the form so the next open starts clean.
+  src.value = "";
+  width.value = "";
+  height.value = "";
 }
 
 /** Submit on Enter inside any field — the form validates first. */

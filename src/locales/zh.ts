@@ -35,6 +35,8 @@ export default {
   twitch: "直播",
   twitchPlaceholder: "Twitch 链接",
   insert: "插入",
+  mediaDelete: "删除",
+  media: "媒体",
   mediaWidth: "宽度",
   mediaHeight: "高度",
   mediaUrlRequired: "请输入地址",
