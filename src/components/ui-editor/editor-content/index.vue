@@ -247,6 +247,14 @@ const props = defineProps({
       height: 0;
       pointer-events: none;
     }
+
+    div[data-youtube-video] iframe {
+      border: 2px solid var(--tiptap-color-border);
+      outline: none;
+      min-width: 200px;
+      min-height: 200px;
+      display: block;
+    }
   }
 }
 </style>

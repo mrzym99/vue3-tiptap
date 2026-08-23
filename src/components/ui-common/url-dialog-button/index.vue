@@ -1,14 +1,13 @@
 <template>
   <Popover v-model:show="show" trigger="click" placement="bottom-start">
     <template #trigger>
-      <button
-        type="button"
-        class="url-dialog-button"
-        :class="{ 'is-active': isActive?.() }"
+      <ActionButton
+        :editor="editor"
+        :icon="icon"
+        :tooltip="tooltip ?? ''"
         :disabled="disabled"
-      >
-        <component :is="icon" />
-      </button>
+        :is-active="isActive"
+      />
     </template>
     <div class="url-dialog-popover">
       <TiptapInput
@@ -29,6 +28,7 @@
 import type { Component } from "vue";
 import type { Editor } from "@tiptap/core";
 import Popover from "@/components/ui-common/popover/index.vue";
+import ActionButton from "@/components/ui-common/action-button/index.vue";
 import TiptapButton from "@/components/ui-common/button/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import { useTiptapLocale, type LocaleT } from "@/locales";
@@ -68,34 +68,6 @@ function submit() {
 </script>
 
 <style lang="scss" scoped>
-.url-dialog-button {
-  align-items: center;
-  background: none;
-  color: var(--tiptap-color-text);
-  border: none;
-  border-radius: var(--tiptap-border-radius-md);
-  cursor: pointer;
-  display: inline-flex;
-  height: var(--tiptap-btn-size);
-  justify-content: center;
-  min-width: var(--tiptap-btn-size);
-  outline: none;
-  padding: var(--tiptap-padding-sm);
-
-  &:hover:not(:disabled) {
-    background-color: var(--tiptap-btn-bg-hover);
-  }
-
-  &.is-active {
-    background-color: var(--tiptap-btn-bg-active);
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-}
-
 .url-dialog-popover {
   display: flex;
   flex-direction: column;
