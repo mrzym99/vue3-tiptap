@@ -3,7 +3,7 @@ import type { GeneralOptions, ImageUploader } from "@/types";
 
 import { Image as TiptapImage } from "@tiptap/extension-image";
 import RiImageLine from "~icons/lucide/image";
-import ImageDialogButton from "@/components/ui-editor/toolbar/dialog-button/ImageDialogButton.vue";
+import ImagePopoverButton from "@/components/ui-editor/toolbar/popover-buttons/ImagePopoverButton.vue";
 
 export interface ImageOptions extends TiptapImageOptions, GeneralOptions {
   /**
@@ -20,7 +20,7 @@ export const Image = /* @__PURE__ */ TiptapImage.extend<ImageOptions>({
       ...(this.parent?.() as TiptapImageOptions),
       upload: undefined,
       button: ({ editor, t }) => ({
-        component: ImageDialogButton,
+        component: ImagePopoverButton,
         componentProps: {
           editor,
           t,

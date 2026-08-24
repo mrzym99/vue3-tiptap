@@ -1,5 +1,5 @@
 <template>
-  <BaseDialogButton
+  <BasePopoverButton
     :editor="editor"
     :icon="icon"
     :tooltip="tooltip ?? ''"
@@ -18,13 +18,13 @@
         @keydown.enter.prevent="submit"
       />
     </template>
-  </BaseDialogButton>
+  </BasePopoverButton>
 </template>
 
 <script setup lang="ts">
 import type { Component } from "vue";
 import type { Editor } from "@tiptap/core";
-import BaseDialogButton from "@/components/ui-editor/toolbar/dialog-button/BaseDialogButton.vue";
+import BasePopoverButton from "@/components/ui-editor/toolbar/popover-buttons/BasePopoverButton.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import type { LocaleT } from "@/locales";
 

@@ -8,17 +8,17 @@
 
 ## 2. 技术栈
 
-| 分类       | 技术                                          | 说明                             |
-| ---------- | --------------------------------------------- | -------------------------------- |
-| 框架       | Vue 3.5（`<script setup>` + Composition API） | 应用与组件框架                   |
-| 编辑器内核 | TipTap 3.30（`@tiptap/vue-3` / `@tiptap/pm`）  | 基于 ProseMirror 的编辑器        |
-| 构建工具   | Vite 8                                        | 开发服务器与打包                 |
-| 语言       | TypeScript ~6.0                               | 全量类型约束                     |
+| 分类        | 技术                                          | 说明                                      |
+| ----------- | --------------------------------------------- | ----------------------------------------- |
+| 框架        | Vue 3.5（`<script setup>` + Composition API） | 应用与组件框架                            |
+| 编辑器内核  | TipTap 3.30（`@tiptap/vue-3` / `@tiptap/pm`） | 基于 ProseMirror 的编辑器                 |
+| 构建工具    | Vite 8                                        | 开发服务器与打包                          |
+| 语言        | TypeScript ~6.0                               | 全量类型约束                              |
 | UI 基础组件 | 自研（@floating-ui/dom 定位）                 | Popover/Tooltip/菜单/色板，零 UI 框架依赖 |
-| 图标       | @remixicon/vue                                | 工具栏图标                       |
-| 国际化     | 内置轻量 i18n（zh/en + provide/inject）     | 不依赖 vue-i18n，宿主零要求       |
-| 样式       | SCSS（sass） + CSS 变量主题体系             | 浅色 / 深色 / 自定义主题，变量作用域化 |
-| 包管理     | pnpm                                          | 依赖管理                         |
+| 图标        | @remixicon/vue                                | 工具栏图标                                |
+| 国际化      | 内置轻量 i18n（zh/en + provide/inject）       | 不依赖 vue-i18n，宿主零要求               |
+| 样式        | SCSS（sass） + CSS 变量主题体系               | 浅色 / 深色 / 自定义主题，变量作用域化    |
+| 包管理      | pnpm                                          | 依赖管理                                  |
 
 ## 3. 快速开始
 
@@ -95,14 +95,14 @@ tip-tap-editor/
 
 ### 5.1 组件 API（`src/components/index.vue`）
 
-| 属性         | 类型                | 默认值      | 说明                                 |
-| ------------ | ------------------- | ----------- | ------------------------------------ |
-| `v-model`    | `string`            | 必填        | 编辑器 HTML 内容，双向绑定           |
-| `max-length` | `number`            | `0`（不限） | 最大字数限制，超出自动截断           |
-| `disabled`   | `boolean`           | `false`     | 是否禁用编辑（只读）                 |
-| `theme`      | `'light' \| 'dark'` | `'light'`   | 主题模式                             |
-| `placeholder`| `string`            | `-`         | 空文档时显示的占位文本               |
-| `autofocus`  | `boolean`           | `false`     | 挂载后是否自动聚焦                   |
+| 属性          | 类型                | 默认值      | 说明                       |
+| ------------- | ------------------- | ----------- | -------------------------- |
+| `v-model`     | `string`            | 必填        | 编辑器 HTML 内容，双向绑定 |
+| `max-length`  | `number`            | `0`（不限） | 最大字数限制，超出自动截断 |
+| `disabled`    | `boolean`           | `false`     | 是否禁用编辑（只读）       |
+| `theme`       | `'light' \| 'dark'` | `'light'`   | 主题模式                   |
+| `placeholder` | `string`            | `-`         | 空文档时显示的占位文本     |
+| `autofocus`   | `boolean`           | `false`     | 挂载后是否自动聚焦         |
 
 事件：`focus` / `blur`（payload 为 `{ editor, event }`，类型来自 `EditorEvents`）。
 
@@ -167,41 +167,41 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 
 ## 6. 当前已支持的编辑能力
 
-| 扩展 | 来源 | 工具栏形态 |
-| --- | --- | --- |
-| Bold 加粗 | 自定义（基于 @tiptap/extension-bold） | 图标按钮 |
-| Italic 斜体 | 自定义（基于 @tiptap/extension-italic） | 图标按钮 |
-| Underline 下划线 | 自定义（基于 @tiptap/extension-underline） | 图标按钮 |
-| Strike 删除线 | 自定义（基于 @tiptap/extension-strike） | 图标按钮 |
-| Code 行内代码 | 自定义（基于 @tiptap/extension-code） | 图标按钮 |
-| Highlight 高亮 | 自定义（基于 @tiptap/extension-highlight） | 图标按钮 |
-| Subscript 下标 | 自定义（基于 @tiptap/extension-subscript） | 图标按钮 |
-| Superscript 上标 | 自定义（基于 @tiptap/extension-superscript） | 图标按钮 |
-| Heading 标题 | 自定义（基于 @tiptap/extension-heading，H1/H2/H3） | 下拉菜单按钮（正文/H1/H2/H3） |
-| BulletList 无序列表 | 自定义（基于 @tiptap/extension-list） | 图标按钮 |
-| OrderedList 有序列表 | 自定义（基于 @tiptap/extension-list） | 图标按钮 |
-| TaskList 任务列表 | 自定义（基于 @tiptap/extension-list） | 图标按钮 |
-| Link 链接 | 自定义（基于 @tiptap/extension-link，自动识别/粘贴链接） | 弹窗按钮（输入 URL） |
-| CodeBlock 代码块 | 自定义（基于 @tiptap/extension-code-block） | 图标按钮 |
-| Details 折叠块 | 自定义（基于 @tiptap/extension-details） | 图标按钮 |
-| Image 图片 | 自定义（基于 @tiptap/extension-image） | URL 弹窗按钮（也可拖拽/粘贴图片文件） |
-| Youtube 视频 | 自定义（基于 @tiptap/extension-youtube） | URL 弹窗按钮 |
-| Audio 音频 | 自定义（基于 @tiptap/extension-audio） | URL 弹窗按钮 |
-| Twitch 直播 | 自定义（基于 @tiptap/extension-twitch） | URL 弹窗按钮 |
-| Color 文字颜色 | 自定义（基于 @tiptap/extension-text-style 的 Color） | 颜色选择菜单（NColorPicker） |
-| FontFamily 字体 | 自定义（基于 @tiptap/extension-text-style 的 FontFamily） | 下拉菜单（无衬线/衬线/等宽/雅黑） |
-| Table 表格 | 自定义（基于 @tiptap/extension-table 的 TableKit，可调整列宽） | 下拉菜单（插入/行列/合并/表头/删除） |
-| FindAndReplace 查找替换 | 自定义（基于 @tiptap/extension-find-and-replace） | 弹窗面板（查找/替换/全部/前后跳转） |
-| InvisibleCharacters 隐藏字符 | 自定义（基于 @tiptap/extension-invisible-characters） | 图标按钮（切换） |
-| BubbleMenu 气泡菜单 | @tiptap/vue-3 的 BubbleMenu 组件 | 选中文字浮现格式条 |
-| FloatingMenu 浮动菜单 | @tiptap/vue-3 的 FloatingMenu 组件 | 空行左侧浮现插入菜单 |
-| HorizontalRule 分隔线 | 自定义（基于 @tiptap/extension-horizontal-rule） | 图标按钮 |
-| Typography 排版替换 | @tiptap/extension-typography | 无按钮（智能替换） |
-| Focus 聚焦高亮 | @tiptap/extension-focus | 无按钮（聚焦块描边） |
-| UniqueId 唯一 ID | @tiptap/extension-unique-id | 无按钮（节点 id 属性） |
-| Blockquote 引用 | 自定义（基于 @tiptap/extension-blockquote） | 图标按钮 |
-| TextAlign 文本对齐 | 自定义（基于 @tiptap/extension-text-align，作用于 heading/paragraph） | 下拉菜单按钮（左/中/右/两端） |
-| HardBreak 硬换行 | @tiptap/extension-hard-break（Shift+Enter） | 无按钮（快捷键） |
+| 扩展                         | 来源                                                                  | 工具栏形态                            |
+| ---------------------------- | --------------------------------------------------------------------- | ------------------------------------- |
+| Bold 加粗                    | 自定义（基于 @tiptap/extension-bold）                                 | 图标按钮                              |
+| Italic 斜体                  | 自定义（基于 @tiptap/extension-italic）                               | 图标按钮                              |
+| Underline 下划线             | 自定义（基于 @tiptap/extension-underline）                            | 图标按钮                              |
+| Strike 删除线                | 自定义（基于 @tiptap/extension-strike）                               | 图标按钮                              |
+| Code 行内代码                | 自定义（基于 @tiptap/extension-code）                                 | 图标按钮                              |
+| Highlight 高亮               | 自定义（基于 @tiptap/extension-highlight）                            | 图标按钮                              |
+| Subscript 下标               | 自定义（基于 @tiptap/extension-subscript）                            | 图标按钮                              |
+| Superscript 上标             | 自定义（基于 @tiptap/extension-superscript）                          | 图标按钮                              |
+| Heading 标题                 | 自定义（基于 @tiptap/extension-heading，H1/H2/H3）                    | 下拉菜单按钮（正文/H1/H2/H3）         |
+| BulletList 无序列表          | 自定义（基于 @tiptap/extension-list）                                 | 图标按钮                              |
+| OrderedList 有序列表         | 自定义（基于 @tiptap/extension-list）                                 | 图标按钮                              |
+| TaskList 任务列表            | 自定义（基于 @tiptap/extension-list）                                 | 图标按钮                              |
+| Link 链接                    | 自定义（基于 @tiptap/extension-link，自动识别/粘贴链接）              | 弹窗按钮（输入 URL）                  |
+| CodeBlock 代码块             | 自定义（基于 @tiptap/extension-code-block）                           | 图标按钮                              |
+| Details 折叠块               | 自定义（基于 @tiptap/extension-details）                              | 图标按钮                              |
+| Image 图片                   | 自定义（基于 @tiptap/extension-image）                                | URL 弹窗按钮（也可拖拽/粘贴图片文件） |
+| Youtube 视频                 | 自定义（基于 @tiptap/extension-youtube）                              | URL 弹窗按钮                          |
+| Audio 音频                   | 自定义（基于 @tiptap/extension-audio）                                | URL 弹窗按钮                          |
+| Twitch 直播                  | 自定义（基于 @tiptap/extension-twitch）                               | URL 弹窗按钮                          |
+| Color 文字颜色               | 自定义（基于 @tiptap/extension-text-style 的 Color）                  | 颜色选择菜单（NColorPicker）          |
+| FontFamily 字体              | 自定义（基于 @tiptap/extension-text-style 的 FontFamily）             | 下拉菜单（无衬线/衬线/等宽/雅黑）     |
+| Table 表格                   | 自定义（基于 @tiptap/extension-table 的 TableKit，可调整列宽）        | 下拉菜单（插入/行列/合并/表头/删除）  |
+| FindAndReplace 查找替换      | 自定义（基于 @tiptap/extension-find-and-replace）                     | 弹窗面板（查找/替换/全部/前后跳转）   |
+| InvisibleCharacters 隐藏字符 | 自定义（基于 @tiptap/extension-invisible-characters）                 | 图标按钮（切换）                      |
+| BubbleMenu 气泡菜单          | @tiptap/vue-3 的 BubbleMenu 组件                                      | 选中文字浮现格式条                    |
+| FloatingMenu 浮动菜单        | @tiptap/vue-3 的 FloatingMenu 组件                                    | 空行左侧浮现插入菜单                  |
+| HorizontalRule 分隔线        | 自定义（基于 @tiptap/extension-horizontal-rule）                      | 图标按钮                              |
+| Typography 排版替换          | @tiptap/extension-typography                                          | 无按钮（智能替换）                    |
+| Focus 聚焦高亮               | @tiptap/extension-focus                                               | 无按钮（聚焦块描边）                  |
+| UniqueId 唯一 ID             | @tiptap/extension-unique-id                                           | 无按钮（节点 id 属性）                |
+| Blockquote 引用              | 自定义（基于 @tiptap/extension-blockquote）                           | 图标按钮                              |
+| TextAlign 文本对齐           | 自定义（基于 @tiptap/extension-text-align，作用于 heading/paragraph） | 下拉菜单按钮（左/中/右/两端）         |
+| HardBreak 硬换行             | @tiptap/extension-hard-break（Shift+Enter）                           | 无按钮（快捷键）                      |
 
 ## 7. 设计要点与约定
 

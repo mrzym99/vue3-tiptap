@@ -1,5 +1,5 @@
 <template>
-  <ActionDialogButton
+  <ActionPopoverButton
     ref="dialogRef"
     :editor="editor"
     :icon="icon"
@@ -8,11 +8,7 @@
     :is-active="isActive"
   >
     <template #default>
-      <Form
-        ref="formRef"
-        :model="mergedModel"
-        @submit="onFormSubmit"
-      >
+      <Form ref="formRef" :model="mergedModel" @submit="onFormSubmit">
         <FormItem name="src" :rules="[requiredRule]">
           <template #default="{ id }">
             <slot
@@ -26,12 +22,7 @@
         </FormItem>
         <slot name="fields" :submit="submit" />
         <template #actions>
-          <slot
-            name="actions"
-            :submit="submit"
-            :src="src"
-            :set-src="setSrc"
-          />
+          <slot name="actions" :submit="submit" :src="src" :set-src="setSrc" />
           <div class="media-dialog-actions">
             <TiptapButton variant="primary" type="submit">
               {{ applyText }}
@@ -40,14 +31,14 @@
         </template>
       </Form>
     </template>
-  </ActionDialogButton>
+  </ActionPopoverButton>
 </template>
 
 <script setup lang="ts">
 import type { Component } from "vue";
 import type { Editor } from "@tiptap/core";
 import { computed, ref } from "vue";
-import ActionDialogButton from "@/components/ui-common/dialog-button/index.vue";
+import ActionPopoverButton from "@/components/ui-common/dialog-button/index.vue";
 import Form from "@/components/ui-common/form/index.vue";
 import type { FormRule } from "@/components/ui-common/form/types";
 import FormItem from "@/components/ui-common/form-item/index.vue";
@@ -55,7 +46,7 @@ import TiptapButton from "@/components/ui-common/button/index.vue";
 import { useTiptapLocale, type LocaleT } from "@/locales";
 
 /**
- * Shared skeleton for media-insert dialog buttons (ActionDialogButton + Form).
+ * Shared skeleton for media-insert dialog buttons (ActionPopoverButton + Form).
  *
  * Concrete media buttons build on this base:
  * - `url` slot: renders the URL input (v-model via `value`/`set-value`)
@@ -92,7 +83,7 @@ const props = withDefaults(
 
 const { t } = useTiptapLocale();
 
-const dialogRef = ref<InstanceType<typeof ActionDialogButton> | null>(null);
+const dialogRef = ref<InstanceType<typeof ActionPopoverButton> | null>(null);
 const formRef = ref<InstanceType<typeof Form> | null>(null);
 
 const src = ref("");

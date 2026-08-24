@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { Youtube as TiptapYoutube } from "@tiptap/extension-youtube";
 import RiYoutubeLine from "~icons/lucide/youtube";
-import YoutubeDialogButton from "@/components/ui-editor/toolbar/dialog-button/YoutubeDialogButton.vue";
+import YoutubePopoverButton from "@/components/ui-editor/toolbar/popover-buttons/YoutubePopoverButton.vue";
 
 export interface YoutubeOptions extends TiptapYoutubeOptions, GeneralOptions {}
 
@@ -14,7 +14,7 @@ export const Youtube = /* @__PURE__ */ TiptapYoutube.extend<YoutubeOptions>({
       controls: true,
       nocookie: false,
       button: ({ editor, t }) => ({
-        component: YoutubeDialogButton,
+        component: YoutubePopoverButton,
         componentProps: {
           editor,
           t,

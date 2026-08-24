@@ -23,7 +23,7 @@ import type { Component } from "vue";
 import type { Toolbar } from "@/types";
 import { resolveToolbar } from "@/utils/resolveToolbar";
 import { useTiptapLocale } from "@/locales";
-import HeadingMenu from "@/components/ui-editor/toolbar/menu-buttons/HeadingMenu.vue";
+import HeadingMenuButton from "@/components/ui-editor/toolbar/menu-buttons/HeadingMenuButton.vue";
 import HorizontalRuleButton from "@/components/ui-editor/toolbar/buttons/HorizontalRuleButton.vue";
 import BulletListButton from "@/components/ui-editor/toolbar/buttons/BulletListButton.vue";
 import TaskListButton from "@/components/ui-editor/toolbar/buttons/TaskListButton.vue";
@@ -36,7 +36,7 @@ const props = defineProps<{
 const { t } = useTiptapLocale();
 
 const buttons: { key: string; component: Component }[] = [
-  { key: "heading", component: HeadingMenu },
+  { key: "heading", component: HeadingMenuButton },
   { key: "horizontalRule", component: HorizontalRuleButton },
   { key: "bulletList", component: BulletListButton },
   { key: "taskList", component: TaskListButton },

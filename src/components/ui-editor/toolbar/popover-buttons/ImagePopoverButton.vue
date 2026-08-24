@@ -1,5 +1,5 @@
 <template>
-  <BaseDialogButton
+  <BasePopoverButton
     :editor="editor"
     :icon="icon"
     :tooltip="tooltip ?? ''"
@@ -64,15 +64,15 @@
         </FormItem>
       </div>
     </template>
-  </BaseDialogButton>
+  </BasePopoverButton>
 </template>
 
 <script setup lang="ts">
 import type { Component } from "vue";
 import type { Editor } from "@tiptap/core";
 import { computed, ref } from "vue";
-import BaseDialogButton from "@/components/ui-editor/toolbar/dialog-button/BaseDialogButton.vue";
-import ImageUpload from "@/components/ui-editor/toolbar/dialog-button/ImageUpload.vue";
+import BasePopoverButton from "@/components/ui-editor/toolbar/popover-buttons/BasePopoverButton.vue";
+import ImageUpload from "@/components/ui-editor/toolbar/popover-buttons/ImageUpload.vue";
 import Tabs, { type TabItem } from "@/components/ui-common/tabs/index.vue";
 import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";

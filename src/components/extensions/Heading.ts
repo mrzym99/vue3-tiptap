@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { Heading as TiptapHeading } from "@tiptap/extension-heading";
 
-import HeadingMenu from "@/components/ui-editor/toolbar/menu-buttons/HeadingMenu.vue";
+import HeadingMenuButton from "@/components/ui-editor/toolbar/menu-buttons/HeadingMenuButton.vue";
 
 export interface HeadingOptions extends TiptapHeadingOptions, GeneralOptions {}
 
@@ -12,7 +12,7 @@ export const Heading = /* @__PURE__ */ TiptapHeading.extend<HeadingOptions>({
     return {
       ...(this.parent?.() as TiptapHeadingOptions),
       button: ({ editor, t }) => ({
-        component: HeadingMenu,
+        component: HeadingMenuButton,
         componentProps: {
           editor,
           t,

@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { TextAlign as TiptapTextAlign } from "@tiptap/extension-text-align";
 
-import TextAlignButton from "@/components/ui-editor/toolbar/menu-buttons/TextAlignMenu.vue";
+import TextAlignMenuButton from "@/components/ui-editor/toolbar/menu-buttons/TextAlignMenuButton.vue";
 
 export interface TextAlignOptions
   extends TiptapTextAlignOptions, GeneralOptions {}
@@ -14,7 +14,7 @@ export const TextAlign =
       return {
         ...(this.parent?.() as TiptapTextAlignOptions),
         button: ({ editor, t }) => ({
-          component: TextAlignButton,
+          component: TextAlignMenuButton,
           componentProps: {
             editor,
             t,

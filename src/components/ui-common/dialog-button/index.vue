@@ -28,11 +28,11 @@ import ActionButton from "@/components/ui-common/action-button/index.vue";
  *
  * Example:
  * ```vue
- * <ActionDialogButton :editor="editor" :icon="icon" :tooltip="t('image')">
+ * <ActionPopoverButton :editor="editor" :icon="icon" :tooltip="t('image')">
  *   <template #default="{ close }">
  *     <MyForm @submit="(data) => { onSubmit(data); close() }" />
  *   </template>
- * </ActionDialogButton>
+ * </ActionPopoverButton>
  * ```
  */
 const props = withDefaults(

@@ -5,15 +5,15 @@
 
 ## 1. 替换映射
 
-| naive-ui | 自研 | 位置 |
-| --- | --- | --- |
-| NPopover | `popover` 组件 | `ui-common/popover/index.vue` |
-| NTooltip | `tooltip` 组件（基于 popover，trigger=hover） | `ui-common/tooltip/index.vue` |
-| NButton | 原生 `<button>` + `.tiptap-btn` 样式 | `ui-common/styles.scss` |
-| NInput | 原生 `<input>` + `.tiptap-input` 样式 | 同上 |
-| NList / NListItem | `<button class="tiptap-menu-item">` | 同上 |
-| NColorPicker | 预设色板（10 色）+ 原生 `<input type="color">` | `menu-buttons/ColorMenu.vue` |
-| NConfigProvider / darkTheme | 纯 CSS 变量应用 | `ui-common/theme-provider/index.vue` |
+| naive-ui                    | 自研                                           | 位置                                 |
+| --------------------------- | ---------------------------------------------- | ------------------------------------ |
+| NPopover                    | `popover` 组件                                 | `ui-common/popover/index.vue`        |
+| NTooltip                    | `tooltip` 组件（基于 popover，trigger=hover）  | `ui-common/tooltip/index.vue`        |
+| NButton                     | 原生 `<button>` + `.tiptap-btn` 样式           | `ui-common/styles.scss`              |
+| NInput                      | 原生 `<input>` + `.tiptap-input` 样式          | 同上                                 |
+| NList / NListItem           | `<button class="tiptap-menu-item">`            | 同上                                 |
+| NColorPicker                | 预设色板（10 色）+ 原生 `<input type="color">` | `menu-buttons/ColorMenu.vue`         |
+| NConfigProvider / darkTheme | 纯 CSS 变量应用                                | `ui-common/theme-provider/index.vue` |
 
 ## 2. 自研 popover 设计要点
 
