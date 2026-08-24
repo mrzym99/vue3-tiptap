@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { Highlight as TiptapHighlight } from "@tiptap/extension-highlight";
 
-import HighlightButton from "@/components/ui-editor/buttons/HighlightButton.vue";
+import HighlightButton from "@/components/ui-editor/toolbar/buttons/HighlightButton.vue";
 
 export interface HighlightOptions
   extends TiptapHighlightOptions, GeneralOptions {}

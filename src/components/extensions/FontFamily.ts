@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { FontFamily as TiptapFontFamily } from "@tiptap/extension-text-style";
 
-import FontFamilyMenu from "@/components/ui-editor/menu-buttons/FontFamilyMenu.vue";
+import FontFamilyMenu from "@/components/ui-editor/toolbar/menu-buttons/FontFamilyMenu.vue";
 
 export interface FontFamilyOptions
   extends TiptapFontFamilyOptions, GeneralOptions {}

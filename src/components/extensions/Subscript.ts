@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { Subscript as TiptapSubscript } from "@tiptap/extension-subscript";
 
-import SubscriptButton from "@/components/ui-editor/buttons/SubscriptButton.vue";
+import SubscriptButton from "@/components/ui-editor/toolbar/buttons/SubscriptButton.vue";
 
 export interface SubscriptOptions
   extends TiptapSubscriptOptions, GeneralOptions {}

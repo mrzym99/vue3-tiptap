@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { Link as TiptapLink } from "@tiptap/extension-link";
 
-import LinkButton from "@/components/ui-editor/buttons/LinkButton.vue";
+import LinkButton from "@/components/ui-editor/toolbar/buttons/LinkButton.vue";
 
 export interface LinkOptions extends TiptapLinkOptions, GeneralOptions {}
 

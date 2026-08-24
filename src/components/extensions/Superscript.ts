@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { Superscript as TiptapSuperscript } from "@tiptap/extension-superscript";
 
-import SuperscriptButton from "@/components/ui-editor/buttons/SuperscriptButton.vue";
+import SuperscriptButton from "@/components/ui-editor/toolbar/buttons/SuperscriptButton.vue";
 
 export interface SuperscriptOptions
   extends TiptapSuperscriptOptions, GeneralOptions {}

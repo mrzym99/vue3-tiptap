@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { OrderedList as TiptapOrderedList } from "@tiptap/extension-list";
 
-import OrderedListButton from "@/components/ui-editor/buttons/OrderedListButton.vue";
+import OrderedListButton from "@/components/ui-editor/toolbar/buttons/OrderedListButton.vue";
 
 export interface OrderedListOptions
   extends TiptapOrderedListOptions, GeneralOptions {}

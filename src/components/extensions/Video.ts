@@ -1,7 +1,7 @@
 import { mergeAttributes, Node, nodePasteRule } from "@tiptap/core";
 import type { GeneralOptions } from "@/types";
 import RiVideoLine from "~icons/lucide/video";
-import VideoDialogButton from "@/components/ui-editor/dialog-button/VideoDialogButton.vue";
+import VideoDialogButton from "@/components/ui-editor/toolbar/dialog-button/VideoDialogButton.vue";
 import { toEmbedUrl, VIDEO_URL_REGEX } from "@/utils/video-url";
 
 export { toEmbedUrl, isVideoUrl } from "@/utils/video-url";

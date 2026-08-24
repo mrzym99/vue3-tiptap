@@ -12,17 +12,33 @@
     :t="t"
   >
     <template #url="{ id, value, setValue, submit }">
-      <TiptapInput
-        :id="id"
-        :model-value="value"
-        :placeholder="placeholder"
-        @update:model-value="setValue"
-        @keydown.enter.prevent="submit"
-      />
+      <Tabs v-model="activeTab" :tabs="tabs">
+        <!-- URL tab -->
+        <template #url>
+          <TiptapInput
+            :id="id"
+            :model-value="value"
+            :placeholder="placeholder"
+            @update:model-value="setValue"
+            @keydown.enter.prevent="submit"
+          />
+        </template>
+        <!-- Upload tab -->
+        <template #upload>
+          <ImageUpload
+            v-if="hasUpload"
+            :editor="editor"
+            @success="(url) => setValue(url)"
+          />
+          <span v-else class="image-dialog-upload-disabled">
+            {{ t("imageUploadUnavailable") }}
+          </span>
+        </template>
+      </Tabs>
     </template>
     <template #fields="{ submit }">
-      <div class="twitch-dialog-dimensions">
-        <FormItem name="width" class="twitch-dialog-field">
+      <div class="image-dialog-dimensions">
+        <FormItem name="width" class="image-dialog-field">
           <template #default="{ id }">
             <TiptapInput
               :id="id"
@@ -34,7 +50,7 @@
             />
           </template>
         </FormItem>
-        <FormItem name="height" class="twitch-dialog-field">
+        <FormItem name="height" class="image-dialog-field">
           <template #default="{ id }">
             <TiptapInput
               :id="id"
@@ -54,14 +70,20 @@
 <script setup lang="ts">
 import type { Component } from "vue";
 import type { Editor } from "@tiptap/core";
-import { ref } from "vue";
-import BaseDialogButton from "@/components/ui-editor/dialog-button/BaseDialogButton.vue";
+import { computed, ref } from "vue";
+import BaseDialogButton from "@/components/ui-editor/toolbar/dialog-button/BaseDialogButton.vue";
+import ImageUpload from "@/components/ui-editor/toolbar/dialog-button/ImageUpload.vue";
+import Tabs, { type TabItem } from "@/components/ui-common/tabs/index.vue";
 import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import { useTiptapLocale, type LocaleT } from "@/locales";
+import type { ImageOptions } from "@/components/extensions/Image";
 
 /**
- * Twitch insert button: URL + optional width/height.
+ * Image insert button with two tabs:
+ * - "URL": paste an image URL
+ * - "Upload": pick a file, upload via the `image` extension's `upload` option
+ * Both tabs share the width/height fields below.
  */
 const props = withDefaults(
   defineProps<{
@@ -89,6 +111,20 @@ const props = withDefaults(
 
 const { t } = useTiptapLocale();
 
+/** Whether the `image` extension is configured with an upload callback. */
+const hasUpload = computed(() => {
+  const ext = props.editor.extensionManager.extensions.find(
+    (e) => e.name === "image",
+  );
+  return Boolean((ext?.options as ImageOptions | undefined)?.upload);
+});
+
+const activeTab = ref("url");
+const tabs: TabItem[] = [
+  { name: "url", label: t("imageTabUrl") },
+  { name: "upload", label: t("imageTabUpload") },
+];
+
 const width = ref("");
 const height = ref("");
 
@@ -112,12 +148,18 @@ function buildPayload(values: Record<string, unknown>) {
 </script>
 
 <style lang="scss" scoped>
-.twitch-dialog-dimensions {
+.image-dialog-dimensions {
   display: flex;
   gap: var(--tiptap-gap);
 }
 
-.twitch-dialog-field {
+.image-dialog-field {
   flex: 1;
+}
+
+.image-dialog-upload-disabled {
+  color: var(--tiptap-color-text-muted);
+  font-size: var(--tiptap-font-size-sm);
+  line-height: 1.4;
 }
 </style>

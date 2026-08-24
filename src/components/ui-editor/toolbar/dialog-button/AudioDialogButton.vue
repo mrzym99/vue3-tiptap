@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import type { Component } from "vue";
 import type { Editor } from "@tiptap/core";
-import BaseDialogButton from "@/components/ui-editor/dialog-button/BaseDialogButton.vue";
+import BaseDialogButton from "@/components/ui-editor/toolbar/dialog-button/BaseDialogButton.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import type { LocaleT } from "@/locales";
 

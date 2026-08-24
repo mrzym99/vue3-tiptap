@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { BulletList as TiptapBulletList } from "@tiptap/extension-list";
 
-import BulletListButton from "@/components/ui-editor/buttons/BulletListButton.vue";
+import BulletListButton from "@/components/ui-editor/toolbar/buttons/BulletListButton.vue";
 
 export interface BulletListOptions
   extends TiptapBulletListOptions, GeneralOptions {}

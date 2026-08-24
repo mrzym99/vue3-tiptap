@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { TaskList as TiptapTaskList } from "@tiptap/extension-list";
 
-import TaskListButton from "@/components/ui-editor/buttons/TaskListButton.vue";
+import TaskListButton from "@/components/ui-editor/toolbar/buttons/TaskListButton.vue";
 
 export interface TaskListOptions
   extends TiptapTaskListOptions, GeneralOptions {}

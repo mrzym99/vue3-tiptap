@@ -23,10 +23,10 @@ import type { Component } from "vue";
 import type { Toolbar } from "@/types";
 import { resolveToolbar } from "@/utils/resolveToolbar";
 import { useTiptapLocale } from "@/locales";
-import HeadingMenu from "@/components/ui-editor/menu-buttons/HeadingMenu.vue";
-import HorizontalRuleButton from "@/components/ui-editor/buttons/HorizontalRuleButton.vue";
-import BulletListButton from "@/components/ui-editor/buttons/BulletListButton.vue";
-import TaskListButton from "@/components/ui-editor/buttons/TaskListButton.vue";
+import HeadingMenu from "@/components/ui-editor/toolbar/menu-buttons/HeadingMenu.vue";
+import HorizontalRuleButton from "@/components/ui-editor/toolbar/buttons/HorizontalRuleButton.vue";
+import BulletListButton from "@/components/ui-editor/toolbar/buttons/BulletListButton.vue";
+import TaskListButton from "@/components/ui-editor/toolbar/buttons/TaskListButton.vue";
 
 const props = defineProps<{
   editor: Editor;

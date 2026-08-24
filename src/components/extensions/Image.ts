@@ -3,7 +3,7 @@ import type { GeneralOptions, ImageUploader } from "@/types";
 
 import { Image as TiptapImage } from "@tiptap/extension-image";
 import RiImageLine from "~icons/lucide/image";
-import ImageDialogButton from "@/components/ui-editor/dialog-button/ImageDialogButton.vue";
+import ImageDialogButton from "@/components/ui-editor/toolbar/dialog-button/ImageDialogButton.vue";
 
 export interface ImageOptions extends TiptapImageOptions, GeneralOptions {
   /**

@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { FindAndReplace as TiptapFindAndReplace } from "@tiptap/extension-find-and-replace";
 
-import FindAndReplaceButton from "@/components/ui-editor/buttons/FindAndReplaceButton.vue";
+import FindAndReplaceButton from "@/components/ui-editor/toolbar/buttons/FindAndReplaceButton.vue";
 
 export interface FindAndReplaceOptions
   extends TiptapFindAndReplaceOptions, GeneralOptions {}

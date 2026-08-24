@@ -21,8 +21,8 @@
       />
     </template>
     <template #fields="{ submit }">
-      <div class="video-dialog-dimensions">
-        <FormItem name="width" class="video-dialog-field">
+      <div class="twitch-dialog-dimensions">
+        <FormItem name="width" class="twitch-dialog-field">
           <template #default="{ id }">
             <TiptapInput
               :id="id"
@@ -34,7 +34,7 @@
             />
           </template>
         </FormItem>
-        <FormItem name="height" class="video-dialog-field">
+        <FormItem name="height" class="twitch-dialog-field">
           <template #default="{ id }">
             <TiptapInput
               :id="id"
@@ -55,14 +55,13 @@
 import type { Component } from "vue";
 import type { Editor } from "@tiptap/core";
 import { ref } from "vue";
-import BaseDialogButton from "@/components/ui-editor/dialog-button/BaseDialogButton.vue";
+import BaseDialogButton from "@/components/ui-editor/toolbar/dialog-button/BaseDialogButton.vue";
 import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import { useTiptapLocale, type LocaleT } from "@/locales";
 
 /**
- * Video insert button: URL (Bilibili/Tencent/Youku/iQIYI or generic) +
- * optional width/height. The extension converts the URL to an embed player.
+ * Twitch insert button: URL + optional width/height.
  */
 const props = withDefaults(
   defineProps<{
@@ -113,12 +112,12 @@ function buildPayload(values: Record<string, unknown>) {
 </script>
 
 <style lang="scss" scoped>
-.video-dialog-dimensions {
+.twitch-dialog-dimensions {
   display: flex;
   gap: var(--tiptap-gap);
 }
 
-.video-dialog-field {
+.twitch-dialog-field {
   flex: 1;
 }
 </style>

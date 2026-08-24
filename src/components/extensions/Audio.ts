@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { Audio as TiptapAudio } from "@tiptap/extension-audio";
 import RiVolumeUpLine from "~icons/lucide/volume-2";
-import AudioDialogButton from "@/components/ui-editor/dialog-button/AudioDialogButton.vue";
+import AudioDialogButton from "@/components/ui-editor/toolbar/popover-buttons/AudioDialogButton.vue";
 
 export interface AudioOptions extends TiptapAudioOptions, GeneralOptions {}
 

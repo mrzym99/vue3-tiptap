@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { Blockquote as TiptapBlockquote } from "@tiptap/extension-blockquote";
 
-import BlockquoteButton from "@/components/ui-editor/buttons/BlockquoteButton.vue";
+import BlockquoteButton from "@/components/ui-editor/toolbar/buttons/BlockquoteButton.vue";
 
 export interface BlockquoteOptions
   extends TiptapBlockquoteOptions, GeneralOptions {}

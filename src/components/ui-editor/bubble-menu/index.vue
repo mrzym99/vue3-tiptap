@@ -26,11 +26,11 @@ import type { Component } from "vue";
 import type { Toolbar } from "@/types";
 import { resolveToolbar } from "@/utils/resolveToolbar";
 import { useTiptapLocale } from "@/locales";
-import BoldButton from "@/components/ui-editor/buttons/BoldButton.vue";
-import ItalicButton from "@/components/ui-editor/buttons/ItalicButton.vue";
-import StrikeButton from "@/components/ui-editor/buttons/StrikeButton.vue";
-import HighlightButton from "@/components/ui-editor/buttons/HighlightButton.vue";
-import LinkButton from "@/components/ui-editor/buttons/LinkButton.vue";
+import BoldButton from "@/components/ui-editor/toolbar/buttons/BoldButton.vue";
+import ItalicButton from "@/components/ui-editor/toolbar/buttons/ItalicButton.vue";
+import StrikeButton from "@/components/ui-editor/toolbar/buttons/StrikeButton.vue";
+import HighlightButton from "@/components/ui-editor/toolbar/buttons/HighlightButton.vue";
+import LinkButton from "@/components/ui-editor/toolbar/buttons/LinkButton.vue";
 
 const props = defineProps<{
   editor: Editor;
@@ -61,7 +61,9 @@ const visibleButtons = computed(() => {
  * (`editor` is typed loosely: tiptap's shouldShow passes its own Editor
  *  subclass, which differs from the @tiptap/vue-3 Editor type.)
  */
-function shouldShow({ editor: e }: {
+function shouldShow({
+  editor: e,
+}: {
   editor: any;
   element: HTMLElement;
   view: EditorView;

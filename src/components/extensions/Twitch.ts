@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { Twitch as TiptapTwitch } from "@tiptap/extension-twitch";
 import RiTwitchLine from "~icons/lucide/twitch";
-import TwitchDialogButton from "@/components/ui-editor/dialog-button/TwitchDialogButton.vue";
+import TwitchDialogButton from "@/components/ui-editor/toolbar/dialog-button/TwitchDialogButton.vue";
 
 export interface TwitchOptions extends TiptapTwitchOptions, GeneralOptions {}
 

@@ -1,10 +1,7 @@
 <template>
   <div class="toolbar" v-if="props.editor && menus.keys.length">
     <div class="tiptap-toolbar">
-      <template
-        v-for="(item, index) in menus.keys"
-        :key="item"
-      >
+      <template v-for="(item, index) in menus.keys" :key="item">
         <div
           v-if="menus.separators.includes(index)"
           class="tiptap-toolbar-sep"
@@ -23,7 +20,7 @@ import type { Editor } from "@tiptap/vue-3";
 import type { PropType } from "vue";
 import type { Toolbar } from "@/types";
 import { resolveToolbar } from "@/utils/resolveToolbar";
-import RenderItem from "./RenderItem.vue";
+import RenderItem from "./render-item/index.vue";
 
 const props = defineProps({
   editor: {

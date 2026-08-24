@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { CodeBlock as TiptapCodeBlock } from "@tiptap/extension-code-block";
 
-import CodeBlockButton from "@/components/ui-editor/buttons/CodeBlockButton.vue";
+import CodeBlockButton from "@/components/ui-editor/toolbar/buttons/CodeBlockButton.vue";
 
 export interface CodeBlockOptions
   extends TiptapCodeBlockOptions, GeneralOptions {}

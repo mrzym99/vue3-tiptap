@@ -55,7 +55,7 @@
 import type { Component } from "vue";
 import type { Editor } from "@tiptap/core";
 import { ref } from "vue";
-import BaseDialogButton from "@/components/ui-editor/dialog-button/BaseDialogButton.vue";
+import BaseDialogButton from "@/components/ui-editor/toolbar/dialog-button/BaseDialogButton.vue";
 import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import { useTiptapLocale, type LocaleT } from "@/locales";

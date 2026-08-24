@@ -3,12 +3,11 @@ import type { GeneralOptions } from "@/types";
 
 import { Details as TiptapDetails } from "@tiptap/extension-details";
 
-import DetailsButton from "@/components/ui-editor/buttons/DetailsButton.vue";
+import DetailsButton from "@/components/ui-editor/toolbar/buttons/DetailsButton.vue";
 
 export { DetailsSummary, DetailsContent } from "@tiptap/extension-details";
 
-export interface DetailsOptions
-  extends TiptapDetailsOptions, GeneralOptions {}
+export interface DetailsOptions extends TiptapDetailsOptions, GeneralOptions {}
 
 // Lucide chevron icons (inline SVG, no Vue runtime needed inside the NodeView)
 const CHEVRON_RIGHT_SVG =
@@ -24,7 +23,10 @@ export const Details = /* @__PURE__ */ TiptapDetails.extend<DetailsOptions>({
       persist: false,
       renderToggleButton: ({ element, isOpen }) => {
         // Visible chevron that flips with the open state (Notion toggle style).
-        element.setAttribute("aria-label", isOpen ? "Collapse details" : "Expand details");
+        element.setAttribute(
+          "aria-label",
+          isOpen ? "Collapse details" : "Expand details",
+        );
         element.setAttribute("data-open", isOpen ? "true" : "false");
         element.innerHTML = isOpen ? CHEVRON_DOWN_SVG : CHEVRON_RIGHT_SVG;
       },
