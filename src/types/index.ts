@@ -3,6 +3,7 @@ import type { Editor } from "@tiptap/core";
 import type { ThemeName } from "./theme";
 
 export * from "./theme";
+export type { ImageUploader } from "./upload";
 
 /**
  * Represents the keys for different extensions.
@@ -61,6 +62,12 @@ export interface TipTapEditorProps {
   bubbleMenu?: Toolbar;
   /** Floating-menu selection, falls back to `toolbar` when omitted */
   floatingMenu?: Toolbar;
+  /**
+   * Extra/customized extensions merged over the built-ins (by name).
+   * Use this to configure extension options, e.g.:
+   * `extensions: [Image.configure({ upload: myUpload })]`
+   */
+  extensions?: import("@tiptap/core").Extensions;
 }
 
 /**
@@ -86,7 +93,7 @@ export type Toolbar =
 export const defaultToolbar =
   "bold italic strike underline | code highlight subscript superscript | " +
   "heading horizontalRule blockquote textAlign | bulletList orderedList taskList | " +
-  "link codeBlock details | image youtube audio twitch | color fontFamily | " +
+  "link codeBlock details | image video youtube audio twitch | color fontFamily | " +
   "table | findAndReplace invisibleCharacters";
 
 /**

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import TipTapEditor from "./components/index.vue";
+import { Image } from "./components/extensions/Image";
 import type { ThemeName } from "./types";
 import type { LocaleName } from "./locales";
 const content = ref("");
@@ -10,6 +11,16 @@ const locale = ref<LocaleName>("zh");
 const toggleTheme = () => {
   document.documentElement.classList.toggle("dark");
 };
+
+// Configure the image extension with a custom uploader (demo: fake upload).
+const extensions = [
+  Image.configure({
+    upload: async (_file: File) => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      return "https://api.mtyqx.cn/api/random.php";
+    },
+  }),
+];
 </script>
 
 <template>
@@ -37,6 +48,7 @@ const toggleTheme = () => {
       style="height: 60vh"
       :theme="theme"
       :locale="locale"
+      :extensions="extensions"
     />
     <br />
     Content:

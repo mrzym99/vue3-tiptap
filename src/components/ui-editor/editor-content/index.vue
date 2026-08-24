@@ -59,7 +59,7 @@ const props = defineProps({
 
     code {
       background-color: var(--tiptap-code-bg);
-      border-radius: var(--tiptap-border-radius-md);
+      border-radius: var(--tiptap-border-radius-sm);
       color: var(--tiptap-code-text);
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 0.88em;
@@ -118,7 +118,7 @@ const props = defineProps({
     /* code block */
     pre {
       background-color: var(--tiptap-code-bg);
-      border-radius: var(--tiptap-border-radius-md);
+      border-radius: var(--tiptap-border-radius-sm);
       color: var(--tiptap-code-text);
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 0.9em;
@@ -137,7 +137,7 @@ const props = defineProps({
     /* details (toggle block) */
     div[data-type="details"] {
       border: 1px solid var(--tiptap-color-border);
-      border-radius: var(--tiptap-border-radius-md);
+      border-radius: var(--tiptap-border-radius-sm);
       display: flex;
       margin: 0.75rem 0;
       padding: var(--tiptap-padding-xs) var(--tiptap-padding-md);
@@ -149,7 +149,7 @@ const props = defineProps({
         align-self: flex-start;
         background: none;
         border: none;
-        border-radius: var(--tiptap-border-radius-md);
+        border-radius: var(--tiptap-border-radius-sm);
         color: var(--tiptap-color-text-muted);
         cursor: pointer;
         display: inline-flex;
@@ -191,7 +191,7 @@ const props = defineProps({
 
     /* media */
     img {
-      border-radius: var(--tiptap-border-radius-md);
+      border-radius: var(--tiptap-border-radius-sm);
       height: auto;
       margin: 0.75rem 0;
       max-width: 100%;
@@ -209,7 +209,7 @@ const props = defineProps({
 
     /* focus extension: highlight the active block */
     .has-focus {
-      border-radius: var(--tiptap-border-radius-md);
+      border-radius: var(--tiptap-border-radius-sm);
       box-shadow: 0 0 0 2px var(--tiptap-focus-ring);
     }
 
@@ -274,8 +274,8 @@ const props = defineProps({
 
     blockquote {
       border-left: 3px solid var(--tiptap-color-border);
-      border-radius: 0 var(--tiptap-border-radius-md)
-        var(--tiptap-border-radius-md) 0;
+      border-radius: 0 var(--tiptap-border-radius-sm)
+        var(--tiptap-border-radius-sm) 0;
       color: var(--tiptap-color-text-muted);
       margin: 1.5rem 0;
       padding: 0.1rem 1rem;

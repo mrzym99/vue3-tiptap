@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { Audio as TiptapAudio } from "@tiptap/extension-audio";
 import RiVolumeUpLine from "~icons/lucide/volume-2";
-import MediaDialogButton from "@/components/ui-editor/dialog-button/MediaDialogButton.vue";
+import AudioDialogButton from "@/components/ui-editor/dialog-button/AudioDialogButton.vue";
 
 export interface AudioOptions extends TiptapAudioOptions, GeneralOptions {}
 
@@ -12,18 +12,15 @@ export const Audio = /* @__PURE__ */ TiptapAudio.extend<AudioOptions>({
     return {
       ...(this.parent?.() as TiptapAudioOptions),
       button: ({ editor, t }) => ({
-        component: MediaDialogButton,
+        component: AudioDialogButton,
         componentProps: {
           editor,
           t,
           icon: RiVolumeUpLine,
           tooltip: t("audio"),
           placeholder: t("audioPlaceholder"),
-          onSubmit: (payload: {
-            src: string;
-            width?: number;
-            height?: number;
-          }) => editor.chain().focus().setAudio({ src: payload.src }).run(),
+          onSubmit: (payload: { src: string }) =>
+            editor.chain().focus().setAudio({ src: payload.src }).run(),
         },
       }),
     };

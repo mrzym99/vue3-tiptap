@@ -21,7 +21,7 @@ import { FloatingMenu } from "@tiptap/vue-3/menus";
 import type { Editor } from "@tiptap/vue-3";
 import type { Component } from "vue";
 import type { Toolbar } from "@/types";
-import { resolveToolbar } from "@/components/utils";
+import { resolveToolbar } from "@/utils/resolveToolbar";
 import { useTiptapLocale } from "@/locales";
 import HeadingMenu from "@/components/ui-editor/menu-buttons/HeadingMenu.vue";
 import HorizontalRuleButton from "@/components/ui-editor/buttons/HorizontalRuleButton.vue";

@@ -1,25 +1,32 @@
 import type { ImageOptions as TiptapImageOptions } from "@tiptap/extension-image";
-import type { GeneralOptions } from "@/types";
+import type { GeneralOptions, ImageUploader } from "@/types";
 
 import { Image as TiptapImage } from "@tiptap/extension-image";
 import RiImageLine from "~icons/lucide/image";
-import MediaDialogButton from "@/components/ui-editor/dialog-button/MediaDialogButton.vue";
+import ImageDialogButton from "@/components/ui-editor/dialog-button/ImageDialogButton.vue";
 
-export interface ImageOptions extends TiptapImageOptions, GeneralOptions {}
+export interface ImageOptions extends TiptapImageOptions, GeneralOptions {
+  /**
+   * Custom image uploader. Configure the extension to enable the "upload"
+   * tab in the image dialog:
+   * `Image.configure({ upload: async (file) => url })`
+   */
+  upload?: ImageUploader;
+}
 
 export const Image = /* @__PURE__ */ TiptapImage.extend<ImageOptions>({
   addOptions() {
     return {
       ...(this.parent?.() as TiptapImageOptions),
+      upload: undefined,
       button: ({ editor, t }) => ({
-        component: MediaDialogButton,
+        component: ImageDialogButton,
         componentProps: {
           editor,
           t,
           icon: RiImageLine,
           tooltip: t("image"),
           placeholder: t("imagePlaceholder"),
-          resizeAble: true,
           onSubmit: (payload: {
             src: string;
             width?: number;

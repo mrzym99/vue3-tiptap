@@ -32,7 +32,7 @@ import FloatingMenuBar from "@/components/ui-editor/floating-menu/index.vue";
 import { useEditor } from "@tiptap/vue-3";
 import type { Editor } from "@tiptap/core";
 import type { Transaction } from "@tiptap/pm/state";
-import { checkLimit, getEditorTextLength } from "./utils";
+import { checkLimit, getEditorTextLength } from "@/utils/text";
 import type { TipTapEditorProps } from "@/types";
 import type { LocaleName } from "@/locales";
 import {
@@ -58,6 +58,7 @@ const props = withDefaults(
       | "toolbar"
       | "bubbleMenu"
       | "floatingMenu"
+      | "extensions"
     > & {
       /** UI language of the toolbar/menus (auto-detected when omitted) */
       locale?: LocaleName;
@@ -73,6 +74,7 @@ const props = withDefaults(
     toolbar: undefined,
     bubbleMenu: undefined,
     floatingMenu: undefined,
+    extensions: () => [],
   },
 );
 
@@ -100,17 +102,23 @@ const modelValue = defineModel<string>({ required: true });
 // Value that changed before the editor instance was ready (useEditor creates
 // the instance on mount, so the initial watcher run may race with it)
 let pendingContent: string | undefined;
+
+// Merge user extensions over the built-ins (by extension name).
+const userExtNames = new Set(props.extensions.map((e) => e.name));
+const mergedExtensions = [
+  Document, // 文档根节点
+  Paragraph, // 段落
+  Text, // 文本
+  Placeholder.configure({
+    placeholder: props.placeholder ?? "",
+  }),
+  ...Extensions.filter((e) => !userExtNames.has(e.name)),
+  ...props.extensions,
+];
+
 const editor = useEditor({
   content: modelValue.value,
-  extensions: [
-    Document, // 文档根节点
-    Paragraph, // 段落
-    Text, // 文本
-    Placeholder.configure({
-      placeholder: props.placeholder ?? "",
-    }),
-    ...Extensions,
-  ],
+  extensions: mergedExtensions,
   editable: !props.disabled,
   autofocus: props.autofocus,
   onCreate: ({ editor }) => {

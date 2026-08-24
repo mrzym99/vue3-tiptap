@@ -6,6 +6,7 @@ import builtinExtensions from "./components/extensions";
 import { applyTheme } from "./theme";
 
 export * from "./types";
+export type { ImageUploader } from "./types";
 export type { LocaleName, LocaleT, LocaleContext } from "./locales";
 
 export { TipTapEditor, builtinExtensions, applyTheme };

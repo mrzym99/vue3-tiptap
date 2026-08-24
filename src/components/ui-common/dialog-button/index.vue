@@ -54,4 +54,6 @@ const show = ref(false);
 function close() {
   show.value = false;
 }
+
+defineExpose({ close, show });
 </script>

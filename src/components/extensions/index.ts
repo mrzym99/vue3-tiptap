@@ -32,6 +32,7 @@ import { Twitch } from "./Twitch";
 import { Typography } from "./Typography";
 import { Underline } from "./Underline";
 import { UniqueId } from "./UniqueId";
+import { Video } from "./Video";
 import { Youtube } from "./Youtube";
 
 const HeadingExtension = Heading.configure({ levels: [1, 2, 3] });
@@ -69,6 +70,7 @@ export default [
   Details,
   // 媒体
   Image,
+  Video,
   Youtube,
   Audio,
   Twitch,

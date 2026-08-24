@@ -22,7 +22,7 @@
 import type { Editor } from "@tiptap/vue-3";
 import type { PropType } from "vue";
 import type { Toolbar } from "@/types";
-import { resolveToolbar } from "@/components/utils";
+import { resolveToolbar } from "@/utils/resolveToolbar";
 import RenderItem from "./RenderItem.vue";
 
 const props = defineProps({

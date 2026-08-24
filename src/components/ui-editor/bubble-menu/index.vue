@@ -24,7 +24,7 @@ import type { EditorState } from "@tiptap/pm/state";
 import type { EditorView } from "@tiptap/pm/view";
 import type { Component } from "vue";
 import type { Toolbar } from "@/types";
-import { resolveToolbar } from "@/components/utils";
+import { resolveToolbar } from "@/utils/resolveToolbar";
 import { useTiptapLocale } from "@/locales";
 import BoldButton from "@/components/ui-editor/buttons/BoldButton.vue";
 import ItalicButton from "@/components/ui-editor/buttons/ItalicButton.vue";
