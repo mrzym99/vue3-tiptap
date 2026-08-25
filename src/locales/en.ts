@@ -61,6 +61,8 @@ export default {
   insertTable2x2: "Insert 2×2 Table",
   insertTable3x3: "Insert 3×3 Table",
   insertTable4x4: "Insert 4×4 Table",
+  insertTable: "Insert Table",
+  insertTableGrid: "{rows}×{cols}",
   addRowAfter: "Add Row Below",
   addColumnAfter: "Add Column Right",
   deleteRow: "Delete Row",

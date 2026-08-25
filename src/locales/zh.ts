@@ -61,6 +61,8 @@ export default {
   insertTable2x2: "插入 2×2 表格",
   insertTable3x3: "插入 3×3 表格",
   insertTable4x4: "插入 4×4 表格",
+  insertTable: "插入表格",
+  insertTableGrid: "{rows}×{cols}",
   addRowAfter: "下方添加行",
   addColumnAfter: "右侧添加列",
   deleteRow: "删除行",

@@ -235,7 +235,7 @@ const props = defineProps({
       }
 
       th {
-        background-color: var(--tiptap-color-bg);
+        background-color: var(--tiptap-color-bg-subtle);
         font-weight: 600;
         text-align: left;
       }

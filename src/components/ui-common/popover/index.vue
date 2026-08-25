@@ -53,11 +53,14 @@ const triggerEl = ref<HTMLElement | null>(null);
 const floatingEl = ref<HTMLElement | null>(null);
 const show = ref(props.show);
 
-const { floatingStyle, start: startFloating, stop: stopFloating } = useFloating(
-  triggerEl,
-  floatingEl,
-  { placement: props.placement, offset: props.offset },
-);
+const {
+  floatingStyle,
+  start: startFloating,
+  stop: stopFloating,
+} = useFloating(triggerEl, floatingEl, {
+  placement: props.placement,
+  offset: props.offset,
+});
 
 // External (v-model:show) changes mirror into internal state.
 watch(
@@ -82,7 +85,7 @@ watch(show, async (v) => {
 watch(
   () => props.disabled,
   (v) => {
-    if (v) show.value = false;
+    if (v) doClose();
   },
 );
 
@@ -104,25 +107,35 @@ function onTriggerClick() {
 function onEnter() {
   if (props.trigger !== "hover") return;
   clearHoverTimer();
-  hoverTimer = setTimeout(() => (show.value = true), 120);
+  hoverTimer = setTimeout(() => doOpen(), 120);
 }
 
 function onLeave() {
   if (props.trigger !== "hover") return;
   clearHoverTimer();
-  hoverTimer = setTimeout(() => (show.value = false), 120);
+  hoverTimer = setTimeout(() => doClose(), 120);
 }
 
-// click-mode only: close on outside click / Esc
+// click-mode only: doClose on outside click / Esc
 function onDocMousedown(e: MouseEvent) {
   if (!show.value || props.trigger !== "click") return;
   const target = e.target as Node;
-  if (triggerEl.value?.contains(target) || floatingEl.value?.contains(target)) return;
-  show.value = false;
+  if (triggerEl.value?.contains(target) || floatingEl.value?.contains(target))
+    return;
+  doClose();
 }
 
 function onKeydown(e: KeyboardEvent) {
-  if (props.trigger === "click" && e.key === "Escape") show.value = false;
+  if (props.trigger === "click" && e.key === "Escape") doClose();
+}
+
+function doClose() {
+  show.value = false;
+  clearHoverTimer();
+}
+
+function doOpen() {
+  show.value = true;
 }
 
 onMounted(() => {
@@ -135,6 +148,13 @@ onBeforeUnmount(() => {
   document.removeEventListener("keydown", onKeydown);
   clearHoverTimer();
   stopFloating();
+});
+
+defineExpose({
+  triggerEl,
+  floatingEl,
+  doClose,
+  doOpen,
 });
 </script>
 
