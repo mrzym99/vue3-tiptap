@@ -20,7 +20,7 @@
           <template #trigger>
             <button type="button" class="tiptap-menu-item">
               <component :is="RiTableLine" />
-              <span>{{ t("InsertTable") }}</span>
+              <span>{{ t("insertTable") }}</span>
             </button>
           </template>
           <!-- Grid map for picking the insert size by hovering -->
@@ -74,6 +74,7 @@ import RowRemoveIcon from "~icons/tabler/row-remove";
 import ColumnInsertRightIcon from "~icons/tabler/column-insert-right";
 import RiMergeCellsHorizontal from "~icons/lucide/table-cells-merge";
 import RiSplitCellsHorizontal from "~icons/lucide/table-cells-split";
+import ArrowsExchangeIcon from "~icons/tabler/arrows-exchange";
 import RiDeleteBinLine from "~icons/tabler/trash";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import Popover from "@/components/ui-common/popover/index.vue";
@@ -155,7 +156,7 @@ const opsItems = computed<ActionMenuButtonItem[]>(() => [
   tableOp(t("splitCell"), RiSplitCellsHorizontal, () =>
     props.editor.chain().focus().splitCell().run(),
   ),
-  tableOp(t("toggleHeaderRow"), RowRemoveIcon, () =>
+  tableOp(t("toggleHeaderRow"), ArrowsExchangeIcon, () =>
     props.editor.chain().focus().toggleHeaderRow().run(),
   ),
   tableOp(t("deleteTable"), RiDeleteBinLine, () =>
