@@ -1,6 +1,5 @@
 <template>
   <ActionMenuButton
-    :editor="editor"
     :icon="RiAlignCenter"
     :disabled="disabled"
     :is-active="isActive"

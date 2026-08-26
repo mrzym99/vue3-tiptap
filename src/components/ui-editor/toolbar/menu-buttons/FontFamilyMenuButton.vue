@@ -1,6 +1,5 @@
 <template>
   <ActionMenuButton
-    :editor="editor"
     :icon="RiFontFamily"
     :disabled="disabled"
     :is-active="isActive"
@@ -27,10 +26,7 @@ const SERIF = 'Georgia, "Times New Roman", serif';
 const MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 const YAHEI = '"Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif';
 
-function createOption(
-  label: string,
-  fontFamily?: string,
-): ActionMenuButtonItem {
+function createOption(label: string, fontFamily?: string): ActionMenuButtonItem {
   const set =
     fontFamily === undefined
       ? () => props.editor.chain().focus().unsetFontFamily().run()

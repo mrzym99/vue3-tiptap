@@ -1,12 +1,7 @@
 <template>
   <Popover v-model:show="show" trigger="click" placement="bottom-start">
     <template #trigger>
-      <ActionButton
-        :icon="icon"
-        :tooltip="tooltip ?? ''"
-        :disabled="disabled"
-        :is-active="isActive"
-      />
+      <ActionButton :icon="icon" :tooltip="tooltip ?? ''" :disabled="disabled" :is-active="isActive" />
     </template>
     <slot :close="close" />
   </Popover>
@@ -14,7 +9,6 @@
 
 <script setup lang="ts">
 import type { Component } from "vue";
-import type { Editor } from "@tiptap/core";
 import Popover from "@/components/ui-common/popover/index.vue";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 
@@ -27,7 +21,7 @@ import ActionButton from "@/components/ui-common/action-button/index.vue";
  *
  * Example:
  * ```vue
- * <ActionPopoverButton :editor="editor" :icon="icon" :tooltip="t('image')">
+ * <ActionPopoverButton :icon="icon" :tooltip="t('image')">
  *   <template #default="{ close }">
  *     <MyForm @submit="(data) => { onSubmit(data); close() }" />
  *   </template>
@@ -36,7 +30,6 @@ import ActionButton from "@/components/ui-common/action-button/index.vue";
  */
 const props = withDefaults(
   defineProps<{
-    editor: Editor;
     icon?: Component;
     tooltip?: string;
     disabled?: boolean;

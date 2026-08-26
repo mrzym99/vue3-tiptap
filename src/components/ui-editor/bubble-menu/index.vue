@@ -6,13 +6,7 @@
     :tippy-options="{ duration: 150, maxWidth: 'none' }"
   >
     <div class="bubble-menu-box">
-      <component
-        v-for="item in visibleButtons"
-        :key="item.key"
-        :is="item.component"
-        :editor="editor"
-        :t="t"
-      />
+      <component v-for="item in visibleButtons" :key="item.key" :is="item.component" :editor="editor" :t="t" />
     </div>
   </BubbleMenu>
 </template>

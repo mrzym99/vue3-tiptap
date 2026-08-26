@@ -1,6 +1,5 @@
 <template>
   <BasePopoverButton
-    :editor="editor"
     :icon="icon"
     :tooltip="tooltip ?? ''"
     :apply-label="applyLabel"
@@ -72,11 +71,7 @@ const props = withDefaults(
     applyLabel?: string;
     disabled?: boolean;
     isActive?: () => boolean;
-    onSubmit: (payload: {
-      src: string;
-      width?: number;
-      height?: number;
-    }) => void;
+    onSubmit: (payload: { src: string; width?: number; height?: number }) => void;
     /** Received from extension button props; internal i18n is used instead */
     t?: LocaleT;
   }>(),

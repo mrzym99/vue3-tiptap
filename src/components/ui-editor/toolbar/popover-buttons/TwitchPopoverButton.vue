@@ -1,6 +1,5 @@
 <template>
   <BasePopoverButton
-    :editor="editor"
     :icon="icon"
     :tooltip="tooltip ?? ''"
     :apply-label="applyLabel"
@@ -53,7 +52,6 @@
 
 <script setup lang="ts">
 import type { Component } from "vue";
-import type { Editor } from "@tiptap/core";
 import { ref } from "vue";
 import BasePopoverButton from "@/components/ui-editor/toolbar/popover-buttons/BasePopoverButton.vue";
 import FormItem from "@/components/ui-common/form-item/index.vue";
@@ -65,18 +63,13 @@ import { useTiptapLocale, type LocaleT } from "@/locales";
  */
 const props = withDefaults(
   defineProps<{
-    editor: Editor;
     icon?: Component;
     tooltip?: string;
     placeholder?: string;
     applyLabel?: string;
     disabled?: boolean;
     isActive?: () => boolean;
-    onSubmit: (payload: {
-      src: string;
-      width?: number;
-      height?: number;
-    }) => void;
+    onSubmit: (payload: { src: string; width?: number; height?: number }) => void;
     /** Received from extension button props; internal i18n is used instead */
     t?: LocaleT;
   }>(),

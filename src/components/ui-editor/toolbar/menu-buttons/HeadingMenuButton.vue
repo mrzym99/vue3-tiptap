@@ -1,12 +1,5 @@
 <template>
-  <ActionMenuButton
-    :editor="editor"
-    :icon="RiH1"
-    :disabled="disabled"
-    :is-active="isActive"
-    :items="options"
-    :tooltip="t('heading')"
-  >
+  <ActionMenuButton :icon="RiH1" :disabled="disabled" :is-active="isActive" :items="options" :tooltip="t('heading')">
     <template #suffix>
       <RiArrowDropDownLine />
     </template>

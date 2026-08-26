@@ -1,23 +1,10 @@
 <template>
-  <ActionPopoverButton
-    ref="dialogRef"
-    :editor="editor"
-    :icon="icon"
-    :tooltip="tooltip ?? ''"
-    :disabled="disabled"
-    :is-active="isActive"
-  >
+  <ActionPopoverButton ref="dialogRef" :icon="icon" :tooltip="tooltip ?? ''" :disabled="disabled" :is-active="isActive">
     <template #default>
       <Form ref="formRef" :model="mergedModel" @submit="onFormSubmit">
         <FormItem name="src" :rules="[requiredRule]">
           <template #default="{ id }">
-            <slot
-              name="url"
-              :id="id"
-              :value="src"
-              :set-value="setSrc"
-              :submit="submit"
-            />
+            <slot name="url" :id="id" :value="src" :set-value="setSrc" :submit="submit" />
           </template>
         </FormItem>
         <slot name="fields" :submit="submit" />
@@ -36,7 +23,6 @@
 
 <script setup lang="ts">
 import type { Component } from "vue";
-import type { Editor } from "@tiptap/core";
 import { computed, ref } from "vue";
 import ActionPopoverButton from "@/components/ui-common/dialog-button/index.vue";
 import Form from "@/components/ui-common/form/index.vue";
@@ -58,7 +44,6 @@ import { useTiptapLocale, type LocaleT } from "@/locales";
  */
 const props = withDefaults(
   defineProps<{
-    editor: Editor;
     icon?: Component;
     tooltip?: string;
     applyLabel?: string;

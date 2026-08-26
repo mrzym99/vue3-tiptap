@@ -1,6 +1,5 @@
 <template>
   <BasePopoverButton
-    :editor="editor"
     :icon="icon"
     :tooltip="tooltip ?? ''"
     :apply-label="applyLabel"
@@ -23,7 +22,6 @@
 
 <script setup lang="ts">
 import type { Component } from "vue";
-import type { Editor } from "@tiptap/core";
 import BasePopoverButton from "@/components/ui-editor/toolbar/popover-buttons/BasePopoverButton.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import type { LocaleT } from "@/locales";
@@ -33,7 +31,6 @@ import type { LocaleT } from "@/locales";
  */
 const props = withDefaults(
   defineProps<{
-    editor: Editor;
     icon?: Component;
     tooltip?: string;
     placeholder?: string;

@@ -1,6 +1,5 @@
 <template>
   <BasePopoverButton
-    :editor="editor"
     :icon="icon"
     :tooltip="tooltip ?? ''"
     :apply-label="applyLabel"
@@ -25,11 +24,7 @@
         </template>
         <!-- Upload tab -->
         <template #upload>
-          <ImageUpload
-            v-if="hasUpload"
-            :editor="editor"
-            @success="(url) => setValue(url)"
-          />
+          <ImageUpload v-if="hasUpload" :editor="editor" @success="(url) => setValue(url)" />
           <span v-else class="image-dialog-upload-disabled">
             {{ t("imageUploadUnavailable") }}
           </span>
@@ -94,11 +89,7 @@ const props = withDefaults(
     applyLabel?: string;
     disabled?: boolean;
     isActive?: () => boolean;
-    onSubmit: (payload: {
-      src: string;
-      width?: number;
-      height?: number;
-    }) => void;
+    onSubmit: (payload: { src: string; width?: number; height?: number }) => void;
     /** Received from extension button props; internal i18n is used instead */
     t?: LocaleT;
   }>(),
@@ -113,9 +104,7 @@ const { t } = useTiptapLocale();
 
 /** Whether the `image` extension is configured with an upload callback. */
 const hasUpload = computed(() => {
-  const ext = props.editor.extensionManager.extensions.find(
-    (e) => e.name === "image",
-  );
+  const ext = props.editor.extensionManager.extensions.find((e) => e.name === "image");
   return Boolean((ext?.options as ImageOptions | undefined)?.upload);
 });
 
