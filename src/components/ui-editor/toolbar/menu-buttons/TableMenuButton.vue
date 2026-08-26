@@ -87,6 +87,7 @@ function insertTable({ rows, cols }: { rows: number; cols: number }) {
     .insertTable({ rows, cols, withHeaderRow: true })
     .run();
   insertTablePopoverShow.value = false;
+  menuPopoverShow.value = false;
 }
 
 function tableOp(

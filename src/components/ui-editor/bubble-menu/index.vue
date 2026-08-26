@@ -22,6 +22,7 @@ import { BubbleMenu } from "@tiptap/vue-3/menus";
 import type { Editor } from "@tiptap/vue-3";
 import type { EditorState } from "@tiptap/pm/state";
 import type { EditorView } from "@tiptap/pm/view";
+import { CellSelection } from "@tiptap/pm/tables";
 import type { Component } from "vue";
 import type { Toolbar } from "@/types";
 import { resolveToolbar } from "@/utils/resolveToolbar";
@@ -57,12 +58,15 @@ const visibleButtons = computed(() => {
 
 /**
  * Hide the text-selection bubble menu while the caret is inside a link or a
- * media node — the dedicated link/media bubbles take over there.
+ * media node — the dedicated link/media bubbles take over there. Drag-
+ * selected table cells (a CellSelection) are left to the table bubble, while
+ * text selected inside a single cell still shows the formatting bubble.
  * (`editor` is typed loosely: tiptap's shouldShow passes its own Editor
  *  subclass, which differs from the @tiptap/vue-3 Editor type.)
  */
 function shouldShow({
   editor: e,
+  state,
 }: {
   editor: any;
   element: HTMLElement;
@@ -75,7 +79,8 @@ function shouldShow({
   if (e.isActive("link")) return false;
   if (e.isActive("image") || e.isActive("youtube")) return false;
   if (e.isActive("audio") || e.isActive("twitch")) return false;
-  return e.state.selection.from !== e.state.selection.to;
+  if (state.selection instanceof CellSelection) return false;
+  return state.selection.from !== state.selection.to;
 }
 </script>
 

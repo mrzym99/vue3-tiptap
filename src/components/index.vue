@@ -9,6 +9,7 @@
       />
       <LinkBubbleMenu :editor="editor" />
       <MediaBubbleMenu :editor="editor" />
+      <TableBubbleMenu :editor="editor" />
       <FloatingMenuBar
         :editor="editor"
         :toolbar="props.floatingMenu ?? props.toolbar"
@@ -28,6 +29,7 @@ import EditorContent from "@/components/ui-editor/editor-content/index.vue";
 import BubbleMenuBar from "@/components/ui-editor/bubble-menu/index.vue";
 import LinkBubbleMenu from "@/components/ui-editor/bubble-menu/link-bubble-menu/index.vue";
 import MediaBubbleMenu from "@/components/ui-editor/bubble-menu/media-bubble-menu/index.vue";
+import TableBubbleMenu from "@/components/ui-editor/bubble-menu/table-bubble-menu/index.vue";
 import FloatingMenuBar from "@/components/ui-editor/bubble-menu/floating-menu/index.vue";
 // https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
 import { useEditor } from "@tiptap/vue-3";
