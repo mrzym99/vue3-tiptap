@@ -3,7 +3,6 @@ import type { Component } from "vue";
 import type { TranslateFn } from "@/types";
 
 export type ActionButtonProps = {
-  editor: Editor;
   icon?: Component;
   tooltip: string;
   disabled?: boolean;

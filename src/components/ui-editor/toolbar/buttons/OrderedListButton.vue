@@ -1,6 +1,5 @@
 <template>
   <ActionButton
-    :editor="editor"
     :action="() => editor.chain().focus().toggleOrderedList().run()"
     :icon="RiListOrdered"
     :disabled="!editor.can().toggleOrderedList()"

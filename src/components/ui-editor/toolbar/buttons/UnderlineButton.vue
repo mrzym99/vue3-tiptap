@@ -1,6 +1,5 @@
 <template>
   <ActionButton
-    :editor="editor"
     :action="() => editor.chain().focus().toggleUnderline().run()"
     :icon="RiUnderline"
     :disabled="!editor.can().toggleUnderline()"

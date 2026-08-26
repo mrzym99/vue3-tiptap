@@ -2,7 +2,6 @@
   <Popover v-model:show="show" trigger="click" placement="bottom-start">
     <template #trigger>
       <ActionButton
-        :editor="editor"
         :icon="icon"
         :tooltip="tooltip ?? ''"
         :disabled="disabled"

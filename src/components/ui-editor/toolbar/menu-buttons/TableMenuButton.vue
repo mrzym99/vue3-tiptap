@@ -6,7 +6,6 @@
   >
     <template #trigger>
       <ActionButton
-        :editor="editor"
         :is-active="() => isActive"
         :disabled="disabled"
         :icon="RiTableLine"

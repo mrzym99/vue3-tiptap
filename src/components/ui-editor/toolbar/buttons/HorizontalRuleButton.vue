@@ -1,6 +1,5 @@
 <template>
   <ActionButton
-    :editor="editor"
     :action="() => editor.chain().focus().setHorizontalRule().run()"
     :icon="RiSeparator"
     :tooltip="t('horizontalRule')"

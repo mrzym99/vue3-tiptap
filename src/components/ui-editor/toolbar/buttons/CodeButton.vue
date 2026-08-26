@@ -1,6 +1,5 @@
 <template>
   <ActionButton
-    :editor="editor"
     :action="() => editor.chain().focus().toggleCode().run()"
     :icon="RiCodeSSlashLine"
     :disabled="!editor.can().toggleCode()"

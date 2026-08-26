@@ -1,6 +1,5 @@
 <template>
   <ActionButton
-    :editor="editor"
     :action="() => editor.chain().focus().toggleTaskList().run()"
     :icon="RiTaskLine"
     :disabled="!editor.can().toggleTaskList()"

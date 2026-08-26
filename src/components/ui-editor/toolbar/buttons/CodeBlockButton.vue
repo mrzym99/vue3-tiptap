@@ -1,6 +1,5 @@
 <template>
   <ActionButton
-    :editor="editor"
     :action="() => editor.chain().focus().toggleCodeBlock().run()"
     :icon="RiCodeBoxLine"
     :disabled="!editor.can().toggleCodeBlock()"

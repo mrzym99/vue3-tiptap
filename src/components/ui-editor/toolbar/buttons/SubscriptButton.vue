@@ -1,6 +1,5 @@
 <template>
   <ActionButton
-    :editor="editor"
     :action="() => editor.chain().focus().toggleSubscript().run()"
     :icon="RiSubscript"
     :disabled="!editor.can().toggleSubscript()"

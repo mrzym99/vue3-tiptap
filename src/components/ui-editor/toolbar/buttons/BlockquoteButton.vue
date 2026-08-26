@@ -1,6 +1,5 @@
 <template>
   <ActionButton
-    :editor="editor"
     :action="() => editor.chain().focus().toggleBlockquote().run()"
     :icon="RiDoubleQuotesL"
     :disabled="!editor.can().toggleBlockquote()"

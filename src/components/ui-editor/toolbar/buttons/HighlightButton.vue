@@ -1,6 +1,5 @@
 <template>
   <ActionButton
-    :editor="editor"
     :action="() => editor.chain().focus().toggleHighlight().run()"
     :icon="RiMarkPenLine"
     :disabled="!editor.can().toggleHighlight()"

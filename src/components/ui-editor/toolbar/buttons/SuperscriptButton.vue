@@ -1,6 +1,5 @@
 <template>
   <ActionButton
-    :editor="editor"
     :action="() => editor.chain().focus().toggleSuperscript().run()"
     :icon="RiSuperscript"
     :disabled="!editor.can().toggleSuperscript()"

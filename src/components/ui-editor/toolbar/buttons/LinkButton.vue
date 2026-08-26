@@ -1,19 +1,10 @@
 <template>
   <Popover v-model:show="show" trigger="click" placement="bottom-start">
     <template #trigger>
-      <ActionButton
-        :editor="editor"
-        :icon="RiLink"
-        :tooltip="t('link')"
-        :is-active="isActiveFn"
-      />
+      <ActionButton :icon="RiLink" :tooltip="t('link')" :is-active="isActiveFn" />
     </template>
     <div class="link-popover">
-      <TiptapInput
-        v-model="href"
-        :placeholder="t('linkPlaceholder')"
-        @keydown.enter.prevent="applyLink"
-      />
+      <TiptapInput v-model="href" :placeholder="t('linkPlaceholder')" @keydown.enter.prevent="applyLink" />
       <TiptapInput
         v-if="!hasSelectionAtOpen"
         v-model="label"
@@ -55,9 +46,7 @@ const hasSelectionAtOpen = ref(false);
 
 const isLinkActive = computed(() => props.editor.isActive("link"));
 const isActiveFn = () => isLinkActive.value;
-const currentHref = computed(
-  () => props.editor.getAttributes("link").href as string | undefined,
-);
+const currentHref = computed(() => props.editor.getAttributes("link").href as string | undefined);
 
 // Freeze the selection state + prefill the input when the popover opens
 watch(show, (visible) => {
@@ -75,12 +64,7 @@ function applyLink() {
 
   if (hasSelectionAtOpen.value) {
     // Selected text (or clicked link): update the link mark on that range.
-    props.editor
-      .chain()
-      .focus()
-      .extendMarkRange("link")
-      .setLink({ href: value })
-      .run();
+    props.editor.chain().focus().extendMarkRange("link").setLink({ href: value }).run();
   } else {
     // Collapsed selection: insert a link with a label at the caret.
     const text = label.value.trim() || value;
@@ -99,11 +83,7 @@ function removeLink() {
 }
 
 function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 </script>
 

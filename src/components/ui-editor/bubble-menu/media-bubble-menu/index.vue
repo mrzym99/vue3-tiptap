@@ -6,9 +6,12 @@
     :tippy-options="tippyOptions"
   >
     <div class="media-bubble">
-      <span class="media-bubble-label">{{ label }}</span>
-      <span class="media-bubble-sep" />
-      <TiptapButton @click="removeMedia">{{ t("mediaDelete") }}</TiptapButton>
+      <ActionButton
+        :editor="editor"
+        :icon="Trash2Icon"
+        :tooltip="t('mediaDelete')"
+        :action="() => removeMedia()"
+      />
     </div>
   </BubbleMenu>
 </template>
@@ -16,7 +19,8 @@
 <script lang="ts" setup>
 import { BubbleMenu } from "@tiptap/vue-3/menus";
 import type { Editor } from "@tiptap/vue-3";
-import TiptapButton from "@/components/ui-common/button/index.vue";
+import ActionButton from "@/components/ui-common/action-button/index.vue";
+import Trash2Icon from "~icons/lucide/trash-2";
 import { useTiptapLocale } from "@/locales";
 
 const props = defineProps<{ editor: Editor }>();
@@ -40,21 +44,6 @@ const tippyOptions = {
   appendTo: () => document.body,
 };
 
-const label = computed(() => {
-  switch (activeType.value) {
-    case "image":
-      return t("image");
-    case "youtube":
-      return t("youtube");
-    case "audio":
-      return t("audio");
-    case "twitch":
-      return t("twitch");
-    default:
-      return t("media");
-  }
-});
-
 function removeMedia() {
   const type = activeType.value;
   if (!type) return;
@@ -72,18 +61,5 @@ function removeMedia() {
   display: flex;
   gap: var(--tiptap-gap-xs);
   padding: var(--tiptap-padding-sm);
-}
-
-.media-bubble-label {
-  color: var(--tiptap-accent-blue);
-  font-size: var(--tiptap-font-size-sm);
-  padding: 0 var(--tiptap-padding-sm);
-}
-
-.media-bubble-sep {
-  align-self: stretch;
-  background-color: var(--tiptap-color-border);
-  margin: 0 var(--tiptap-gap-xs);
-  width: 1px;
 }
 </style>

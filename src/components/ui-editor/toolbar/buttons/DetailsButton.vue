@@ -1,6 +1,5 @@
 <template>
   <ActionButton
-    :editor="editor"
     :action="toggleDetails"
     :icon="RiExpandUpDownLine"
     :is-active="() => editor.isActive('details') || false"

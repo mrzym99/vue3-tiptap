@@ -1,6 +1,5 @@
 <template>
   <ActionButton
-    :editor="editor"
     :action="() => editor.chain().focus().toggleBold().run()"
     :icon="RiBold"
     :disabled="!editor.can().toggleBold()"

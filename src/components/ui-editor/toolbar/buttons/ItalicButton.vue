@@ -1,6 +1,5 @@
 <template>
   <ActionButton
-    :editor="editor"
     :action="() => editor.chain().focus().toggleItalic().run()"
     :icon="RiItalic"
     :disabled="!editor.can().toggleItalic()"

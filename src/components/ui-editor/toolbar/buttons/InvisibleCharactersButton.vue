@@ -1,6 +1,5 @@
 <template>
   <ActionButton
-    :editor="editor"
     :action="() => editor.chain().focus().toggleInvisibleCharacters().run()"
     :icon="RiEraserLine"
     :is-active="isShowInvisible"
@@ -16,9 +15,7 @@ import type { EXTActionButtonProps } from "@/components/ui-common/action-button/
 const props = defineProps<EXTActionButtonProps>();
 
 const isShowInvisible = () => {
-  const storage = props.editor.storage.invisibleCharacters as
-    | { visibility?: () => boolean }
-    | undefined;
+  const storage = props.editor.storage.invisibleCharacters as { visibility?: () => boolean } | undefined;
   return storage?.visibility?.() === true;
 };
 </script>

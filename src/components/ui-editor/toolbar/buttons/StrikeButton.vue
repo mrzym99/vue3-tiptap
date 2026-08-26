@@ -1,6 +1,5 @@
 <template>
   <ActionButton
-    :editor="editor"
     :action="() => editor.chain().focus().toggleStrike().run()"
     :icon="RiStrikethrough"
     :disabled="!editor.can().toggleStrike()"

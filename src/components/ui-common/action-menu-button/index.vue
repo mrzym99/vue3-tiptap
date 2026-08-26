@@ -2,7 +2,6 @@
   <Popover trigger="click" placement="bottom-start">
     <template #trigger>
       <ActionButton
-        :editor="editor"
         :is-active="() => isActive"
         :disabled="disabled"
         :icon="active.icon"

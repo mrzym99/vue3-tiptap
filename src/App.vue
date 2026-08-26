@@ -5,7 +5,7 @@ import type { ThemeName } from "./types";
 import type { LocaleName } from "./locales";
 const content = ref("");
 
-content.value = `shjd dhjkdnkad dsdjasdajkdas`;
+content.value = ``;
 const theme = ref<ThemeName>("light");
 const locale = ref<LocaleName>("zh");
 const toggleTheme = () => {

@@ -1,20 +1,13 @@
 <template>
-  <BubbleMenu
-    v-if="editor"
-    :editor="editor"
-    :should-show="shouldShow"
-    :tippy-options="tippyOptions"
-  >
+  <BubbleMenu v-if="editor" :editor="editor" :should-show="shouldShow" :tippy-options="tippyOptions">
     <div class="table-bubble">
       <ActionButton
-        :editor="editor"
         :icon="RowInsertBottomIcon"
         :tooltip="t('addRowAfter')"
         :disabled="!editor.can().addRowAfter()"
         :action="() => editor.chain().focus().addRowAfter().run()"
       />
       <ActionButton
-        :editor="editor"
         :icon="ColumnInsertRightIcon"
         :tooltip="t('addColumnAfter')"
         :disabled="!editor.can().addColumnAfter()"
@@ -22,14 +15,12 @@
       />
       <span class="table-bubble-sep" />
       <ActionButton
-        :editor="editor"
         :icon="RowRemoveIcon"
         :tooltip="t('deleteRow')"
         :disabled="!editor.can().deleteRow()"
         :action="() => editor.chain().focus().deleteRow().run()"
       />
       <ActionButton
-        :editor="editor"
         :icon="ColumnRemoveIcon"
         :tooltip="t('deleteColumn')"
         :disabled="!editor.can().deleteColumn()"
@@ -37,14 +28,12 @@
       />
       <span class="table-bubble-sep" />
       <ActionButton
-        :editor="editor"
         :icon="MergeCellsIcon"
         :tooltip="t('mergeCells')"
         :disabled="!editor.can().mergeOrSplit()"
         :action="() => editor.chain().focus().mergeOrSplit().run()"
       />
       <ActionButton
-        :editor="editor"
         :icon="SplitCellsIcon"
         :tooltip="t('splitCell')"
         :disabled="!editor.can().splitCell()"
@@ -52,7 +41,6 @@
       />
       <span class="table-bubble-sep" />
       <ActionButton
-        :editor="editor"
         :icon="ToggleHeaderIcon"
         :tooltip="t('toggleHeaderRow')"
         :disabled="!editor.can().toggleHeaderRow()"
@@ -60,7 +48,6 @@
       />
       <span class="table-bubble-sep" />
       <ActionButton
-        :editor="editor"
         :icon="DeleteTableIcon"
         :tooltip="t('deleteTable')"
         :disabled="!editor.can().deleteTable()"
