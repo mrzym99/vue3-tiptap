@@ -1,5 +1,9 @@
 <template>
-  <Popover trigger="click" placement="bottom-start">
+  <Popover
+    v-model:show="menuPopoverShow"
+    trigger="click"
+    placement="bottom-start"
+  >
     <template #trigger>
       <ActionButton
         :editor="editor"
@@ -16,31 +20,19 @@
 
     <div class="tiptap-table-popover">
       <div class="tiptap-table-ops">
-        <Popover ref="insertTablePopoverRef" placement="right" trigger="click">
+        <Popover
+          v-model:show="insertTablePopoverShow"
+          ref="insertTablePopoverRef"
+          placement="right"
+          trigger="hover"
+        >
           <template #trigger>
             <button type="button" class="tiptap-menu-item">
               <component :is="RiTableLine" />
               <span>{{ t("insertTable") }}</span>
             </button>
           </template>
-          <!-- Grid map for picking the insert size by hovering -->
-          <div class="tiptap-table-grid">
-            <div
-              v-for="(cell, i) in gridCells"
-              :key="i"
-              class="tiptap-table-cell"
-              :class="{ active: cell.row < hoverRows && cell.col < hoverCols }"
-              @mousedown.prevent
-              @mouseenter="
-                hoverRows = cell.row + 1;
-                hoverCols = cell.col + 1;
-              "
-              @click="insertTable(cell.row + 1, cell.col + 1)"
-            />
-          </div>
-          <div class="tiptap-table-grid-label">
-            {{ insertLabel }}
-          </div>
+          <TableInsert :t="t" @insert="insertTable" />
         </Popover>
       </div>
       <!-- Table-editing operations (only relevant while inside a table) -->
@@ -78,47 +70,23 @@ import ArrowsExchangeIcon from "~icons/tabler/arrows-exchange";
 import RiDeleteBinLine from "~icons/tabler/trash";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import Popover from "@/components/ui-common/popover/index.vue";
+import TableInsert from "@/components/ui-editor/toolbar/menu-buttons/components/TableInsert.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 import type { ActionMenuButtonItem } from "@/components/ui-common/action-menu-button/type";
-
-type GridCell = { row: number; col: number };
 
 const props = defineProps<EXTActionButtonProps>();
 
 const t = props.t;
-
-/** Maximum grid dimension users can slide across to pick a size. */
-const MAX_ROWS = 10;
-const MAX_COLS = 10;
-
-const hoverRows = ref(2);
-const hoverCols = ref(2);
-
-const gridCells = computed<GridCell[]>(() => {
-  const cells: GridCell[] = [];
-  for (let r = 0; r < MAX_ROWS; r++) {
-    for (let c = 0; c < MAX_COLS; c++) {
-      cells.push({ row: r, col: c });
-    }
-  }
-  return cells;
-});
-
-const insertLabel = computed(() =>
-  t("insertTableGrid")
-    .replace("{rows}", `${hoverRows.value}`)
-    .replace("{cols}", `${hoverCols.value}`),
-);
-
-const insertTablePopoverRef = ref<InstanceType<typeof Popover> | null>(null);
-function insertTable(rows: number, cols: number) {
+const menuPopoverShow = ref(false);
+const insertTablePopoverShow = ref(false);
+function insertTable({ rows, cols }: { rows: number; cols: number }) {
   if (!props.editor.can().insertTable({ rows, cols })) return;
   props.editor
     .chain()
     .focus()
     .insertTable({ rows, cols, withHeaderRow: true })
     .run();
-  insertTablePopoverRef.value?.doClose();
+  insertTablePopoverShow.value = false;
 }
 
 function tableOp(
@@ -129,7 +97,10 @@ function tableOp(
   return {
     label,
     icon,
-    action: run,
+    action: () => {
+      run();
+      menuPopoverShow.value = false;
+    },
     disabled: !props.editor.isActive("table"),
     isActive: () => false,
   };
@@ -178,33 +149,6 @@ const isActive = computed(() => inTable.value);
   flex-direction: column;
   gap: var(--tiptap-gap-sm);
   min-width: 160px;
-}
-
-.tiptap-table-grid {
-  display: grid;
-  grid-template-columns: repeat(10, 16px);
-  grid-template-rows: repeat(10, 16px);
-  border-left: 1px solid var(--tiptap-color-border);
-  border-top: 1px solid var(--tiptap-color-border);
-  padding: var(--tiptap-padding-sm);
-}
-
-.tiptap-table-cell {
-  cursor: pointer;
-  border-right: 1px solid var(--tiptap-color-border);
-  border-bottom: 1px solid var(--tiptap-color-border);
-
-  &:hover,
-  &.active {
-    background-color: var(--tiptap-color-border-strong);
-  }
-}
-
-.tiptap-table-grid-label {
-  color: var(--tiptap-color-text);
-  font-size: var(--tiptap-font-size-sm, 0.8125rem);
-  text-align: center;
-  user-select: none;
 }
 
 .tiptap-table-divider {
