@@ -4,27 +4,27 @@
 
 ## ✅ 执行状态
 
-| 项 | 状态 |
-| --- | --- |
-| i18n 解耦（内置轻量，移除 vue-i18n） | ✅ 已完成（`src/locales/index.ts` + `provide/inject`，4 个组件改为 `useTiptapLocale()`，演示页同步改造） |
-| 库入口 `src/index.ts` | ✅ 已完成（导出组件/扩展/主题/类型 + Vue Plugin） |
-| library 构建 | ✅ 已完成（`vite.lib.config.ts` + `tsconfig.lib.json` + `pnpm build:lib` → dist: index.js/cjs/d.ts/style.css） |
-| package.json（peerDeps/exports/files/脚本） | ✅ 已完成（vue/naive-ui → peer；scripts.build:lib/prepublishOnly） |
-| 本地宿主验证 | ✅ 已完成（`examples/host` 用 `file:` 链接，import + build + dev 均通过） |
-| 实际发布 npm | ⏳ 待执行（`npm publish` 或私有源） |
+| 项                                          | 状态                                                                                                          |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| i18n 解耦（内置轻量，移除 vue-i18n）        | ✅ 已完成（`src/locales/index.ts` + `provide/inject`，4 个组件改为 `useTiptapLocale()`，演示页同步改造）       |
+| 库入口 `src/index.ts`                       | ✅ 已完成（导出组件/扩展/主题/类型 + Vue Plugin）                                                              |
+| library 构建                                | ✅ 已完成（`vite.lib.config.ts` + `tsconfig.lib.json` + `pnpm build:lib` → dist: index.js/cjs/d.ts/style.css） |
+| package.json（peerDeps/exports/files/脚本） | ✅ 已完成（vue/naive-ui → peer；scripts.build:lib/prepublishOnly）                                             |
+| 本地宿主验证                                | ✅ 已完成（`examples/host` 用 `file:` 链接，import + build + dev 均通过）                                      |
+| 实际发布 npm                                | ⏳ 待执行（`npm publish` 或私有源）                                                                            |
 
 ## 0. 现状盘点
 
-| 项 | 现状 | 库化要求 |
-| --- | --- | --- |
-| 组件入口 | `src/components/index.vue`（已具备 modelValue/maxLength/disabled/theme/placeholder/autofocus props） | 需要导出 |
-| i18n | `src/plugins/i18.ts` 全局单例 + 4 个组件裸用 `useI18n()`（url-dialog-button / RenderItem / bubble-menu / floating-menu） | **必须解耦**（宿主可能没有 vue-i18n） |
-| naive-ui | devDependencies，组件内显式 import | 应改为 **peerDependency**（宿主提供） |
-| vue | dependencies | 应改为 **peerDependency** |
-| @tiptap/* | dependencies | 保留 dependencies（库自带编辑器内核） |
-| vue-i18n | dependencies | 移除或内置（见 §2） |
-| 样式 | scoped SCSS + 全局 style.scss/reset.scss + CSS 变量主题 | scoped 打包；**全局样式不进库**；主题由组件应用 |
-| 构建 | vite 应用模式（index.html） | 需要 **library 模式**（ES+CJS+d.ts） |
+| 项        | 现状                                                                                                                      | 库化要求                                        |
+| --------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| 组件入口  | `src/components/index.vue`（已具备 modelValue/maxLength/disabled/theme/placeholder/autofocus props）                      | 需要导出                                        |
+| i18n      | `src/plugins/i18.ts` 全局单例 + 4 个组件裸用 `useI18n()`（url-popover-button / RenderItem / bubble-menu / floating-menu） | **必须解耦**（宿主可能没有 vue-i18n）           |
+| naive-ui  | devDependencies，组件内显式 import                                                                                        | 应改为 **peerDependency**（宿主提供）           |
+| vue       | dependencies                                                                                                              | 应改为 **peerDependency**                       |
+| @tiptap/* | dependencies                                                                                                              | 保留 dependencies（库自带编辑器内核）           |
+| vue-i18n  | dependencies                                                                                                              | 移除或内置（见 §2）                             |
+| 样式      | scoped SCSS + 全局 style.scss/reset.scss + CSS 变量主题                                                                   | scoped 打包；**全局样式不进库**；主题由组件应用 |
+| 构建      | vite 应用模式（index.html）                                                                                               | 需要 **library 模式**（ES+CJS+d.ts）            |
 
 ## 1. 库入口 `src/index.ts`
 
@@ -147,13 +147,13 @@ npm publish            # 公开 npm
 
 ## 7. 风险与注意
 
-| 风险 | 说明 / 对策 |
-| --- | --- |
-| naive-ui peer | 宿主必须装 naive-ui；样式由宿主按需引入（naive-ui 自带样式机制） |
-| 主题变量全局性 | `applyTheme` 写 `document.documentElement`，同页多实例不同主题互相覆盖——库化时可加 `scope` 支持（CSS 变量写在组件根节点），本期可选 |
-| 扩展全量打包 | bundle 偏大（~370KB gzip，含全部扩展）。可选：导出 `createEditor` 工厂 + 按需扩展列表 |
-| prosemirror-model 重复 | 发布包无法强制宿主的 pnpm overrides；文档提示宿主若遇 `loaded more than once` 警告需加 overrides/dedupe |
-| 全局样式隔离 | style.scss（html/body 过渡色）与 reset.scss 不进库——它们是演示页样式，不是组件样式 |
+| 风险                   | 说明 / 对策                                                                                                                         |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| naive-ui peer          | 宿主必须装 naive-ui；样式由宿主按需引入（naive-ui 自带样式机制）                                                                    |
+| 主题变量全局性         | `applyTheme` 写 `document.documentElement`，同页多实例不同主题互相覆盖——库化时可加 `scope` 支持（CSS 变量写在组件根节点），本期可选 |
+| 扩展全量打包           | bundle 偏大（~370KB gzip，含全部扩展）。可选：导出 `createEditor` 工厂 + 按需扩展列表                                               |
+| prosemirror-model 重复 | 发布包无法强制宿主的 pnpm overrides；文档提示宿主若遇 `loaded more than once` 警告需加 overrides/dedupe                             |
+| 全局样式隔离           | style.scss（html/body 过渡色）与 reset.scss 不进库——它们是演示页样式，不是组件样式                                                  |
 
 ## 8. 可选增强（后续）
 

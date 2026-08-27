@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import type { Component } from "vue";
 import { computed, ref } from "vue";
-import ActionPopoverButton from "@/components/ui-common/dialog-button/index.vue";
+import ActionPopoverButton from "@/components/ui-common/popover-button/index.vue";
 import Form from "@/components/ui-common/form/index.vue";
 import type { FormRule } from "@/components/ui-common/form/types";
 import FormItem from "@/components/ui-common/form-item/index.vue";

@@ -22,30 +22,16 @@
 
 <script lang="ts" setup>
 import { ref, watch, nextTick, onMounted, onBeforeUnmount } from "vue";
-import type { Placement } from "@floating-ui/dom";
-import { useFloating } from "@/components/ui-common/floating/useFloating";
+import { useFloating } from "@/hooks/useFloating";
+import type { PopoverProps } from "./props";
 
-const props = withDefaults(
-  defineProps<{
-    /** How the popover is toggled */
-    trigger?: "click" | "hover";
-    /** Placement relative to the trigger */
-    placement?: Placement;
-    /** Gap between trigger and popover */
-    offset?: number;
-    /** Disable opening */
-    disabled?: boolean;
-    /** Controlled visibility (v-model:show) */
-    show?: boolean;
-  }>(),
-  {
-    trigger: "click",
-    placement: "bottom-start",
-    offset: 4,
-    disabled: false,
-    show: false,
-  },
-);
+const props = withDefaults(defineProps<PopoverProps>(), {
+  trigger: "click",
+  placement: "bottom-start",
+  offset: 4,
+  disabled: false,
+  show: false,
+});
 
 const emit = defineEmits<{ "update:show": [value: boolean] }>();
 
@@ -120,8 +106,7 @@ function onLeave() {
 function onDocMousedown(e: MouseEvent) {
   if (!show.value || props.trigger !== "click") return;
   const target = e.target as Node;
-  if (triggerEl.value?.contains(target) || floatingEl.value?.contains(target))
-    return;
+  if (triggerEl.value?.contains(target) || floatingEl.value?.contains(target)) return;
   doClose();
 }
 
@@ -148,13 +133,6 @@ onBeforeUnmount(() => {
   document.removeEventListener("keydown", onKeydown);
   clearHoverTimer();
   stopFloating();
-});
-
-defineExpose({
-  triggerEl,
-  floatingEl,
-  doClose,
-  doOpen,
 });
 </script>
 

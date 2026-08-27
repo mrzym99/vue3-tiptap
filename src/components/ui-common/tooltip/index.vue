@@ -1,10 +1,5 @@
 <template>
-  <span
-    ref="triggerEl"
-    class="tiptap-tooltip-trigger"
-    @mouseenter="onEnter"
-    @mouseleave="onLeave"
-  >
+  <span ref="triggerEl" class="tiptap-tooltip-trigger" @mouseenter="onEnter" @mouseleave="onLeave">
     <slot name="trigger" />
   </span>
   <div
@@ -22,7 +17,7 @@
 <script lang="ts" setup>
 import { ref, watch, nextTick, onBeforeUnmount } from "vue";
 import type { Placement } from "@floating-ui/dom";
-import { useFloating } from "@/components/ui-common/floating/useFloating";
+import { useFloating } from "@/hooks/useFloating";
 
 const props = withDefaults(
   defineProps<{

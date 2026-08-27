@@ -1,10 +1,7 @@
 <template>
-  <BasePopoverButton
-    :icon="icon"
-    :tooltip="tooltip ?? ''"
-    :apply-label="applyLabel"
-    :disabled="disabled"
-    :is-active="isActive"
+  <CommonPopoverButton
+    :icon="RiImageLine"
+    :tooltip="t('image')"
     :extra-model="extraModel"
     :build-payload="buildPayload"
     :on-submit="onSubmit"
@@ -17,7 +14,7 @@
           <TiptapInput
             :id="id"
             :model-value="value"
-            :placeholder="placeholder"
+            :placeholder="t('imagePlaceholder')"
             @update:model-value="setValue"
             @keydown.enter.prevent="submit"
           />
@@ -59,20 +56,19 @@
         </FormItem>
       </div>
     </template>
-  </BasePopoverButton>
+  </CommonPopoverButton>
 </template>
 
 <script setup lang="ts">
-import type { Component } from "vue";
-import type { Editor } from "@tiptap/core";
 import { computed, ref } from "vue";
-import BasePopoverButton from "@/components/ui-editor/toolbar/popover-buttons/BasePopoverButton.vue";
-import ImageUpload from "@/components/ui-editor/toolbar/popover-buttons/ImageUpload.vue";
+import RiImageLine from "~icons/lucide/image";
+import CommonPopoverButton from "@/components/ui-editor/toolbar/popover-buttons/CommonPopoverButton.vue";
+import ImageUpload from "@/components/ui-editor/toolbar/popover-buttons/components/ImageUpload.vue";
 import Tabs, { type TabItem } from "@/components/ui-common/tabs/index.vue";
 import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
-import { useTiptapLocale, type LocaleT } from "@/locales";
 import type { ImageOptions } from "@/components/extensions/Image";
+import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
 /**
  * Image insert button with two tabs:
@@ -80,27 +76,7 @@ import type { ImageOptions } from "@/components/extensions/Image";
  * - "Upload": pick a file, upload via the `image` extension's `upload` option
  * Both tabs share the width/height fields below.
  */
-const props = withDefaults(
-  defineProps<{
-    editor: Editor;
-    icon?: Component;
-    tooltip?: string;
-    placeholder?: string;
-    applyLabel?: string;
-    disabled?: boolean;
-    isActive?: () => boolean;
-    onSubmit: (payload: { src: string; width?: number; height?: number }) => void;
-    /** Received from extension button props; internal i18n is used instead */
-    t?: LocaleT;
-  }>(),
-  {
-    placeholder: "",
-    applyLabel: undefined,
-    disabled: false,
-  },
-);
-
-const { t } = useTiptapLocale();
+const props = defineProps<EXTActionButtonProps>();
 
 /** Whether the `image` extension is configured with an upload callback. */
 const hasUpload = computed(() => {
@@ -108,6 +84,7 @@ const hasUpload = computed(() => {
   return Boolean((ext?.options as ImageOptions | undefined)?.upload);
 });
 
+const t = props.t;
 const activeTab = ref("url");
 const tabs: TabItem[] = [
   { name: "url", label: t("imageTabUrl") },
@@ -133,6 +110,11 @@ function buildPayload(values: Record<string, unknown>) {
     width: toNumber(values.width),
     height: toNumber(values.height),
   };
+}
+
+/** Insert the image via the `image` extension's command. */
+function onSubmit(payload: { src: string; width?: number; height?: number }) {
+  props.editor.chain().focus().setImage(payload).run();
 }
 </script>
 

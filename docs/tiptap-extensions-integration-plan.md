@@ -10,7 +10,7 @@
 | 阶段 0（版本统一 3.30.1）         | ✅ 已完成  | core/pm/vue-3/extensions/starter-kit 及全部现有扩展统一至 3.30.1，peer 冲突 0，build 通过                                       |
 | 阶段 1（基础文本样式）            | ✅ 已完成  | strike/code/highlight/subscript/superscript/heading/hr/hard-break 已集成，工具栏自动收集，i18n/样式齐备                         |
 | 阶段 2（列表/链接/代码块/折叠块） | ✅ 已完成  | extension-list（bullet/ordered/task）、link（弹窗）、code-block、details 已集成；修复了 Details 需显式注册子节点的问题          |
-| 阶段 3（媒体与嵌入）              | ✅ 已完成  | image/youtube/audio/twitch（URL 弹窗按钮，共用 ui-common/url-dialog-button）、file-handler（拖拽/粘贴图片）                     |
+| 阶段 3（媒体与嵌入）              | ✅ 已完成  | image/youtube/audio/twitch（URL 弹窗按钮，共用 ui-common/url-popover-button）、file-handler（拖拽/粘贴图片）                    |
 | 阶段 4（样式丰富与表格）          | ✅ 已完成  | text-style 基座 + color（NColorPicker 菜单）+ font-family（下拉菜单）+ typography（无按钮）；表格 TableKit 全操作菜单           |
 | 阶段 5（编辑体验）                | ✅ 已完成* | bubble-menu / floating-menu（@tiptap/vue-3 组件）、find-and-replace（面板）、focus、invisible-characters、unique-id、node-range |
 | 阶段 6                            | ⏳ 待执行  | 按需继续                                                                                                                        |

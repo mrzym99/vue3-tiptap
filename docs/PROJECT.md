@@ -79,7 +79,7 @@ tip-tap-editor/
     │   └── ui-common/          # 通用 UI 基础组件
     │       ├── action-button/      # 工具栏基础按钮（含 tooltip/active 态）
     │       ├── action-menu-button/ # 下拉菜单按钮（基于 NPopover + NList）
-    │       ├── url-dialog-button/  # URL 输入弹窗按钮（图片/视频/音频等复用）
+    │       ├── url-popover-button/  # URL 输入弹窗按钮（图片/视频/音频等复用）
     │       ├── popover/            # 通用弹层（@floating-ui/dom 定位、外部点击/Esc 关闭）
     │       ├── tooltip/            # 悬停提示
     │       ├── styles.scss          # 公共 UI 样式（按钮/输入框/菜单项）
@@ -157,7 +157,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 
 - **内置轻量 i18n，不依赖 vue-i18n**：`src/locales/index.ts` 提供自包含的 `LocaleContext`（响应式 `locale` + `t(key)` + `setLocale`）；
 - `TipTapEditor` 组件通过 `locale` prop 控制语言（缺省时按浏览器语言自动检测），并用 `provide` 注入子树；
-- 子组件通过 `useTiptapLocale()` 读取（`RenderItem`、`bubble-menu`、`floating-menu`、`url-dialog-button`）；
+- 子组件通过 `useTiptapLocale()` 读取（`RenderItem`、`bubble-menu`、`floating-menu`、`url-popover-button`）；
 - 语言包位于 `src/locales/zh.ts` / `en.ts`，覆盖全部工具栏词条；
 - 扩展按钮通过扩展 `button` 回调中的 `t` 函数获取翻译文本。
 

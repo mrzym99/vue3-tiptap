@@ -1,10 +1,7 @@
 <template>
-  <BasePopoverButton
-    :icon="icon"
-    :tooltip="tooltip ?? ''"
-    :apply-label="applyLabel"
-    :disabled="disabled"
-    :is-active="isActive"
+  <CommonPopoverButton
+    :icon="RiYoutubeLine"
+    :tooltip="t('youtube')"
     :extra-model="extraModel"
     :build-payload="buildPayload"
     :on-submit="onSubmit"
@@ -14,7 +11,7 @@
       <TiptapInput
         :id="id"
         :model-value="value"
-        :placeholder="placeholder"
+        :placeholder="t('youtubePlaceholder')"
         @update:model-value="setValue"
         @keydown.enter.prevent="submit"
       />
@@ -47,42 +44,21 @@
         </FormItem>
       </div>
     </template>
-  </BasePopoverButton>
+  </CommonPopoverButton>
 </template>
 
 <script setup lang="ts">
-import type { Component } from "vue";
-import type { Editor } from "@tiptap/core";
 import { ref } from "vue";
-import BasePopoverButton from "@/components/ui-editor/toolbar/popover-buttons/BasePopoverButton.vue";
+import RiYoutubeLine from "~icons/lucide/youtube";
+import CommonPopoverButton from "@/components/ui-editor/toolbar/popover-buttons/CommonPopoverButton.vue";
 import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
-import { useTiptapLocale, type LocaleT } from "@/locales";
+import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
 /**
  * YouTube insert button: URL + optional width/height.
  */
-const props = withDefaults(
-  defineProps<{
-    editor: Editor;
-    icon?: Component;
-    tooltip?: string;
-    placeholder?: string;
-    applyLabel?: string;
-    disabled?: boolean;
-    isActive?: () => boolean;
-    onSubmit: (payload: { src: string; width?: number; height?: number }) => void;
-    /** Received from extension button props; internal i18n is used instead */
-    t?: LocaleT;
-  }>(),
-  {
-    placeholder: "",
-    applyLabel: undefined,
-    disabled: false,
-  },
-);
-
-const { t } = useTiptapLocale();
+const props = defineProps<EXTActionButtonProps>();
 
 const width = ref("");
 const height = ref("");
@@ -103,6 +79,11 @@ function buildPayload(values: Record<string, unknown>) {
     width: toNumber(values.width),
     height: toNumber(values.height),
   };
+}
+
+/** Insert the YouTube video via the `youtube` extension's command. */
+function onSubmit(payload: { src: string; width?: number; height?: number }) {
+  props.editor.chain().focus().setYoutubeVideo(payload).run();
 }
 </script>
 

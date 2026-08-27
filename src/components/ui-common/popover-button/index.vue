@@ -1,16 +1,20 @@
 <template>
   <Popover v-model:show="show" trigger="click" placement="bottom-start">
     <template #trigger>
-      <ActionButton :icon="icon" :tooltip="tooltip ?? ''" :disabled="disabled" :is-active="isActive" />
+      <ActionButton :icon="icon" :tooltip="tooltip ?? ''" :disabled="disabled" :is-active="isActive">
+        <template #suffix>
+          <slot name="suffix" />
+        </template>
+      </ActionButton>
     </template>
     <slot :close="close" />
   </Popover>
 </template>
 
 <script setup lang="ts">
-import type { Component } from "vue";
 import Popover from "@/components/ui-common/popover/index.vue";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
+import type { PopoverButtonProps } from "./props";
 
 /**
  * Generic action button that opens a popover dialog.
@@ -28,17 +32,7 @@ import ActionButton from "@/components/ui-common/action-button/index.vue";
  * </ActionPopoverButton>
  * ```
  */
-const props = withDefaults(
-  defineProps<{
-    icon?: Component;
-    tooltip?: string;
-    disabled?: boolean;
-    isActive?: () => boolean;
-  }>(),
-  {
-    disabled: false,
-  },
-);
+const props = defineProps<PopoverButtonProps>();
 
 const show = ref(false);
 

@@ -1,11 +1,5 @@
 <template>
-  <input
-    class="tiptap-input"
-    :value="modelValue"
-    :placeholder="placeholder"
-    v-bind="$attrs"
-    @input="onInput"
-  />
+  <input class="tiptap-input" :value="modelValue" :placeholder="placeholder" v-bind="$attrs" @input="onInput" />
 </template>
 
 <script setup lang="ts">

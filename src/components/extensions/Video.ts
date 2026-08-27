@@ -1,6 +1,5 @@
 import { mergeAttributes, Node, nodePasteRule } from "@tiptap/core";
 import type { GeneralOptions } from "@/types";
-import RiVideoLine from "~icons/lucide/video";
 import VideoPopoverButton from "@/components/ui-editor/toolbar/popover-buttons/VideoPopoverButton.vue";
 import { toEmbedUrl, VIDEO_URL_REGEX } from "@/utils/video-url";
 
@@ -52,14 +51,6 @@ export const Video = /* @__PURE__ */ Node.create<VideoOptions>({
         componentProps: {
           editor,
           t,
-          icon: RiVideoLine,
-          tooltip: t("video"),
-          placeholder: t("videoPlaceholder"),
-          onSubmit: (payload: {
-            src: string;
-            width?: number;
-            height?: number;
-          }) => editor.chain().focus().setVideo(payload).run(),
         },
       }),
     };

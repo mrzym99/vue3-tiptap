@@ -10,7 +10,8 @@
 
 <script setup lang="ts">
 import { computed, inject, onBeforeUnmount, onMounted } from "vue";
-import { formContextKey, type FormRule } from "@/components/ui-common/form/types";
+import { formContextKey } from "@/components/ui-common/form/types";
+import type { FormItemProps } from "./props";
 
 /**
  * Form item: label + control slot + inline error, wired to the parent
@@ -20,21 +21,11 @@ import { formContextKey, type FormRule } from "@/components/ui-common/form/types
  * - the default slot receives `{ id, error, validate }` so the control can
  *   bind `:id` (label for=) and validate on input/blur
  */
-const props = withDefaults(
-  defineProps<{
-    /** Field name — must match a key of the form's `model`. */
-    name: string;
-    label?: string;
-    rules?: FormRule[];
-    /** Validate on every input (default: only on submit / blur). */
-    validateOnInput?: boolean;
-  }>(),
-  {
-    label: undefined,
-    rules: () => [],
-    validateOnInput: false,
-  },
-);
+const props = withDefaults(defineProps<FormItemProps>(), {
+  label: undefined,
+  rules: () => [],
+  validateOnInput: false,
+});
 
 const form = inject(formContextKey, null);
 

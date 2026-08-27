@@ -1,10 +1,7 @@
 <template>
-  <BasePopoverButton
-    :icon="icon"
-    :tooltip="tooltip ?? ''"
-    :apply-label="applyLabel"
-    :disabled="disabled"
-    :is-active="isActive"
+  <CommonPopoverButton
+    :icon="RiVideoLine"
+    :tooltip="t('video')"
     :extra-model="extraModel"
     :build-payload="buildPayload"
     :on-submit="onSubmit"
@@ -14,7 +11,7 @@
       <TiptapInput
         :id="id"
         :model-value="value"
-        :placeholder="placeholder"
+        :placeholder="t('videoPlaceholder')"
         @update:model-value="setValue"
         @keydown.enter.prevent="submit"
       />
@@ -47,41 +44,22 @@
         </FormItem>
       </div>
     </template>
-  </BasePopoverButton>
+  </CommonPopoverButton>
 </template>
 
 <script setup lang="ts">
-import type { Component } from "vue";
 import { ref } from "vue";
-import BasePopoverButton from "@/components/ui-editor/toolbar/popover-buttons/BasePopoverButton.vue";
+import RiVideoLine from "~icons/lucide/video";
+import CommonPopoverButton from "@/components/ui-editor/toolbar/popover-buttons/CommonPopoverButton.vue";
 import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
-import { useTiptapLocale, type LocaleT } from "@/locales";
+import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
 /**
  * Video insert button: URL (Bilibili/Tencent/Youku/iQIYI or generic) +
  * optional width/height. The extension converts the URL to an embed player.
  */
-const props = withDefaults(
-  defineProps<{
-    icon?: Component;
-    tooltip?: string;
-    placeholder?: string;
-    applyLabel?: string;
-    disabled?: boolean;
-    isActive?: () => boolean;
-    onSubmit: (payload: { src: string; width?: number; height?: number }) => void;
-    /** Received from extension button props; internal i18n is used instead */
-    t?: LocaleT;
-  }>(),
-  {
-    placeholder: "",
-    applyLabel: undefined,
-    disabled: false,
-  },
-);
-
-const { t } = useTiptapLocale();
+const props = defineProps<EXTActionButtonProps>();
 
 const width = ref("");
 const height = ref("");
@@ -102,6 +80,11 @@ function buildPayload(values: Record<string, unknown>) {
     width: toNumber(values.width),
     height: toNumber(values.height),
   };
+}
+
+/** Insert the video via the `video` extension's command. */
+function onSubmit(payload: { src: string; width?: number; height?: number }) {
+  props.editor.chain().focus().setVideo(payload).run();
 }
 </script>
 
