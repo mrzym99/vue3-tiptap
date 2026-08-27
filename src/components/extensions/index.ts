@@ -24,7 +24,7 @@ import { OrderedList } from "./OrderedList";
 import { Strike } from "./Strike";
 import { Subscript } from "./Subscript";
 import { Superscript } from "./Superscript";
-import { Table } from "./Table";
+import { Table, TableRow, TableHeader, TableCell } from "./Table";
 import { TaskList } from "./TaskList";
 import { TextAlign } from "./TextAlign";
 import { TextStyle } from "./TextStyle";
@@ -82,6 +82,9 @@ export default [
   Typography,
   // 表格
   Table,
+  TableRow,
+  TableHeader,
+  TableCell,
   // 编辑体验
   FindAndReplace,
   InvisibleCharacters,
