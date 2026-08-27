@@ -48,6 +48,7 @@ export default {
   mediaWidth: "Width",
   mediaHeight: "Height",
   mediaUrlRequired: "Please enter a URL",
+  mediaUrlInvalid: "Please enter a valid URL",
   color: "Text Color",
   colorCustom: "Custom",
   colorClear: "Clear Color",

@@ -1,29 +1,46 @@
 <template>
-  <CommonPopoverButton :icon="RiVolumeUpLine" :tooltip="t('audio')" :on-submit="onSubmit" :t="t">
-    <template #url="{ id, value, setValue, submit }">
-      <TiptapInput
-        :id="id"
-        :model-value="value"
-        :placeholder="t('audioPlaceholder')"
-        @update:model-value="setValue"
-        @keydown.enter.prevent="submit"
-      />
-    </template>
-  </CommonPopoverButton>
+  <ActionPopoverButton ref="dialog" :icon="RiVolumeUpLine" :tooltip="t('audio')">
+    <Form ref="form" :model="model" @submit="onSubmit">
+      <FormItem name="src" :rules="rules">
+        <template #default="{ id }">
+          <TiptapInput
+            :id="id"
+            :model-value="src"
+            :placeholder="t('audioPlaceholder')"
+            @update:model-value="src = $event"
+            @keydown.enter.prevent="submit"
+          />
+        </template>
+      </FormItem>
+      <template #actions>
+        <TiptapButton variant="primary" type="submit">{{ t("insert") }}</TiptapButton>
+      </template>
+    </Form>
+  </ActionPopoverButton>
 </template>
 
 <script setup lang="ts">
 import RiVolumeUpLine from "~icons/lucide/volume-2";
-import CommonPopoverButton from "@/components/ui-editor/toolbar/popover-buttons/CommonPopoverButton.vue";
+import { useTemplateRef } from "vue";
+import ActionPopoverButton from "@/components/ui-common/popover-button/index.vue";
+import Form from "@/components/ui-common/form/index.vue";
+import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
+import TiptapButton from "@/components/ui-common/button/index.vue";
+import { isHttpUrl, useMediaForm } from "../../../../composables/useMediaForm";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
 /**
  * Audio insert button: plain URL.
  */
 const props = defineProps<EXTActionButtonProps>();
-/** Insert the audio via the `audio` extension's command. */
-function onSubmit(payload: { src: string }) {
-  props.editor.chain().focus().setAudio({ src: payload.src }).run();
-}
+const dialogRef = useTemplateRef<InstanceType<typeof ActionPopoverButton>>("dialog");
+const formEl = useTemplateRef<InstanceType<typeof Form>>("form");
+const { src, model, rules, submit, onSubmit } = useMediaForm(
+  props,
+  (payload) => props.editor.chain().focus().setAudio({ src: payload.src }).run(),
+  dialogRef,
+  formEl,
+  isHttpUrl,
+);
 </script>

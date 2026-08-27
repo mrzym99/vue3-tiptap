@@ -1,17 +1,7 @@
 <template>
-  <BubbleMenu
-    v-if="editor"
-    :editor="editor"
-    :should-show="shouldShow"
-    :tippy-options="tippyOptions"
-  >
+  <BubbleMenu v-if="editor" :editor="editor" :should-show="shouldShow" :tippy-options="tippyOptions">
     <div class="media-bubble">
-      <ActionButton
-        :editor="editor"
-        :icon="Trash2Icon"
-        :tooltip="t('mediaDelete')"
-        :action="() => removeMedia()"
-      />
+      <ActionButton :icon="Trash2Icon" :tooltip="t('mediaDelete')" :action="() => removeMedia()" />
     </div>
   </BubbleMenu>
 </template>
@@ -29,9 +19,7 @@ const { t } = useTiptapLocale();
 
 const MEDIA_TYPES = ["image", "youtube", "audio", "twitch"] as const;
 
-const activeType = computed(() =>
-  MEDIA_TYPES.find((type) => props.editor.isActive(type)),
-);
+const activeType = computed(() => MEDIA_TYPES.find((type) => props.editor.isActive(type)));
 
 /** Show when a media node is selected/active. */
 function shouldShow() {

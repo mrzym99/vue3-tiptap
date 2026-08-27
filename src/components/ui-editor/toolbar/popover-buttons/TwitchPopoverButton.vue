@@ -1,99 +1,47 @@
 <template>
-  <CommonPopoverButton
-    :icon="RiTwitchLine"
-    :tooltip="t('twitch')"
-    :extra-model="extraModel"
-    :build-payload="buildPayload"
-    :on-submit="onSubmit"
-    :t="t"
-  >
-    <template #url="{ id, value, setValue, submit }">
-      <TiptapInput
-        :id="id"
-        :model-value="value"
-        :placeholder="t('twitchPlaceholder')"
-        @update:model-value="setValue"
-        @keydown.enter.prevent="submit"
-      />
-    </template>
-    <template #fields="{ submit }">
-      <div class="twitch-dialog-dimensions">
-        <FormItem name="width" class="twitch-dialog-field">
-          <template #default="{ id }">
-            <TiptapInput
-              :id="id"
-              v-model="width"
-              type="number"
-              min="0"
-              :placeholder="t('mediaWidth')"
-              @keydown.enter.prevent="submit"
-            />
-          </template>
-        </FormItem>
-        <FormItem name="height" class="twitch-dialog-field">
-          <template #default="{ id }">
-            <TiptapInput
-              :id="id"
-              v-model="height"
-              type="number"
-              min="0"
-              :placeholder="t('mediaHeight')"
-              @keydown.enter.prevent="submit"
-            />
-          </template>
-        </FormItem>
-      </div>
-    </template>
-  </CommonPopoverButton>
+  <ActionPopoverButton ref="dialog" :icon="RiTwitchLine" :tooltip="t('twitch')">
+    <Form ref="form" :model="model" @submit="onSubmit">
+      <FormItem name="src" :rules="rules">
+        <template #default="{ id }">
+          <TiptapInput
+            :id="id"
+            :model-value="src"
+            :placeholder="t('twitchPlaceholder')"
+            @update:model-value="src = $event"
+            @keydown.enter.prevent="submit"
+          />
+        </template>
+      </FormItem>
+      <MediaDimensionFields v-model:width="width" v-model:height="height" :t="t" :submit="submit" />
+      <template #actions>
+        <TiptapButton variant="primary" type="submit">{{ t("insert") }}</TiptapButton>
+      </template>
+    </Form>
+  </ActionPopoverButton>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import RiTwitchLine from "~icons/lucide/twitch";
-import CommonPopoverButton from "@/components/ui-editor/toolbar/popover-buttons/CommonPopoverButton.vue";
+import { useTemplateRef } from "vue";
+import ActionPopoverButton from "@/components/ui-common/popover-button/index.vue";
+import Form from "@/components/ui-common/form/index.vue";
 import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
+import TiptapButton from "@/components/ui-common/button/index.vue";
+import MediaDimensionFields from "./components/MediaDimensionFields.vue";
+import { useMediaForm } from "../../../../composables/useMediaForm.ts";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
 /**
  * Twitch insert button: URL + optional width/height.
  */
 const props = defineProps<EXTActionButtonProps>();
-
-const width = ref("");
-const height = ref("");
-
-const extraModel = {
-  width: () => width.value,
-  height: () => height.value,
-};
-
-const toNumber = (value: unknown) => {
-  const n = Number(String(value ?? ""));
-  return Number.isFinite(n) && n > 0 ? n : undefined;
-};
-
-function buildPayload(values: Record<string, unknown>) {
-  return {
-    src: String(values.src).trim(),
-    width: toNumber(values.width),
-    height: toNumber(values.height),
-  };
-}
-
-/** Insert the Twitch video via the `twitch` extension's command. */
-function onSubmit(payload: { src: string; width?: number; height?: number }) {
-  props.editor.chain().focus().setTwitchVideo(payload).run();
-}
+const dialogRef = useTemplateRef<InstanceType<typeof ActionPopoverButton>>("dialog");
+const formEl = useTemplateRef<InstanceType<typeof Form>>("form");
+const { src, width, height, model, rules, submit, onSubmit } = useMediaForm(
+  props,
+  (payload) => props.editor.chain().focus().setTwitchVideo(payload).run(),
+  dialogRef,
+  formEl,
+);
 </script>
-
-<style lang="scss" scoped>
-.twitch-dialog-dimensions {
-  display: flex;
-  gap: var(--tiptap-gap);
-}
-
-.twitch-dialog-field {
-  flex: 1;
-}
-</style>

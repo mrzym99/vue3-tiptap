@@ -17,7 +17,7 @@
 <script lang="ts" setup>
 import { ref, watch, nextTick, onBeforeUnmount } from "vue";
 import type { Placement } from "@floating-ui/dom";
-import { useFloating } from "@/hooks/useFloating";
+import { useFloating } from "@/composables/useFloating";
 
 const props = withDefaults(
   defineProps<{

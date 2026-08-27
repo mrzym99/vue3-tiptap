@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { ref, watch, nextTick, onMounted, onBeforeUnmount } from "vue";
-import { useFloating } from "@/hooks/useFloating";
+import { useFloating } from "@/composables/useFloating";
 import type { PopoverProps } from "./props";
 
 const props = withDefaults(defineProps<PopoverProps>(), {

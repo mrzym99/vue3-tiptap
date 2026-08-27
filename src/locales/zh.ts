@@ -48,6 +48,7 @@ export default {
   mediaWidth: "宽度",
   mediaHeight: "高度",
   mediaUrlRequired: "请输入地址",
+  mediaUrlInvalid: "请输入合法的 URL 地址",
   color: "文字颜色",
   colorCustom: "自定义",
   colorClear: "清除颜色",

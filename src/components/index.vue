@@ -3,20 +3,12 @@
     <div class="tiptap-box" v-if="editor">
       <ToolBar :editor="editor" :toolbar="props.toolbar" />
       <EditorContent :editor="editor" />
-      <BubbleMenuBar
-        :editor="editor"
-        :toolbar="props.bubbleMenu ?? props.toolbar"
-      />
+      <BubbleMenuBar :editor="editor" :toolbar="props.bubbleMenu ?? props.toolbar" />
       <LinkBubbleMenu :editor="editor" />
       <MediaBubbleMenu :editor="editor" />
       <TableBubbleMenu :editor="editor" />
-      <FloatingMenuBar
-        :editor="editor"
-        :toolbar="props.floatingMenu ?? props.toolbar"
-      />
-      <span v-if="props.maxLength" class="max-limit">
-        {{ getEditorTextLength(editor) }} / {{ props.maxLength }}
-      </span>
+      <FloatingMenuBar :editor="editor" :toolbar="props.floatingMenu ?? props.toolbar" />
+      <span v-if="props.maxLength" class="max-limit"> {{ getEditorTextLength(editor) }} / {{ props.maxLength }} </span>
     </div>
   </ThemeProvider>
 </template>
@@ -38,11 +30,7 @@ import type { Transaction } from "@tiptap/pm/state";
 import { checkLimit, getEditorTextLength } from "@/utils/text";
 import type { TipTapEditorProps } from "@/types";
 import type { LocaleName } from "@/locales";
-import {
-  createLocaleContext,
-  detectLocale,
-  provideTiptapLocale,
-} from "@/locales";
+import { createLocaleContext, detectLocale, provideTiptapLocale } from "@/locales";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
@@ -92,12 +80,8 @@ watch(
 provideTiptapLocale(localeContext);
 
 const emit = defineEmits<{
-  focus: [
-    payload: { editor: Editor; event: FocusEvent; transaction: Transaction },
-  ];
-  blur: [
-    payload: { editor: Editor; event: FocusEvent; transaction: Transaction },
-  ];
+  focus: [payload: { editor: Editor; event: FocusEvent; transaction: Transaction }];
+  blur: [payload: { editor: Editor; event: FocusEvent; transaction: Transaction }];
 }>();
 
 const modelValue = defineModel<string>({ required: true });
