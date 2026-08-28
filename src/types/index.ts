@@ -80,10 +80,7 @@ export interface TipTapEditorProps {
  *   exclude removes specific buttons
  * - `undefined`: use {@link defaultToolbar}
  */
-export type Toolbar =
-  | string
-  | string[]
-  | { include?: string[]; exclude?: string[] };
+export type Toolbar = string | string[] | { include?: string[]; exclude?: string[] };
 
 /**
  * Default toolbar layout, TinyMCE-style.
@@ -99,25 +96,7 @@ export const defaultToolbar =
 /**
  * Translation function compatible with the basic vue-i18n `t` signature.
  */
-export type TranslateFn = (
-  key: string,
-  named?: Record<string, unknown> | number,
-  plural?: number,
-) => string;
-
-/**
- * Represents the props for the ButtonView component.
- */
-export interface ButtonViewReturnComponentProps {
-  /** Method triggered when action is performed */
-  action?: (value?: unknown) => void;
-  /** Whether it is in the active state */
-  isActive?: () => boolean;
-  /** Button icon */
-  icon?: Component;
-  /** Text displayed on hover */
-  tooltip?: string;
-}
+export type TranslateFn = (key: string, named?: Record<string, unknown> | number, plural?: number) => string;
 
 /**
  * Represents the general options for Tiptap extensions.
@@ -131,7 +110,7 @@ export interface GeneralOptions {
  * Represents the ButtonView function.
  */
 export interface ButtonView {
-  (options: ButtonViewParams): ButtonViewReturn | ButtonViewReturn[];
+  (options: ButtonViewParams): ButtonViewReturn;
 }
 
 /**
@@ -152,15 +131,4 @@ export interface ButtonViewReturn {
   component: Component;
   /** Component props (forwarded to the button component) */
   componentProps?: Record<string, unknown>;
-  /** Component slots */
-  componentSlots?: ButtonViewReturnComponentSlots;
-}
-
-/**
- * Represents the slots for the ButtonView component.
- */
-export interface ButtonViewReturnComponentSlots {
-  /** Dialog slot */
-  dialog?: () => any;
-  [x: string]: (() => any) | undefined;
 }

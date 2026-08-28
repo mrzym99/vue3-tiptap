@@ -38,4 +38,30 @@ export default defineConfig({
       "@tiptap/core",
     ],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        codeSplitting: {
+          maxSize: 50000,
+          groups: [
+            {
+              name: "tiptap-vendor",
+              test: /node_modules\/@tiptap\//,
+              priority: 20,
+            },
+            {
+              name: "@iconify-json-vendor",
+              test: /node_modules\/@iconify-json\//,
+              priority: 15,
+            },
+            {
+              name: "vendor",
+              test: /node_modules/,
+              priority: 10,
+            },
+          ],
+        },
+      },
+    },
+  },
 });
