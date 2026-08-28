@@ -32,11 +32,11 @@ export const darkTheme: Theme = {
   "--tiptap-color-border-strong": "#4A4A4A",
 
   // --- accents (text + soft bg) ---
-  "--tiptap-accent-blue": "#3BA6D9",
+  "--tiptap-accent-blue": "#9480F4",
   "--tiptap-accent-red": "#EB5757",
   "--tiptap-accent-green": "#2E8B7E",
   "--tiptap-accent-yellow": "#DFAB01",
-  "--tiptap-accent-blue-bg": "rgba(46, 170, 220, 0.16)",
+  "--tiptap-accent-blue-bg": "rgba(124, 92, 240, 0.22)",
   "--tiptap-accent-red-bg": "rgba(235, 87, 87, 0.14)",
   "--tiptap-accent-green-bg": "rgba(15, 123, 108, 0.18)",
   "--tiptap-accent-yellow-bg": "rgba(223, 171, 1, 0.14)",
@@ -45,15 +45,15 @@ export const darkTheme: Theme = {
   "--tiptap-btn-bg": "transparent",
   "--tiptap-btn-bg-hover": "#262626",
   "--tiptap-btn-bg-active": "#2F2F2F",
-  "--tiptap-btn-primary-bg": "#3BA6D9",
-  "--tiptap-btn-primary-bg-hover": "#4FB3E3",
+  "--tiptap-btn-primary-bg": "#7C6CE0",
+  "--tiptap-btn-primary-bg-hover": "#8B7CE8",
   "--tiptap-btn-primary-text": "#FFFFFF",
   "--tiptap-btn-secondary-bg": "#2B2B2B",
   "--tiptap-btn-secondary-text": "#CFCFCF",
 
   // --- interaction feedback ---
-  "--tiptap-focus-ring": "rgba(46, 170, 220, 0.30)",
-  "--tiptap-selection-bg": "rgba(46, 170, 220, 0.24)",
+  "--tiptap-focus-ring": "rgba(148, 128, 244, 0.32)",
+  "--tiptap-selection-bg": "rgba(148, 128, 244, 0.28)",
   "--tiptap-drag-handle": "rgba(230, 230, 230, 0.35)",
 
   // popover / menu (follow the theme)

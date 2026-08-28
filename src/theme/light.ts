@@ -32,12 +32,12 @@ export const lightTheme: Theme = {
   "--tiptap-color-border": "#E5E5E5", // gray-200
   "--tiptap-color-border-strong": "#D4D4D4", // gray-300
 
-  // --- accents (text + soft bg) ---
-  "--tiptap-accent-blue": "#2EAADC",
+  // --- accents (primary accent is purple; text + soft bg) ---
+  "--tiptap-accent-blue": "#7C5CF0",
   "--tiptap-accent-red": "#EB5757",
   "--tiptap-accent-green": "#0F7B6C",
   "--tiptap-accent-yellow": "#DFAB01",
-  "--tiptap-accent-blue-bg": "#EFF6FF", // blue-50
+  "--tiptap-accent-blue-bg": "#EFEAFE",
   "--tiptap-accent-red-bg": "#FEF2F2", // red-50
   "--tiptap-accent-green-bg": "#F0FDF4", // green-50
   "--tiptap-accent-yellow-bg": "#FEFCE8", // yellow-50
@@ -46,15 +46,15 @@ export const lightTheme: Theme = {
   "--tiptap-btn-bg": "transparent",
   "--tiptap-btn-bg-hover": "#EFEDEA",
   "--tiptap-btn-bg-active": "#E3E1DB",
-  "--tiptap-btn-primary-bg": "#2EAADC",
-  "--tiptap-btn-primary-bg-hover": "#2699C6",
+  "--tiptap-btn-primary-bg": "#7C5CF0",
+  "--tiptap-btn-primary-bg-hover": "#6748E8",
   "--tiptap-btn-primary-text": "#FFFFFF",
   "--tiptap-btn-secondary-bg": "#F5F5F5", // gray-100
   "--tiptap-btn-secondary-text": "#404040", // gray-700
 
   // --- interaction feedback ---
-  "--tiptap-focus-ring": "rgba(46, 170, 220, 0.30)",
-  "--tiptap-selection-bg": "rgba(46, 170, 220, 0.20)",
+  "--tiptap-focus-ring": "rgba(124, 92, 240, 0.30)",
+  "--tiptap-selection-bg": "rgba(124, 92, 240, 0.20)",
   "--tiptap-drag-handle": "rgba(55, 53, 47, 0.35)",
 
   // popover / menu (follow the theme)

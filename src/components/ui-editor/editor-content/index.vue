@@ -260,6 +260,7 @@ const props = defineProps({
         right: -2px;
         top: 0;
         width: 4px;
+        z-index: 3;
       }
     }
 
@@ -268,7 +269,8 @@ const props = defineProps({
       overflow-x: auto;
     }
 
-    .resize-cursor {
+    &.resize-cursor {
+      cursor: ew-resize;
       cursor: col-resize;
     }
 
