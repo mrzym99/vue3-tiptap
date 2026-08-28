@@ -30,8 +30,8 @@ const props = defineProps({
     color: var(--tiptap-color-text);
     background-color: var(--tiptap-color-bg);
     font-family:
-      -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
-      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol", sans-serif;
     line-height: 1.75;
     padding: 0 var(--tiptap-padding-lg);
     overflow-y: auto;
@@ -274,8 +274,7 @@ const props = defineProps({
 
     blockquote {
       border-left: 3px solid var(--tiptap-color-border);
-      border-radius: 0 var(--tiptap-border-radius-sm)
-        var(--tiptap-border-radius-sm) 0;
+      border-radius: 0 var(--tiptap-border-radius-sm) var(--tiptap-border-radius-sm) 0;
       color: var(--tiptap-color-text-muted);
       margin: 1.5rem 0;
       padding: 0.1rem 1rem;
@@ -301,6 +300,22 @@ const props = defineProps({
       outline: none;
       display: block;
       cursor: move;
+    }
+
+    /* refined, quiet scrollbar inside the writing surface */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: var(--tiptap-color-border-strong);
+      border-radius: 999px;
+      border: 3px solid var(--tiptap-color-bg);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: var(--tiptap-color-text-muted);
     }
   }
 }

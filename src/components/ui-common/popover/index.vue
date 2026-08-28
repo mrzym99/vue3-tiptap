@@ -148,5 +148,24 @@ onBeforeUnmount(() => {
   box-shadow: var(--tiptap-popover-shadow);
   color: var(--tiptap-popover-text);
   padding: var(--tiptap-padding-sm);
+  transform-origin: var(--tiptap-popover-origin, top);
+  animation: tiptap-popover-in 140ms ease-out;
+}
+
+@keyframes tiptap-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tiptap-popover {
+    animation: none;
+  }
 }
 </style>
