@@ -84,4 +84,7 @@ export default {
   alignCenter: "居中对齐",
   alignJustify: "两端对齐",
   blockquote: "引用",
+  undo: "撤销",
+  redo: "重做",
+  clearFormatting: "清除格式",
 };

@@ -8,7 +8,7 @@
       <MediaBubbleMenu :editor="editor" />
       <TableBubbleMenu :editor="editor" />
       <FloatingMenuBar :editor="editor" :toolbar="props.floatingMenu ?? props.toolbar" />
-      <span v-if="props.maxLength" class="max-limit"> {{ getEditorTextLength(editor) }} / {{ props.maxLength }} </span>
+      <span v-if="props.maxLength" class="max-limit"> {{ editor.storage.characterCount.characters() }} / {{ props.maxLength }} </span>
     </div>
   </ThemeProvider>
 </template>
@@ -27,7 +27,7 @@ import FloatingMenuBar from "@/components/ui-editor/bubble-menu/floating-menu/in
 import { useEditor } from "@tiptap/vue-3";
 import type { Editor } from "@tiptap/core";
 import type { Transaction } from "@tiptap/pm/state";
-import { checkLimit, getEditorTextLength } from "@/utils/text";
+import { checkLimit } from "@/utils/text";
 import type { TipTapEditorProps } from "@/types";
 import type { LocaleName } from "@/locales";
 import { createLocaleContext, detectLocale, provideTiptapLocale } from "@/locales";
@@ -116,7 +116,7 @@ const editor = useEditor({
     // Only write back when the initial content actually got truncated —
     // otherwise an empty document would immediately rewrite the parent
     // value from "" to "<p></p>".
-    if (props.maxLength && getEditorTextLength(editor) > props.maxLength) {
+    if (props.maxLength && editor.storage.characterCount.characters() > props.maxLength) {
       checkLimit(editor, props.maxLength);
       modelValue.value = editor.getHTML();
     }

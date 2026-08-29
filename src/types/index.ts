@@ -9,6 +9,9 @@ export type { ImageUploader } from "./upload";
  * Represents the keys for different extensions.
  */
 export type ExtensionNameKeys =
+  | "undo"
+  | "redo"
+  | "clearFormatting"
   | "bold"
   | "italic"
   | "underline"
@@ -88,6 +91,7 @@ export type Toolbar = string | string[] | { include?: string[]; exclude?: string
  * Keys are Tiptap extension names (e.g. "bold", "heading", "table", "image").
  */
 export const defaultToolbar =
+  "undo redo | clearFormatting | " +
   "bold italic strike underline | code highlight subscript superscript | " +
   "heading horizontalRule blockquote textAlign | bulletList orderedList taskList | " +
   "link codeBlock details | image video youtube audio twitch | color fontFamily | " +

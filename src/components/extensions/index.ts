@@ -1,3 +1,4 @@
+import { CharacterCount, Dropcursor, Gapcursor, TrailingNode } from "@tiptap/extensions";
 import { ListItem, TaskItem, ListKeymap } from "@tiptap/extension-list";
 import { Audio } from "./Audio";
 import { Blockquote } from "./Blockquote";
@@ -5,6 +6,7 @@ import { Bold } from "./Bold";
 import { BulletList } from "./BulletList";
 import { Code } from "./Code";
 import { CodeBlock } from "./CodeBlock";
+import { ClearFormatting } from "./ClearFormatting";
 import { Color } from "./Color";
 import { Details, DetailsSummary, DetailsContent } from "./Details";
 import { FileHandler } from "./FileHandler";
@@ -21,6 +23,7 @@ import { Italic } from "./Italic";
 import { Link } from "./Link";
 import { NodeRange } from "./NodeRange";
 import { OrderedList } from "./OrderedList";
+import { Redo } from "./Redo";
 import { Strike } from "./Strike";
 import { Subscript } from "./Subscript";
 import { Superscript } from "./Superscript";
@@ -31,6 +34,8 @@ import { TextStyle } from "./TextStyle";
 import { Twitch } from "./Twitch";
 import { Typography } from "./Typography";
 import { Underline } from "./Underline";
+import { Undo } from "./Undo";
+import { UndoRedo } from "./UndoRedo";
 import { UniqueId } from "./UniqueId";
 import { Video } from "./Video";
 import { Youtube } from "./Youtube";
@@ -42,6 +47,11 @@ const TextAlignExtension = TextAlign.configure({
 });
 
 export default [
+  // 编辑体验：撤销 / 重做 / 清除格式（undoRedo 提供历史插件，undo-redo 提供按钮）
+  UndoRedo,
+  Undo,
+  Redo,
+  ClearFormatting,
   // 基础文本样式
   Bold,
   Italic,
@@ -88,8 +98,13 @@ export default [
   // 编辑体验
   FindAndReplace,
   InvisibleCharacters,
-  // Focus,
   UniqueId,
   NodeRange,
   HardBreak,
+  // 行为类（无按钮）：聚焦高亮、块间空隙 / 拖拽落点 / 末尾段落
+  // Focus,
+  Gapcursor,
+  Dropcursor,
+  TrailingNode,
+  CharacterCount,
 ];

@@ -84,4 +84,7 @@ export default {
   alignCenter: "Align Center",
   alignJustify: "Align Justify",
   blockquote: "Blockquote",
+  undo: "Undo",
+  redo: "Redo",
+  clearFormatting: "Clear Formatting",
 };

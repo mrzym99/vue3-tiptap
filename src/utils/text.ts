@@ -1,20 +1,6 @@
 import type { Editor } from "@tiptap/core";
 
 /**
- * Plain text length of the editor, excluding block separators (newlines).
- *
- * This is the canonical "character count" used by both the counter UI and the
- * max-length enforcement. Do NOT use `editor.getText().length` here — `getText`
- * inserts a `\n\n` separator between blocks by default, so pressing Enter would
- * inflate the count and make the limit impossible to converge.
- *
- * @param editor editor instance
- */
-export function getEditorTextLength(editor: Editor) {
-  return editor.getText({ blockSeparator: "" }).length;
-}
-
-/**
  * Enforce a max text length by truncating the document at the exact document
  * position of the maxLength-th character.
  *
@@ -25,7 +11,8 @@ export function getEditorTextLength(editor: Editor) {
  *
  * Newlines (paragraph breaks) do not count towards the limit: Enter is allowed
  * at exactly `maxLength` visible characters and the count stays put, because
- * both the check here and the counter UI use {@link getEditorTextLength}.
+ * both the fast path here and the counter UI rely on the `editor.storage`
+ * `characterCount` (textSize mode, which strips block separators).
  *
  * @param editor editor instance
  * @param maxLength max length (0 = unlimited)
@@ -33,8 +20,11 @@ export function getEditorTextLength(editor: Editor) {
 export function checkLimit(editor: Editor, maxLength: number) {
   if (!maxLength) return;
 
-  // Fast path: nothing exceeds the limit (visible characters only)
-  if (getEditorTextLength(editor) <= maxLength) return;
+  // Fast path: nothing exceeds the limit. Reuse the incremental CharacterCount
+  // storage instead of rescanning the whole document on every keystroke.
+  const current =
+    editor.storage.characterCount?.characters?.() ?? editor.getText({ blockSeparator: "" }).length;
+  if (current <= maxLength) return;
 
   const doc = editor.state.doc;
   let textLength = 0;
