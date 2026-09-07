@@ -67,23 +67,24 @@ tip-tap-editor/
     │   │   ├── BulletList / OrderedList / TaskList / Link / CodeBlock / Details
     │   │   ├── Image / Youtube / Audio / Twitch / FileHandler
     │   │   ├── TextStyle / Color / FontFamily / Typography / Table
-    │   │   ├── FindAndReplace / InvisibleCharacters / Focus / UniqueId / NodeRange
+    │   │   ├── FindAndReplace / InvisibleCharacters / UniqueId / NodeRange
+    │   │   ├── Undo / Redo / UndoRedo / ClearFormatting
     │   │   ├── Blockquote / TextAlign / HardBreak（每扩展一个文件）
     │   ├── ui-editor/          # 编辑器 UI 层
-    │   │   ├── tool-bar/       # 工具栏（自动收集扩展按钮）
-    │   │   ├── buttons/        # 简单功能按钮 + 弹窗按钮（链接/查找替换等）
-    │   │   ├── menu-buttons/   # 下拉菜单按钮（标题/对齐/颜色/字体/表格）
-    │   │   ├── bubble-menu/    # 选中文字的气泡格式条
-    │   │   ├── floating-menu/  # 空行左侧的浮动插入菜单
+    │   │   ├── toolbar/        # 工具栏（自动收集扩展按钮）
+    │   │   │   ├── buttons/         # 简单功能按钮（加粗/撤销/清除格式等）
+    │   │   │   ├── menu-buttons/    # 下拉菜单按钮（标题/对齐/颜色/字体/表格）
+    │   │   │   ├── popover-buttons/ # 弹窗按钮（图片/视频/音频/链接等 URL 输入）
+    │   │   │   └── render-item/     # 按扩展 button 声明动态渲染按钮
+    │   │   ├── bubble-menu/    # 气泡菜单（格式条 + link/media/table/浮动菜单）
     │   │   └── editor-content/ # 编辑区容器与内容样式
-    │   └── ui-common/          # 通用 UI 基础组件
+    │   └── ui-common/          # 通用 UI 基础组件（自研，零 UI 框架依赖）
     │       ├── action-button/      # 工具栏基础按钮（含 tooltip/active 态）
-    │       ├── action-menu-button/ # 下拉菜单按钮（基于 NPopover + NList）
-    │       ├── url-popover-button/  # URL 输入弹窗按钮（图片/视频/音频等复用）
+    │       ├── action-menu-button/ # 下拉菜单按钮
+    │       ├── popover-button/     # URL 输入弹窗按钮（图片/视频/音频等复用）
     │       ├── popover/            # 通用弹层（@floating-ui/dom 定位、外部点击/Esc 关闭）
     │       ├── tooltip/            # 悬停提示
-    │       ├── styles.scss          # 公共 UI 样式（按钮/输入框/菜单项）
-    │       └── theme-provider/      # 主题提供者（CSS 变量作用域化）
+    │       └── theme-provider/     # 主题提供者（CSS 变量作用域化）
     ├── theme/                  # 主题体系（CSS 变量）
     │   ├── base.ts / light.ts / dark.ts / index.ts / overwirte.ts
     ├── locales/                # 内置轻量 i18n（zh/en 语言包 + context/inject）
@@ -110,10 +111,10 @@ tip-tap-editor/
 
 - 通过 `useEditor` 创建编辑器实例，注册 `Document` / `Paragraph` / `Text` / `Placeholder` 及自定义扩展；
 - `onCreate` 中：若编辑器创建前 `v-model` 已变化则先 `setContent` 同步；仅当初始内容**超限被截断**时才把截断结果写回 `v-model`（避免空文档把父组件值从 `""` 改写为 `<p></p>`）；
-- `onUpdate` 中调用 `checkLimit` 做字数截断，并把 `editor.getHTML()` 写回 `v-model`；
+- `onUpdate` 中调用 `checkLimit` 做字数截断（同步执行），`editor.getHTML()` 写回 `v-model` 采用 **300ms 防抖**（避免大文档每键 O(n) 序列化；组件卸载时 flush 未写回的内容）；
 - 监听 `v-model` 外部变化（与编辑器当前 HTML 不一致时）通过 `setContent` 同步，编辑器未就绪时暂存、`onCreate` 后应用；
 - 监听 `disabled` 变化调用 `setEditable` 切换只读；
-- 底部展示实时字数统计 `当前字数 / 最大字数`。
+- 底部展示实时字数统计 `当前字数 / 最大字数`（基于 `CharacterCount` 扩展，增量计算）。
 
 ### 5.2 扩展即按钮的工具栏机制（核心设计）
 
@@ -139,8 +140,8 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 
 ### 5.3 按钮组件体系
 
-- **`ActionButton`**（action-button）：基础工具栏按钮，基于 `NButton` + `NTooltip`，支持 `action`、`isActive`（激活态）、`disabled`、`icon`、`tooltip`，图标使用 RemixIcon；
-- **`ActionMenuButton`**（action-menu-button）：带下拉菜单的按钮（`NPopover` + `NList`），用于文本对齐等多项选择类功能，自动高亮当前激活项并同步主按钮图标；
+- **`ActionButton`**（action-button）：基础工具栏按钮（自研，基于 `ui-common/button` + `tooltip`），支持 `action`、`isActive`（激活态）、`disabled`、`icon`、`tooltip`，图标使用 RemixIcon；
+- **`ActionMenuButton`**（action-menu-button）：带下拉菜单的按钮（基于自研 `popover`），用于文本对齐等多项选择类功能，自动高亮当前激活项并同步主按钮图标；
 - **按钮示例**：`BoldButton.vue` 等仅负责把编辑器命令（`toggleBold` 等）映射到 `ActionButton` 上。
 
 ### 5.4 主题体系
@@ -151,7 +152,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 - `theme/index.ts`：`applyTheme()` 将主题 CSS 变量写入目标元素（默认 `document.documentElement`，组件内传根节点实现**作用域化**——多实例不同主题互不干扰）；
 - `theme-provider`：根据 `theme` prop 应用变量（支持 `'light' | 'dark' | 自定义变量对象`）。
 
-所有主题变量以 `--naive-tiptap-*` 前缀命名，类型由 `src/types/theme.ts` 约束（`--naive-tiptap-${string}`）。
+所有主题变量以 `--tiptap-*` 前缀命名，类型由 `src/types/theme.ts` 约束（`--tiptap-${string}`）。
 
 ### 5.5 国际化（i18n）
 
@@ -188,7 +189,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 | Youtube 视频                 | 自定义（基于 @tiptap/extension-youtube）                              | URL 弹窗按钮                          |
 | Audio 音频                   | 自定义（基于 @tiptap/extension-audio）                                | URL 弹窗按钮                          |
 | Twitch 直播                  | 自定义（基于 @tiptap/extension-twitch）                               | URL 弹窗按钮                          |
-| Color 文字颜色               | 自定义（基于 @tiptap/extension-text-style 的 Color）                  | 颜色选择菜单（NColorPicker）          |
+| Color 文字颜色               | 自定义（基于 @tiptap/extension-text-style 的 Color）                  | 颜色选择菜单（色板 + 自定义色值）     |
 | FontFamily 字体              | 自定义（基于 @tiptap/extension-text-style 的 FontFamily）             | 下拉菜单（无衬线/衬线/等宽/雅黑）     |
 | Table 表格                   | 自定义（基于 @tiptap/extension-table 的 TableKit，可调整列宽）        | 下拉菜单（插入/行列/合并/表头/删除）  |
 | FindAndReplace 查找替换      | 自定义（基于 @tiptap/extension-find-and-replace）                     | 弹窗面板（查找/替换/全部/前后跳转）   |
@@ -197,7 +198,11 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 | FloatingMenu 浮动菜单        | @tiptap/vue-3 的 FloatingMenu 组件                                    | 空行左侧浮现插入菜单                  |
 | HorizontalRule 分隔线        | 自定义（基于 @tiptap/extension-horizontal-rule）                      | 图标按钮                              |
 | Typography 排版替换          | @tiptap/extension-typography                                          | 无按钮（智能替换）                    |
-| Focus 聚焦高亮               | @tiptap/extension-focus                                               | 无按钮（聚焦块描边）                  |
+| Focus 聚焦高亮               | @tiptap/extension-focus                                               | 无按钮（聚焦块描边）**默认未启用**    |
+| Undo 撤销 / Redo 重做        | 自定义（基于 @tiptap/extension-undo-redo）                             | 图标按钮 ×2（含禁用态）               |
+| ClearFormatting 清除格式     | 自定义                                                                 | 图标按钮                              |
+| CharacterCount 字数统计      | @tiptap/extensions 的 CharacterCount                                   | 无按钮（底部实时统计）                |
+| Gapcursor / Dropcursor / TrailingNode | @tiptap/extensions                                            | 无按钮（光标兜底/拖拽落点/末尾段落）  |
 | UniqueId 唯一 ID             | @tiptap/extension-unique-id                                           | 无按钮（节点 id 属性）                |
 | Blockquote 引用              | 自定义（基于 @tiptap/extension-blockquote）                           | 图标按钮                              |
 | TextAlign 文本对齐           | 自定义（基于 @tiptap/extension-text-align，作用于 heading/paragraph） | 下拉菜单按钮（左/中/右/两端）         |
@@ -213,7 +218,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 
 ## 8. 扩展建议 / 路线图
 
-- **最新评审见 `docs/feature-gaps-and-optimizations.md`**：汇编了「编辑器还缺什么插件」与「性能 / 响应式 / 无障碍 / 文档漂移」的整体优化清单（含 P0：Undo/Redo 按钮、清除格式、字符统计；P1：字体大小、Emoji、提及、Markdown、目录等）。
+- **最新评审见 `docs/feature-gaps-and-optimizations.md`**：汇编了「编辑器还缺什么插件」与「性能 / 响应式 / 无障碍 / 文档漂移」的整体优化清单。P0（Undo/Redo、清除格式、字符统计）与 v-model 写回防抖已完成；剩余 P1：字体大小、Emoji、提及、Markdown、目录、块级拖拽等。
 - 基于 `src/types/index.ts` 中 `ExtensionNameKeys` 的枚举，可继续接入：列表（有序/无序/任务）、链接 Link、图片 Image、表格 Table（扩展依赖已就绪，样式已内置，仅需启用）、代码块、气泡菜单、查找替换、Emoji、@提及、数学公式等；集成清单与分阶段计划见 `docs/tiptap-extensions-integration-plan.md`；
 - `StarterKit` 已作为依赖引入但暂未启用，可按需替换当前的逐节点注册方式；
 - 可抽取为独立 npm 包 / Vue 组件库，暴露统一的扩展注册 API；
@@ -225,6 +230,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 - 代码中存在部分被注释的扩展/表格代码（`StarterKit`），属于演进中的预留能力；
 - 字数限制与字数统计统一使用「可见字符数」口径（`getEditorTextLength`，不含换行与 HTML 标签）：**按 Enter 换行不计入字数**，内容满额时换行不会导致字数虚增，超限输入会被精确截断（基于文档 position 计算截断点）；
 - `InvisibleCharacters`（隐藏字符）默认关闭（`visible: false`），需点击工具栏按钮手动开启——该扩展官方默认是 `visible: true`，直接注册会导致每个段落显示 ¶ 标记；
+- `Focus`（聚焦高亮）**默认不启用**（2026-09-07 决策）：非活动块淡化可能干扰部分宿主场景，依赖与样式已就绪，需要时去掉 `src/components/extensions/index.ts` 中两处注释即可启用，详见 `docs/feature-gaps-and-optimizations.md` 决策记录；
 - `pnpm-workspace.yaml` 中配置了 `overrides: prosemirror-model: ^1.25.11`，且 `vite.config.ts` 的 `resolve.dedupe` 强制 `prosemirror-model` / `@tiptap/pm` / `@tiptap/core` 等单一副本：双重保险避免出现多份 `prosemirror-model`（ProseMirror 官方警告：重复副本会导致「节点拆分/包裹失败」，表现为按 Enter 无法换行，报 `Can not convert ... to a Fragment (looks like multiple versions of prosemirror-model)`）；
 
 ---
