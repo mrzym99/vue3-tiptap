@@ -87,4 +87,6 @@ export default {
   undo: "Undo",
   redo: "Redo",
   clearFormatting: "Clear Formatting",
+  mention: "Mention",
+  mentionEmpty: "No matching members",
 };

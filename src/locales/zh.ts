@@ -87,4 +87,6 @@ export default {
   undo: "撤销",
   redo: "重做",
   clearFormatting: "清除格式",
+  mention: "提及成员",
+  mentionEmpty: "未找到匹配的成员",
 };

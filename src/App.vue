@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import TipTapEditor from "./components/index.vue";
 import { Image } from "./components/extensions/Image";
+import { Mention } from "./components/extensions/Mention";
 import type { ThemeName } from "./types";
 import type { LocaleName } from "./locales";
 const content = ref("");
@@ -13,12 +14,23 @@ const toggleTheme = () => {
 };
 
 // Configure the image extension with a custom uploader (demo: fake upload).
+// Configure the mention extension with a host-injected member list.
+const mentionUsers = [
+  { id: "1", label: "张三" },
+  { id: "2", label: "李四" },
+  { id: "3", label: "王五" },
+  { id: "4", label: "Alice" },
+  { id: "5", label: "Bob" },
+];
 const extensions = [
   Image.configure({
     upload: async (_file: File) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       return "https://api.mtyqx.cn/api/random.php";
     },
+  }),
+  Mention.configure({
+    items: mentionUsers,
   }),
 ];
 </script>

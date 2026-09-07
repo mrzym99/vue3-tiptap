@@ -282,6 +282,15 @@ const props = defineProps({
       padding: 0.1rem 1rem;
     }
 
+    // Mention 节点（@提及）：行内胶囊样式，随主题变量切换
+    span[data-type="mention"] {
+      background-color: var(--tiptap-accent-blue-bg);
+      border-radius: var(--tiptap-border-radius-sm);
+      color: var(--tiptap-accent-blue);
+      padding: 0.1em 0.35em;
+      font-weight: 500;
+    }
+
     p.is-editor-empty:first-child::before {
       color: var(--tiptap-color-text-muted);
       content: attr(data-placeholder);

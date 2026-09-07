@@ -21,6 +21,7 @@ import { Image } from "./Image";
 import { InvisibleCharacters } from "./InvisibleCharacters";
 import { Italic } from "./Italic";
 import { Link } from "./Link";
+import { Mention } from "./Mention";
 import { NodeRange } from "./NodeRange";
 import { OrderedList } from "./OrderedList";
 import { Redo } from "./Redo";
@@ -101,6 +102,8 @@ export default [
   UniqueId,
   NodeRange,
   HardBreak,
+  // 提及 @（无按钮，输入 @ 触发建议弹层；数据源由宿主通过 items 注入）
+  Mention,
   // 行为类（无按钮）：聚焦高亮、块间空隙 / 拖拽落点 / 末尾段落
   // Focus,
   Gapcursor,

@@ -86,6 +86,9 @@ importers:
       '@tiptap/extension-list':
         specifier: ^3.30.1
         version: 3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1)
+      '@tiptap/extension-mention':
+        specifier: ^3.31.3
+        version: 3.31.3(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1)(@tiptap/suggestion@3.31.3(@floating-ui/dom@1.7.6)(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1))
       '@tiptap/extension-node-range':
         specifier: ^3.30.1
         version: 3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1)
@@ -140,6 +143,9 @@ importers:
       '@tiptap/starter-kit':
         specifier: ^3.30.1
         version: 3.30.1
+      '@tiptap/suggestion':
+        specifier: ^3.31.3
+        version: 3.31.3(@floating-ui/dom@1.7.6)(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1)
       '@tiptap/vue-3':
         specifier: ^3.30.1
         version: 3.30.1(@floating-ui/dom@1.7.6)(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1)(vue@3.5.38(typescript@6.0.3))
@@ -253,6 +259,9 @@ packages:
 
   '@jridgewell/sourcemap-codec@1.5.5':
     resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
+
+  '@jridgewell/sourcemap-codec@1.6.0':
+    resolution: {integrity: sha512-T7jf+5zgsZHwNJ4lvQ7/aezbyk0nNX+zJVWpmHA7VYsEx7a7qr5Rg5IbtJFqkgze5Y2sruq1RUY8Q837Od7iFw==}
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
@@ -606,6 +615,13 @@ packages:
       '@tiptap/core': 3.30.1
       '@tiptap/pm': 3.30.1
 
+  '@tiptap/extension-mention@3.31.3':
+    resolution: {integrity: sha512-ygOPc3nQijSMUTbEdMeng12P1szk3znubA9xNi84f31VnR18VjmU0we8SIOSSVwDfm1GppSjRER2qHmX/wGIIw==}
+    peerDependencies:
+      '@tiptap/core': 3.31.3
+      '@tiptap/pm': 3.31.3
+      '@tiptap/suggestion': 3.31.3
+
   '@tiptap/extension-node-range@3.30.1':
     resolution: {integrity: sha512-vPvgHul8ZmPqkbXDQAv18UketGBAPj7xM1je6HJGbcT4wIXzLOFpXpA7Kwj7DkTfisY+fqxdAYYrvrMc8EzGcQ==}
     peerDependencies:
@@ -702,6 +718,13 @@ packages:
 
   '@tiptap/starter-kit@3.30.1':
     resolution: {integrity: sha512-6P2WEp2ZHsx8LV6hQ3K/MB3n39oiVhKESlzh0v+KhK8RR/iKSKGxvTFbi1D/1fo4j3fZf+43PGHjyKXskn9ZmQ==}
+
+  '@tiptap/suggestion@3.31.3':
+    resolution: {integrity: sha512-z1OQ/Yx6seMZehi1AcmNkyJ8qkHQzybArmCyRdmreS4YL9C4bPMBe5lbMfFsArYs+KD5JyHwps5j7J/YE5BIuw==}
+    peerDependencies:
+      '@floating-ui/dom': ^1.0.0
+      '@tiptap/core': 3.31.3
+      '@tiptap/pm': 3.31.3
 
   '@tiptap/vue-3@3.30.1':
     resolution: {integrity: sha512-Y7YUkC+LpHcnraN0GwJtySh7XZnveqde5SsHV5X7h1erflp+WT7rG52sE0WKyFOSc3t9ZKSJ/4IBUtB3+ZQHrA==}
@@ -1325,6 +1348,8 @@ snapshots:
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
 
+  '@jridgewell/sourcemap-codec@1.6.0': {}
+
   '@jridgewell/trace-mapping@0.3.31':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
@@ -1581,6 +1606,12 @@ snapshots:
       '@tiptap/core': 3.30.1(@tiptap/pm@3.30.1)
       '@tiptap/pm': 3.30.1
 
+  '@tiptap/extension-mention@3.31.3(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1)(@tiptap/suggestion@3.31.3(@floating-ui/dom@1.7.6)(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1))':
+    dependencies:
+      '@tiptap/core': 3.30.1(@tiptap/pm@3.30.1)
+      '@tiptap/pm': 3.30.1
+      '@tiptap/suggestion': 3.31.3(@floating-ui/dom@1.7.6)(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1)
+
   '@tiptap/extension-node-range@3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1)':
     dependencies:
       '@tiptap/core': 3.30.1(@tiptap/pm@3.30.1)
@@ -1697,6 +1728,12 @@ snapshots:
       '@tiptap/extension-text': 3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))
       '@tiptap/extension-underline': 3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))
       '@tiptap/extensions': 3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1)
+      '@tiptap/pm': 3.30.1
+
+  '@tiptap/suggestion@3.31.3(@floating-ui/dom@1.7.6)(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1)':
+    dependencies:
+      '@floating-ui/dom': 1.7.6
+      '@tiptap/core': 3.30.1(@tiptap/pm@3.30.1)
       '@tiptap/pm': 3.30.1
 
   '@tiptap/vue-3@3.30.1(@floating-ui/dom@1.7.6)(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1)(vue@3.5.38(typescript@6.0.3))':
@@ -1959,7 +1996,7 @@ snapshots:
 
   magic-string@0.30.21:
     dependencies:
-      '@jridgewell/sourcemap-codec': 1.5.5
+      '@jridgewell/sourcemap-codec': 1.6.0
 
   mlly@1.8.2:
     dependencies:
