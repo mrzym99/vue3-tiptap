@@ -11,6 +11,8 @@ export interface RedoOptions extends GeneralOptions {}
  * up the button.
  */
 export const Redo = /* @__PURE__ */ Extension.create<RedoOptions>({
+  // Must match the button key used in `defaultToolbar`
+  name: "redo",
   addOptions() {
     return {
       button: ({ editor, t }) => ({

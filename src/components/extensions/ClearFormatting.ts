@@ -13,6 +13,8 @@ export interface ClearFormattingOptions extends GeneralOptions {}
  * Pure ProseMirror commands, zero extra dependencies.
  */
 export const ClearFormatting = /* @__PURE__ */ Extension.create<ClearFormattingOptions>({
+  // Must match the button key used in `defaultToolbar`
+  name: "clearFormatting",
   addOptions() {
     return {
       button: ({ editor, t }) => ({

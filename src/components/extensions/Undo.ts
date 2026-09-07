@@ -11,6 +11,8 @@ export interface UndoOptions extends GeneralOptions {}
  * the button.
  */
 export const Undo = /* @__PURE__ */ Extension.create<UndoOptions>({
+  // Must match the button key used in `defaultToolbar`
+  name: "undo",
   addOptions() {
     return {
       button: ({ editor, t }) => ({
