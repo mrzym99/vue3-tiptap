@@ -9,6 +9,11 @@ export type ActionButtonProps = {
   color?: string;
   action?: () => void;
   isActive?: () => boolean;
+  /**
+   * Accessibility state for buttons that open a dropdown menu
+   * (bound to `aria-expanded`; omit on plain buttons)
+   */
+  ariaExpanded?: boolean;
 };
 
 export type EXTActionButtonProps = {

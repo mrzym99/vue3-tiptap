@@ -222,7 +222,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 - **最新评审见 `docs/feature-gaps-and-optimizations.md`**：汇编了「编辑器还缺什么插件」与「性能 / 响应式 / 无障碍 / 文档漂移」的整体优化清单。P0（Undo/Redo、清除格式、字符统计）、v-model 写回防抖与 Mention 提及已完成；剩余 P1：字体大小、Emoji、Markdown、目录、块级拖拽等。
 - 基于 `src/types/index.ts` 中 `ExtensionNameKeys` 的枚举，可继续接入：列表（有序/无序/任务）、链接 Link、图片 Image、表格 Table（扩展依赖已就绪，样式已内置，仅需启用）、代码块、气泡菜单、查找替换、Emoji、@提及、数学公式等；集成清单与分阶段计划见 `docs/tiptap-extensions-integration-plan.md`；
 - `StarterKit` 已作为依赖引入但暂未启用，可按需替换当前的逐节点注册方式；
-- 可抽取为独立 npm 包 / Vue 组件库，暴露统一的扩展注册 API；
+- 可抽取为独立 npm 包 / Vue 组件库，暴露统一的扩展注册 API；`src/index.ts` 已命名导出全部内置扩展（`Mention` / `Image` 等），宿主可通过 `extensions` prop 按名合并覆盖（如 `Mention.configure({ items })`、`Image.configure({ upload })`）；
 - 可补充 TableKit（可调整列宽）等高级能力的完整 UI。
 
 ## 9. 已知事项

@@ -1,11 +1,12 @@
 <template>
-  <Popover trigger="click" placement="bottom-start">
+  <Popover v-model:show="menuOpen" trigger="click" placement="bottom-start">
     <template #trigger>
       <ActionButton
         :is-active="() => isActive"
         :disabled="disabled"
         :icon="active.icon"
         :tooltip="active.label"
+        :aria-expanded="menuOpen"
       >
         <template #suffix>
           <slot name="suffix" />
@@ -36,6 +37,9 @@ import type { ActionButtonMenuProps } from "./props.ts";
 import type { ActionMenuButtonItem } from "./type.ts";
 
 const props = defineProps<ActionButtonMenuProps>();
+
+// Expose the open state for `aria-expanded` on the trigger button
+const menuOpen = ref(false);
 
 const active = computed<ActionMenuButtonItem>(() => {
   const find = props.items.find((k) => k.isActive());

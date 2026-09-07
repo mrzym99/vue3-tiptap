@@ -109,14 +109,18 @@ onUnmounted(flushModelValue);
 // the instance on mount, so the initial watcher run may race with it)
 let pendingContent: string | undefined;
 
-// Merge user extensions over the built-ins (by extension name).
+// Placeholder stays reactive: `extension.options` is a getter that re-runs
+// `addOptions()` on every access, so mutating options at runtime is useless.
+// The option also accepts a function, which the plugin re-evaluates whenever
+// it rebuilds decorations — close over a mutable variable for live updates.
+let currentPlaceholder = props.placeholder ?? "";
 const userExtNames = new Set(props.extensions.map((e) => e.name));
 const mergedExtensions = [
   Document, // 文档根节点
   Paragraph, // 段落
   Text, // 文本
   Placeholder.configure({
-    placeholder: props.placeholder ?? "",
+    placeholder: () => currentPlaceholder,
   }),
   ...Extensions.filter((e) => !userExtNames.has(e.name)),
   ...props.extensions,
@@ -167,6 +171,19 @@ watch(
   (newValue) => {
     if (!editor.value) return;
     editor.value.setEditable(!newValue);
+  },
+);
+
+// Sync runtime `placeholder` prop changes into the extension (see
+// `currentPlaceholder` above) and force a decoration rebuild — the plugin
+// skips transactions without a doc change or selection change.
+watch(
+  () => props.placeholder,
+  (next) => {
+    currentPlaceholder = next ?? "";
+    if (!editor.value) return;
+    const { state, view } = editor.value;
+    view.dispatch(state.tr.setSelection(state.selection));
   },
 );
 </script>

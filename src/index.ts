@@ -9,6 +9,14 @@ export * from "./types";
 export type { ImageUploader } from "./types";
 export type { LocaleName, LocaleT, LocaleContext } from "./locales";
 
+/**
+ * All built-in extensions, exported individually so hosts can reconfigure
+ * them via the `extensions` prop, e.g.:
+ * `extensions: [Mention.configure({ items }), Image.configure({ upload })]`
+ * (user extensions are merged over the built-ins by extension name).
+ */
+export * from "./components/extensions";
+
 export { TipTapEditor, builtinExtensions, applyTheme };
 
 /**

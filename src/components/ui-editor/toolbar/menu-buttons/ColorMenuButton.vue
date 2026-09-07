@@ -1,10 +1,12 @@
 <template>
-  <Popover trigger="click" placement="bottom-start">
+  <Popover v-model:show="colorMenuOpen" trigger="click" placement="bottom-start">
     <template #trigger>
       <button
         type="button"
         class="color-button"
         :class="{ 'is-active': isColorActive }"
+        :aria-label="t('color')"
+        :aria-expanded="colorMenuOpen"
       >
         <RiFontColor />
       </button>
@@ -44,6 +46,9 @@ import TiptapButton from "@/components/ui-common/button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
 const props = defineProps<EXTActionButtonProps>();
+
+// Expose the open state for `aria-expanded` on the trigger button
+const colorMenuOpen = ref(false);
 
 const PRESET_COLORS = [
   "#000000",

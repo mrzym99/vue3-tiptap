@@ -6,6 +6,9 @@
         class="action-button"
         :class="{ 'is-active': isActive?.() }"
         :disabled="disabled"
+        :aria-label="tooltip"
+        :aria-expanded="ariaExpanded"
+        :aria-pressed="isActive?.() ?? undefined"
         @click="handleClick"
       >
         <span class="icon-container">

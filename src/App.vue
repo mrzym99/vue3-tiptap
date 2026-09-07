@@ -9,6 +9,7 @@ const content = ref("");
 content.value = ``;
 const theme = ref<ThemeName>("light");
 const locale = ref<LocaleName>("zh");
+const placeholder = ref("输入 @ 提及成员…");
 const toggleTheme = () => {
   document.documentElement.classList.toggle("dark");
 };
@@ -52,6 +53,11 @@ const extensions = [
         <option value="en">English</option>
       </select>
     </div>
+
+    <div>
+      占位
+      <input v-model="placeholder" class="app-select" style="width: 160px" />
+    </div>
   </div>
 
   <div style="height: 100vh; width: 80%; margin: 0 auto; padding: 10vh 0">
@@ -60,6 +66,7 @@ const extensions = [
       style="height: 60vh"
       :theme="theme"
       :locale="locale"
+      :placeholder="placeholder"
       :extensions="extensions"
     />
     <br />

@@ -82,14 +82,14 @@
 
 | 问题 | 说明与建议 |
 | ---- | ---------- |
-| **`placeholder` prop 不是响应式** | `Placeholder.configure({ placeholder })` 仅在 `useEditor` 创建时读一次；运行时改 `placeholder` 不会生效。建议 watch `props.placeholder` 后 `editor.extensionManager` 更新并重渲染，或读 `editor` 时动态取。 |
+| **`placeholder` prop 不是响应式** | ✅ **已修复（2026-09-07）**。注意 tiptap v3 的 `extension.options` 是 getter（每次访问重新执行 `addOptions()` 返回新对象），直接 mutate 无效；最终方案是 `placeholder` 选项传**函数闭包**（插件每次重建 decoration 时调用），配合 watch 派发 selectionSet 事务强制重建。 |
 | **`extensions` prop 仅在创建时读一次** | 列表渲染期改扩展不生效；属约定行为，建议文档注明「扩展必须在挂载前确定」。 |
 | **外部 `setContent` 不清空 undo 栈** | 父组件整体重置内容后用 `undo` 可能跳回历史旧状态；如需「重置即清历史」，在回填时调用 `editor.commands.clearContent(true)`（需确认）或 `editor.view.history`（PM 内部）重置。 |
 | **`v-model` 初值为空字符串** | 已有 `pendingContent` 与「空文档不回写 `<p></p>`」的防护，逻辑正确；保留。 |
 
 ### 4.3 可用性 / 无障碍（A11y）
 
-1. **图标按钮缺 `aria-label`**：工具栏/气泡/表格菜单大量纯图标按钮，目前只有 hover tooltip。建议 `ActionButton` 统一注入 `:aria-label="tooltip"`（i18n 词条已具备），提升读屏与键盘可达性。
+1. **图标按钮缺 `aria-label`**：✅ **已完成（2026-09-07）**。`ActionButton` 统一注入 `:aria-label="tooltip"` 与 `:aria-pressed`（切换态）、下拉按钮 `:aria-expanded`（含 ColorMenuButton / FindAndReplaceButton 自带 trigger）；i18n 词条即无障碍名称。剩余：配色对比度可再调。
 2. **配色对比度**：`--tiptap-color-text-muted`（灰）在小号字（表格操作、字数统计）上偏低，可调深半档。
 3. **键盘可达**：气泡菜单 / 下拉菜单 / 颜色面板的事件已 `mousedown` 外部关闭；确保面板内支持 `Esc` 与 `Tab` 聚焦（下拉/弹窗已支持 Esc，核对一致）。
 

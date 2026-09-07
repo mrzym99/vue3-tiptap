@@ -5,6 +5,8 @@
         type="button"
         class="fr-button"
         :class="{ 'is-active': hasResults }"
+        :aria-label="t('findAndReplace')"
+        :aria-expanded="show"
       >
         <RiSearchLine />
       </button>
