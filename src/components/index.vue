@@ -12,7 +12,6 @@
     </div>
   </ThemeProvider>
 </template>
-i
 
 <script setup lang="ts">
 import ThemeProvider from "@/components/ui-common/theme-provider/index.vue";
@@ -86,6 +85,26 @@ const emit = defineEmits<{
 
 const modelValue = defineModel<string>({ required: true });
 
+// Debounced write-back of editor.getHTML() to v-model: serializing a large
+// document on every keystroke is O(n), so sync at most once per idle window.
+// checkLimit stays synchronous — truncation must apply immediately.
+const MODEL_SYNC_DELAY = 300;
+let modelSyncTimer: ReturnType<typeof setTimeout> | undefined;
+const syncModelValue = () => {
+  if (modelSyncTimer) clearTimeout(modelSyncTimer);
+  modelSyncTimer = setTimeout(() => {
+    modelSyncTimer = undefined;
+    if (editor.value) modelValue.value = editor.value.getHTML();
+  }, MODEL_SYNC_DELAY);
+};
+const flushModelValue = () => {
+  if (!modelSyncTimer) return;
+  clearTimeout(modelSyncTimer);
+  modelSyncTimer = undefined;
+  if (editor.value) modelValue.value = editor.value.getHTML();
+};
+onUnmounted(flushModelValue);
+
 // Value that changed before the editor instance was ready (useEditor creates
 // the instance on mount, so the initial watcher run may race with it)
 let pendingContent: string | undefined;
@@ -123,7 +142,7 @@ const editor = useEditor({
   },
   onUpdate: ({ editor }) => {
     checkLimit(editor, props.maxLength);
-    modelValue.value = editor.getHTML();
+    syncModelValue();
   },
   onFocus: (props) => emit("focus", props),
   onBlur: (props) => emit("blur", props),
