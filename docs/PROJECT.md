@@ -207,6 +207,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 | Blockquote 引用              | 自定义（基于 @tiptap/extension-blockquote）                           | 图标按钮                              |
 | TextAlign 文本对齐           | 自定义（基于 @tiptap/extension-text-align，作用于 heading/paragraph） | 下拉菜单按钮（左/中/右/两端）         |
 | HardBreak 硬换行             | @tiptap/extension-hard-break（Shift+Enter）                           | 无按钮（快捷键）                      |
+| Mention 提及 @               | 自定义（基于 @tiptap/extension-mention + @tiptap/suggestion）          | 无按钮（输入 @ 触发建议弹层，数据源由宿主 `items` 注入） |
 
 ## 7. 设计要点与约定
 
@@ -218,7 +219,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 
 ## 8. 扩展建议 / 路线图
 
-- **最新评审见 `docs/feature-gaps-and-optimizations.md`**：汇编了「编辑器还缺什么插件」与「性能 / 响应式 / 无障碍 / 文档漂移」的整体优化清单。P0（Undo/Redo、清除格式、字符统计）与 v-model 写回防抖已完成；剩余 P1：字体大小、Emoji、提及、Markdown、目录、块级拖拽等。
+- **最新评审见 `docs/feature-gaps-and-optimizations.md`**：汇编了「编辑器还缺什么插件」与「性能 / 响应式 / 无障碍 / 文档漂移」的整体优化清单。P0（Undo/Redo、清除格式、字符统计）、v-model 写回防抖与 Mention 提及已完成；剩余 P1：字体大小、Emoji、Markdown、目录、块级拖拽等。
 - 基于 `src/types/index.ts` 中 `ExtensionNameKeys` 的枚举，可继续接入：列表（有序/无序/任务）、链接 Link、图片 Image、表格 Table（扩展依赖已就绪，样式已内置，仅需启用）、代码块、气泡菜单、查找替换、Emoji、@提及、数学公式等；集成清单与分阶段计划见 `docs/tiptap-extensions-integration-plan.md`；
 - `StarterKit` 已作为依赖引入但暂未启用，可按需替换当前的逐节点注册方式；
 - 可抽取为独立 npm 包 / Vue 组件库，暴露统一的扩展注册 API；

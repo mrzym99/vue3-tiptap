@@ -41,7 +41,7 @@
 | **字体大小（Font Size）** | 下拉菜单 | 基于现有 `TextStyle` 基座，自研 `addAttributes` 注入 `style.font-size` 即可，模式与 `FontFamily` 一致。 |
 | **图片/视频拖拽改尺寸** | 节点悬浮控件 | 插入时可设宽高，但**无拖拽调整手柄**；可给 Image/Video nodeview 挂 resize 角标（复用 Table 列宽手柄的思路）。 |
 | **Emoji** | 按钮 + 面板 | `@tiptap/extension-emoji` 自带 `emojibase-data` 数据与建议列表；需面板 UI（可复用 Popover + 现有搜索框）。 |
-| **提及 @（Mention + Suggestion）** | 无按钮 | `@tiptap/extension-mention` + `@tiptap/suggestion`，输入 `@` 出建议弹层；无需三方引擎，数据源由宿主注入（您的 `Image.configure({ upload })` 同款注入模式）。 |
+| **提及 @（Mention + Suggestion）** ✅ 已完成（2026-09-07） | 无按钮 | `@tiptap/extension-mention` + `@tiptap/suggestion`，输入 `@` 出建议弹层；数据源由宿主注入：`Mention.configure({ items })`（静态列表自动按 query 过滤，或传 `({ query, editor }) => items` 同步/异步解析函数，模式同 `Image.configure({ upload })`）。弹层由 `@tiptap/suggestion` 的 managed mount 定位（fixed 策略 + floating-ui autoUpdate），并 reparent 进主题根节点以继承 `--tiptap-*` 变量。 |
 | **目录（Table of Contents）** | 无按钮 | `@tiptap/extension-table-of-contents`，依赖 Heading；用于长文导航，纯只读节点。 |
 | **基础 PM 兜底扩展** | 无按钮 | `DropCursor` / `GapCursor` / `TrailingNode`（trailing 保证文档末尾始终可插入）；这些都在 `starter-kit` 内，启用 StarterKit 即一并获得（见 §4）。 |
 
@@ -74,7 +74,7 @@
    - 建议：`onUpdate` 后 **300ms 防抖**再 `getHTML()` 写回；真·即时需要可拆「本地编辑不重渲染 + 节流回写」。
    - `getHTML()` 结果可缓存，仅当文档 version 变化时重算。
    - ✅ **已完成（2026-09-07）**：`onUpdate` 改为 300ms 防抖写回（`checkLimit` 截断仍同步执行），组件卸载时 flush 未落盘的写回。`getHTML()` 缓存仍可做但暂未实施。
-2. **关闭不必要的 Vue 重渲染**：`useEditor({ shouldRerenderOnTransaction: false })`——纯文本输入时无需订阅每次事务的响应式重渲染，可显著降低 CPU。仅当需要响应光标/选中态时再局部订阅。
+2. **关闭不必要的 Vue 重渲染**：~~`useEditor({ shouldRerenderOnTransaction: false })`~~ → **不适用（2026-09-07 核实）**：该选项是 `@tiptap/react` 专属（v3 默认已改为 false，配合 `useEditorState` 精细订阅）；`@tiptap/vue-3` 没有此选项，其内部已用 `useDebouncedRef`（双层 `requestAnimationFrame` 延迟 trigger 的响应式 state/storage）合并同帧事务，模板中读 `editor.can()` / `isActive()` 自动刷新且天然去抖，无需改造。
 3. **字数统计改用 CharacterCount**：✅ **已完成**，底部统计与 `checkLimit` 均已改用 `editor.storage.characterCount`（见 2.1）。
 4. **重扩展懒加载**：Mathematics(KaTeX)、Markdown(turndown) 等用 `import()` 按需，不进首屏主包（构建已按 group 分包，见 `vite.config.ts`）。
 
