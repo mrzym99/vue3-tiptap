@@ -16,15 +16,16 @@ import type { Editor } from "@tiptap/core";
  *
  * @param editor editor instance
  * @param maxLength max length (0 = unlimited)
+ * @returns whether the document was truncated
  */
-export function checkLimit(editor: Editor, maxLength: number) {
-  if (!maxLength) return;
+export function checkLimit(editor: Editor, maxLength: number): boolean {
+  if (!maxLength) return false;
 
   // Fast path: nothing exceeds the limit. Reuse the incremental CharacterCount
   // storage instead of rescanning the whole document on every keystroke.
   const current =
     editor.storage.characterCount?.characters?.() ?? editor.getText({ blockSeparator: "" }).length;
-  if (current <= maxLength) return;
+  if (current <= maxLength) return false;
 
   const doc = editor.state.doc;
   let textLength = 0;
@@ -48,5 +49,7 @@ export function checkLimit(editor: Editor, maxLength: number) {
 
   if (cutPos !== null && cutPos < doc.content.size) {
     editor.commands.deleteRange({ from: cutPos, to: doc.content.size });
+    return true;
   }
+  return false;
 }

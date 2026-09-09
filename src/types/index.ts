@@ -48,8 +48,11 @@ export interface TipTapEditorProps {
   theme?: ThemeName;
   /** Placeholder text shown when the document is empty */
   placeholder?: string;
-  /** Whether to focus the editor on mount */
-  autofocus?: boolean;
+  /**
+   * Whether to focus the editor on mount. Pass `"start"` / `"end"` /
+   * a document position for fine-grained control (passed through to tiptap).
+   */
+  autofocus?: boolean | "start" | "end" | number;
   /**
    * Toolbar button selection. Keys are extension names
    * (e.g. "bold", "heading", "textAlign", "table", "image").

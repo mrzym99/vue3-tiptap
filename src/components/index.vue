@@ -81,6 +81,12 @@ provideTiptapLocale(localeContext);
 const emit = defineEmits<{
   focus: [payload: { editor: Editor; event: FocusEvent; transaction: Transaction }];
   blur: [payload: { editor: Editor; event: FocusEvent; transaction: Transaction }];
+  /** Emitted on every content-changing transaction (before the debounced v-model write-back) */
+  update: [payload: { editor: Editor; transaction: Transaction }];
+  /** The editor instance was created and is ready to use */
+  ready: [editor: Editor];
+  /** Content exceeded `maxLength` and was truncated */
+  truncated: [info: { maxLength: number }];
 }>();
 
 const modelValue = defineModel<string>({ required: true });
@@ -142,10 +148,15 @@ const editor = useEditor({
     if (props.maxLength && editor.storage.characterCount.characters() > props.maxLength) {
       checkLimit(editor, props.maxLength);
       modelValue.value = editor.getHTML();
+      emit("truncated", { maxLength: props.maxLength });
     }
+    emit("ready", editor);
   },
-  onUpdate: ({ editor }) => {
-    checkLimit(editor, props.maxLength);
+  onUpdate: ({ editor, transaction }) => {
+    if (checkLimit(editor, props.maxLength)) {
+      emit("truncated", { maxLength: props.maxLength });
+    }
+    emit("update", { editor, transaction });
     syncModelValue();
   },
   onFocus: (props) => emit("focus", props),
@@ -186,6 +197,17 @@ watch(
     view.dispatch(state.tr.setSelection(state.selection));
   },
 );
+
+/** Imperative helpers for template-ref access: `editorRef.value.focus()` */
+defineExpose({
+  /** The underlying tiptap editor instance (`undefined` until mounted) */
+  editor,
+  focus: (position?: "start" | "end" | number | null) => editor.value?.commands.focus(position),
+  blur: () => editor.value?.commands.blur(),
+  clear: () => editor.value?.commands.clearContent(),
+  getHTML: () => editor.value?.getHTML() ?? "",
+  getJSON: () => editor.value?.getJSON(),
+});
 </script>
 <style lang="scss" scoped>
 .tiptap-box {
