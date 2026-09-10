@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ThemeName } from "@/types";
+import type { Theme, ThemeName } from "@/types";
 import { applyTheme } from "@/theme";
 
 const props = defineProps({
@@ -13,18 +13,23 @@ const props = defineProps({
     type: String as PropType<ThemeName>,
     default: "light",
   },
+  /** Custom CSS variables (`--tiptap-*`) layered over the built-in theme */
+  themeOverrides: {
+    type: Object as PropType<Theme>,
+    default: undefined,
+  },
 });
 
 const rootEl = ref<HTMLElement | null>(null);
 
 function syncTheme() {
   if (rootEl.value) {
-    applyTheme(props.theme, rootEl.value);
+    applyTheme(props.theme, rootEl.value, props.themeOverrides);
   }
 }
 
 onMounted(syncTheme);
-watch(() => props.theme, syncTheme);
+watch(() => [props.theme, props.themeOverrides] as const, syncTheme, { deep: true });
 </script>
 
 <style lang="scss" scoped>

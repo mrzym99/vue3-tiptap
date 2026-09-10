@@ -150,7 +150,8 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 - `theme/light.ts` / `theme/dark.ts`：浅色、深色的颜色变量；
 - `theme/index.ts`：`applyTheme()` 将主题 CSS 变量写入 `document.documentElement` 的 style 上；
 - `theme/index.ts`：`applyTheme()` 将主题 CSS 变量写入目标元素（默认 `document.documentElement`，组件内传根节点实现**作用域化**——多实例不同主题互不干扰）；
-- `theme-provider`：根据 `theme` prop 应用变量（支持 `'light' | 'dark' | 自定义变量对象`）。
+- `theme-provider`：根据 `theme` prop 应用变量（支持 `'light' | 'dark'`）；
+- **自定义变量叠加**：`themeOverrides` prop（`Theme` 类型，键为 `--tiptap-*` 变量名）叠加在内置主题之上，优先级最高，可覆盖颜色或尺寸变量，如 `{ "--tiptap-color-bg": "#FAFAFA" }`；`applyTheme(name, target?, overrides?)` 第三个参数同效。
 
 所有主题变量以 `--tiptap-*` 前缀命名，类型由 `src/types/theme.ts` 约束（`--tiptap-${string}`）。
 

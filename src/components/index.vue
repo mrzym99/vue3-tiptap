@@ -1,5 +1,5 @@
 <template>
-  <ThemeProvider :theme="theme">
+  <ThemeProvider :theme="theme" :theme-overrides="themeOverrides">
     <div class="tiptap-box" v-if="editor">
       <ToolBar :editor="editor" :toolbar="props.toolbar" />
       <EditorContent :editor="editor" />
@@ -43,6 +43,7 @@ const props = withDefaults(
       | "maxLength"
       | "disabled"
       | "theme"
+      | "themeOverrides"
       | "placeholder"
       | "autofocus"
       | "toolbar"
@@ -58,6 +59,7 @@ const props = withDefaults(
     maxLength: 0,
     disabled: false,
     theme: "light",
+    themeOverrides: undefined,
     placeholder: undefined,
     autofocus: false,
     locale: undefined,

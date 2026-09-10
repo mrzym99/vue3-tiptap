@@ -1,6 +1,6 @@
 import type { Component } from "vue";
 import type { Editor } from "@tiptap/core";
-import type { ThemeName } from "./theme";
+import type { Theme, ThemeName } from "./theme";
 
 export * from "./theme";
 export type { ImageUploader } from "./upload";
@@ -46,6 +46,12 @@ export interface TipTapEditorProps {
   disabled?: boolean;
   /** Theme mode */
   theme?: ThemeName;
+  /**
+   * Custom CSS variables (`--tiptap-*`) layered on top of `theme`.
+   * Keys are token names (see `Theme`), values are any valid CSS value,
+   * e.g. `{ "--tiptap-color-bg": "#FAFAFA", "--tiptap-border-radius-md": "6px" }`.
+   */
+  themeOverrides?: Theme;
   /** Placeholder text shown when the document is empty */
   placeholder?: string;
   /**
