@@ -90,6 +90,14 @@ export interface TipTapEditorProps {
    * `extensions: [Image.configure({ upload: myUpload })]`
    */
   extensions?: import("@tiptap/core").Extensions;
+  /**
+   * Names of built-in extensions to remove entirely (matched by
+   * `extension.name`, e.g. `"twitch"`, `"undoRedo"`). Applied before
+   * `extensions` is merged, so the two compose: exclude a built-in and
+   * optionally add back your own configured version via `extensions`.
+   * Toolbar buttons of excluded extensions are hidden automatically.
+   */
+  excludeExtensions?: string[];
 }
 
 /**

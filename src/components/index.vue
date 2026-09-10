@@ -50,6 +50,7 @@ const props = withDefaults(
       | "bubbleMenu"
       | "floatingMenu"
       | "extensions"
+      | "excludeExtensions"
     > & {
       /** UI language of the toolbar/menus (auto-detected when omitted) */
       locale?: LocaleName | (string & {});
@@ -70,6 +71,7 @@ const props = withDefaults(
     bubbleMenu: undefined,
     floatingMenu: undefined,
     extensions: () => [],
+    excludeExtensions: () => [],
   },
 );
 
@@ -131,6 +133,9 @@ let pendingContent: string | undefined;
 // it rebuilds decorations — close over a mutable variable for live updates.
 let currentPlaceholder = props.placeholder ?? "";
 const userExtNames = new Set(props.extensions.map((e) => e.name));
+// Built-ins named here are removed entirely (buttons disappear too, the
+// toolbar only renders keys whose extension exists)
+const excludedExtNames = new Set(props.excludeExtensions);
 const mergedExtensions = [
   Document, // 文档根节点
   Paragraph, // 段落
@@ -138,7 +143,7 @@ const mergedExtensions = [
   Placeholder.configure({
     placeholder: () => currentPlaceholder,
   }),
-  ...Extensions.filter((e) => !userExtNames.has(e.name)),
+  ...Extensions.filter((e) => !userExtNames.has(e.name) && !excludedExtNames.has(e.name)),
   ...props.extensions,
 ];
 
