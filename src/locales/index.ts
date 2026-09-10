@@ -1,4 +1,4 @@
-import { ref, inject, provide, type InjectionKey, type Ref } from "vue";
+import { ref, reactive, inject, provide, type InjectionKey, type Ref } from "vue";
 import zh from "./zh";
 import en from "./en";
 
@@ -7,30 +7,65 @@ export type LocaleName = "zh" | "en";
 /** Translation function signature (compatible with the button components) */
 export type LocaleT = (key: string) => string;
 
+/** Flat key→text table for one locale */
+export type LocaleMessages = Record<string, string>;
+
+/**
+ * Host-provided translations, keyed by locale id. Built-in locales ("zh"/"en")
+ * are overridden key-by-key; any other id adds a new locale selectable via the
+ * `locale` prop. Shallow-merged over the built-in packs.
+ */
+export type LocaleTranslations = Record<string, LocaleMessages | undefined>;
+
 export interface LocaleContext {
   /** Current locale (reactive) */
-  locale: Ref<LocaleName>;
+  locale: Ref<LocaleName | (string & {})>;
   /** Translate a key using the current locale */
   t: LocaleT;
   /** Switch locale */
-  setLocale: (locale: LocaleName) => void;
+  setLocale: (locale: LocaleName | (string & {})) => void;
+  /** Replace host translations (shallow-merged over the built-in packs) */
+  setTranslations: (translations?: LocaleTranslations) => void;
 }
 
-const messages: Record<LocaleName, Record<string, string>> = { zh, en };
+const builtinMessages: Record<string, Record<string, string>> = { zh, en };
 
 /** Injection key — components read the context provided by TipTapEditor */
 export const LocaleContextKey: InjectionKey<LocaleContext> = Symbol("tiptap-locale");
 
+/** Shallow-merge host translations over the built-in packs. */
+function mergeMessages(translations?: LocaleTranslations): Record<string, Record<string, string>> {
+  const merged: Record<string, Record<string, string>> = { ...builtinMessages };
+  for (const [locale, msgs] of Object.entries(translations ?? {})) {
+    if (!msgs) continue;
+    merged[locale] = { ...merged[locale], ...msgs };
+  }
+  return merged;
+}
+
 /**
  * Create a self-contained locale context (no vue-i18n / global instance needed).
+ *
+ * `translations` lets the host override built-in wording or add new locales
+ * (e.g. `translations: { fr: { bold: "Gras", ... } }` then `locale: "fr"`).
  */
-export function createLocaleContext(initial: LocaleName): LocaleContext {
-  const locale = ref<LocaleName>(initial);
-  const t: LocaleT = (key) => messages[locale.value][key] ?? key;
-  const setLocale = (next: LocaleName) => {
+export function createLocaleContext(
+  initial: LocaleName | (string & {}),
+  translations?: LocaleTranslations,
+): LocaleContext {
+  const locale = ref<LocaleName | (string & {})>(initial);
+  // reactive so `t()` re-renders when setTranslations() swaps the tables
+  const messages = reactive(mergeMessages(translations));
+  const t: LocaleT = (key) => messages[locale.value]?.[key] ?? key;
+  const setLocale = (next: LocaleName | (string & {})) => {
     locale.value = next;
   };
-  return { locale, t, setLocale };
+  const setTranslations = (next?: LocaleTranslations) => {
+    const merged = mergeMessages(next);
+    Object.keys(messages).forEach((key) => delete messages[key]);
+    Object.assign(messages, merged);
+  };
+  return { locale, t, setLocale, setTranslations };
 }
 
 /**

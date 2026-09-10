@@ -7,7 +7,7 @@ import { applyTheme } from "./theme";
 
 export * from "./types";
 export type { ImageUploader } from "./types";
-export type { LocaleName, LocaleT, LocaleContext } from "./locales";
+export type { LocaleName, LocaleT, LocaleMessages, LocaleTranslations, LocaleContext } from "./locales";
 
 /**
  * All built-in extensions, exported individually so hosts can reconfigure

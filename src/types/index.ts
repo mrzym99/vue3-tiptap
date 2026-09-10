@@ -1,6 +1,7 @@
 import type { Component } from "vue";
 import type { Editor } from "@tiptap/core";
 import type { Theme, ThemeName } from "./theme";
+import type { LocaleName, LocaleTranslations } from "@/locales";
 
 export * from "./theme";
 export type { ImageUploader } from "./upload";
@@ -54,6 +55,15 @@ export interface TipTapEditorProps {
   themeOverrides?: Theme;
   /** Placeholder text shown when the document is empty */
   placeholder?: string;
+  /** UI language ("zh" | "en", or a custom id provided via `translations`) */
+  locale?: LocaleName | (string & {});
+  /**
+   * Host translations, shallow-merged over the built-in packs.
+   * Override built-in wording for "zh"/"en", or add a new locale and select
+   * it via `locale`, e.g.:
+   * `translations: { fr: { bold: "Gras" } }`, `locale: "fr"`
+   */
+  translations?: LocaleTranslations;
   /**
    * Whether to focus the editor on mount. Pass `"start"` / `"end"` /
    * a document position for fine-grained control (passed through to tiptap).

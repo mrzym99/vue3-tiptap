@@ -28,7 +28,7 @@ import type { Editor } from "@tiptap/core";
 import type { Transaction } from "@tiptap/pm/state";
 import { checkLimit } from "@/utils/text";
 import type { TipTapEditorProps } from "@/types";
-import type { LocaleName } from "@/locales";
+import type { LocaleName, LocaleTranslations } from "@/locales";
 import { createLocaleContext, detectLocale, provideTiptapLocale } from "@/locales";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
@@ -52,7 +52,9 @@ const props = withDefaults(
       | "extensions"
     > & {
       /** UI language of the toolbar/menus (auto-detected when omitted) */
-      locale?: LocaleName;
+      locale?: LocaleName | (string & {});
+      /** Host translations: override built-in wording or add new locales */
+      translations?: LocaleTranslations;
     }
   >(),
   {
@@ -63,6 +65,7 @@ const props = withDefaults(
     placeholder: undefined,
     autofocus: false,
     locale: undefined,
+    translations: undefined,
     toolbar: undefined,
     bubbleMenu: undefined,
     floatingMenu: undefined,
@@ -71,12 +74,17 @@ const props = withDefaults(
 );
 
 // Self-contained locale context (no vue-i18n / global instance needed)
-const localeContext = createLocaleContext(props.locale ?? detectLocale());
+const localeContext = createLocaleContext(props.locale ?? detectLocale(), props.translations);
 watch(
   () => props.locale,
   (next) => {
     if (next) localeContext.setLocale(next);
   },
+);
+watch(
+  () => props.translations,
+  (next) => localeContext.setTranslations(next),
+  { deep: true },
 );
 provideTiptapLocale(localeContext);
 

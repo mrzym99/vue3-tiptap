@@ -3,12 +3,15 @@ import TipTapEditor from "./components/index.vue";
 import { Image } from "./components/extensions/Image";
 import { Mention } from "./components/extensions/Mention";
 import type { ThemeName } from "./types";
-import type { LocaleName } from "./locales";
+import type { LocaleTranslations } from "./locales";
+import zhTW from "./zh-TW";
 const content = ref("");
 
 content.value = ``;
 const theme = ref<ThemeName>("light");
-const locale = ref<LocaleName>("zh");
+const locale = ref("zh");
+// Demo: add a third language ("zh-TW") via the `translations` prop
+const translations: LocaleTranslations = { "zh-TW": zhTW };
 const placeholder = ref("输入 @ 提及成员…");
 const maxLength = ref(0);
 const status = ref("(init)");
@@ -60,7 +63,8 @@ const extensions = [
     <div>
       语言
       <select class="app-select" v-model="locale">
-        <option value="zh">中文</option>
+        <option value="zh">简体中文</option>
+        <option value="zh-TW">繁體中文（translations 扩展）</option>
         <option value="en">English</option>
       </select>
     </div>
@@ -103,6 +107,7 @@ const extensions = [
       style="height: 60vh"
       :theme="theme"
       :locale="locale"
+      :translations="translations"
       :placeholder="placeholder"
       :max-length="maxLength"
       :extensions="extensions"
