@@ -100,7 +100,7 @@ const extensions = [
     </a>
   </div>
 
-  <div style="height: 100vh; width: 80%; margin: 0 auto; padding: 10vh 0">
+  <div style="height: 100vh; max-width: 880px; margin: 0 auto; padding: 24px">
     <TipTapEditor
       ref="editorRef"
       v-model="content"
@@ -125,9 +125,13 @@ const extensions = [
 
 <style lang="scss" scoped>
 .app-bar {
-  padding: 8px 0;
-  width: 80%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 8px 24px;
+  max-width: 1080px;
   margin: 0 auto;
+  background: var(--app-color-background);
   display: flex;
   align-items: center;
   gap: 8px;
