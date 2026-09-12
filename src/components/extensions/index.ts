@@ -41,13 +41,15 @@ import { UniqueId } from "./UniqueId";
 import { Video } from "./Video";
 import { Youtube } from "./Youtube";
 
+import { Extension, type Extensions } from "@tiptap/core";
+
 const HeadingExtension = Heading.configure({ levels: [1, 2, 3] });
 
 const TextAlignExtension = TextAlign.configure({
   types: ["heading", "paragraph"],
 });
 
-export default [
+const builtinExtensions: Extensions = [
   // 编辑体验：撤销 / 重做 / 清除格式（undoRedo 提供历史插件，undo-redo 提供按钮）
   UndoRedo,
   Undo,
@@ -111,3 +113,36 @@ export default [
   TrailingNode,
   CharacterCount,
 ];
+
+export default builtinExtensions;
+
+/** Per-extension entry: `false` disables it, an object configures it. */
+export type StarterKitOption = Record<string, unknown> | false;
+export type StarterKitOptions = Record<string, StarterKitOption | undefined>;
+
+/**
+ * Tiptap-style bundle of all built-in extensions (Document / Paragraph / Text /
+ * Placeholder are excluded — the editor component always provides them).
+ *
+ * The component does NOT include built-ins automatically: pass the kit via the
+ * `extensions` prop, or hand-pick individual extensions instead.
+ *
+ *   StarterKit.configure({ twitch: false, image: { upload: myUpload } })
+ *   // or
+ *   [Bold, Italic, Mention.configure({ items })]
+ *
+ * `addExtensions()` lets the kit expand into the configured child extensions
+ * while staying a single `AnyExtension` (same trick as tiptap's StarterKit).
+ */
+export const StarterKit = Extension.create<StarterKitOptions>({
+  name: "starterKit",
+  addExtensions() {
+    return builtinExtensions
+      .map((extension) => {
+        const option = this.options[extension.name];
+        if (option === false) return null;
+        return option ? extension.configure(option) : extension;
+      })
+      .filter((extension): extension is NonNullable<typeof extension> => extension !== null);
+  },
+});

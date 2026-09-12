@@ -1,7 +1,6 @@
 import type { App, Plugin } from "vue";
 
 import TipTapEditor from "./components/index.vue";
-import builtinExtensions from "./components/extensions";
 
 import { applyTheme } from "./theme";
 
@@ -10,14 +9,13 @@ export type { ImageUploader } from "./types";
 export type { LocaleName, LocaleT, LocaleMessages, LocaleTranslations, LocaleContext } from "./locales";
 
 /**
- * All built-in extensions, exported individually so hosts can reconfigure
- * them via the `extensions` prop, e.g.:
- * `extensions: [Mention.configure({ items }), Image.configure({ upload })]`
- * (user extensions are merged over the built-ins by extension name).
+ * Built-in extensions, exported individually so hosts can hand-pick them via
+ * the `extensions` prop, plus `StarterKit` for the full bundle:
+ * `extensions: [StarterKit.configure({ twitch: false, image: { upload } })]`
  */
 export * from "./components/extensions";
 
-export { TipTapEditor, builtinExtensions, applyTheme };
+export { TipTapEditor, applyTheme };
 
 /**
  * Install as a Vue plugin:

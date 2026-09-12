@@ -85,19 +85,13 @@ export interface TipTapEditorProps {
   /** Floating-menu selection, falls back to `toolbar` when omitted */
   floatingMenu?: Toolbar;
   /**
-   * Extra/customized extensions merged over the built-ins (by name).
-   * Use this to configure extension options, e.g.:
-   * `extensions: [Image.configure({ upload: myUpload })]`
+   * Extensions to load — nothing is included automatically. Easiest:
+   * `extensions: [StarterKit.configure({ twitch: false, image: { upload } })]`
+   * (`false` disables a built-in, an object configures it). Or hand-pick:
+   * `extensions: [Bold, Italic, Mention.configure({ items })]`.
+   * Later entries win on name conflicts.
    */
   extensions?: import("@tiptap/core").Extensions;
-  /**
-   * Names of built-in extensions to remove entirely (matched by
-   * `extension.name`, e.g. `"twitch"`, `"undoRedo"`). Applied before
-   * `extensions` is merged, so the two compose: exclude a built-in and
-   * optionally add back your own configured version via `extensions`.
-   * Toolbar buttons of excluded extensions are hidden automatically.
-   */
-  excludeExtensions?: string[];
 }
 
 /**

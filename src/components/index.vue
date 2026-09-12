@@ -34,8 +34,6 @@ import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import Placeholder from "@tiptap/extension-placeholder";
-import Extensions from "@/components/extensions/index.ts";
-
 const props = withDefaults(
   defineProps<
     Pick<
@@ -50,7 +48,6 @@ const props = withDefaults(
       | "bubbleMenu"
       | "floatingMenu"
       | "extensions"
-      | "excludeExtensions"
     > & {
       /** UI language of the toolbar/menus (auto-detected when omitted) */
       locale?: LocaleName | (string & {});
@@ -71,7 +68,6 @@ const props = withDefaults(
     bubbleMenu: undefined,
     floatingMenu: undefined,
     extensions: () => [],
-    excludeExtensions: () => [],
   },
 );
 
@@ -132,10 +128,14 @@ let pendingContent: string | undefined;
 // The option also accepts a function, which the plugin re-evaluates whenever
 // it rebuilds decorations — close over a mutable variable for live updates.
 let currentPlaceholder = props.placeholder ?? "";
-const userExtNames = new Set(props.extensions.map((e) => e.name));
-// Built-ins named here are removed entirely (buttons disappear too, the
-// toolbar only renders keys whose extension exists)
-const excludedExtNames = new Set(props.excludeExtensions);
+// The editor ships no built-ins automatically: hosts opt in via the
+// `extensions` prop (e.g. `StarterKit.configure(...)`) or hand-pick
+// individual extensions. Later entries win on name conflicts; the structural
+// core (document / paragraph / text / placeholder) is always the component's.
+const STRUCTURAL_NAMES = new Set(["doc", "paragraph", "text", "placeholder"]);
+const userExtensions = [...new Map(props.extensions.map((e) => [e.name, e])).values()].filter(
+  (e) => !STRUCTURAL_NAMES.has(e.name),
+);
 const mergedExtensions = [
   Document, // 文档根节点
   Paragraph, // 段落
@@ -143,8 +143,7 @@ const mergedExtensions = [
   Placeholder.configure({
     placeholder: () => currentPlaceholder,
   }),
-  ...Extensions.filter((e) => !userExtNames.has(e.name) && !excludedExtNames.has(e.name)),
-  ...props.extensions,
+  ...userExtensions,
 ];
 
 const editor = useEditor({

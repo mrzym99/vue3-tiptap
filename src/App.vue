@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import TipTapEditor from "./components/index.vue";
-import { Image } from "./components/extensions/Image";
-import { Mention } from "./components/extensions/Mention";
+import { StarterKit } from "./components/extensions";
 import type { ThemeName } from "./types";
 import type { LocaleTranslations } from "./locales";
 import zhTW from "./zh-TW";
@@ -37,15 +36,20 @@ const mentionUsers = [
   { id: "4", label: "Alice" },
   { id: "5", label: "Bob" },
 ];
+// Demo: StarterKit bundles every built-in; `false` disables one (no Twitch),
+// an object configures it (image uploader, mention member list).
 const extensions = [
-  Image.configure({
-    upload: async (_file: File) => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return "https://api.mtyqx.cn/api/random.php";
+  StarterKit.configure({
+    twitch: false,
+    image: {
+      upload: async (_file: File) => {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        return "https://api.mtyqx.cn/api/random.php";
+      },
     },
-  }),
-  Mention.configure({
-    items: mentionUsers,
+    mention: {
+      items: mentionUsers,
+    },
   }),
 ];
 </script>

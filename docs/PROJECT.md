@@ -224,8 +224,9 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 - **最新评审见 `docs/feature-gaps-and-optimizations.md`**：汇编了「编辑器还缺什么插件」与「性能 / 响应式 / 无障碍 / 文档漂移」的整体优化清单。P0（Undo/Redo、清除格式、字符统计）、v-model 写回防抖与 Mention 提及已完成；剩余 P1：字体大小、Emoji、Markdown、目录、块级拖拽等。
 - 基于 `src/types/index.ts` 中 `ExtensionNameKeys` 的枚举，可继续接入：列表（有序/无序/任务）、链接 Link、图片 Image、表格 Table（扩展依赖已就绪，样式已内置，仅需启用）、代码块、气泡菜单、查找替换、Emoji、@提及、数学公式等；集成清单与分阶段计划见 `docs/tiptap-extensions-integration-plan.md`；
 - `StarterKit` 已作为依赖引入但暂未启用，可按需替换当前的逐节点注册方式；
-- 可抽取为独立 npm 包 / Vue 组件库，暴露统一的扩展注册 API；`src/index.ts` 已命名导出全部内置扩展（`Mention` / `Image` 等），宿主可通过 `extensions` prop 按名合并覆盖（如 `Mention.configure({ items })`、`Image.configure({ upload })`）；
-- `excludeExtensions` prop：按扩展名彻底移除内置扩展（如 `["twitch"]`），先于 `extensions` 合并生效——可先排除再传入自己配置的同名版本；被排除扩展的工具栏按钮自动隐藏；
+- 可抽取为独立 npm 包 / Vue 组件库，暴露统一的扩展注册 API；`src/index.ts` 已命名导出全部内置扩展（`Mention` / `Image` 等）与 `StarterKit`；
+- **显式引入扩展**（2026-09-12 决策，对齐 tiptap 模式）：组件**不再自动包含内置扩展**，由宿主通过 `extensions` prop 选择——一键全量用 `StarterKit.configure({...})`（`false` 禁用某项，对象配置某项，如 `{ twitch: false, image: { upload } }`），或手动逐个 `import`（如 `[Bold, Mention.configure({ items })]`）；同名冲突后者胜出；Document / Paragraph / Text / Placeholder 结构核心始终由组件提供；
+- `Focus`（聚焦高亮）**默认不在 StarterKit 中**（2026-09-07 决策）：非活动块淡化可能干扰部分宿主场景，依赖与样式已就绪，需要时去掉 `src/components/extensions/index.ts` 中两处注释即可启用，详见 `docs/feature-gaps-and-optimizations.md` 决策记录；
 - 可补充 TableKit（可调整列宽）等高级能力的完整 UI。
 
 ## 9. 已知事项
@@ -234,7 +235,6 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 - 代码中存在部分被注释的扩展/表格代码（`StarterKit`），属于演进中的预留能力；
 - 字数限制与字数统计统一使用「可见字符数」口径（`getEditorTextLength`，不含换行与 HTML 标签）：**按 Enter 换行不计入字数**，内容满额时换行不会导致字数虚增，超限输入会被精确截断（基于文档 position 计算截断点）；
 - `InvisibleCharacters`（隐藏字符）默认关闭（`visible: false`），需点击工具栏按钮手动开启——该扩展官方默认是 `visible: true`，直接注册会导致每个段落显示 ¶ 标记；
-- `Focus`（聚焦高亮）**默认不启用**（2026-09-07 决策）：非活动块淡化可能干扰部分宿主场景，依赖与样式已就绪，需要时去掉 `src/components/extensions/index.ts` 中两处注释即可启用，详见 `docs/feature-gaps-and-optimizations.md` 决策记录；
 - `pnpm-workspace.yaml` 中配置了 `overrides: prosemirror-model: ^1.25.11`，且 `vite.config.ts` 的 `resolve.dedupe` 强制 `prosemirror-model` / `@tiptap/pm` / `@tiptap/core` 等单一副本：双重保险避免出现多份 `prosemirror-model`（ProseMirror 官方警告：重复副本会导致「节点拆分/包裹失败」，表现为按 Enter 无法换行，报 `Can not convert ... to a Fragment (looks like multiple versions of prosemirror-model)`）；
 
 ---
