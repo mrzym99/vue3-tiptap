@@ -1,5 +1,12 @@
 // Adapted from @tiptap/extension-drag-handle v3.31.3 (MIT)
 // Copyright (c) Tiptap GmbH — collaboration (Yjs) support removed.
+//
+// Deliberate deviations from the official source (do not "re-sync" these):
+// - Edge detection defaults to ["left"] only, and left/right trigger in the
+//   gutter OUTSIDE the block instead of a 12px strip INSIDE it — the official
+//   zone overlaps the handle's own hotspot, so reaching for the handle let the
+//   parent container steal the target (handle became ungrabbable in
+//   nested blocks). Parent grabbing still works via the gutter.
 import type { Node as PMNode, ResolvedPos } from "@tiptap/pm/model";
 import type { EditorView } from "@tiptap/pm/view";
 
@@ -89,7 +96,10 @@ export const defaultRules: DragHandleRule[] = [
 ];
 
 const DEFAULT_EDGE_CONFIG: EdgeDetectionConfig = {
-  edges: ["left", "top"],
+  // 默认只保留 left(配合上方的"槽位"语义,悬停块左侧留白即可抓取父块)。
+  // top 不再进默认:手柄为 left-start 对齐,其热区本身就在块顶 12px 内,
+  // top 边缘检测会让伸手抓手柄的动作被父块抢走(与 left 的块内区域同病)。
+  edges: ["left"],
   threshold: 12,
   strength: 500,
 };
@@ -98,8 +108,8 @@ export function normalizeEdgeDetection(
   input: EdgeDetectionPreset | Partial<EdgeDetectionConfig> | undefined,
 ): EdgeDetectionConfig {
   if (input === undefined || input === "left") return { ...DEFAULT_EDGE_CONFIG };
-  if (input === "right") return { edges: ["right", "top"], threshold: 12, strength: 500 };
-  if (input === "both") return { edges: ["left", "right", "top"], threshold: 12, strength: 500 };
+  if (input === "right") return { edges: ["right"], threshold: 12, strength: 500 };
+  if (input === "both") return { edges: ["left", "right"], threshold: 12, strength: 500 };
   if (input === "none") return { edges: [], threshold: 0, strength: 0 };
   return { ...DEFAULT_EDGE_CONFIG, ...input };
 }
@@ -144,8 +154,12 @@ function isNearEdge(
   const rect = element.getBoundingClientRect();
   const { threshold, edges } = config;
   return edges.some((edge) => {
-    if (edge === "left") return coords.x - rect.left < threshold;
-    if (edge === "right") return rect.right - coords.x < threshold;
+    // left/right 仅在块的"外侧槽位"触发(光标越过块的边界才生效)。
+    // 官方实现是 `coords.x - rect.left < threshold`,会把块内左缘 12px 也划进
+    // 父块优先区——而手柄恰好贴着块左缘,伸手抓手的路径必然穿过该区域,
+    // 导致目标被父块抢走、手柄跳走,嵌套块(折叠块/引用等)的手柄永远抓不到。
+    if (edge === "left") return coords.x < rect.left;
+    if (edge === "right") return coords.x > rect.right;
     if (edge === "top") return coords.y - rect.top < threshold;
     if (edge === "bottom") return rect.bottom - coords.y < threshold;
     return false;

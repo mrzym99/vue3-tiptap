@@ -30,7 +30,7 @@
 | ----------- | -------- | ---- | ---- |
 | **Undo / Redo** | 图标按钮 ×2 | `@tiptap/extension-undo-redo`（历史插件）+ 自定义 `Undo` / `Redo` 按钮（带 `canUndo()/canRedo()` 禁用态） | ✅ 已完成 |
 | **清除格式（Clear Formatting）** | 图标按钮 | 一键移除选区上的所有 **mark**（bold/italic/code/highlight/color/fontFamily 等）+ 重置 heading。 | ✅ 已完成 |
-| **块级拖拽手柄（Drag Handle）** | 无按钮 | ✅ 已完成（2026-09）：基于官方 `@tiptap/extension-drag-handle` v3.31.3（MIT）源码精简（剥离全部 Yjs/协作分支），落位 `src/components/extensions/DragHandle/`（rules / drop-restore / plugin / index 四模块），零新依赖；支持 `nested` 嵌套拖拽、NodeRangeSelection 拖放还原、`ariaLabel`。注意：默认规则会排除表格行（官方同款 `tableStructure` 规则，评分 ≤0 即淘汰，负分规则无法事后抵消）；表格只支持整表拖动：默认规则已排除表格行/单元格，但单元格内段落会因"深度优先"平局胜出成为拖拽目标（仍属内部拖动），需追加一条规则排除表格内部所有节点（demo `App.vue` 的 `tableWholeOnly` 规则，已实测整表拖动生效、内部节点均不可拖）。 | ✅ 已完成 |
+| **块级拖拽手柄（Drag Handle）** | 无按钮 | ✅ 已完成（2026-09）：基于官方 `@tiptap/extension-drag-handle` v3.31.3（MIT）源码精简（剥离全部 Yjs/协作分支），落位 `src/components/extensions/DragHandle/`（rules / drop-restore / plugin / index 四模块），零新依赖；支持 `nested` 嵌套拖拽、NodeRangeSelection 拖放还原、`ariaLabel`。**表格行为（2026-09-17 更新）**：`nested: true` 时单元格内段落可拖（拖入其他单元格/拖出表格，源单元格自动补空段落保持结构合法）；表格行/单元格本身仍不可作为拖拽目标（官方同款 `tableStructure` 规则排除）；整表拖动保留，抓手势 = 悬停单元格左侧留白（边缘检测提升为表格，同"悬停引用留白抓整块"）。**与官方的 4 处行为偏离**（源码头部有勿回同步标注）：① 滚动跟随（官方无，wrapper 不随内层滚动容器移动）；② left/right 边缘检测仅在块外侧槽位触发（官方 12px 块内区域与手柄热区重叠，嵌套块手柄永远抓不到）；③ 默认边缘移除 top（与手柄 left-start 热区重叠）；④ 嵌套模式下文档变化后不把目标提升为顶层块。 | ✅ 已完成 |
 | **字数 / 字符统计（CharacterCount）** | 无按钮（复用底部统计） | 已用 `@tiptap/extensions` 的 `CharacterCount` 取代手写 `getEditorTextLength`（增量计算），配合 v-model 写回防抖。 | ✅ 已完成 |
 | **Markdown 导入/导出** | 弹窗或面板 | `@tiptap/markdown`（`turndown + markdown-it`）来回转换 HTML。适合需要「复制为 Markdown / 粘贴 Markdown」的场景；若暂不需要，可归到 P1。 | ⬜ 未做 |
 

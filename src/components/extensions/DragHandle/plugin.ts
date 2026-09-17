@@ -1,5 +1,14 @@
 // Adapted from @tiptap/extension-drag-handle v3.31.3 (MIT)
 // Copyright (c) Tiptap GmbH — collaboration (Yjs) support removed.
+//
+// Deliberate deviations from the official source (do not "re-sync" these):
+// 1. Scroll following — official has none; the handle wrapper is anchored
+//    outside the inner scroll container, so we reposition on scroll.
+// 2. Nested update() — official promotes the current target to the top-level
+//    node on every doc change, which makes the handle jump away from nested
+//    blocks (details/blockquote) after drops; we keep the nested target.
+// 3. Handle-proximity guard — approaching the handle must not retarget.
+// See rules.ts for the edge-detection deviations.
 import type { Editor } from "@tiptap/core";
 import type { ComputePositionConfig, VirtualElement } from "@floating-ui/dom";
 import type { Node as PMNode } from "@tiptap/pm/model";
@@ -61,6 +70,9 @@ export const DragHandlePlugin = ({
   let locked = false;
   let currentNode: PMNode | null = null;
   let currentNodePos = -1;
+  // 当前目标块的 DOM 锚点:滚动时据此重新定位手柄(手柄 wrapper 锚定在
+  // view.dom 的父级上,不随内部滚动容器的 scrollTop 移动)
+  let currentDomNode: HTMLElement | null = null;
   let rafId: number | null = null;
   let pendingMouseCoords: { x: number; y: number } | null = null;
   let activeDragRange: { anchorPos: number; nodeCount: number; depth: number } | null = null;
@@ -125,6 +137,17 @@ export const DragHandlePlugin = ({
     onNodeChange?.({ editor, node, pos });
   }
 
+  /**
+   * 滚动跟随:内容在滚动容器内移动时,手柄 wrapper 不随之滚动(它锚定在
+   * 滚动容器之外),必须在 scroll 事件里按目标块当前位置重新定位。
+   * 捕获阶段监听以覆盖任意宿主滚动容器;目标不可见时跳过。
+   */
+  function onScroll() {
+    if (!currentDomNode || currentNodePos === -1) return;
+    if (!element || element.style.visibility === "hidden") return;
+    repositionDragHandle(currentDomNode);
+  }
+
   function onDragStart(e: DragEvent) {
     onElementDragStart?.(e);
     dragHandler(e, editor, nestedOptions, { node: currentNode, pos: currentNodePos }, dragImageProperties);
@@ -166,6 +189,7 @@ export const DragHandlePlugin = ({
     element.removeEventListener("dragstart", onDragStart);
     element.removeEventListener("dragend", onDragEnd);
     document.removeEventListener("drop", onDrop);
+    document.removeEventListener("scroll", onScroll, true);
     if (rafId) {
       cancelAnimationFrame(rafId);
       rafId = null;
@@ -211,7 +235,9 @@ export const DragHandlePlugin = ({
       },
       view: () => {
         element.draggable = true;
-        element.style.pointerEvents = "auto";
+        // 初始隐藏:只有鼠标进入编辑器触发 mousemove 后才显示。
+        // 否则 auto focus 聚焦编辑器时手柄图标会直接出现在首块旁
+        hideHandle();
         element.dataset.dragging = "false";
         editor.view.dom.parentElement?.appendChild(wrapper);
         wrapper.style.pointerEvents = "none";
@@ -222,6 +248,7 @@ export const DragHandlePlugin = ({
         element.addEventListener("dragstart", onDragStart);
         element.addEventListener("dragend", onDragEnd);
         document.addEventListener("drop", onDrop);
+        document.addEventListener("scroll", onScroll, { capture: true, passive: true });
         return {
           update(view, oldState) {
             if (!element) return;
@@ -233,6 +260,15 @@ export const DragHandlePlugin = ({
             else element.draggable = true;
             if (view.state.doc.eq(oldState.doc) || currentNodePos === -1) return;
             let domNode = view.nodeDOM(currentNodePos);
+            if (nestedOptions.enabled) {
+              // 嵌套模式:目标保持为当前(可能嵌套的)节点,文档变化后仅
+              // 重新定位;不得提升为顶层块,否则拖放后手柄会跳到文档外层
+              if (domNode === view.dom) return;
+              if (domNode?.nodeType !== 1) return;
+              currentDomNode = domNode as HTMLElement;
+              repositionDragHandle(domNode as HTMLElement);
+              return;
+            }
             domNode = getOuterDomNode(view, domNode);
             if (domNode === view.dom) return;
             if (domNode?.nodeType !== 1) return;
@@ -242,6 +278,7 @@ export const DragHandlePlugin = ({
             currentNode = outerNode;
             currentNodePos = outerNodePos;
             onNodeChangeSafe(currentNode, currentNodePos);
+            currentDomNode = domNode as HTMLElement;
             repositionDragHandle(domNode as HTMLElement);
           },
           destroy() {
@@ -282,6 +319,20 @@ export const DragHandlePlugin = ({
               if (!pendingMouseCoords) return;
               const { x, y } = pendingMouseCoords;
               pendingMouseCoords = null;
+              // 手柄邻近保护:指针贴近手柄时保持当前目标不变。伸手抓手柄的
+              // 路径会横穿目标块左缘,若此时重新判定目标,手柄会跳到父块,
+              // 导致(嵌套块的)手柄永远抓不到
+              if (element && element.style.visibility !== "hidden") {
+                const rect = element.getBoundingClientRect();
+                if (
+                  x >= rect.left - 6 &&
+                  x <= rect.right + 6 &&
+                  y >= rect.top - 6 &&
+                  y <= rect.bottom + 6
+                ) {
+                  return;
+                }
+              }
               const nodeData = findElementNextToCoords({ x, y, editor, nestedOptions });
               if (!nodeData.resultElement) return;
               let domNode: HTMLElement = nodeData.resultElement;
@@ -299,6 +350,7 @@ export const DragHandlePlugin = ({
               if (targetNode !== currentNode) {
                 currentNode = targetNode;
                 currentNodePos = targetPos ?? -1;
+                currentDomNode = domNode;
                 onNodeChangeSafe(currentNode, currentNodePos);
                 repositionDragHandle(domNode);
                 showHandle();
