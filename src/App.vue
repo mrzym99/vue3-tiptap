@@ -173,7 +173,7 @@ const extensions = [
 .app-status {
   margin-left: auto;
   padding: 3px 8px;
-  font-size: 13px;
+  font-size: 16px;
   color: var(--app-color-text);
 }
 .app-github {
