@@ -1,17 +1,11 @@
 <template>
   <FloatingMenu
-    v-if="editor && visibleButtons.length"
+    v-if="editor && !visibleButtons.length"
     :editor="editor"
     :tippy-options="{ duration: 150, maxWidth: 'none' }"
   >
     <div class="floating-menu-box">
-      <component
-        v-for="item in visibleButtons"
-        :key="item.key"
-        :is="item.component"
-        :editor="editor"
-        :t="t"
-      />
+      <component v-for="item in visibleButtons" :key="item.key" :is="item.component" :editor="editor" :t="t" />
     </div>
   </FloatingMenu>
 </template>
