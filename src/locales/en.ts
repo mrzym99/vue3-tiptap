@@ -58,6 +58,8 @@ export default {
   fontSerif: "Serif",
   fontMono: "Monospace",
   fontYaHei: "Microsoft YaHei",
+  fontSize: "Font Size",
+  fontSizeDefault: "Default",
   table: "Table",
   insertTable: "Insert Table",
   insertTableGrid: "{rows}×{cols}",

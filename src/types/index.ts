@@ -115,7 +115,7 @@ export const defaultToolbar =
   "undo redo | clearFormatting | " +
   "bold italic strike underline | code highlight subscript superscript | " +
   "heading horizontalRule blockquote textAlign | bulletList orderedList taskList | " +
-  "link codeBlock details | image video youtube audio twitch | color fontFamily | " +
+  "link codeBlock details | image video youtube audio twitch | color fontFamily fontSize | " +
   "table | findAndReplace invisibleCharacters";
 
 /**

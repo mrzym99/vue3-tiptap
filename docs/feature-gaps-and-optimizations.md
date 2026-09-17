@@ -38,7 +38,7 @@
 
 | 扩展 / 能力 | 按钮形态 | 说明 |
 | ----------- | -------- | ---- |
-| **字体大小（Font Size）** | 下拉菜单 | 基于现有 `TextStyle` 基座，自研 `addAttributes` 注入 `style.font-size` 即可，模式与 `FontFamily` 一致。 |
+| **字体大小（Font Size）** | 下拉菜单 | ✅ 已完成（2026-09）：直接使用已安装 `@tiptap/extension-text-style/font-size` 子路径导出（无需自研，也无需新依赖），12/14/16/18/20/24/30 px + 默认共 8 档，模式与 `FontFamily` 一致（`FontSizeMenuButton`）。 |
 | **图片/视频拖拽改尺寸** | 节点悬浮控件 | 插入时可设宽高，但**无拖拽调整手柄**；可给 Image/Video nodeview 挂 resize 角标（复用 Table 列宽手柄的思路）。 |
 | **Emoji** | 按钮 + 面板 | `@tiptap/extension-emoji` 自带 `emojibase-data` 数据与建议列表；需面板 UI（可复用 Popover + 现有搜索框）。 |
 | **提及 @（Mention + Suggestion）** ✅ 已完成（2026-09-07） | 无按钮 | `@tiptap/extension-mention` + `@tiptap/suggestion`，输入 `@` 出建议弹层；数据源由宿主注入：`Mention.configure({ items })`（静态列表自动按 query 过滤，或传 `({ query, editor }) => items` 同步/异步解析函数，模式同 `Image.configure({ upload })`）。弹层由 `@tiptap/suggestion` 的 managed mount 定位（fixed 策略 + floating-ui autoUpdate），并 reparent 进主题根节点以继承 `--tiptap-*` 变量。 |

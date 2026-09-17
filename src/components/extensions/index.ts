@@ -13,6 +13,7 @@ import { FileHandler } from "./FileHandler";
 import { FindAndReplace } from "./FindAndReplace";
 // import { Focus } from "./Focus";
 import { FontFamily } from "./FontFamily";
+import { FontSize } from "./FontSize";
 import { HardBreak } from "./HardBreak";
 import { Heading } from "./Heading";
 import { Highlight } from "./Highlight";
@@ -92,6 +93,7 @@ const builtinExtensions: Extensions = [
   TextStyle,
   Color,
   FontFamily,
+  FontSize,
   Typography,
   // 表格
   Table,
