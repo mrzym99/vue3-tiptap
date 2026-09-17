@@ -31,12 +31,12 @@ const props = defineProps({
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
+    width: 16px;
     height: 20px;
     padding: 0;
     border: 1px solid var(--tiptap-color-border);
     border-radius: var(--tiptap-border-radius-sm);
-    background: var(--tiptap-color-bg);
+    background: var(--tiptap-color-bg-hover);
     color: var(--tiptap-color-text-muted);
     cursor: grab;
     transition:
@@ -46,7 +46,7 @@ const props = defineProps({
 
     &:hover {
       color: var(--tiptap-color-text);
-      background: var(--tiptap-color-bg-hover);
+      background: var(--tiptap-color-bg-active);
       border-color: var(--tiptap-color-border-strong);
     }
 
