@@ -60,6 +60,7 @@ export default {
   fontYaHei: "Microsoft YaHei",
   fontSize: "Font Size",
   fontSizeDefault: "Default",
+  dragHandle: "Drag to move",
   table: "Table",
   insertTable: "Insert Table",
   insertTableGrid: "{rows}×{cols}",

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import TipTapEditor from "./components/index.vue";
 import { StarterKit } from "./components/extensions";
+import type { Node as PMNode, ResolvedPos } from "@tiptap/pm/model";
 import type { ThemeName } from "./types";
 import type { LocaleTranslations } from "./locales";
 import zhTW from "./zh-TW";
@@ -49,6 +50,26 @@ const extensions = [
     },
     mention: {
       items: mentionUsers,
+    },
+    // 拖拽手柄:开启 nested(列表项/引用等嵌套块可拖)。表格只支持整表拖动:
+    // 默认规则虽排除表格行/单元格,但单元格内段落会因"深度优先"平局胜出成为
+    // 拖拽目标(仍属内部拖动),因此追加一条规则,排除表格内部所有节点,
+    // 只保留表格本身可拖(整表移动)
+    dragHandle: {
+      nested: {
+        rules: [
+          {
+            id: "tableWholeOnly",
+            evaluate: ({ node, $pos }: { node: PMNode; $pos: ResolvedPos }) => {
+              if (node.type.name === "table") return 0;
+              for (let depth = 1; depth <= $pos.depth; depth += 1) {
+                if ($pos.node(depth).type.name === "table") return 1000;
+              }
+              return 0;
+            },
+          },
+        ],
+      },
     },
   }),
 ];

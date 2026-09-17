@@ -19,11 +19,50 @@ const props = defineProps({
   display: flex;
   flex-direction: column;
   overflow: auto;
+  // 拖拽手柄 wrapper(absolute 定位)锚定到这个滚动容器
+  position: relative;
 }
 </style>
 
 <style lang="scss">
 .tiptap-editor {
+  // 块级拖拽手柄(Notion 式 grip,由 DragHandle 扩展挂载)
+  .drag-handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 1px solid var(--tiptap-color-border);
+    border-radius: var(--tiptap-border-radius-sm);
+    background: var(--tiptap-color-bg);
+    color: var(--tiptap-color-text-muted);
+    cursor: grab;
+    transition:
+      color 0.15s,
+      background-color 0.15s,
+      border-color 0.15s;
+
+    &:hover {
+      color: var(--tiptap-color-text);
+      background: var(--tiptap-color-bg-hover);
+      border-color: var(--tiptap-color-border-strong);
+    }
+
+    &[data-dragging="true"] {
+      cursor: grabbing;
+    }
+  }
+
+  // 被拖拽块的高亮(参照官方 Drag Handle 文档的 Styling 建议;
+  // 用块背景色而非 ::before 覆盖层,避免盖住文本/沉入编辑器背景之后)
+  .tiptap .ProseMirror-selectednode,
+  .tiptap .ProseMirror-selectednoderange {
+    background-color: var(--tiptap-accent-blue-bg);
+    border-radius: var(--tiptap-border-radius-sm);
+  }
+
   .tiptap {
     flex: 1;
     outline: none;
@@ -230,7 +269,7 @@ const props = defineProps({
         vertical-align: top;
 
         > * {
-          margin-bottom: 0;
+          margin: 0;
         }
       }
 

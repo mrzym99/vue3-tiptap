@@ -60,6 +60,7 @@ export default {
   fontYaHei: "微软雅黑",
   fontSize: "字号",
   fontSizeDefault: "默认",
+  dragHandle: "拖拽以移动",
   table: "表格",
   insertTable: "插入表格",
   insertTableGrid: "{rows}×{cols}",

@@ -30,7 +30,7 @@
 | ----------- | -------- | ---- | ---- |
 | **Undo / Redo** | 图标按钮 ×2 | `@tiptap/extension-undo-redo`（历史插件）+ 自定义 `Undo` / `Redo` 按钮（带 `canUndo()/canRedo()` 禁用态） | ✅ 已完成 |
 | **清除格式（Clear Formatting）** | 图标按钮 | 一键移除选区上的所有 **mark**（bold/italic/code/highlight/color/fontFamily 等）+ 重置 heading。 | ✅ 已完成 |
-| **块级拖拽手柄（Drag Handle）** | 无按钮 | 前置 `NodeRange` 已集成，仅差 `extension-node-range` 之上的拖拽 UI。官方 `extension-drag-handle` 的 peer 强制 `collaboration + y-tiptap`；可选 `drag-handle-vue-3` 独立接入（`gapCursor` 已作为兜底启用）。 | ⬜ 未做 |
+| **块级拖拽手柄（Drag Handle）** | 无按钮 | ✅ 已完成（2026-09）：基于官方 `@tiptap/extension-drag-handle` v3.31.3（MIT）源码精简（剥离全部 Yjs/协作分支），落位 `src/components/extensions/DragHandle/`（rules / drop-restore / plugin / index 四模块），零新依赖；支持 `nested` 嵌套拖拽、NodeRangeSelection 拖放还原、`ariaLabel`。注意：默认规则会排除表格行（官方同款 `tableStructure` 规则，评分 ≤0 即淘汰，负分规则无法事后抵消）；表格只支持整表拖动：默认规则已排除表格行/单元格，但单元格内段落会因"深度优先"平局胜出成为拖拽目标（仍属内部拖动），需追加一条规则排除表格内部所有节点（demo `App.vue` 的 `tableWholeOnly` 规则，已实测整表拖动生效、内部节点均不可拖）。 | ✅ 已完成 |
 | **字数 / 字符统计（CharacterCount）** | 无按钮（复用底部统计） | 已用 `@tiptap/extensions` 的 `CharacterCount` 取代手写 `getEditorTextLength`（增量计算），配合 v-model 写回防抖。 | ✅ 已完成 |
 | **Markdown 导入/导出** | 弹窗或面板 | `@tiptap/markdown`（`turndown + markdown-it`）来回转换 HTML。适合需要「复制为 Markdown / 粘贴 Markdown」的场景；若暂不需要，可归到 P1。 | ⬜ 未做 |
 

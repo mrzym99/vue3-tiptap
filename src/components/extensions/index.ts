@@ -9,6 +9,7 @@ import { CodeBlock } from "./CodeBlock";
 import { ClearFormatting } from "./ClearFormatting";
 import { Color } from "./Color";
 import { Details, DetailsSummary, DetailsContent } from "./Details";
+import { DragHandle } from "./DragHandle";
 import { FileHandler } from "./FileHandler";
 import { FindAndReplace } from "./FindAndReplace";
 // import { Focus } from "./Focus";
@@ -105,6 +106,7 @@ const builtinExtensions: Extensions = [
   InvisibleCharacters,
   UniqueId,
   NodeRange,
+  DragHandle,
   HardBreak,
   // 提及 @（无按钮，输入 @ 触发建议弹层；数据源由宿主通过 items 注入）
   Mention,
