@@ -72,7 +72,7 @@ const props = defineProps({
       -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji",
       "Segoe UI Symbol", sans-serif;
     line-height: 1.75;
-    padding: 0 var(--tiptap-padding-lg);
+    padding: 0 var(--tiptap-content-padding);
     overflow-y: auto;
 
     h1,
