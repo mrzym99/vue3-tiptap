@@ -27,6 +27,24 @@ export function resolveToolbar(
   const source = toolbar ?? defaultToolbar;
   const known = (key: string) => allKeys.includes(key);
 
+  // The defaultToolbar string is the coupling point between the layout and the
+  // extension `name`s. A key here that matches no loaded extension silently
+  // drops its toolbar button — surfacing that as a dev warning makes the
+  // otherwise-invisible drift debuggable (e.g. after a rename or a reorder).
+  // Only warn for the default layout: user-supplied toolbars deliberately
+  // reference a subset and may target extensions they chose not to load.
+  if (toolbar === undefined) {
+    const dropped = defaultToolbar
+      .split(/\s+/)
+      .map((key) => key.replace(/\|/, "").trim())
+      .filter((key) => key && !known(key));
+    if (dropped.length && typeof console !== "undefined") {
+      console.warn(
+        `[tip-tap-editor] defaultToolbar references extension(s) not loaded, their buttons will be missing: ${dropped.join(", ")}`,
+      );
+    }
+  }
+
   // TinyMCE-style string: "bold italic | underline strike"
   if (typeof source === "string") {
     const keys: string[] = [];

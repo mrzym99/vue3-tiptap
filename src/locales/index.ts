@@ -69,13 +69,17 @@ export function createLocaleContext(
 }
 
 /**
- * Best-effort locale detection from the browser (defaults to "zh").
+ * Best-effort locale detection from the browser (defaults to "en").
+ *
+ * Note the fallback is "en", not "zh": the `en` branch below returns "zh"
+ * for Chinese browsers, while everything else (including unknown languages)
+ * should get the English UI rather than being silently forced to Chinese.
  */
 export function detectLocale(): LocaleName {
   if (typeof navigator !== "undefined" && navigator.language?.toLowerCase().includes("zh")) {
     return "zh";
   }
-  return "zh";
+  return "en";
 }
 
 /**
