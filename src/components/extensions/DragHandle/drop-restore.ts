@@ -162,6 +162,8 @@ export function dragHandler(
   });
   wrapper.style.position = "absolute";
   wrapper.style.top = "-10000px";
+  // 离屏预览不应拦截任何指针事件
+  wrapper.style.pointerEvents = "none";
   document.body.append(wrapper);
 
   event.dataTransfer.clearData();
@@ -175,7 +177,13 @@ export function dragHandler(
     removeNode(wrapper);
     document.removeEventListener("drop", cleanupDragPreview);
     document.removeEventListener("dragend", cleanupDragPreview);
+    document.removeEventListener("keydown", cleanupDragPreview);
+    document.removeEventListener("pointercancel", cleanupDragPreview);
   };
+  // 兜底:极端取消路径既不发 drop 也不发 dragend(Escape 取消、输入法干扰等),
+  // 避免离屏预览节点残留在 body 上。
+  document.addEventListener("keydown", cleanupDragPreview, { once: true });
+  document.addEventListener("pointercancel", cleanupDragPreview, { once: true });
 
   const nodeSelection = selection instanceof NodeSelection ? selection : undefined;
   // prosemirror-view 的类型声明未包含 `node` 字段,但运行时支持(官方源码同款)

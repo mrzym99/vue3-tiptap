@@ -77,6 +77,10 @@ export const DragHandlePlugin = ({
   let pendingMouseCoords: { x: number; y: number } | null = null;
   let activeDragRange: { anchorPos: number; nodeCount: number; depth: number } | null = null;
   let pendingRestore: { anchorPos: number; nodeCount: number; depth: number } | null = null;
+  // 定位结果令牌:递增序号,只采纳最后一次 positional 调用的结果(丢弃过期结果)
+  let positionToken = 0;
+  // 滚动跟随合并帧:快速滚动时每帧最多重定位一次
+  let scrollRafId: number | null = null;
 
   function clearDragRangeState() {
     activeDragRange = null;
@@ -124,13 +128,20 @@ export const DragHandlePlugin = ({
   function repositionDragHandle(dom: HTMLElement) {
     const virtualElement =
       getReferencedVirtualElement?.() || { getBoundingClientRect: () => dom.getBoundingClientRect() };
-    computePosition(virtualElement, element, computePositionConfig).then((val) => {
-      Object.assign(element.style, {
-        position: val.strategy,
-        left: `${val.x}px`,
-        top: `${val.y}px`,
+    const token = ++positionToken;
+    computePosition(virtualElement, element, computePositionConfig)
+      .then((val) => {
+        // 丢弃过期结果:连续移动/滚动时只采纳最新一次定位
+        if (token !== positionToken) return;
+        Object.assign(element.style, {
+          position: val.strategy,
+          left: `${val.x}px`,
+          top: `${val.y}px`,
+        });
+      })
+      .catch(() => {
+        // computePosition 失败时静默忽略;下一次移动/滚动会重新定位
       });
-    });
   }
 
   function onNodeChangeSafe(node: PMNode | null, pos: number) {
@@ -145,7 +156,12 @@ export const DragHandlePlugin = ({
   function onScroll() {
     if (!currentDomNode || currentNodePos === -1) return;
     if (!element || element.style.visibility === "hidden") return;
-    repositionDragHandle(currentDomNode);
+    if (scrollRafId) return;
+    scrollRafId = requestAnimationFrame(() => {
+      scrollRafId = null;
+      if (!currentDomNode) return;
+      repositionDragHandle(currentDomNode);
+    });
   }
 
   function onDragStart(e: DragEvent) {
@@ -194,6 +210,10 @@ export const DragHandlePlugin = ({
       cancelAnimationFrame(rafId);
       rafId = null;
       pendingMouseCoords = null;
+    }
+    if (scrollRafId) {
+      cancelAnimationFrame(scrollRafId);
+      scrollRafId = null;
     }
     clearDragRangeState();
   }
