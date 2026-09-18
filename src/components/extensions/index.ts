@@ -137,6 +137,12 @@ export type StarterKitOptions = Record<string, StarterKitOption | undefined>;
  *
  * `addExtensions()` lets the kit expand into the configured child extensions
  * while staying a single `AnyExtension` (same trick as tiptap's StarterKit).
+ *
+ * Bundle note: this kit eagerly imports ALL built-in extensions (including the
+ * media ones — image / video / youtube / audio / twitch — plus table, mention,
+ * etc.), and the custom wrapper/UI code is emitted as a single chunk by the lib
+ * build. If you need a smaller bundle, hand-pick individual extensions via the
+ * named exports (e.g. `[Bold, Italic, Image]`) instead of the all-in-one kit.
  */
 export const StarterKit = Extension.create<StarterKitOptions>({
   name: "starterKit",

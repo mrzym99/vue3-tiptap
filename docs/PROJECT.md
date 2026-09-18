@@ -136,7 +136,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 
 工具栏（`tool-bar/index.vue`）通过 `editor.extensionManager.extensions.filter(ext => ext.options.button)` **自动收集所有声明了 `button` 的扩展**，再由 `RenderItem.vue` 动态渲染对应按钮组件。因此**新增一个编辑功能只需添加一个扩展文件，无需改动工具栏代码**。
 
-> 类型层面，`src/types/index.ts` 定义了 `GeneralOptions`、`ButtonView`、`ButtonViewReturn` 等类型，为扩展声明 `button` 提供类型约束；`ButtonView` 可返回单个按钮或按钮数组，`RenderItem` 支持两种形态。翻译函数统一使用 `TranslateFn` 类型（兼容 vue-i18n 的 `t` 基本签名）。`ExtensionNameKeys` 枚举了未来可能支持的扩展名清单。
+> 类型层面，`src/types/index.ts` 定义了 `GeneralOptions`、`ButtonView`、`ButtonViewReturn` 等类型，为扩展声明 `button` 提供类型约束；`ButtonView` 可返回单个按钮或按钮数组，`RenderItem` 支持两种形态。翻译函数统一使用 `TranslateFn` 类型（兼容 vue-i18n 的 `t` 基本签名）。工具栏按钮布局的唯一事实来源是 `defaultToolbar` 字符串（`src/types/index.ts`），其 key 需与各扩展 `name` 逐一对应。
 
 ### 5.3 按钮组件体系
 
@@ -222,7 +222,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 ## 8. 扩展建议 / 路线图
 
 - **最新评审见 `docs/feature-gaps-and-optimizations.md`**：汇编了「编辑器还缺什么插件」与「性能 / 响应式 / 无障碍 / 文档漂移」的整体优化清单。P0（Undo/Redo、清除格式、字符统计）、v-model 写回防抖与 Mention 提及已完成；剩余 P1：字体大小、Emoji、Markdown、目录、块级拖拽等。
-- 基于 `src/types/index.ts` 中 `ExtensionNameKeys` 的枚举，可继续接入：列表（有序/无序/任务）、链接 Link、图片 Image、表格 Table（扩展依赖已就绪，样式已内置，仅需启用）、代码块、气泡菜单、查找替换、Emoji、@提及、数学公式等；集成清单与分阶段计划见 `docs/tiptap-extensions-integration-plan.md`；
+- 可继续接入（对应扩展文件已就绪或可按需新增）：列表（有序/无序/任务）、链接 Link、图片 Image、表格 Table、代码块、气泡菜单、查找替换、Emoji、@提及、数学公式等；集成清单与分阶段计划见 `docs/tiptap-extensions-integration-plan.md`；
 - `StarterKit` 已作为依赖引入但暂未启用，可按需替换当前的逐节点注册方式；
 - 可抽取为独立 npm 包 / Vue 组件库，暴露统一的扩展注册 API；`src/index.ts` 已命名导出全部内置扩展（`Mention` / `Image` 等）与 `StarterKit`；
 - **显式引入扩展**（2026-09-12 决策，对齐 tiptap 模式）：组件**不再自动包含内置扩展**，由宿主通过 `extensions` prop 选择——一键全量用 `StarterKit.configure({...})`（`false` 禁用某项，对象配置某项，如 `{ twitch: false, image: { upload } }`），或手动逐个 `import`（如 `[Bold, Mention.configure({ items })]`）；同名冲突后者胜出；Document / Paragraph / Text / Placeholder 结构核心始终由组件提供；

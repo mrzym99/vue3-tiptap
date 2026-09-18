@@ -7,37 +7,6 @@ export * from "./theme";
 export type { ImageUploader } from "./upload";
 
 /**
- * Represents the keys for different extensions.
- */
-export type ExtensionNameKeys =
-  | "undo"
-  | "redo"
-  | "clearFormatting"
-  | "bold"
-  | "italic"
-  | "underline"
-  | "strike"
-  | "color"
-  | "highlight"
-  | "heading"
-  | "textAlign"
-  | "bulletList"
-  | "orderedList"
-  | "taskList"
-  | "indent"
-  | "link"
-  | "image"
-  | "video"
-  | "table"
-  | "blockquote"
-  | "horizontalRule"
-  | "code"
-  | "codeBlock"
-  | "clear"
-  | "history"
-  | "fullscreen";
-
-/**
  * Props of the `TipTapEditor` component (modelValue is handled by v-model).
  */
 export interface TipTapEditorProps {

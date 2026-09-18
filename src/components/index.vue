@@ -23,17 +23,18 @@ import MediaBubbleMenu from "@/components/ui-editor/bubble-menu/media-bubble-men
 import TableBubbleMenu from "@/components/ui-editor/bubble-menu/table-bubble-menu/index.vue";
 import FloatingMenuBar from "@/components/ui-editor/bubble-menu/floating-menu/index.vue";
 // https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
+import { toRef } from "vue";
 import { useEditor } from "@tiptap/vue-3";
 import type { Editor } from "@tiptap/core";
 import type { Transaction } from "@tiptap/pm/state";
-import { checkLimit } from "@/utils/text";
 import type { TipTapEditorProps } from "@/types";
 import type { LocaleName, LocaleTranslations } from "@/locales";
-import { createLocaleContext, detectLocale, provideTiptapLocale } from "@/locales";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import Placeholder from "@tiptap/extension-placeholder";
+import { useEditorLocale } from "@/composables/useEditorLocale";
+import { useEditorModel } from "@/composables/useEditorModel";
 const props = withDefaults(
   defineProps<
     Pick<
@@ -72,19 +73,7 @@ const props = withDefaults(
 );
 
 // Self-contained locale context (no vue-i18n / global instance needed)
-const localeContext = createLocaleContext(props.locale ?? detectLocale(), props.translations);
-watch(
-  () => props.locale,
-  (next) => {
-    if (next) localeContext.setLocale(next);
-  },
-);
-watch(
-  () => props.translations,
-  (next) => localeContext.setTranslations(next),
-  { deep: true },
-);
-provideTiptapLocale(localeContext);
+useEditorLocale(toRef(props, "locale"), toRef(props, "translations"));
 
 const emit = defineEmits<{
   focus: [payload: { editor: Editor; event: FocusEvent; transaction: Transaction }];
@@ -98,30 +87,6 @@ const emit = defineEmits<{
 }>();
 
 const modelValue = defineModel<string>({ required: true });
-
-// Debounced write-back of editor.getHTML() to v-model: serializing a large
-// document on every keystroke is O(n), so sync at most once per idle window.
-// checkLimit stays synchronous — truncation must apply immediately.
-const MODEL_SYNC_DELAY = 300;
-let modelSyncTimer: ReturnType<typeof setTimeout> | undefined;
-const syncModelValue = () => {
-  if (modelSyncTimer) clearTimeout(modelSyncTimer);
-  modelSyncTimer = setTimeout(() => {
-    modelSyncTimer = undefined;
-    if (editor.value) modelValue.value = editor.value.getHTML();
-  }, MODEL_SYNC_DELAY);
-};
-const flushModelValue = () => {
-  if (!modelSyncTimer) return;
-  clearTimeout(modelSyncTimer);
-  modelSyncTimer = undefined;
-  if (editor.value) modelValue.value = editor.value.getHTML();
-};
-onUnmounted(flushModelValue);
-
-// Value that changed before the editor instance was ready (useEditor creates
-// the instance on mount, so the initial watcher run may race with it)
-let pendingContent: string | undefined;
 
 // Placeholder stays reactive: `extension.options` is a getter that re-runs
 // `addOptions()` on every access, so mutating options at runtime is useless.
@@ -151,45 +116,32 @@ const editor = useEditor({
   extensions: mergedExtensions,
   editable: !props.disabled,
   autofocus: props.autofocus,
-  onCreate: ({ editor }) => {
-    // Apply a value that changed before the editor was created
-    if (pendingContent !== undefined && pendingContent !== editor.getHTML()) {
-      editor.commands.setContent(pendingContent, { emitUpdate: false });
-    }
-    // Only write back when the initial content actually got truncated —
-    // otherwise an empty document would immediately rewrite the parent
-    // value from "" to "<p></p>".
-    if (props.maxLength && editor.storage.characterCount.characters() > props.maxLength) {
-      checkLimit(editor, props.maxLength);
-      modelValue.value = editor.getHTML();
-      emit("truncated", { maxLength: props.maxLength });
-    }
-    emit("ready", editor);
+  onCreate: ({ editor: created }) => {
+    // Apply a value that changed before the editor was created + initial
+    // maxLength truncation (lives in the model composable)
+    model.handleCreate(created);
+    emit("ready", created);
   },
-  onUpdate: ({ editor, transaction }) => {
-    if (checkLimit(editor, props.maxLength)) {
-      emit("truncated", { maxLength: props.maxLength });
-    }
-    emit("update", { editor, transaction });
-    syncModelValue();
+  onUpdate: ({ editor: created, transaction }) => {
+    // maxLength truncation + `update` emit + debounced write-back
+    model.handleUpdate(created, transaction);
   },
   onFocus: (props) => emit("focus", props),
   onBlur: (props) => emit("blur", props),
 });
 
-watch(
-  () => modelValue.value,
-  (newValue) => {
-    if (!editor.value) {
-      pendingContent = newValue;
-      return;
-    }
-
-    const isSame = newValue === editor.value.getHTML();
-    if (isSame) return;
-    editor.value.commands.setContent(newValue);
-  },
-);
+// v-model two-way binding + maxLength truncation (debounced HTML write-back
+// and external-value sync). Defined after `editor` so the composable can read
+// the editor ref; the callbacks above run post-mount, so referencing `model`
+// here is safe.
+const model = useEditorModel({
+  editor,
+  modelValue,
+  maxLength: () => props.maxLength,
+  onUpdate: (ed, tr) => emit("update", { editor: ed, transaction: tr }),
+  onTruncated: (max) => emit("truncated", { maxLength: max }),
+});
+model.watchModel();
 
 watch(
   () => props.disabled,

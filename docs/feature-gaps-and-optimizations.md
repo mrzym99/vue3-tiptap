@@ -77,6 +77,7 @@
 2. **关闭不必要的 Vue 重渲染**：~~`useEditor({ shouldRerenderOnTransaction: false })`~~ → **不适用（2026-09-07 核实）**：该选项是 `@tiptap/react` 专属（v3 默认已改为 false，配合 `useEditorState` 精细订阅）；`@tiptap/vue-3` 没有此选项，其内部已用 `useDebouncedRef`（双层 `requestAnimationFrame` 延迟 trigger 的响应式 state/storage）合并同帧事务，模板中读 `editor.can()` / `isActive()` 自动刷新且天然去抖，无需改造。
 3. **字数统计改用 CharacterCount**：✅ **已完成**，底部统计与 `checkLimit` 均已改用 `editor.storage.characterCount`（见 2.1）。
 4. **重扩展懒加载**：Mathematics(KaTeX)、Markdown(turndown) 等用 `import()` 按需，不进首屏主包（构建已按 group 分包，见 `vite.config.ts`）。
+   - **StarterKit 全量打包**：`StarterKit` 急切 `import` 全部内置扩展（含 image/video/youtube/audio/twitch 等媒体扩展），且本地自定义 wrapper/UI 代码在库构建中被单 chunk 输出（`vite.lib.config.ts` 单入口、无分包），故 `@tiptap/*` 虽已 external，本地代码无法 tree-shake。需更小体积时用命名导出手选扩展（`[Bold, Italic, Image]`）替代全套 kit；按扩展子路径分包属后续工作。
 
 ### 4.2 响应式 / 正确性细节
 
@@ -105,7 +106,7 @@
 | `docs/PROJECT.md` §5.3 等 | 引用 **Naive UI**：`NButton` / `NPopover` / `NList` / `NColorPicker` | 实际是自研 `ActionButton` / `action-menu-button` / `popover` / `color` 菜单，建议改为自研组件名 |
 | `docs/PROJECT.md` §5.4 | 主题变量前缀写作 **`--naive-tiptap-*`** | 实际为 **`--tiptap-*`** |
 | `docs/PROJECT.md` §4 目录 | 写作 `tool-bar/`、`url-popover-button/`、`styles.scss` | 实际为 `toolbar/`、`popover-button/`、按钮样式 scoped 内 |
-| `docs/PROJECT.md` §8 路线 | 以 `ExtensionNameKeys` 枚举为准 | 已与本文档 §2 合并，可在悬而未决处互指 |
+| `docs/PROJECT.md` §8 路线 | 以 `ExtensionNameKeys` 枚举为准 | 已与本文档 §2 合并；`ExtensionNameKeys` 已删除，改用 `defaultToolbar` 字符串（唯一事实来源） |
 
 ---
 
