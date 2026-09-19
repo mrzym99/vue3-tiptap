@@ -29,6 +29,7 @@ export default {
   open: "開啟",
   edit: "編輯",
   cancel: "取消",
+  close: "關閉",
   delete: "刪除",
   codeBlock: "程式碼區塊",
   details: "摺疊區塊",

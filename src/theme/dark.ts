@@ -63,6 +63,9 @@ export const darkTheme: Theme = {
   "--tiptap-popover-shadow":
     "0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3)",
 
+  // dialog (modal mask; dialog panel follows popover tokens)
+  "--tiptap-dialog-mask": "rgba(0, 0, 0, 0.6)",
+
   // menu item (follow the theme)
   "--tiptap-menu-item-hover": "var(--tiptap-color-bg-hover)",
   "--tiptap-menu-item-active": "var(--tiptap-color-bg-active)",

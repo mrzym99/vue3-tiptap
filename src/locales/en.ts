@@ -24,6 +24,7 @@ export default {
   open: "Open",
   edit: "Edit",
   cancel: "Cancel",
+  close: "Close",
   delete: "Delete",
   codeBlock: "Code Block",
   details: "Details",

@@ -1,6 +1,6 @@
 import { mergeAttributes, Node, nodePasteRule } from "@tiptap/core";
 import type { GeneralOptions } from "@/types";
-import VideoPopoverButton from "@/components/ui-editor/toolbar/popover-buttons/VideoPopoverButton.vue";
+import VideoDialogButton from "@/components/ui-editor/toolbar/dialog-buttons/VideoDialogButton.vue";
 import MediaBubbleMenu from "@/components/ui-editor/bubble-menu/media-bubble-menu/index.vue";
 import { withButton } from "@/utils/button";
 import { toEmbedUrl, VIDEO_URL_REGEX } from "@/utils/video-url";
@@ -48,7 +48,7 @@ export const Video = /* @__PURE__ */ Node.create<VideoOptions>({
       width: 640,
       height: 480,
       allowFullscreen: true,
-      button: withButton(VideoPopoverButton),
+      button: withButton(VideoDialogButton),
       // Floating toolbar below the video while it is selected. Disable with
       // `Video.configure({ bubbleMenu: false })`.
       bubbleMenu: withButton(MediaBubbleMenu),

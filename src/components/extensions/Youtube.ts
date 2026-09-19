@@ -2,7 +2,7 @@ import type { YoutubeOptions as TiptapYoutubeOptions } from "@tiptap/extension-y
 import type { GeneralOptions } from "@/types";
 
 import { Youtube as TiptapYoutube } from "@tiptap/extension-youtube";
-import YoutubePopoverButton from "@/components/ui-editor/toolbar/popover-buttons/YoutubePopoverButton.vue";
+import YoutubeDialogButton from "@/components/ui-editor/toolbar/dialog-buttons/YoutubeDialogButton.vue";
 import MediaBubbleMenu from "@/components/ui-editor/bubble-menu/media-bubble-menu/index.vue";
 import { withButton } from "@/utils/button";
 
@@ -14,7 +14,7 @@ export const Youtube = /* @__PURE__ */ TiptapYoutube.extend<YoutubeOptions>({
       ...(this.parent?.() as TiptapYoutubeOptions),
       controls: true,
       nocookie: false,
-      button: withButton(YoutubePopoverButton),
+      button: withButton(YoutubeDialogButton),
       // Floating toolbar below the video while it is selected. Disable with
       // `Youtube.configure({ bubbleMenu: false })`.
       bubbleMenu: withButton(MediaBubbleMenu),

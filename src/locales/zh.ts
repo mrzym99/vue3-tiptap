@@ -24,6 +24,7 @@ export default {
   open: "打开",
   edit: "编辑",
   cancel: "取消",
+  close: "关闭",
   delete: "删除",
   codeBlock: "代码块",
   details: "折叠块",

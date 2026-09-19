@@ -23,6 +23,7 @@ export const baseTheme: Theme = {
   // --- non-color, theme-independent values ---
   "--tiptap-tooltip-radius": "8px",
   "--tiptap-z-popover": "1000",
+  "--tiptap-z-dialog": "1100",
   "--tiptap-input-radius": "8px",
   "--tiptap-input-padding": "6px 10px",
 

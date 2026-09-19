@@ -64,6 +64,9 @@ export const lightTheme: Theme = {
   "--tiptap-popover-shadow":
     "0 1px 3px rgba(15, 15, 15, 0.13), 0 4px 16px rgba(15, 15, 15, 0.05)",
 
+  // dialog (modal mask; dialog panel follows popover tokens)
+  "--tiptap-dialog-mask": "rgba(15, 15, 15, 0.4)",
+
   // menu item (follow the theme)
   "--tiptap-menu-item-hover": "var(--tiptap-color-bg-hover)",
   "--tiptap-menu-item-active": "var(--tiptap-color-bg-active)",

@@ -74,14 +74,15 @@ tip-tap-editor/
     │   │   ├── toolbar/        # 工具栏（自动收集扩展按钮）
     │   │   │   ├── buttons/         # 简单功能按钮（加粗/撤销/清除格式等）
     │   │   │   ├── menu-buttons/    # 下拉菜单按钮（标题/对齐/颜色/字体/表格）
-    │   │   │   ├── popover-buttons/ # 弹窗按钮（图片/视频/音频/链接等 URL 输入）
+    │   │   │   ├── dialog-buttons/  # 模态对话框插入（图片/视频/YouTube/音频/Twitch/链接）
     │   │   │   └── render-item/     # 按扩展 button 声明动态渲染按钮
     │   │   ├── bubble-menu/    # 气泡菜单（格式条 + 浮动菜单 + extension 声明的气泡工具栏）
     │   │   └── editor-content/ # 编辑区容器与内容样式
     │   └── ui-common/          # 通用 UI 基础组件（自研，零 UI 框架依赖）
     │       ├── action-button/      # 工具栏基础按钮（含 tooltip/active 态）
     │       ├── action-menu-button/ # 下拉菜单按钮
-    │       ├── popover-button/     # URL 输入弹窗按钮（图片/视频/音频等复用）
+    │       ├── action-dialog-button/ # 打开模态对话框的工具栏按钮（媒体插入复用）
+    │       ├── dialog/             # 居中模态对话框（遮罩 + Esc/遮罩点击关闭）
     │       ├── popover/            # 通用弹层（@floating-ui/dom 定位、外部点击/Esc 关闭）
     │       ├── tooltip/            # 悬停提示
     │       └── theme-provider/     # 主题提供者（CSS 变量作用域化）

@@ -1,5 +1,5 @@
 import { ref, type ShallowRef } from "vue";
-import ActionPopoverButton from "@/components/ui-common/popover-button/index.vue";
+import ActionDialogButton from "@/components/ui-common/action-dialog-button/index.vue";
 import Form from "@/components/ui-common/form/index.vue";
 import type { FormRule } from "@/components/ui-common/form/types";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
@@ -34,16 +34,16 @@ export interface MediaPayload {
  * Owns the form model (src/width/height), the required-URL rule, the payload
  * builder, and the submit/close/reset flow that every media button previously
  * got from the CommonPopoverButton base. Concrete media buttons wire the
- * returned refs into an `ActionPopoverButton` + `Form` directly:
+ * returned refs into an `ActionDialogButton` + `Form` directly:
  *
  * ```vue
- * <ActionPopoverButton ref="dialog" :icon="icon" :tooltip="t('video')">
+ * <ActionDialogButton ref="dialog" :icon="icon" :tooltip="t('video')" :title="t('video')">
  *   <Form ref="form" :model="model" @submit="onSubmit">
  *     <template #actions>
  *       <TiptapButton variant="primary" type="submit">{{ t('insert') }}</TiptapButton>
  *     </template>
  *   </Form>
- * </ActionPopoverButton>
+ * </ActionDialogButton>
  * ```
  *
  * The two `useTemplateRef` instances are passed in so the composable can drive
@@ -59,7 +59,7 @@ export interface MediaPayload {
 export function useMediaForm(
   props: EXTActionButtonProps,
   command: (payload: MediaPayload) => void,
-  dialogRef: ShallowRef<InstanceType<typeof ActionPopoverButton> | null>,
+  dialogRef: ShallowRef<InstanceType<typeof ActionDialogButton> | null>,
   formEl: ShallowRef<InstanceType<typeof Form> | null>,
   validateUrl?: (value: string) => boolean,
 ) {

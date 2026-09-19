@@ -1,5 +1,11 @@
 <template>
-  <ActionPopoverButton ref="dialog" :icon="RiImageLine" :tooltip="t('image')">
+  <ActionDialogButton
+    ref="dialog"
+    :icon="RiImageLine"
+    :tooltip="t('image')"
+    :title="t('image')"
+    @closed="props.editor.commands.focus()"
+  >
     <Form ref="form" :model="model" @submit="onSubmit">
       <FormItem name="src" :rules="rules">
         <template #default="{ id }">
@@ -26,17 +32,18 @@
       </FormItem>
       <MediaDimensionFields v-model:width="width" v-model:height="height" :t="t" :submit="submit" />
       <template #actions>
+        <TiptapButton @click="dialogRef?.close()">{{ t("cancel") }}</TiptapButton>
         <TiptapButton variant="primary" type="submit">{{ t("insert") }}</TiptapButton>
       </template>
     </Form>
-  </ActionPopoverButton>
+  </ActionDialogButton>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useTemplateRef } from "vue";
 import RiImageLine from "~icons/lucide/image";
-import ActionPopoverButton from "@/components/ui-common/popover-button/index.vue";
+import ActionDialogButton from "@/components/ui-common/action-dialog-button/index.vue";
 import Form from "@/components/ui-common/form/index.vue";
 import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
@@ -58,7 +65,7 @@ import type { EXTActionButtonProps } from "@/components/ui-common/action-button/
 const props = defineProps<EXTActionButtonProps>();
 const t = props.t;
 
-const dialogRef = useTemplateRef<InstanceType<typeof ActionPopoverButton>>("dialog");
+const dialogRef = useTemplateRef<InstanceType<typeof ActionDialogButton>>("dialog");
 const formEl = useTemplateRef<InstanceType<typeof Form>>("form");
 const { src, width, height, model, rules, submit, onSubmit } = useMediaForm(
   props,
