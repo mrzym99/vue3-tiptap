@@ -4,10 +4,8 @@
       <ToolBar :editor="editor" :toolbar="props.toolbar" />
       <EditorContent :editor="editor" />
       <BubbleMenuBar :editor="editor" :toolbar="props.bubbleMenu ?? props.toolbar" />
-      <LinkBubbleMenu :editor="editor" />
-      <MediaBubbleMenu :editor="editor" />
-      <TableBubbleMenu :editor="editor" />
       <FloatingMenuBar :editor="editor" :toolbar="props.floatingMenu ?? props.toolbar" />
+      <TableBubbleMenu :editor="editor" />
       <span v-if="props.maxLength" class="max-limit">
         {{ editor.storage.characterCount?.characters?.() ?? editor.getText().length }} / {{ props.maxLength }}
       </span>
@@ -20,8 +18,6 @@ import ThemeProvider from "@/components/ui-common/theme-provider/index.vue";
 import ToolBar from "@/components/ui-editor/toolbar/index.vue";
 import EditorContent from "@/components/ui-editor/editor-content/index.vue";
 import BubbleMenuBar from "@/components/ui-editor/bubble-menu/index.vue";
-import LinkBubbleMenu from "@/components/ui-editor/bubble-menu/link-bubble-menu/index.vue";
-import MediaBubbleMenu from "@/components/ui-editor/bubble-menu/media-bubble-menu/index.vue";
 import TableBubbleMenu from "@/components/ui-editor/bubble-menu/table-bubble-menu/index.vue";
 import FloatingMenuBar from "@/components/ui-editor/bubble-menu/floating-menu/index.vue";
 // https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
@@ -110,9 +106,7 @@ const STRUCTURAL_NAMES = new Set(["doc", "paragraph", "text", "placeholder"]);
 // Note: `limit` is fixed at editor-creation — live `maxLength` changes won't
 // re-take effect (the plugin reads its options when constructed).
 const needsLimit = props.maxLength > 0;
-const structuralNames = needsLimit
-  ? new Set([...STRUCTURAL_NAMES, "characterCount"])
-  : STRUCTURAL_NAMES;
+const structuralNames = needsLimit ? new Set([...STRUCTURAL_NAMES, "characterCount"]) : STRUCTURAL_NAMES;
 const userExtensions = [...new Map(props.extensions.map((e) => [e.name, e])).values()].filter(
   (e) => !structuralNames.has(e.name),
 );

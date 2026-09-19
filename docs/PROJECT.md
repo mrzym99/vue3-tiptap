@@ -76,7 +76,7 @@ tip-tap-editor/
     │   │   │   ├── menu-buttons/    # 下拉菜单按钮（标题/对齐/颜色/字体/表格）
     │   │   │   ├── popover-buttons/ # 弹窗按钮（图片/视频/音频/链接等 URL 输入）
     │   │   │   └── render-item/     # 按扩展 button 声明动态渲染按钮
-    │   │   ├── bubble-menu/    # 气泡菜单（格式条 + link/media/table/浮动菜单）
+    │   │   ├── bubble-menu/    # 气泡菜单（格式条 + table/浮动菜单）
     │   │   └── editor-content/ # 编辑区容器与内容样式
     │   └── ui-common/          # 通用 UI 基础组件（自研，零 UI 框架依赖）
     │       ├── action-button/      # 工具栏基础按钮（含 tooltip/active 态）
