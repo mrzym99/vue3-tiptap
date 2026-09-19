@@ -78,10 +78,14 @@ export function useEditorModel(options: UseEditorModelOptions) {
     }
   };
 
-  /** Call from the editor's `onUpdate` (pre-truncation, keeping existing order). */
+  /**
+   * Call from the editor's `onUpdate`. Typing/formatting beyond `maxLength` is
+   * blocked by the official `CharacterCount` plugin (`limit` + `autoTrim:
+   * false`, configured by the component) BEFORE it reaches the document, so no
+   * post-commit truncation is needed here — just forward the update and debounce
+   * the write-back.
+   */
   const handleUpdate = (created: Editor, transaction: Transaction) => {
-    const limit = maxLength();
-    if (checkLimit(created, limit)) onTruncated?.(limit);
     onUpdate?.(created, transaction);
     syncModelValue();
   };

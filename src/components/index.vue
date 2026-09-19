@@ -35,6 +35,7 @@ import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import Placeholder from "@tiptap/extension-placeholder";
+import { CharacterCount } from "@tiptap/extensions";
 import { useEditorLocale } from "@/composables/useEditorLocale";
 import { useEditorModel } from "@/composables/useEditorModel";
 const props = withDefaults(
@@ -100,8 +101,20 @@ let currentPlaceholder = props.placeholder ?? "";
 // individual extensions. Later entries win on name conflicts; the structural
 // core (document / paragraph / text / placeholder) is always the component's.
 const STRUCTURAL_NAMES = new Set(["doc", "paragraph", "text", "placeholder"]);
+
+// When `maxLength` is set, add the official `CharacterCount` limit ourselves so
+// the prop works without the host importing the extension: typing/formatting
+// past the limit is REJECTED at the ProseMirror level (`autoTrim: false` keeps
+// the plugin from lazily trimming during edits; create-time over-limit trimming
+// is owned by `useEditorModel.handleCreate`, which also emits `truncated`).
+// Note: `limit` is fixed at editor-creation — live `maxLength` changes won't
+// re-take effect (the plugin reads its options when constructed).
+const needsLimit = props.maxLength > 0;
+const structuralNames = needsLimit
+  ? new Set([...STRUCTURAL_NAMES, "characterCount"])
+  : STRUCTURAL_NAMES;
 const userExtensions = [...new Map(props.extensions.map((e) => [e.name, e])).values()].filter(
-  (e) => !STRUCTURAL_NAMES.has(e.name),
+  (e) => !structuralNames.has(e.name),
 );
 const mergedExtensions = [
   Document, // 文档根节点
@@ -110,6 +123,7 @@ const mergedExtensions = [
   Placeholder.configure({
     placeholder: () => currentPlaceholder,
   }),
+  ...(needsLimit ? [CharacterCount.configure({ limit: props.maxLength, autoTrim: false })] : []),
   ...userExtensions,
 ];
 
