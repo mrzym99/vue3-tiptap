@@ -2,6 +2,7 @@ import { Extension } from "@tiptap/core";
 import type { GeneralOptions } from "@/types";
 
 import UndoButton from "@/components/ui-editor/toolbar/buttons/UndoButton.vue";
+import { withButton } from "@/utils/button";
 
 export interface UndoOptions extends GeneralOptions {}
 
@@ -15,13 +16,7 @@ export const Undo = /* @__PURE__ */ Extension.create<UndoOptions>({
   name: "undo",
   addOptions() {
     return {
-      button: ({ editor, t }) => ({
-        component: UndoButton,
-        componentProps: {
-          editor,
-          t,
-        },
-      }),
+      button: withButton(UndoButton),
     };
   },
 });

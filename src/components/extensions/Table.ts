@@ -9,6 +9,7 @@ import {
 } from "@tiptap/extension-table";
 
 import TableMenuButton from "@/components/ui-editor/toolbar/menu-buttons/TableMenuButton.vue";
+import { withButton } from "@/utils/button";
 
 export interface TableOptions extends TiptapTableOptions, GeneralOptions {}
 
@@ -25,13 +26,7 @@ export const Table = TiptapTable.extend<TableOptions>({
     return {
       ...(this.parent?.() as TiptapTableOptions),
       resizable: true,
-      button: ({ editor, t }) => ({
-        component: TableMenuButton,
-        componentProps: {
-          editor,
-          t,
-        },
-      }),
+      button: withButton(TableMenuButton),
     };
   },
 });

@@ -3,6 +3,7 @@ import type { GeneralOptions, ImageUploader } from "@/types";
 
 import { Image as TiptapImage } from "@tiptap/extension-image";
 import ImagePopoverButton from "@/components/ui-editor/toolbar/popover-buttons/ImagePopoverButton.vue";
+import { withButton } from "@/utils/button";
 
 export interface ImageOptions extends TiptapImageOptions, GeneralOptions {
   /**
@@ -18,13 +19,7 @@ export const Image = /* @__PURE__ */ TiptapImage.extend<ImageOptions>({
     return {
       ...(this.parent?.() as TiptapImageOptions),
       upload: undefined,
-      button: ({ editor, t }) => ({
-        component: ImagePopoverButton,
-        componentProps: {
-          editor,
-          t,
-        },
-      }),
+      button: withButton(ImagePopoverButton),
     };
   },
 });

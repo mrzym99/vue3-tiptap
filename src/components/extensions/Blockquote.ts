@@ -4,6 +4,7 @@ import type { GeneralOptions } from "@/types";
 import { Blockquote as TiptapBlockquote } from "@tiptap/extension-blockquote";
 
 import BlockquoteButton from "@/components/ui-editor/toolbar/buttons/BlockquoteButton.vue";
+import { withButton } from "@/utils/button";
 
 export interface BlockquoteOptions
   extends TiptapBlockquoteOptions, GeneralOptions {}
@@ -13,13 +14,7 @@ export const Blockquote =
     addOptions() {
       return {
         ...(this.parent?.() as TiptapBlockquoteOptions),
-        button: ({ editor, t }) => ({
-          component: BlockquoteButton,
-          componentProps: {
-            editor,
-            t,
-          },
-        }),
+        button: withButton(BlockquoteButton),
       };
     },
   });

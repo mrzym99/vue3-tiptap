@@ -2,6 +2,7 @@ import { Extension } from "@tiptap/core";
 import type { GeneralOptions } from "@/types";
 
 import RedoButton from "@/components/ui-editor/toolbar/buttons/RedoButton.vue";
+import { withButton } from "@/utils/button";
 
 export interface RedoOptions extends GeneralOptions {}
 
@@ -15,13 +16,7 @@ export const Redo = /* @__PURE__ */ Extension.create<RedoOptions>({
   name: "redo",
   addOptions() {
     return {
-      button: ({ editor, t }) => ({
-        component: RedoButton,
-        componentProps: {
-          editor,
-          t,
-        },
-      }),
+      button: withButton(RedoButton),
     };
   },
 });

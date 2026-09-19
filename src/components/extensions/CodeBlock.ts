@@ -4,6 +4,7 @@ import type { GeneralOptions } from "@/types";
 import { CodeBlock as TiptapCodeBlock } from "@tiptap/extension-code-block";
 
 import CodeBlockButton from "@/components/ui-editor/toolbar/buttons/CodeBlockButton.vue";
+import { withButton } from "@/utils/button";
 
 export interface CodeBlockOptions
   extends TiptapCodeBlockOptions, GeneralOptions {}
@@ -13,13 +14,7 @@ export const CodeBlock =
     addOptions() {
       return {
         ...(this.parent?.() as TiptapCodeBlockOptions),
-        button: ({ editor, t }) => ({
-          component: CodeBlockButton,
-          componentProps: {
-            editor,
-            t,
-          },
-        }),
+        button: withButton(CodeBlockButton),
       };
     },
   });

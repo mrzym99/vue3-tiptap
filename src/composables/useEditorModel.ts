@@ -14,7 +14,13 @@ import { checkLimit } from "@/utils/text";
  * Any pending write-back is flushed on unmount.
  */
 export interface UseEditorModelOptions {
-  /** The editor instance (undefined until mounted), passed as a ref. */
+  /**
+   * The editor instance (undefined until mounted), passed as a ref.
+   *
+   * Use a SHALLOW ref (as `@tiptap/vue-3`'s `useEditor` returns). A deep `ref()`
+   * wraps the Editor in a reactive proxy, and dispatching through that proxy
+   * (setContent / deleteRange) fails ProseMirror's transaction checks.
+   */
   editor: Ref<Editor | undefined>;
   /** The v-model binding (write-back target). `defineModel` must stay in the component. */
   modelValue: Ref<string>;
@@ -60,8 +66,12 @@ export function useEditorModel(options: UseEditorModelOptions) {
     // Only truncate/write back when the initial content actually got truncated —
     // otherwise an empty document would immediately rewrite the parent value
     // from "" to "<p></p>".
+    // Guard the fast-path read the same way checkLimit does: CharacterCount
+    // isn't guaranteed to be loaded, fall back to plain text length.
     const limit = maxLength();
-    if (limit && created.storage.characterCount.characters() > limit) {
+    const current =
+      created.storage.characterCount?.characters?.() ?? created.getText({ blockSeparator: "" }).length;
+    if (limit && current > limit) {
       checkLimit(created, limit);
       modelValue.value = created.getHTML();
       onTruncated?.(limit);

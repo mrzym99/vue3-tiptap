@@ -2,6 +2,7 @@ import { Extension } from "@tiptap/core";
 import type { GeneralOptions } from "@/types";
 
 import ClearFormattingButton from "@/components/ui-editor/toolbar/buttons/ClearFormattingButton.vue";
+import { withButton } from "@/utils/button";
 
 export interface ClearFormattingOptions extends GeneralOptions {}
 
@@ -17,13 +18,7 @@ export const ClearFormatting = /* @__PURE__ */ Extension.create<ClearFormattingO
   name: "clearFormatting",
   addOptions() {
     return {
-      button: ({ editor, t }) => ({
-        component: ClearFormattingButton,
-        componentProps: {
-          editor,
-          t,
-        },
-      }),
+      button: withButton(ClearFormattingButton),
     };
   },
 });

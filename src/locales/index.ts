@@ -30,6 +30,14 @@ export interface LocaleContext {
 
 const builtinMessages: Record<string, Record<string, string>> = { zh, en };
 
+/**
+ * Missing translation keys fall back to the raw key (so the UI never shows a
+ * blank), but an untranslated word surfacing as a bare key is hard to spot.
+ * Warn once per key in dev so a missed entry in a pack is noticeable without
+ * spamming on every render (the set is module-scoped, shared across instances).
+ */
+const warnedMissingKeys = new Set<string>();
+
 /** Injection key — components read the context provided by TipTapEditor */
 export const LocaleContextKey: InjectionKey<LocaleContext> = Symbol("tiptap-locale");
 
@@ -56,7 +64,15 @@ export function createLocaleContext(
   const locale = ref<LocaleName | (string & {})>(initial);
   // reactive so `t()` re-renders when setTranslations() swaps the tables
   const messages = reactive(mergeMessages(translations));
-  const t: LocaleT = (key) => messages[locale.value]?.[key] ?? key;
+  const t: LocaleT = (key) => {
+    const table = messages[locale.value];
+    if (table && key in table) return table[key];
+    if (import.meta.env.DEV && !warnedMissingKeys.has(key)) {
+      warnedMissingKeys.add(key);
+      console.warn(`[tip-tap-editor] missing translation key "${key}" for locale "${locale.value}"`);
+    }
+    return key;
+  };
   const setLocale = (next: LocaleName | (string & {})) => {
     locale.value = next;
   };

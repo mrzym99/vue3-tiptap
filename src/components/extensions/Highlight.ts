@@ -4,6 +4,7 @@ import type { GeneralOptions } from "@/types";
 import { Highlight as TiptapHighlight } from "@tiptap/extension-highlight";
 
 import HighlightButton from "@/components/ui-editor/toolbar/buttons/HighlightButton.vue";
+import { withButton } from "@/utils/button";
 
 export interface HighlightOptions
   extends TiptapHighlightOptions, GeneralOptions {}
@@ -13,13 +14,7 @@ export const Highlight =
     addOptions() {
       return {
         ...(this.parent?.() as TiptapHighlightOptions),
-        button: ({ editor, t }) => ({
-          component: HighlightButton,
-          componentProps: {
-            editor,
-            t,
-          },
-        }),
+        button: withButton(HighlightButton),
       };
     },
   });

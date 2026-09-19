@@ -4,6 +4,7 @@ import type { GeneralOptions } from "@/types";
 import { HorizontalRule as TiptapHorizontalRule } from "@tiptap/extension-horizontal-rule";
 
 import HorizontalRuleButton from "@/components/ui-editor/toolbar/buttons/HorizontalRuleButton.vue";
+import { withButton } from "@/utils/button";
 
 export interface HorizontalRuleOptions
   extends TiptapHorizontalRuleOptions, GeneralOptions {}
@@ -13,13 +14,7 @@ export const HorizontalRule =
     addOptions() {
       return {
         ...(this.parent?.() as TiptapHorizontalRuleOptions),
-        button: ({ editor, t }) => ({
-          component: HorizontalRuleButton,
-          componentProps: {
-            editor,
-            t,
-          },
-        }),
+        button: withButton(HorizontalRuleButton),
       };
     },
   });

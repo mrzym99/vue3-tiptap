@@ -4,6 +4,7 @@ import type { GeneralOptions } from "@/types";
 import { FontFamily as TiptapFontFamily } from "@tiptap/extension-text-style";
 
 import FontFamilyMenuButton from "@/components/ui-editor/toolbar/menu-buttons/FontFamilyMenuButton.vue";
+import { withButton } from "@/utils/button";
 
 export interface FontFamilyOptions
   extends TiptapFontFamilyOptions, GeneralOptions {}
@@ -13,13 +14,7 @@ export const FontFamily =
     addOptions() {
       return {
         ...(this.parent?.() as TiptapFontFamilyOptions),
-        button: ({ editor, t }) => ({
-          component: FontFamilyMenuButton,
-          componentProps: {
-            editor,
-            t,
-          },
-        }),
+        button: withButton(FontFamilyMenuButton),
       };
     },
   });

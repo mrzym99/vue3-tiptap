@@ -4,6 +4,7 @@ import type { GeneralOptions } from "@/types";
 import { InvisibleCharacters as TiptapInvisibleCharacters } from "@tiptap/extension-invisible-characters";
 
 import InvisibleCharactersButton from "@/components/ui-editor/toolbar/buttons/InvisibleCharactersButton.vue";
+import { withButton } from "@/utils/button";
 
 export interface InvisibleCharactersOptions
   extends TiptapInvisibleCharactersOptions, GeneralOptions {}
@@ -16,13 +17,7 @@ export const InvisibleCharacters =
         // on every block right away — keep hidden until toggled by the button.
         ...(this.parent?.() as TiptapInvisibleCharactersOptions),
         visible: false,
-        button: ({ editor, t }) => ({
-          component: InvisibleCharactersButton,
-          componentProps: {
-            editor,
-            t,
-          },
-        }),
+        button: withButton(InvisibleCharactersButton),
       };
     },
   });

@@ -4,6 +4,7 @@ import type { GeneralOptions } from "@/types";
 import { Subscript as TiptapSubscript } from "@tiptap/extension-subscript";
 
 import SubscriptButton from "@/components/ui-editor/toolbar/buttons/SubscriptButton.vue";
+import { withButton } from "@/utils/button";
 
 export interface SubscriptOptions
   extends TiptapSubscriptOptions, GeneralOptions {}
@@ -13,13 +14,7 @@ export const Subscript =
     addOptions() {
       return {
         ...(this.parent?.() as TiptapSubscriptOptions),
-        button: ({ editor, t }) => ({
-          component: SubscriptButton,
-          componentProps: {
-            editor,
-            t,
-          },
-        }),
+        button: withButton(SubscriptButton),
       };
     },
   });

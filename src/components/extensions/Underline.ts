@@ -4,6 +4,7 @@ import type { GeneralOptions } from "@/types";
 import { Underline as TiptapUnderline } from "@tiptap/extension-underline";
 
 import UnderlineButton from "@/components/ui-editor/toolbar/buttons/UnderlineButton.vue";
+import { withButton } from "@/utils/button";
 
 export interface UnderlineOptions
   extends TiptapUnderlineOptions, GeneralOptions {}
@@ -13,13 +14,7 @@ export const Underline =
     addOptions() {
       return {
         ...(this.parent?.() as TiptapUnderlineOptions),
-        button: ({ editor, t }) => ({
-          component: UnderlineButton,
-          componentProps: {
-            editor,
-            t,
-          },
-        }),
+        button: withButton(UnderlineButton),
       };
     },
   });

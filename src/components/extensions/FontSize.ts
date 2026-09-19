@@ -4,6 +4,7 @@ import type { GeneralOptions } from "@/types";
 import { FontSize as TiptapFontSize } from "@tiptap/extension-text-style/font-size";
 
 import FontSizeMenuButton from "@/components/ui-editor/toolbar/menu-buttons/FontSizeMenuButton.vue";
+import { withButton } from "@/utils/button";
 
 export interface FontSizeOptions
   extends TiptapFontSizeOptions, GeneralOptions {}
@@ -13,13 +14,7 @@ export const FontSize =
     addOptions() {
       return {
         ...(this.parent?.() as TiptapFontSizeOptions),
-        button: ({ editor, t }) => ({
-          component: FontSizeMenuButton,
-          componentProps: {
-            editor,
-            t,
-          },
-        }),
+        button: withButton(FontSizeMenuButton),
       };
     },
   });

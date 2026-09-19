@@ -4,6 +4,7 @@ import type { GeneralOptions } from "@/types";
 import { Details as TiptapDetails } from "@tiptap/extension-details";
 
 import DetailsButton from "@/components/ui-editor/toolbar/buttons/DetailsButton.vue";
+import { withButton } from "@/utils/button";
 
 export { DetailsSummary, DetailsContent } from "@tiptap/extension-details";
 
@@ -30,13 +31,7 @@ export const Details = /* @__PURE__ */ TiptapDetails.extend<DetailsOptions>({
         element.setAttribute("data-open", isOpen ? "true" : "false");
         element.innerHTML = isOpen ? CHEVRON_DOWN_SVG : CHEVRON_RIGHT_SVG;
       },
-      button: ({ editor, t }) => ({
-        component: DetailsButton,
-        componentProps: {
-          editor,
-          t,
-        },
-      }),
+      button: withButton(DetailsButton),
     };
   },
 });
