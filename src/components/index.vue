@@ -8,7 +8,9 @@
       <MediaBubbleMenu :editor="editor" />
       <TableBubbleMenu :editor="editor" />
       <FloatingMenuBar :editor="editor" :toolbar="props.floatingMenu ?? props.toolbar" />
-      <span v-if="props.maxLength" class="max-limit"> {{ editor.storage.characterCount.characters() }} / {{ props.maxLength }} </span>
+      <span v-if="props.maxLength" class="max-limit">
+        {{ editor.storage.characterCount?.characters?.() ?? editor.getText().length }} / {{ props.maxLength }}
+      </span>
     </div>
   </ThemeProvider>
 </template>
