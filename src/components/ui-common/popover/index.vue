@@ -15,6 +15,7 @@
     :style="floatingStyle"
     @mouseenter="onEnter"
     @mouseleave="onLeave"
+    @click.capture="captureClickItem"
   >
     <slot />
   </div>
@@ -31,6 +32,7 @@ const props = withDefaults(defineProps<PopoverProps>(), {
   offset: 4,
   disabled: false,
   show: false,
+  hideOnClick: true,
 });
 
 const emit = defineEmits<{ "update:show": [value: boolean] }>();
@@ -112,6 +114,10 @@ function onDocMousedown(e: MouseEvent) {
 
 function onKeydown(e: KeyboardEvent) {
   if (props.trigger === "click" && e.key === "Escape") doClose();
+}
+
+function captureClickItem() {
+  props.hideOnClick && doClose();
 }
 
 function doClose() {

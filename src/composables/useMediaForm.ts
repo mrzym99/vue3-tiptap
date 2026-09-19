@@ -75,8 +75,7 @@ export function useMediaForm(
 
   const rules: FormRule[] = [
     {
-      validator: (value) =>
-        typeof value === "string" && value.trim().length > 0,
+      validator: (value) => typeof value === "string" && value.trim().length > 0,
       message: props.t("mediaUrlRequired"),
     },
   ];

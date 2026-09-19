@@ -11,4 +11,6 @@ export type PopoverProps = {
   disabled?: boolean;
   /** Controlled visibility (v-model:show) */
   show?: boolean;
+  /** Whether to hide the popover when clicking popover */
+  hideOnClick?: boolean;
 };
