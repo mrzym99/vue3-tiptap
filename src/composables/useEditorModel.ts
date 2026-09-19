@@ -5,13 +5,16 @@ import { checkLimit } from "@/utils/text";
 
 /**
  * v-model two-way binding for the editor: debounced `editor.getHTML()` write-back
- * to `modelValue`, external-value → `setContent` sync, and `maxLength` truncation.
+ * to `modelValue`, and (on create) `maxLength` truncation.
  *
- * The `onUpdate` handler in the component writes the debounced HTML back, so
- * serializing on every keystroke (O(n) for large docs) is avoided. `checkLimit`
- * truncation stays synchronous — it must apply immediately.
+ * Typing/formatting past `maxLength` is blocked by the official `CharacterCount`
+ * `limit` plugin (component-configured), so no per-keystroke truncation happens
+ * here. This composable only trims once — on `handleCreate`, when the initial
+ * content already exceeds `maxLength` — via `checkLimit`, and emits `truncated`.
  *
- * Any pending write-back is flushed on unmount.
+ * The component's `onUpdate` writes the debounced HTML back, so serializing on
+ * every keystroke (O(n) for large docs) is avoided. Any pending write-back is
+ * flushed on unmount.
  */
 export interface UseEditorModelOptions {
   /**
@@ -28,7 +31,7 @@ export interface UseEditorModelOptions {
   maxLength: () => number;
   /** Called on every content-changing transaction (debounced write-back handled inside). */
   onUpdate?: (editor: Editor, transaction: Transaction) => void;
-  /** Called when content exceeded `maxLength` and was truncated. */
+  /** Called when initial content exceeded `maxLength` and was trimmed on create. */
   onTruncated?: (maxLength: number) => void;
 }
 

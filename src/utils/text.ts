@@ -1,8 +1,10 @@
 import type { Editor } from "@tiptap/core";
 
 /**
- * Enforce a max text length by truncating the document at the exact document
- * position of the maxLength-th character.
+ * Trim content once on editor-creation when the initial document already
+ * exceeds `maxLength`, cutting at the exact document position of the
+ * maxLength-th character. (Typing past the limit while editing is handled by
+ * the official `CharacterCount.limit` plugin, so this runs only at create.)
  *
  * Note: plain text length cannot be used as a ProseMirror position — every
  * block node occupies an extra position in the document, so positions drift as
@@ -22,7 +24,7 @@ export function checkLimit(editor: Editor, maxLength: number): boolean {
   if (!maxLength) return false;
 
   // Fast path: nothing exceeds the limit. Reuse the incremental CharacterCount
-  // storage instead of rescanning the whole document on every keystroke.
+  // storage instead of rescanning the whole document.
   const current =
     editor.storage.characterCount?.characters?.() ?? editor.getText({ blockSeparator: "" }).length;
   if (current <= maxLength) return false;
