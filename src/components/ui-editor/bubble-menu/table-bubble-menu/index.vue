@@ -1,5 +1,11 @@
 <template>
-  <BubbleMenu v-if="editor" :editor="editor" :should-show="shouldShow" :tippy-options="tippyOptions">
+  <BubbleMenu
+    v-if="editor"
+    :editor="editor"
+    :should-show="shouldShow"
+    :get-referenced-virtual-element="getReferencedVirtualElement"
+    :options="bubbleOptions"
+  >
     <div class="table-bubble">
       <ActionButton
         :icon="RowInsertBottomIcon"
@@ -27,11 +33,13 @@
         :action="() => editor.chain().focus().deleteColumn().run()"
       />
       <span class="table-bubble-sep" />
+      <!-- merge vs split are mutually exclusive: merge needs a multi-cell
+           selection, split needs an already-merged (colspan/rowspan > 1) cell -->
       <ActionButton
         :icon="MergeCellsIcon"
         :tooltip="t('mergeCells')"
-        :disabled="!editor.can().mergeOrSplit()"
-        :action="() => editor.chain().focus().mergeOrSplit().run()"
+        :disabled="!editor.can().mergeCells()"
+        :action="() => editor.chain().focus().mergeCells().run()"
       />
       <ActionButton
         :icon="SplitCellsIcon"
@@ -76,15 +84,35 @@ import SplitCellsIcon from "~icons/lucide/table-cells-split";
 import ToggleHeaderIcon from "~icons/tabler/arrows-exchange";
 import DeleteTableIcon from "~icons/tabler/trash";
 
-defineProps<{ editor: Editor }>();
+const props = defineProps<{ editor: Editor }>();
 
 const { t } = useTiptapLocale();
 
-const tippyOptions = {
-  duration: 150,
-  maxWidth: "none",
-  appendTo: () => document.body,
+// Anchor below the table itself (not the caret): flip to the top edge when
+// there is no room below, shift keeps the bar within the viewport.
+const bubbleOptions = {
+  placement: "bottom" as const,
+  offset: 8,
+  shift: { padding: 8 },
 };
+
+/**
+ * The `<table>` DOM node containing the selection — anchoring to the table
+ * (instead of the default selection rect) keeps the toolbar attached to the
+ * table bottom instead of floating above the caret / over the main toolbar.
+ * Returns `null` to fall back to tiptap's selection-based positioning.
+ */
+function getReferencedVirtualElement(): HTMLElement | null {
+  const { view, state } = props.editor;
+  const { $from } = state.selection;
+  for (let d = $from.depth; d >= 0; d--) {
+    if ($from.node(d).type.name === "table") {
+      const dom = view.nodeDOM($from.before(d));
+      return dom instanceof HTMLElement ? dom : null;
+    }
+  }
+  return null;
+}
 
 /**
  * Show when the caret sits inside a table cell (a plain cell click) or cells

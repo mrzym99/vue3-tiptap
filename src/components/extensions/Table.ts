@@ -9,6 +9,7 @@ import {
 } from "@tiptap/extension-table";
 
 import TableMenuButton from "@/components/ui-editor/toolbar/menu-buttons/TableMenuButton.vue";
+import TableBubbleMenu from "@/components/ui-editor/bubble-menu/table-bubble-menu/index.vue";
 import { withButton } from "@/utils/button";
 
 export interface TableOptions extends TiptapTableOptions, GeneralOptions {}
@@ -27,6 +28,10 @@ export const Table = TiptapTable.extend<TableOptions>({
       ...(this.parent?.() as TiptapTableOptions),
       resizable: true,
       button: withButton(TableMenuButton),
+      // Floating toolbar shown while the caret is inside a table; rendered by
+      // the editor component via the extension's `bubbleMenu` option. Disable
+      // with `Table.configure({ bubbleMenu: false })`.
+      bubbleMenu: withButton(TableBubbleMenu),
     };
   },
 });

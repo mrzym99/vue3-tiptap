@@ -1,16 +1,7 @@
 <template>
-  <Popover
-    v-model:show="menuPopoverShow"
-    trigger="click"
-    placement="bottom-start"
-  >
+  <Popover v-model:show="menuPopoverShow" trigger="click" placement="bottom-start">
     <template #trigger>
-      <ActionButton
-        :is-active="() => isActive"
-        :disabled="disabled"
-        :icon="RiTableLine"
-        :tooltip="t('table')"
-      >
+      <ActionButton :is-active="() => isActive" :disabled="disabled" :icon="RiTableLine" :tooltip="t('table')">
         <template #suffix>
           <RiArrowDropDownLine />
         </template>
@@ -24,6 +15,7 @@
           ref="insertTablePopoverRef"
           placement="right"
           trigger="hover"
+          :hide-on-click="false"
         >
           <template #trigger>
             <button type="button" class="tiptap-menu-item">
@@ -80,20 +72,12 @@ const menuPopoverShow = ref(false);
 const insertTablePopoverShow = ref(false);
 function insertTable({ rows, cols }: { rows: number; cols: number }) {
   if (!props.editor.can().insertTable({ rows, cols })) return;
-  props.editor
-    .chain()
-    .focus()
-    .insertTable({ rows, cols, withHeaderRow: true })
-    .run();
+  props.editor.chain().focus().insertTable({ rows, cols, withHeaderRow: true }).run();
   insertTablePopoverShow.value = false;
   menuPopoverShow.value = false;
 }
 
-function tableOp(
-  label: string,
-  icon: any,
-  run: () => void,
-): ActionMenuButtonItem {
+function tableOp(label: string, icon: any, run: () => void, disabled?: () => boolean): ActionMenuButtonItem {
   return {
     label,
     icon,
@@ -101,7 +85,8 @@ function tableOp(
       run();
       menuPopoverShow.value = false;
     },
-    disabled: !props.editor.isActive("table"),
+    // default: the op only makes sense while inside a table
+    disabled: disabled?.() ?? !props.editor.isActive("table"),
     isActive: () => false,
   };
 }
@@ -109,30 +94,26 @@ function tableOp(
 const inTable = computed(() => props.editor.isActive("table"));
 
 const opsItems = computed<ActionMenuButtonItem[]>(() => [
-  tableOp(t("addRowAfter"), RowInsertBottomIcon, () =>
-    props.editor.chain().focus().addRowAfter().run(),
+  tableOp(t("addRowAfter"), RowInsertBottomIcon, () => props.editor.chain().focus().addRowAfter().run()),
+  tableOp(t("addColumnAfter"), ColumnInsertRightIcon, () => props.editor.chain().focus().addColumnAfter().run()),
+  tableOp(t("deleteRow"), RowRemoveIcon, () => props.editor.chain().focus().deleteRow().run()),
+  tableOp(t("deleteColumn"), ColumnRemoveIcon, () => props.editor.chain().focus().deleteColumn().run()),
+  // merge vs split are mutually exclusive: merge needs a multi-cell selection,
+  // split needs an already-merged (colspan/rowspan > 1) cell
+  tableOp(
+    t("mergeCells"),
+    RiMergeCellsHorizontal,
+    () => props.editor.chain().focus().mergeCells().run(),
+    () => !props.editor.can().mergeCells(),
   ),
-  tableOp(t("addColumnAfter"), ColumnInsertRightIcon, () =>
-    props.editor.chain().focus().addColumnAfter().run(),
+  tableOp(
+    t("splitCell"),
+    RiSplitCellsHorizontal,
+    () => props.editor.chain().focus().splitCell().run(),
+    () => !props.editor.can().splitCell(),
   ),
-  tableOp(t("deleteRow"), RowRemoveIcon, () =>
-    props.editor.chain().focus().deleteRow().run(),
-  ),
-  tableOp(t("deleteColumn"), ColumnRemoveIcon, () =>
-    props.editor.chain().focus().deleteColumn().run(),
-  ),
-  tableOp(t("mergeCells"), RiMergeCellsHorizontal, () =>
-    props.editor.chain().focus().mergeOrSplit().run(),
-  ),
-  tableOp(t("splitCell"), RiSplitCellsHorizontal, () =>
-    props.editor.chain().focus().splitCell().run(),
-  ),
-  tableOp(t("toggleHeaderRow"), ArrowsExchangeIcon, () =>
-    props.editor.chain().focus().toggleHeaderRow().run(),
-  ),
-  tableOp(t("deleteTable"), RiDeleteBinLine, () =>
-    props.editor.chain().focus().deleteTable().run(),
-  ),
+  tableOp(t("toggleHeaderRow"), ArrowsExchangeIcon, () => props.editor.chain().focus().toggleHeaderRow().run()),
+  tableOp(t("deleteTable"), RiDeleteBinLine, () => props.editor.chain().focus().deleteTable().run()),
 ]);
 
 const disabled = computed(() => {

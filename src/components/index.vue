@@ -5,7 +5,7 @@
       <EditorContent :editor="editor" />
       <BubbleMenuBar :editor="editor" :toolbar="props.bubbleMenu ?? props.toolbar" />
       <FloatingMenuBar :editor="editor" :toolbar="props.floatingMenu ?? props.toolbar" />
-      <TableBubbleMenu :editor="editor" />
+      <ExtensionBubbleMenus :editor="editor" />
       <span v-if="props.maxLength" class="max-limit">
         {{ editor.storage.characterCount?.characters?.() ?? editor.getText().length }} / {{ props.maxLength }}
       </span>
@@ -18,7 +18,7 @@ import ThemeProvider from "@/components/ui-common/theme-provider/index.vue";
 import ToolBar from "@/components/ui-editor/toolbar/index.vue";
 import EditorContent from "@/components/ui-editor/editor-content/index.vue";
 import BubbleMenuBar from "@/components/ui-editor/bubble-menu/index.vue";
-import TableBubbleMenu from "@/components/ui-editor/bubble-menu/table-bubble-menu/index.vue";
+import ExtensionBubbleMenus from "@/components/ui-editor/bubble-menu/extension-bubble-menus/index.vue";
 import FloatingMenuBar from "@/components/ui-editor/bubble-menu/floating-menu/index.vue";
 // https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
 import { toRef } from "vue";

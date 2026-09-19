@@ -98,6 +98,13 @@ export type TranslateFn = (key: string, named?: Record<string, unknown> | number
 export interface GeneralOptions {
   /** Button view function */
   button: ButtonView;
+  /**
+   * Bubble-menu view function — a floating toolbar the extension owns while
+   * the caret is inside its content (e.g. the table toolbar). The editor
+   * component renders one toolbar per registered extension that declares this.
+   * Set to `false` to disable (e.g. `Table.configure({ bubbleMenu: false })`).
+   */
+  bubbleMenu?: ButtonView | false;
 }
 
 /**

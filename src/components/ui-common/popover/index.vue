@@ -15,7 +15,7 @@
     :style="floatingStyle"
     @mouseenter="onEnter"
     @mouseleave="onLeave"
-    @click.capture="captureClickItem"
+    @click.stop="captureClickItem"
   >
     <slot />
   </div>
