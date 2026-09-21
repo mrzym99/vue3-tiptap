@@ -26,7 +26,6 @@ import { useEditor } from "@tiptap/vue-3";
 import type { Editor } from "@tiptap/core";
 import type { Transaction } from "@tiptap/pm/state";
 import type { TipTapEditorProps } from "@/types";
-import type { LocaleName, LocaleTranslations } from "@/locales";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
@@ -34,42 +33,20 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { CharacterCount } from "@tiptap/extensions";
 import { useEditorLocale } from "@/composables/useEditorLocale";
 import { useEditorModel } from "@/composables/useEditorModel";
-const props = withDefaults(
-  defineProps<
-    Pick<
-      TipTapEditorProps,
-      | "maxLength"
-      | "disabled"
-      | "theme"
-      | "themeOverrides"
-      | "placeholder"
-      | "autofocus"
-      | "toolbar"
-      | "bubbleMenu"
-      | "floatingMenu"
-      | "extensions"
-    > & {
-      /** UI language of the toolbar/menus (auto-detected when omitted) */
-      locale?: LocaleName | (string & {});
-      /** Host translations: override built-in wording or add new locales */
-      translations?: LocaleTranslations;
-    }
-  >(),
-  {
-    maxLength: 0,
-    disabled: false,
-    theme: "light",
-    themeOverrides: undefined,
-    placeholder: undefined,
-    autofocus: false,
-    locale: undefined,
-    translations: undefined,
-    toolbar: undefined,
-    bubbleMenu: undefined,
-    floatingMenu: undefined,
-    extensions: () => [],
-  },
-);
+const props = withDefaults(defineProps<TipTapEditorProps>(), {
+  maxLength: 0,
+  disabled: false,
+  theme: "light",
+  themeOverrides: undefined,
+  placeholder: undefined,
+  autofocus: false,
+  locale: undefined,
+  translations: undefined,
+  toolbar: undefined,
+  bubbleMenu: undefined,
+  floatingMenu: undefined,
+  extensions: () => [],
+});
 
 // Self-contained locale context (no vue-i18n / global instance needed)
 useEditorLocale(toRef(props, "locale"), toRef(props, "translations"));
