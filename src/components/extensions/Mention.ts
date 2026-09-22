@@ -11,7 +11,7 @@ import MentionList from "@/components/ui-editor/mention/mention-list.vue";
 export interface MentionItem {
   /** Unique identifier, stored as the `data-id` attribute */
   id: string;
-  /** Display text, rendered after the trigger char (e.g. `@张三`) */
+  /** Display text, rendered after the trigger char (e.g. `@alice`) */
   label: string;
 }
 

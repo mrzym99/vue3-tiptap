@@ -70,15 +70,16 @@ export const DragHandlePlugin = ({
   let locked = false;
   let currentNode: PMNode | null = null;
   let currentNodePos = -1;
-  // 目标块 DOM 锚点:wrapper 不随内部滚动容器滚动,滚动时据此重新定位
+  // DOM anchor of the target block: the wrapper doesn't scroll with the inner
+  // scroll container, so we reposition from it on scroll
   let currentDomNode: HTMLElement | null = null;
   let rafId: number | null = null;
   let pendingMouseCoords: { x: number; y: number } | null = null;
   let activeDragRange: { anchorPos: number; nodeCount: number; depth: number } | null = null;
   let pendingRestore: { anchorPos: number; nodeCount: number; depth: number } | null = null;
-  // 定位令牌:连续移动/滚动时只采纳最后一次定位结果
+  // Position token: while moving/scrolling, only the latest positioning result wins
   let positionToken = 0;
-  // 滚动跟随合并帧:每帧最多重定位一次
+  // Scroll-follow frame coalescing: at most one reposition per frame
   let scrollRafId: number | null = null;
 
   function clearDragRangeState() {
@@ -130,7 +131,7 @@ export const DragHandlePlugin = ({
     const token = ++positionToken;
     computePosition(virtualElement, element, computePositionConfig)
       .then((val) => {
-        // 丢弃过期结果:连续移动/滚动时只采纳最新一次定位
+        // Discard stale results while moving/scrolling
         if (token !== positionToken) return;
         Object.assign(element.style, {
           position: val.strategy,
@@ -139,7 +140,7 @@ export const DragHandlePlugin = ({
         });
       })
       .catch(() => {
-        // 失败静默忽略;下一次移动/滚动会重新定位
+        // Swallow failures; the next move/scroll repositions
       });
   }
 
@@ -147,8 +148,9 @@ export const DragHandlePlugin = ({
     onNodeChange?.({ editor, node, pos });
   }
 
-  // 滚动跟随:wrapper 锚定在滚动容器之外,须按目标块当前位置重新定位;
-  // 捕获阶段监听以覆盖任意宿主滚动容器
+  // Scroll follow: the wrapper is anchored outside the scroll container, so it
+  // must reposition to the target block's current location; capture-phase
+  // listener covers any host scroll container
   function onScroll() {
     if (!currentDomNode || currentNodePos === -1) return;
     if (!element || element.style.visibility === "hidden") return;
@@ -251,7 +253,7 @@ export const DragHandlePlugin = ({
       },
       view: () => {
         element.draggable = true;
-        // 初始隐藏:否则 autofocus 时手柄图标会直接出现在首块旁
+        // Start hidden: otherwise the handle icon shows next to the first block on autofocus
         hideHandle();
         element.dataset.dragging = "false";
         editor.view.dom.parentElement?.appendChild(wrapper);
@@ -276,8 +278,8 @@ export const DragHandlePlugin = ({
             if (view.state.doc.eq(oldState.doc) || currentNodePos === -1) return;
             let domNode = view.nodeDOM(currentNodePos);
             if (nestedOptions.enabled) {
-              // 嵌套模式:目标保持为当前(可能嵌套的)节点,不提升为顶层块,
-              // 否则拖放后手柄会跳走
+              // Nested mode: keep the current (possibly nested) target; do not
+              // promote it to a top-level block or the handle jumps after a drop
               if (domNode === view.dom) return;
               if (domNode?.nodeType !== 1) return;
               currentDomNode = domNode as HTMLElement;
@@ -334,8 +336,9 @@ export const DragHandlePlugin = ({
               if (!pendingMouseCoords) return;
               const { x, y } = pendingMouseCoords;
               pendingMouseCoords = null;
-              // 手柄邻近保护:指针贴近手柄时保持目标不变,否则伸手抓手柄
-              // 的路径会横穿左缘,手柄跳到父块导致(嵌套块)抓不到
+              // Handle-proximity guard: keep the current target while the pointer
+              // is near the handle, otherwise the approach path crosses the left
+              // edge and the handle jumps to the parent (ungrabbable nested blocks)
               if (element && element.style.visibility !== "hidden") {
                 const rect = element.getBoundingClientRect();
                 if (

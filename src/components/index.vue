@@ -79,9 +79,9 @@ const userExtensions = [...new Map(props.extensions.map((e) => [e.name, e])).val
   (e) => !structuralNames.has(e.name),
 );
 const mergedExtensions = [
-  Document, // 文档根节点
-  Paragraph, // 段落
-  Text, // 文本
+  Document,
+  Paragraph,
+  Text,
   Placeholder.configure({
     placeholder: () => currentPlaceholder,
   }),

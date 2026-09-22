@@ -29,7 +29,8 @@ export const baseTheme: Theme = {
 
   "--tiptap-min-width": "220px",
 
-  // 编辑区(正文容器)留白:页面级密度,大于控件级 padding 档(最大 12px),
-  // 宿主可按嵌入场景覆盖(窄侧栏可调小,文档式布局可调大到 32px+)
+  // Writing-surface padding: page-level density, larger than the control-level
+  // padding scale (max 12px). Hosts may override per embedding (smaller in
+  // narrow sidebars, 32px+ in document layouts).
   "--tiptap-content-padding": "24px",
 };

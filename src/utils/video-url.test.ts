@@ -18,7 +18,7 @@ describe("VIDEO_URL_REGEX", () => {
       "https://www.ixigua.com/7234567890123456789",
       "https://www.mgtv.com/b/435466.html",
       "https://www.douyin.com/video/7234567890123456789",
-      "https://open.163.com/newview/movie/free?pid=M一度ID",
+      "https://open.163.com/newview/movie/free?pid=M8AUID",
     ];
     for (const url of urls) {
       expect(url.match(VIDEO_URL_REGEX), url).toBeTruthy();

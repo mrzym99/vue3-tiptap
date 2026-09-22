@@ -179,12 +179,14 @@ export function dragHandler(
     document.removeEventListener("keydown", cleanupDragPreview);
     document.removeEventListener("pointercancel", cleanupDragPreview);
   };
-  // 兜底:Escape 等极端取消路径既不发 drop 也不发 dragend,预览节点会残留
+  // Safety net: extreme cancel paths (Escape etc.) fire neither drop nor
+  // dragend, leaving the preview node behind
   document.addEventListener("keydown", cleanupDragPreview, { once: true });
   document.addEventListener("pointercancel", cleanupDragPreview, { once: true });
 
   const nodeSelection = selection instanceof NodeSelection ? selection : undefined;
-  // prosemirror-view 的类型声明未包含 `node` 字段,但运行时支持(官方源码同款)
+  // prosemirror-view's types omit the `node` field, but it works at runtime
+  // (same as the official source)
   view.dragging = { slice, move: true, node: nodeSelection } as typeof view.dragging;
   tr.setSelection(selection);
   view.dispatch(tr);

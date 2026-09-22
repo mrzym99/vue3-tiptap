@@ -52,8 +52,9 @@ const extensions = [
     mention: {
       items: mentionUsers,
     },
-    // 拖拽手柄:开启 nested(列表项/引用/表格单元格内段落等嵌套块可拖)。
-    // 整表拖动:悬停单元格左侧留白(边缘检测)即可抓取整个表格
+    // Drag handle: enable nested mode (list items, quotes, paragraphs inside
+    // table cells, etc. are draggable). Whole tables: hover the gutter to the
+    // left of a cell (edge detection) to grab the table itself.
     dragHandle: {
       nested: true,
     },

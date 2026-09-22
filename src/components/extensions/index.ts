@@ -52,12 +52,12 @@ const TextAlignExtension = TextAlign.configure({
 });
 
 const builtinExtensions: Extensions = [
-  // 编辑体验
-  UndoRedo, // undoRedo 提供历史插件,undo / redo 提供按钮
+  // Editing experience (UndoRedo provides the history plugin; undo / redo provide buttons)
+  UndoRedo,
   Undo,
   Redo,
   ClearFormatting,
-  // 文本样式
+  // Text styles
   Bold,
   Italic,
   Strike,
@@ -70,47 +70,47 @@ const builtinExtensions: Extensions = [
   HorizontalRule,
   Blockquote,
   TextAlignExtension,
-  // 列表（依赖：listItem / taskItem / listKeymap）
+  // Lists
   ListItem,
   BulletList,
   OrderedList,
   TaskItem,
   TaskList,
   ListKeymap,
-  // 链接 / 代码块 / 折叠块
+  // Link / code block / collapsible blocks
   Link,
   CodeBlock,
   DetailsSummary,
   DetailsContent,
   Details,
-  // 媒体
+  // Media
   Image,
   Video,
   Youtube,
   Audio,
   Twitch,
   FileHandler,
-  // 样式(text-style 基座)
+  // Styles (text-style base)
   TextStyle,
   Color,
   FontFamily,
   FontSize,
   Typography,
-  // 表格
+  // Tables
   Table,
   TableRow,
   TableHeader,
   TableCell,
-  // 编辑体验
+  // Editing experience
   FindAndReplace,
   InvisibleCharacters,
   UniqueId,
   NodeRange,
   DragHandle,
   HardBreak,
-  // 提及 @(输入 @ 触发,数据源由宿主通过 items 注入)
+  // Mention @ (typing @ triggers it; data source injected by the host via items)
   Mention,
-  // 行为类(无按钮)
+  // Behavior-only (no buttons)
   // Focus,
   Gapcursor,
   Dropcursor,

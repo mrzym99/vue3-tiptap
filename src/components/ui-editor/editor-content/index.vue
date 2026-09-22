@@ -19,14 +19,14 @@ const props = defineProps({
   display: flex;
   flex-direction: column;
   overflow: auto;
-  // 拖拽手柄 wrapper(absolute 定位)锚定到这个滚动容器
+  // The drag-handle wrapper (absolutely positioned) anchors to this scroll container
   position: relative;
 }
 </style>
 
 <style lang="scss">
 .tiptap-editor {
-  // 块级拖拽手柄(Notion 式 grip,由 DragHandle 扩展挂载)
+  // Block drag handle (Notion-style grip, mounted by the DragHandle extension)
   .drag-handle {
     display: flex;
     align-items: center;
@@ -55,7 +55,7 @@ const props = defineProps({
     }
   }
 
-  // 被拖拽块的高亮(块背景色,不用 ::before 覆盖层以免盖住文本)
+  // Dragged-block highlight (block background; no ::before overlay, it would cover text)
   .tiptap .ProseMirror-selectednode,
   .tiptap .ProseMirror-selectednoderange {
     background-color: var(--tiptap-accent-blue-bg);
@@ -320,7 +320,7 @@ const props = defineProps({
       padding: 0.1rem 1rem;
     }
 
-    // Mention 节点（@提及）：行内胶囊样式，随主题变量切换
+    // Mention node (@mention): inline pill style, follows theme variables
     span[data-type="mention"] {
       background-color: var(--tiptap-accent-blue-bg);
       border-radius: var(--tiptap-border-radius-sm);
