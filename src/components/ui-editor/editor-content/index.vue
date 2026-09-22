@@ -55,8 +55,7 @@ const props = defineProps({
     }
   }
 
-  // 被拖拽块的高亮(参照官方 Drag Handle 文档的 Styling 建议;
-  // 用块背景色而非 ::before 覆盖层,避免盖住文本/沉入编辑器背景之后)
+  // 被拖拽块的高亮(块背景色,不用 ::before 覆盖层以免盖住文本)
   .tiptap .ProseMirror-selectednode,
   .tiptap .ProseMirror-selectednoderange {
     background-color: var(--tiptap-accent-blue-bg);

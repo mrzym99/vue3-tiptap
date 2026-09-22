@@ -6,50 +6,30 @@ import type { LocaleName, LocaleTranslations } from "@/locales";
 export * from "./theme";
 export type { ImageUploader } from "./upload";
 
-/**
- * Props of the `TipTapEditor` component (modelValue is handled by v-model).
- */
+/** Props of the `TipTapEditor` component (modelValue is handled by v-model). */
 export interface TipTapEditorProps {
-  /**
-   * Max number of characters, 0 means unlimited. Read once at editor
-   * creation — runtime changes to this prop are not applied.
-   */
+  /** Max characters, 0 = unlimited. Read once at editor creation. */
   limit?: number;
   /** Whether editing is disabled (read-only) */
   disabled?: boolean;
   /** Theme mode */
   theme?: ThemeName;
-  /**
-   * Custom CSS variables (`--tiptap-*`) layered on top of `theme`.
-   * Keys are token names (see `Theme`), values are any valid CSS value,
-   * e.g. `{ "--tiptap-color-bg": "#FAFAFA", "--tiptap-border-radius-md": "6px" }`.
-   */
+  /** Custom CSS variables (`--tiptap-*`) layered on top of `theme` */
   themeOverrides?: Theme;
   /** Placeholder text shown when the document is empty */
   placeholder?: string;
   /** UI language ("zh" | "en", or a custom id provided via `translations`) */
   locale?: LocaleName | (string & {});
-  /**
-   * Host translations, shallow-merged over the built-in packs.
-   * Override built-in wording for "zh"/"en", or add a new locale and select
-   * it via `locale`, e.g.:
-   * `translations: { fr: { bold: "Gras" } }`, `locale: "fr"`
-   */
+  /** Host translations, shallow-merged over the built-in packs */
   translations?: LocaleTranslations;
-  /**
-   * Whether to focus the editor on mount. Pass `"start"` / `"end"` /
-   * a document position for fine-grained control (passed through to tiptap).
-   */
+  /** Focus on mount; `"start"` / `"end"` / a position pass through to tiptap */
   autofocus?: boolean | "start" | "end" | number;
   /**
-   * Toolbar button selection. Keys are extension names
-   * (e.g. "bold", "heading", "textAlign", "table", "image").
+   * Toolbar button selection. Keys are extension names.
    * - `string`: TinyMCE-style layout, e.g. "bold italic | underline strike"
-   *   (space-separated keys, `|` groups buttons with a separator)
    * - `string[]`: render only these buttons, in this order
-   * - `{ include?, exclude? }`: include filters to a subset (default: all),
-   *   exclude removes specific buttons
-   * - `undefined`: use the default toolbar layout
+   * - `{ include?, exclude? }`: filter buttons
+   * - `undefined`: default layout
    */
   toolbar?: Toolbar;
   /** Bubble-menu selection, falls back to `toolbar` when omitted */
@@ -57,32 +37,21 @@ export interface TipTapEditorProps {
   /** Floating-menu selection, falls back to `toolbar` when omitted */
   floatingMenu?: Toolbar;
   /**
-   * Extensions to load — nothing is included automatically. Easiest:
-   * `extensions: [StarterKit.configure({ twitch: false, image: { upload } })]`
-   * (`false` disables a built-in, an object configures it). Or hand-pick:
-   * `extensions: [Bold, Italic, Mention.configure({ items })]`.
-   * Later entries win on name conflicts.
+   * Extensions to load — nothing is included automatically.
+   * `extensions: [StarterKit.configure({ twitch: false })]` or hand-pick
+   * `[Bold, Italic, Mention.configure({ items })]`. Later entries win on
+   * name conflicts.
    */
   extensions?: import("@tiptap/core").Extensions;
 }
 
 /**
- * Toolbar configuration.
- *
- * - `string`: TinyMCE-style — space-separated button keys, `|` divides groups
- *   (e.g. `"bold italic | underline strike"`). Unknown keys are ignored.
- * - `string[]`: render only these buttons, in this order
- * - `{ include?, exclude? }`: include filters to a subset (default: all),
- *   exclude removes specific buttons
- * - `undefined`: use {@link defaultToolbar}
+ * Toolbar configuration: a TinyMCE-style string, an ordered key list,
+ * `{ include?, exclude? }` filters, or undefined for {@link defaultToolbar}.
  */
 export type Toolbar = string | string[] | { include?: string[]; exclude?: string[] };
 
-/**
- * Default toolbar layout, TinyMCE-style.
- * Space-separated button keys; `|` renders a group separator.
- * Keys are Tiptap extension names (e.g. "bold", "heading", "table", "image").
- */
+/** Default toolbar layout, TinyMCE-style; keys are Tiptap extension names. */
 export const defaultToolbar =
   "undo redo | clearFormatting | " +
   "bold italic strike underline | code highlight subscript superscript | " +
@@ -90,49 +59,34 @@ export const defaultToolbar =
   "link codeBlock details | image video youtube audio twitch | color fontFamily fontSize | " +
   "table | findAndReplace invisibleCharacters";
 
-/**
- * Translation function compatible with the basic vue-i18n `t` signature.
- */
+/** Translation function compatible with the basic vue-i18n `t` signature. */
 export type TranslateFn = (key: string, named?: Record<string, unknown> | number, plural?: number) => string;
 
-/**
- * Represents the general options for Tiptap extensions.
- */
+/** General options shared by every bundled extension. */
 export interface GeneralOptions {
-  /** Button view function */
+  /** Toolbar button view */
   button: ButtonView;
   /**
-   * Bubble-menu view function — a floating toolbar the extension owns while
-   * the caret is inside its content (e.g. the table toolbar). The editor
-   * component renders one toolbar per registered extension that declares this.
-   * Set to `false` to disable (e.g. `Table.configure({ bubbleMenu: false })`).
+   * Floating toolbar owned by the extension while the caret is inside its
+   * content. Set to `false` to disable.
    */
   bubbleMenu?: ButtonView | false;
 }
 
-/**
- * Represents the ButtonView function.
- */
+/** Button view function */
 export interface ButtonView {
   (options: ButtonViewParams): ButtonViewReturn;
 }
 
-/**
- * Represents the parameters for the ButtonView function.
- */
+/** Parameters for {@link ButtonView} */
 export interface ButtonViewParams {
-  /** Editor object */
   editor: Editor;
-  /** Translation function */
   t: TranslateFn;
 }
 
-/**
- * Represents the return value for the ButtonView component.
- */
+/** Return value for {@link ButtonView} */
 export interface ButtonViewReturn {
-  /** Component */
   component: Component;
-  /** Component props (forwarded to the button component) */
+  /** Props forwarded to the component */
   componentProps?: Record<string, unknown>;
 }

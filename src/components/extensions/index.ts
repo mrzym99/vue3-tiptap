@@ -52,12 +52,12 @@ const TextAlignExtension = TextAlign.configure({
 });
 
 const builtinExtensions: Extensions = [
-  // 编辑体验：撤销 / 重做 / 清除格式（undoRedo 提供历史插件，undo-redo 提供按钮）
-  UndoRedo,
+  // 编辑体验
+  UndoRedo, // undoRedo 提供历史插件,undo / redo 提供按钮
   Undo,
   Redo,
   ClearFormatting,
-  // 基础文本样式
+  // 文本样式
   Bold,
   Italic,
   Strike,
@@ -90,7 +90,7 @@ const builtinExtensions: Extensions = [
   Audio,
   Twitch,
   FileHandler,
-  // 样式（text-style 基座 + color / font-family / typography）
+  // 样式(text-style 基座)
   TextStyle,
   Color,
   FontFamily,
@@ -108,9 +108,9 @@ const builtinExtensions: Extensions = [
   NodeRange,
   DragHandle,
   HardBreak,
-  // 提及 @（无按钮，输入 @ 触发建议弹层；数据源由宿主通过 items 注入）
+  // 提及 @(输入 @ 触发,数据源由宿主通过 items 注入)
   Mention,
-  // 行为类（无按钮）：聚焦高亮、块间空隙 / 拖拽落点 / 末尾段落
+  // 行为类(无按钮)
   // Focus,
   Gapcursor,
   Dropcursor,
@@ -126,23 +126,9 @@ export type StarterKitOptions = Record<string, StarterKitOption | undefined>;
 
 /**
  * Tiptap-style bundle of all built-in extensions (Document / Paragraph / Text /
- * Placeholder are excluded — the editor component always provides them).
- *
- * The component does NOT include built-ins automatically: pass the kit via the
- * `extensions` prop, or hand-pick individual extensions instead.
- *
- *   StarterKit.configure({ twitch: false, image: { upload: myUpload } })
- *   // or
- *   [Bold, Italic, Mention.configure({ items })]
- *
- * `addExtensions()` lets the kit expand into the configured child extensions
- * while staying a single `AnyExtension` (same trick as tiptap's StarterKit).
- *
- * Bundle note: this kit eagerly imports ALL built-in extensions (including the
- * media ones — image / video / youtube / audio / twitch — plus table, mention,
- * etc.), and the custom wrapper/UI code is emitted as a single chunk by the lib
- * build. If you need a smaller bundle, hand-pick individual extensions via the
- * named exports (e.g. `[Bold, Italic, Image]`) instead of the all-in-one kit.
+ * Placeholder are excluded — the editor component always provides them). Pass
+ * it via the `extensions` prop, or hand-pick individual named exports for a
+ * smaller bundle. `false` disables an entry, an object configures it.
  */
 export const StarterKit = Extension.create<StarterKitOptions>({
   name: "starterKit",

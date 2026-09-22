@@ -33,8 +33,7 @@
         :action="() => editor.chain().focus().deleteColumn().run()"
       />
       <span class="table-bubble-sep" />
-      <!-- merge vs split are mutually exclusive: merge needs a multi-cell
-           selection, split needs an already-merged (colspan/rowspan > 1) cell -->
+      <!-- merge needs a multi-cell selection, split needs an already-merged cell -->
       <ActionButton
         :icon="MergeCellsIcon"
         :tooltip="t('mergeCells')"
@@ -73,8 +72,6 @@ import type { EditorView } from "@tiptap/pm/view";
 import { CellSelection } from "@tiptap/pm/tables";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import { useTiptapLocale } from "@/locales";
-// Table actions use tabler icons; merge/split cells have no tabler
-// equivalent, so they fall back to lucide (same as the table menu button).
 import RowInsertBottomIcon from "~icons/tabler/row-insert-bottom";
 import ColumnInsertRightIcon from "~icons/tabler/column-insert-right";
 import RowRemoveIcon from "~icons/tabler/row-remove";
@@ -88,20 +85,15 @@ const props = defineProps<{ editor: Editor }>();
 
 const { t } = useTiptapLocale();
 
-// Anchor below the table itself (not the caret): flip to the top edge when
-// there is no room below, shift keeps the bar within the viewport.
+// Anchor below the table (flip to top when there's no room below)
 const bubbleOptions = {
   placement: "bottom" as const,
   offset: 8,
   shift: { padding: 8 },
 };
 
-/**
- * The `<table>` DOM node containing the selection — anchoring to the table
- * (instead of the default selection rect) keeps the toolbar attached to the
- * table bottom instead of floating above the caret / over the main toolbar.
- * Returns `null` to fall back to tiptap's selection-based positioning.
- */
+// Anchor to the `<table>` node so the bar stays at the table bottom instead
+// of floating above the caret; `null` falls back to selection-based positioning.
 function getReferencedVirtualElement(): HTMLElement | null {
   const { view, state } = props.editor;
   const { $from } = state.selection;
@@ -114,14 +106,9 @@ function getReferencedVirtualElement(): HTMLElement | null {
   return null;
 }
 
-/**
- * Show when the caret sits inside a table cell (a plain cell click) or cells
- * are drag-selected (CellSelection). A non-collapsed text selection inside a
- * cell is left to the regular text-formatting bubble; the link/media bubbles
- * take over when their node is active.
- * (`editor` is typed loosely: tiptap's shouldShow passes its own Editor
- *  subclass, which differs from the @tiptap/vue-3 Editor type.)
- */
+// Show for a caret inside a cell or a CellSelection (drag-selected cells);
+// non-collapsed text selections go to the regular formatting bubble.
+// (`editor` is typed loosely: tiptap's shouldShow passes its own Editor subclass.)
 function shouldShow({
   editor: e,
   state,

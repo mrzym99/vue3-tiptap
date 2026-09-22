@@ -70,16 +70,15 @@ export const DragHandlePlugin = ({
   let locked = false;
   let currentNode: PMNode | null = null;
   let currentNodePos = -1;
-  // 当前目标块的 DOM 锚点:滚动时据此重新定位手柄(手柄 wrapper 锚定在
-  // view.dom 的父级上,不随内部滚动容器的 scrollTop 移动)
+  // 目标块 DOM 锚点:wrapper 不随内部滚动容器滚动,滚动时据此重新定位
   let currentDomNode: HTMLElement | null = null;
   let rafId: number | null = null;
   let pendingMouseCoords: { x: number; y: number } | null = null;
   let activeDragRange: { anchorPos: number; nodeCount: number; depth: number } | null = null;
   let pendingRestore: { anchorPos: number; nodeCount: number; depth: number } | null = null;
-  // 定位结果令牌:递增序号,只采纳最后一次 positional 调用的结果(丢弃过期结果)
+  // 定位令牌:连续移动/滚动时只采纳最后一次定位结果
   let positionToken = 0;
-  // 滚动跟随合并帧:快速滚动时每帧最多重定位一次
+  // 滚动跟随合并帧:每帧最多重定位一次
   let scrollRafId: number | null = null;
 
   function clearDragRangeState() {
@@ -140,7 +139,7 @@ export const DragHandlePlugin = ({
         });
       })
       .catch(() => {
-        // computePosition 失败时静默忽略;下一次移动/滚动会重新定位
+        // 失败静默忽略;下一次移动/滚动会重新定位
       });
   }
 
@@ -148,11 +147,8 @@ export const DragHandlePlugin = ({
     onNodeChange?.({ editor, node, pos });
   }
 
-  /**
-   * 滚动跟随:内容在滚动容器内移动时,手柄 wrapper 不随之滚动(它锚定在
-   * 滚动容器之外),必须在 scroll 事件里按目标块当前位置重新定位。
-   * 捕获阶段监听以覆盖任意宿主滚动容器;目标不可见时跳过。
-   */
+  // 滚动跟随:wrapper 锚定在滚动容器之外,须按目标块当前位置重新定位;
+  // 捕获阶段监听以覆盖任意宿主滚动容器
   function onScroll() {
     if (!currentDomNode || currentNodePos === -1) return;
     if (!element || element.style.visibility === "hidden") return;
@@ -255,8 +251,7 @@ export const DragHandlePlugin = ({
       },
       view: () => {
         element.draggable = true;
-        // 初始隐藏:只有鼠标进入编辑器触发 mousemove 后才显示。
-        // 否则 auto focus 聚焦编辑器时手柄图标会直接出现在首块旁
+        // 初始隐藏:否则 autofocus 时手柄图标会直接出现在首块旁
         hideHandle();
         element.dataset.dragging = "false";
         editor.view.dom.parentElement?.appendChild(wrapper);
@@ -281,8 +276,8 @@ export const DragHandlePlugin = ({
             if (view.state.doc.eq(oldState.doc) || currentNodePos === -1) return;
             let domNode = view.nodeDOM(currentNodePos);
             if (nestedOptions.enabled) {
-              // 嵌套模式:目标保持为当前(可能嵌套的)节点,文档变化后仅
-              // 重新定位;不得提升为顶层块,否则拖放后手柄会跳到文档外层
+              // 嵌套模式:目标保持为当前(可能嵌套的)节点,不提升为顶层块,
+              // 否则拖放后手柄会跳走
               if (domNode === view.dom) return;
               if (domNode?.nodeType !== 1) return;
               currentDomNode = domNode as HTMLElement;
@@ -339,9 +334,8 @@ export const DragHandlePlugin = ({
               if (!pendingMouseCoords) return;
               const { x, y } = pendingMouseCoords;
               pendingMouseCoords = null;
-              // 手柄邻近保护:指针贴近手柄时保持当前目标不变。伸手抓手柄的
-              // 路径会横穿目标块左缘,若此时重新判定目标,手柄会跳到父块,
-              // 导致(嵌套块的)手柄永远抓不到
+              // 手柄邻近保护:指针贴近手柄时保持目标不变,否则伸手抓手柄
+              // 的路径会横穿左缘,手柄跳到父块导致(嵌套块)抓不到
               if (element && element.style.visibility !== "hidden") {
                 const rect = element.getBoundingClientRect();
                 if (

@@ -20,8 +20,7 @@
           />
         </template>
       </FormItem>
-      <!-- Label is only needed when inserting a fresh link; editing an
-           existing one keeps the current text untouched. -->
+      <!-- Label only for fresh inserts; editing keeps the existing text -->
       <FormItem v-if="!editModeAtOpen" name="label">
         <TiptapInput
           :model-value="label"
@@ -50,11 +49,7 @@ import TiptapButton from "@/components/ui-common/button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 import type { FormRule } from "@/components/ui-common/form/types";
 
-/**
- * Link insert/edit button rendered as a centered modal dialog:
- * URL field (+ label field when inserting at the caret), 取消 / 移除链接 /
- * 应用 actions. Required-URL validation mirrors the media dialog buttons.
- */
+/** Link insert/edit button rendered as a centered modal dialog. */
 const props = defineProps<EXTActionButtonProps>();
 const t = props.t;
 
@@ -64,12 +59,8 @@ const formEl = useTemplateRef<InstanceType<typeof Form>>("form");
 const href = ref("");
 const label = ref("");
 
-/**
- * Snapshot of whether the dialog opened in "edit" mode — a text range was
- * selected (apply the mark to it) or the caret sits inside a link (update
- * it). The dialog's content depends on this and it must NOT react to later
- * selection changes (e.g. clicking the apply button).
- */
+// Whether the dialog opened in "edit" mode (selected range or caret inside a
+// link); must not react to later selection changes.
 const editModeAtOpen = ref(false);
 
 const isLinkActive = computed(() => props.editor.isActive("link"));
@@ -90,9 +81,7 @@ const rules: FormRule[] = [
 /** Submit on Enter inside any field — the form validates first. */
 const submit = () => formEl.value?.formEl?.requestSubmit();
 
-// Snapshot the selection/link state + prefill when the dialog opens. The
-// form fields remount on every open (the Dialog body is v-if'd), so this is
-// the single place the dialog derives its initial state from the editor.
+// Snapshot selection/link state + prefill at open (fields remount per open)
 function onOpened() {
   const { from, to } = props.editor.state.selection;
   editModeAtOpen.value = from !== to || isLinkActive.value;
@@ -104,10 +93,9 @@ function applyLink(values: Record<string, unknown>) {
   const value = String(values.href ?? "").trim();
 
   if (editModeAtOpen.value) {
-    // Selected text (or an active link): update the link mark on that range.
     props.editor.chain().focus().extendMarkRange("link").setLink({ href: value }).run();
   } else {
-    // Collapsed selection on plain text: insert a link with a label at the caret.
+    // Collapsed caret on plain text: insert a link with a label
     const text = String(values.label ?? "").trim() || value;
     props.editor
       .chain()

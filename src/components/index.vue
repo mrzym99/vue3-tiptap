@@ -19,7 +19,6 @@ import BubbleMenuBar from "@/components/ui-editor/bubble-menu/index.vue";
 import ExtensionBubbleMenus from "@/components/ui-editor/bubble-menu/extension-bubble-menus/index.vue";
 import FloatingMenuBar from "@/components/ui-editor/bubble-menu/floating-menu/index.vue";
 import CharacterLimit from "@/components/ui-editor/character-limit/index.vue";
-// https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
 import { toRef } from "vue";
 import { useEditor } from "@tiptap/vue-3";
 import type { Editor } from "@tiptap/core";
@@ -47,7 +46,7 @@ const props = withDefaults(defineProps<TipTapEditorProps>(), {
   extensions: () => [],
 });
 
-// Self-contained locale context (no vue-i18n / global instance needed)
+// Self-contained locale context (no vue-i18n needed)
 useEditorLocale(toRef(props, "locale"), toRef(props, "translations"));
 
 const emit = defineEmits<{
@@ -63,24 +62,17 @@ const emit = defineEmits<{
 
 const modelValue = defineModel<string>({ required: true });
 
-// Placeholder stays reactive: `extension.options` is a getter that re-runs
-// `addOptions()` on every access, so mutating options at runtime is useless.
-// The option also accepts a function, which the plugin re-evaluates whenever
-// it rebuilds decorations — close over a mutable variable for live updates.
+// Placeholder stays reactive: `extension.options` re-runs `addOptions()` on
+// every access, so runtime mutation is useless — close over a mutable variable
+// instead (the option accepts a function, re-evaluated per decoration rebuild).
 let currentPlaceholder = props.placeholder ?? "";
-// The editor ships no built-ins automatically: hosts opt in via the
-// `extensions` prop (e.g. `StarterKit.configure(...)`) or hand-pick
-// individual extensions. Later entries win on name conflicts; the structural
-// core (document / paragraph / text / placeholder) is always the component's.
+// Hosts opt in via the `extensions` prop; later entries win on name conflicts.
 const STRUCTURAL_NAMES = new Set(["doc", "paragraph", "text", "placeholder"]);
 
-// When `limit` is set, add the official `CharacterCount` limit ourselves so
-// the prop works without the host importing the extension: typing/formatting
-// past the limit is REJECTED at the ProseMirror level (`autoTrim: false` keeps
-// the plugin from lazily trimming during edits; create-time over-limit trimming
-// is owned by `useEditorModel.handleCreate`, which also emits `truncated`).
-// Note: `limit` is fixed at editor-creation — live `limit` changes won't
-// re-take effect (the plugin reads its options when constructed).
+// `limit` works without the host importing CharacterCount: typing past the
+// limit is rejected at the ProseMirror level (`autoTrim: false`); create-time
+// over-limit trimming is owned by useEditorModel.handleCreate (emits `truncated`).
+// `limit` is read once at editor creation — live changes don't take effect.
 const needsLimit = props.limit > 0;
 const structuralNames = needsLimit ? new Set([...STRUCTURAL_NAMES, "characterCount"]) : STRUCTURAL_NAMES;
 const userExtensions = [...new Map(props.extensions.map((e) => [e.name, e])).values()].filter(
@@ -103,23 +95,18 @@ const editor = useEditor({
   editable: !props.disabled,
   autofocus: props.autofocus,
   onCreate: ({ editor: created }) => {
-    // Apply a value that changed before the editor was created + initial
-    // limit truncation (lives in the model composable)
     model.handleCreate(created);
     emit("ready", created);
   },
   onUpdate: ({ editor: created, transaction }) => {
-    // limit truncation + `update` emit + debounced write-back
     model.handleUpdate(created, transaction);
   },
   onFocus: (props) => emit("focus", props),
   onBlur: (props) => emit("blur", props),
 });
 
-// v-model two-way binding + limit truncation (debounced HTML write-back
-// and external-value sync). Defined after `editor` so the composable can read
-// the editor ref; the callbacks above run post-mount, so referencing `model`
-// here is safe.
+// v-model binding + limit truncation; defined after `editor` — the callbacks
+// above run post-mount, so referencing `model` inside them is safe.
 const model = useEditorModel({
   editor,
   modelValue,
@@ -137,9 +124,8 @@ watch(
   },
 );
 
-// Sync runtime `placeholder` prop changes into the extension (see
-// `currentPlaceholder` above) and force a decoration rebuild — the plugin
-// skips transactions without a doc change or selection change.
+// Sync runtime `placeholder` changes and force a decoration rebuild (the
+// plugin skips transactions without a doc or selection change).
 watch(
   () => props.placeholder,
   (next) => {

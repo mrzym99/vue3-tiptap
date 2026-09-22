@@ -22,15 +22,9 @@ import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { ActionButtonProps } from "@/components/ui-common/action-button/props";
 
 /**
- * Action button that opens a centered modal dialog.
- *
- * Mirrors the (popover-based) ActionPopoverButton API: trigger is an
- * {@link ActionButton}, the body is customised via the default slot which
- * receives `{ close }`, and `close`/`show` are exposed for parent refs.
- * The extra `title` prop names the dialog; `opened` fires after the dialog
- * opens (so callers can snapshot editor state / prefill fields) and `closed`
- * after any close (submit, cancel, Esc, mask click) so callers can restore
- * editor focus.
+ * Action button that opens a centered modal dialog. The default slot receives
+ * `{ close }`; `opened` fires after open (for prefilling) and `closed` after
+ * any close (submit / cancel / Esc / mask click).
  */
 defineProps<{
   icon: Component;

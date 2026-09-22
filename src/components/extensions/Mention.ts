@@ -46,11 +46,9 @@ function resolveItems(items: MentionItems | undefined, query: string, editor: Ed
 }
 
 /**
- * Render the suggestion popup with a Vue component.
- * Positioning is delegated to the suggestion plugin's managed mount
- * (`floating-ui` autoUpdate); the popup uses `position: fixed` + viewport
- * coords (see `floatingUi.strategy` below), so re-parenting it into the
- * theme root keeps it aligned while letting `--tiptap-*` vars apply.
+ * Render the suggestion popup with a Vue component, re-parented into the
+ * theme root so `--tiptap-*` vars apply (viewport coords stay valid via
+ * `floatingUi.strategy: "fixed"`).
  */
 function renderSuggestion() {
   let component: VueRenderer | null = null;
@@ -67,8 +65,7 @@ function renderSuggestion() {
       });
       if (!component.element) return;
       unmount = props.mount(component.element as HTMLElement);
-      // Body-mounted popups can't see the scoped `--tiptap-*` theme vars —
-      // move the popup into the theme root it belongs to.
+      // Body-mounted popups can't see the scoped `--tiptap-*` theme vars
       const container = props.editor.view.dom.closest<HTMLElement>(".tiptap-theme-root");
       if (container) container.appendChild(component.element);
     },
@@ -97,15 +94,13 @@ export const Mention = /* @__PURE__ */ TiptapMention.extend<MentionOptions>({
       suggestions: [
         {
           char: "@",
-          // Read the host data source lazily so `Mention.configure({ items })`
-          // (applied after `addOptions` runs) is always respected.
+          // Read the host data source lazily so `configure({ items })` is respected
           items: ({ query, editor }) => {
             const extension = editor.extensionManager.extensions.find((e) => e.name === "mention");
             return resolveItems((extension?.options as MentionOptions | undefined)?.items, query, editor);
           },
           render: renderSuggestion,
-          // `position: fixed` keeps viewport coords valid after the popup is
-          // re-parented into the theme root (see `renderSuggestion`).
+          // Viewport coords stay valid after re-parenting (see renderSuggestion)
           floatingUi: { strategy: "fixed" },
         },
       ],

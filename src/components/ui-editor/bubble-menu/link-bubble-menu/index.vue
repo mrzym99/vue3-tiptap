@@ -50,20 +50,15 @@ const { t } = useTiptapLocale();
 const editing = ref(false);
 const href = ref("");
 
-// Anchor below the `<a>` element itself (not the caret): like the table
-// toolbar, the menu stays glued to the link while the caret moves inside it.
-// flip/shift (tiptap defaults) handle room and viewport constraints.
+// Anchor below the `<a>` element itself (not the caret)
 const bubbleOptions = {
   placement: "bottom" as const,
   offset: 8,
   shift: { padding: 8 },
 };
 
-/**
- * The `<a>` DOM element containing the selection — anchoring to the link
- * (instead of the default selection rect) keeps the toolbar attached to the
- * link. Returns `null` to fall back to tiptap's selection-based positioning.
- */
+// Anchoring to the link keeps the toolbar glued to it instead of floating
+// above the caret; `null` falls back to selection-based positioning.
 function getReferencedVirtualElement(): HTMLElement | null {
   const { view, state } = props.editor;
   const resolved = view.domAtPos(state.selection.from);

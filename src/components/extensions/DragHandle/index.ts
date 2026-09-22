@@ -44,8 +44,7 @@ export interface DragHandleOptions {
   ariaLabel?: string;
 }
 
-// Six-dot grip icon, inlined as SVG: the handle element is plain DOM
-// (created before any Vue context), so `~icons/` imports are not available.
+// Grip icon inlined as SVG: the handle is plain DOM, `~icons/` imports unavailable
 const GRIP_SVG =
   '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="9" cy="6" r="0.5" fill="currentColor"/><circle cx="15" cy="6" r="0.5" fill="currentColor"/><circle cx="9" cy="12" r="0.5" fill="currentColor"/><circle cx="15" cy="12" r="0.5" fill="currentColor"/><circle cx="9" cy="18" r="0.5" fill="currentColor"/><circle cx="15" cy="18" r="0.5" fill="currentColor"/></svg>';
 

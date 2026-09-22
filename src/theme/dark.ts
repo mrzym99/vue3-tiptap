@@ -1,18 +1,8 @@
 import type { Theme } from "@/types";
 
 /**
- * Dark theme — mirrors the Notion light token structure.
- * Kept minimal: the color family follows the light theme's semantic roles,
- * with dark-suited values. Only the tooltip is fixed (black bg, white text) in base.ts.
- *
- * Dark Notion palette (adapted):
- *   bg canvas:  #191919
- *   bg:         #1f1f1f
- *   hover:      #262626  (block highlighting)
- *   active:     #2f2f2f  (micro-click)
- *   text:       #e6e6e6
- *   border:     #3a3a3a  (neutral gray-800 family)
- *   focus ring: #2eaadc  at 30%
+ * Dark theme — dark Notion palette (#191919 canvas, #E6E6E6 text), mirroring
+ * the light theme's token structure.
  */
 export const darkTheme: Theme = {
   // --- surfaces ---

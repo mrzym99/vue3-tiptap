@@ -10,38 +10,24 @@ export type LocaleT = (key: string) => string;
 /** Flat key→text table for one locale */
 export type LocaleMessages = Record<string, string>;
 
-/**
- * Host-provided translations, keyed by locale id. Built-in locales ("zh"/"en")
- * are overridden key-by-key; any other id adds a new locale selectable via the
- * `locale` prop. Shallow-merged over the built-in packs.
- */
+/** Host translations keyed by locale id; "zh"/"en" are overridden key-by-key, other ids add locales. */
 export type LocaleTranslations = Record<string, LocaleMessages | undefined>;
 
 export interface LocaleContext {
-  /** Current locale (reactive) */
   locale: Ref<LocaleName | (string & {})>;
-  /** Translate a key using the current locale */
   t: LocaleT;
-  /** Switch locale */
   setLocale: (locale: LocaleName | (string & {})) => void;
-  /** Replace host translations (shallow-merged over the built-in packs) */
   setTranslations: (translations?: LocaleTranslations) => void;
 }
 
 const builtinMessages: Record<string, Record<string, string>> = { zh, en };
 
-/**
- * Missing translation keys fall back to the raw key (so the UI never shows a
- * blank), but an untranslated word surfacing as a bare key is hard to spot.
- * Warn once per key in dev so a missed entry in a pack is noticeable without
- * spamming on every render (the set is module-scoped, shared across instances).
- */
+// Warn once per missing key in dev — a bare key in the UI is easy to miss.
 const warnedMissingKeys = new Set<string>();
 
 /** Injection key — components read the context provided by TipTapEditor */
 export const LocaleContextKey: InjectionKey<LocaleContext> = Symbol("tiptap-locale");
 
-/** Shallow-merge host translations over the built-in packs. */
 function mergeMessages(translations?: LocaleTranslations): Record<string, Record<string, string>> {
   const merged: Record<string, Record<string, string>> = { ...builtinMessages };
   for (const [locale, msgs] of Object.entries(translations ?? {})) {
@@ -51,12 +37,7 @@ function mergeMessages(translations?: LocaleTranslations): Record<string, Record
   return merged;
 }
 
-/**
- * Create a self-contained locale context (no vue-i18n / global instance needed).
- *
- * `translations` lets the host override built-in wording or add new locales
- * (e.g. `translations: { fr: { bold: "Gras", ... } }` then `locale: "fr"`).
- */
+/** Create a self-contained locale context (no vue-i18n needed). */
 export function createLocaleContext(
   initial: LocaleName | (string & {}),
   translations?: LocaleTranslations,
@@ -84,13 +65,7 @@ export function createLocaleContext(
   return { locale, t, setLocale, setTranslations };
 }
 
-/**
- * Best-effort locale detection from the browser (defaults to "en").
- *
- * Note the fallback is "en", not "zh": the `en` branch below returns "zh"
- * for Chinese browsers, while everything else (including unknown languages)
- * should get the English UI rather than being silently forced to Chinese.
- */
+/** Best-effort locale detection from the browser; unknown languages get "en". */
 export function detectLocale(): LocaleName {
   if (typeof navigator !== "undefined" && navigator.language?.toLowerCase().includes("zh")) {
     return "zh";
@@ -98,10 +73,7 @@ export function detectLocale(): LocaleName {
   return "en";
 }
 
-/**
- * Consume the locale context provided by TipTapEditor.
- * Falls back to a default context when used outside the editor.
- */
+/** Consume the locale context; falls back to a default context outside the editor. */
 export function useTiptapLocale(): LocaleContext {
   const ctx = inject(LocaleContextKey, null);
   return ctx ?? createLocaleContext(detectLocale());

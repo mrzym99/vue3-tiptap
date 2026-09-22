@@ -1,16 +1,9 @@
 import { defaultToolbar, type Toolbar } from "@/types";
 
 /**
- * Resolve a Toolbar config against the full button-key list.
- *
- * Supported inputs (see {@link Toolbar}):
- * - `string` (TinyMCE-style): space-separated keys, `|` for group separators.
- *   Returns `ToolbarLayout` — an ordered list of button keys plus the position
- *   of group separators.
- * - `string[]`: ordered button keys, no separators.
- * - `{ include?, exclude? }`: filtered subset (include order preserved).
- * - `undefined`: uses {@link defaultToolbar}.
- *
+ * Resolve a Toolbar config against the full button-key list. Supports a
+ * TinyMCE-style string (space-separated keys, `|` separators), a plain key
+ * array, `{ include?, exclude? }`, or `undefined` (= {@link defaultToolbar}).
  * Unknown keys are ignored.
  */
 export type ToolbarLayout = {
@@ -27,12 +20,8 @@ export function resolveToolbar(
   const source = toolbar ?? defaultToolbar;
   const known = (key: string) => allKeys.includes(key);
 
-  // The defaultToolbar string is the coupling point between the layout and the
-  // extension `name`s. A key here that matches no loaded extension silently
-  // drops its toolbar button — surfacing that as a dev warning makes the
-  // otherwise-invisible drift debuggable (e.g. after a rename or a reorder).
-  // Only warn for the default layout: user-supplied toolbars deliberately
-  // reference a subset and may target extensions they chose not to load.
+  // Warn only for the default layout: a defaultToolbar key with no loaded
+  // extension silently drops its button; user toolbars reference a subset.
   if (toolbar === undefined) {
     const dropped = defaultToolbar
       .split(/\s+/)

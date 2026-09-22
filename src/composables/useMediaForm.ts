@@ -4,10 +4,7 @@ import Form from "@/components/ui-common/form/index.vue";
 import type { FormRule } from "@/components/ui-common/form/types";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
-/**
- * True when the value is a parseable `http:`/`https:` URL.
- * Used as the default URL validator (empty values are handled upstream).
- */
+/** True when the value is a parseable `http:`/`https:` URL. */
 export function isHttpUrl(value: unknown): boolean {
   const s = String(value ?? "").trim();
   if (!s) return false;
@@ -19,9 +16,7 @@ export function isHttpUrl(value: unknown): boolean {
   }
 }
 
-/**
- * Payload passed to a media-insert command: source URL + optional dimensions.
- */
+/** Payload passed to a media-insert command: source URL + optional dimensions. */
 export interface MediaPayload {
   src: string;
   width?: number;
@@ -29,32 +24,11 @@ export interface MediaPayload {
 }
 
 /**
- * Shared state + plumbing for media-insert dialog buttons.
+ * Shared state + plumbing for media-insert dialog buttons: form model
+ * (src/width/height), required-URL rule, and the submit→insert→close flow.
  *
- * Owns the form model (src/width/height), the required-URL rule, the payload
- * builder, and the submit/close/reset flow that every media button previously
- * got from the CommonPopoverButton base. Concrete media buttons wire the
- * returned refs into an `ActionDialogButton` + `Form` directly:
- *
- * ```vue
- * <ActionDialogButton ref="dialog" :icon="icon" :tooltip="t('video')" :title="t('video')">
- *   <Form ref="form" :model="model" @submit="onSubmit">
- *     <template #actions>
- *       <TiptapButton variant="primary" type="submit">{{ t('insert') }}</TiptapButton>
- *     </template>
- *   </Form>
- * </ActionDialogButton>
- * ```
- *
- * The two `useTemplateRef` instances are passed in so the composable can drive
- * the popover (close) and the form (Enter-to-submit) without the button having
- * to wire `.value` juggling itself.
- *
- * Pass `validateUrl` to additionally require a well-formed source URL (beyond
- * just "not empty"). Omit it (or pass nothing) to validate only non-emptiness —
- * e.g. platform buttons like YouTube/Twitch where any non-empty input is taken
- * as-is. Empty values always fall through to the required rule so a blank field
- * shows "enter a URL" rather than "invalid URL".
+ * Pass `validateUrl` to additionally require a well-formed URL; empty values
+ * always fall through to the required rule.
  */
 export function useMediaForm(
   props: EXTActionButtonProps,
@@ -80,8 +54,6 @@ export function useMediaForm(
     },
   ];
 
-  // URL well-formedness check — opt-in per media. Empty always passes through
-  // to the required rule above.
   if (validateUrl) {
     rules.push({
       validator: (value) => {
@@ -101,7 +73,6 @@ export function useMediaForm(
   /** Submit on Enter inside any field — the form validates first. */
   const submit = () => formEl.value?.formEl?.requestSubmit();
 
-  /** Form-submit handler: build the payload, insert, then close cleanly. */
   const onSubmit = (values: Record<string, unknown>) => {
     command({
       src: String(values.src ?? "").trim(),

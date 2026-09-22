@@ -15,12 +15,9 @@ import { withButton } from "@/utils/button";
 export interface TableOptions extends TiptapTableOptions, GeneralOptions {}
 
 /**
- * Table grid. Composed explicitly (not via `TableKit`) rather than the
- * kitchen-sink aggregator: `TableKit` wraps its own inner `Table` node that is
- * *also* named `table`, so wrapping it and naming the wrapper `table` produces
- * "Duplicate extension names found: ['table']". Registering the four pieces
- * individually keeps a single `table` extension (the one carrying the toolbar
- * button) while giving the editor the row/header/cell structure it needs.
+ * Table grid, composed from the four pieces explicitly (not via `TableKit`,
+ * whose inner `Table` causes a duplicate-name conflict) so a single `table`
+ * extension carries the toolbar button + bubble menu.
  */
 export const Table = TiptapTable.extend<TableOptions>({
   addOptions() {
@@ -28,9 +25,8 @@ export const Table = TiptapTable.extend<TableOptions>({
       ...(this.parent?.() as TiptapTableOptions),
       resizable: true,
       button: withButton(TableMenuButton),
-      // Floating toolbar shown while the caret is inside a table; rendered by
-      // the editor component via the extension's `bubbleMenu` option. Disable
-      // with `Table.configure({ bubbleMenu: false })`.
+      // Floating toolbar while the caret is inside a table; disable with
+      // `Table.configure({ bubbleMenu: false })`
       bubbleMenu: withButton(TableBubbleMenu),
     };
   },

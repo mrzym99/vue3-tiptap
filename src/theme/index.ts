@@ -8,14 +8,10 @@ function getTheme(name: ThemeName): Theme {
 }
 
 /**
- * Apply theme CSS variables to a target element (defaults to the document root).
- *
- * - base tokens (sizes / radius / spacing) are always applied
- * - color tokens come from the selected built-in theme (`light` | `dark`)
- * - `overrides` are merged last, so custom variables win over built-ins
- *
- * Scoping to an element (e.g. the component root) makes multiple editor
- * instances with different themes independent of each other.
+ * Apply theme CSS variables to a target element (defaults to the document
+ * root): base tokens + the selected color theme (`light` | `dark`) +
+ * `overrides` merged last. Scoping to an element keeps multiple editor
+ * instances' themes independent.
  */
 export function applyTheme(
   name: ThemeName,

@@ -1,42 +1,20 @@
-// Adapted from @tiptap/extension-drag-handle v3.31.3 (MIT)
-// Copyright (c) Tiptap GmbH — collaboration (Yjs) support removed.
-//
-// Deliberate deviations from the official source (do not "re-sync" these):
-// - Edge detection defaults to ["left"] only, and left/right trigger in the
-//   gutter OUTSIDE the block instead of a 12px strip INSIDE it — the official
-//   zone overlaps the handle's own hotspot, so reaching for the handle let the
-//   parent container steal the target (handle became ungrabbable in
-//   nested blocks). Parent grabbing still works via the gutter.
+// Adapted from @tiptap/extension-drag-handle v3.31.3 (MIT), Copyright (c) Tiptap GmbH.
+// Deliberate deviation (do not "re-sync"): edge detection defaults to ["left"] and
+// left/right trigger in the gutter OUTSIDE the block, not in a 12px strip INSIDE it —
+// the official zone overlaps the handle's own hotspot, so the handle became
+// ungrabbable in nested blocks (the parent stole the target).
 import type { Node as PMNode, ResolvedPos } from "@tiptap/pm/model";
 import type { EditorView } from "@tiptap/pm/view";
 
 import type { EdgeDetectionConfig, EdgeDetectionPreset, RuleContext } from "./types";
 
-/**
- * Context provided to each rule evaluation function.
- *
- * Contains information about the node being evaluated and its position in the
- * ProseMirror document tree. This is the full context available for making
- * scoring decisions in custom `DragHandleRule` implementations.
- */
+/** Custom rule: returns a score deduction (0 keeps the node eligible, >= 1000 excludes it). */
 export interface DragHandleRule {
-  /** Unique identifier for debugging and rule management. */
   id: string;
-  /**
-   * Evaluate the node and return a score deduction.
-   *
-   * The return value is subtracted from the node's base score (1000).
-   * `0` keeps the node fully eligible, `>= 1000` excludes it.
-   */
   evaluate: (context: RuleContext) => number;
 }
 
-/**
- * Edge detection helps grab parent containers (lists, blockquotes, etc.) by
- * moving the cursor near the edge of a nested element: the scoring system
- * deducts `strength * depth` from deeper nodes near a configured edge, making
- * the outer container the easier target.
- */
+/** Options for dragging nested blocks; near a configured edge, deeper nodes lose `strength * depth` points so parents win. */
 export type NestedDragHandleOptions = {
   /** Custom rules evaluated after the default rules. */
   rules?: DragHandleRule[];
@@ -57,9 +35,6 @@ export interface NormalizedNestedDragHandleOptions {
   edgeDetection: EdgeDetectionConfig;
 }
 
-/**
- * All default rules. Users can extend these or replace them entirely.
- */
 export const defaultRules: DragHandleRule[] = [
   {
     id: "listItemFirstChild",
@@ -96,9 +71,8 @@ export const defaultRules: DragHandleRule[] = [
 ];
 
 const DEFAULT_EDGE_CONFIG: EdgeDetectionConfig = {
-  // 默认只保留 left(配合上方的"槽位"语义,悬停块左侧留白即可抓取父块)。
-  // top 不再进默认:手柄为 left-start 对齐,其热区本身就在块顶 12px 内,
-  // top 边缘检测会让伸手抓手柄的动作被父块抢走(与 left 的块内区域同病)。
+  // left only: top/right/inside-strips overlap the handle's hotspot and let the
+  // parent steal the grab (see the header note).
   edges: ["left"],
   threshold: 12,
   strength: 500,
@@ -154,10 +128,10 @@ function isNearEdge(
   const rect = element.getBoundingClientRect();
   const { threshold, edges } = config;
   return edges.some((edge) => {
-    // left/right 仅在块的"外侧槽位"触发(光标越过块的边界才生效)。
-    // 官方实现是 `coords.x - rect.left < threshold`,会把块内左缘 12px 也划进
-    // 父块优先区——而手柄恰好贴着块左缘,伸手抓手的路径必然穿过该区域,
-    // 导致目标被父块抢走、手柄跳走,嵌套块(折叠块/引用等)的手柄永远抓不到。
+    // left/right trigger in the outer gutter only (`coords.x < rect.left`), not
+    // inside the block — the official `coords.x - rect.left < threshold` turns
+    // the block's own left edge into a parent-priority zone the handle's
+    // hotspot sits in.
     if (edge === "left") return coords.x < rect.left;
     if (edge === "right") return coords.x > rect.right;
     if (edge === "top") return coords.y - rect.top < threshold;
@@ -166,10 +140,6 @@ function isNearEdge(
   });
 }
 
-/**
- * Deeper nodes get larger deductions near edges, making shallower (parent)
- * nodes win.
- */
 function calculateEdgeDeduction(
   coords: { x: number; y: number },
   element: Element | null,
@@ -223,10 +193,7 @@ interface DragTargetCandidate {
   dom: unknown;
 }
 
-/**
- * Finds the best drag target at the given coordinates using the scoring
- * system (nested mode only).
- */
+/** Finds the best drag target at the given coordinates using the scoring system (nested mode only). */
 function findBestDragTarget(
   view: EditorView,
   coords: { x: number; y: number },
@@ -318,10 +285,7 @@ function findBestDragTarget(
   return { node: winner.node, pos: winner.pos, dom: winner.dom };
 }
 
-/**
- * Finds the draggable block element that is a direct child of view.dom,
- * skipping widget decorations.
- */
+/** Finds the draggable block element that is a direct child of view.dom, skipping widget decorations. */
 function findClosestTopLevelBlock(element: Element | null, view: EditorView): HTMLElement | undefined {
   let current: globalThis.Node | null = element;
   while (current instanceof Element && current.parentElement && current.parentElement !== view.dom) {
@@ -333,7 +297,6 @@ function findClosestTopLevelBlock(element: Element | null, view: EditorView): HT
   return current as HTMLElement;
 }
 
-/** Checks if a DOMRect has valid, finite dimensions. */
 function isValidRect(rect: DOMRect): boolean {
   return (
     Number.isFinite(rect.top) &&
@@ -345,10 +308,7 @@ function isValidRect(rect: DOMRect): boolean {
   );
 }
 
-/**
- * Returns the bounding rect of the first or last child of `container` that
- * has a valid (non-zero) layout box, skipping zero-size widget decorations.
- */
+/** Bounding rect of the first/last child with a valid layout box (skips zero-size widget decorations). */
 function edgeBlockRect(container: HTMLElement, edge: "first" | "last"): DOMRect | null {
   let current = edge === "first" ? container.firstElementChild : container.lastElementChild;
   while (current) {
@@ -359,7 +319,6 @@ function edgeBlockRect(container: HTMLElement, edge: "first" | "last"): DOMRect 
   return null;
 }
 
-/** Clamps coordinates to content bounds with O(1) layout reads. */
 function clampToContent(
   view: EditorView,
   x: number,
@@ -372,8 +331,7 @@ function clampToContent(
   const botRect = edgeBlockRect(container, "last");
   if (!topRect || !botRect) return null;
   const clampedY = Math.min(Math.max(topRect.top + inset, y), botRect.bottom - inset);
-  // The official source always clamps against the top block's horizontal
-  // bounds (kept for behavior parity).
+  // The official source always clamps against the top block's horizontal bounds.
   const clampedX = Math.min(Math.max(topRect.left + inset, x), topRect.right - inset);
   if (!Number.isFinite(clampedX) || !Number.isFinite(clampedY)) return null;
   return { x: clampedX, y: clampedY };
@@ -385,10 +343,7 @@ export type FoundNodeResult = {
   pos: number | null;
 };
 
-/**
- * Finds the block node next to the given viewport coordinates — via the
- * nested scoring system when enabled, else via the closest top-level block.
- */
+/** Finds the block node next to the given viewport coordinates — via the nested scoring system when enabled, else the closest top-level block. */
 export const findElementNextToCoords = (options: {
   x: number;
   y: number;

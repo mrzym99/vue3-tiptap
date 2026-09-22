@@ -1,19 +1,9 @@
 import type { Theme } from "@/types";
 
 /**
- * Light theme — Notion Style (docs/style/notion.md).
- *
- * Palette (verified with the style doc):
- *   bg canvas:  #f7f6f3  (Notion beige)
- *   bg:         #ffffff
- *   hover:      #efedea  (Block Highlighting, ~5% brightness shift)
- *   active:     #e3e1db  (Micro-click, no translate/scale)
- *   text:       #37352f  (Notion dark gray)
- *   border:     #e5e5e5  (Tailwind v4 gray-200)
- *   focus ring: #2eaadc  at 30% (Notion blue, per review)
- *
- * Old token names (--tiptap-btn--bg-* , --tiptap-color-text-3) are kept as
- * aliases so existing components keep working unchanged.
+ * Light theme — Notion style (docs/style/notion.md): beige canvas #F7F6F3,
+ * dark-gray text #37352F, purple accent #7C5CF0.
+ * Old token names (--tiptap-btn--bg-*, --tiptap-color-text-3) stay as aliases.
  */
 export const lightTheme: Theme = {
   // --- surfaces ---

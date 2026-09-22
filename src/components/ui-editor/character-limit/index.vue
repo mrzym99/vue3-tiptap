@@ -9,18 +9,10 @@ import { onBeforeUnmount, ref } from "vue";
 import type { Editor } from "@tiptap/core";
 
 /**
- * Character counter for the `limit` prop: `123 / 500`, pinned to the
- * editor's bottom-right corner (`.tiptap-box` is the positioning parent).
- *
- * Counts through the CharacterCount extension when loaded (the editor
- * component always includes it), falling back to plain text length. Turns
- * red while the document exceeds `limit` — possible only when the limit is
- * lowered at runtime, since the plugin rejects growth past the limit but
- * never shrinks existing content.
- *
- * The editor's `storage` is not reactive, so the count is re-read on every
- * `update` event (content-changing transactions) instead of being rendered
- * inline in the parent template.
+ * Character counter for the `limit` prop (`123 / 500`), pinned to the
+ * editor's bottom-right corner. `editor.storage` is not reactive, so the
+ * count re-reads on every `update` event; turns red when over `limit`
+ * (possible only after a runtime limit change — the plugin blocks growth).
  */
 const props = defineProps<{
   editor: Editor;
