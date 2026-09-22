@@ -54,6 +54,7 @@ export default {
   mediaWidth: "寬度",
   mediaHeight: "高度",
   mediaUrlRequired: "請輸入網址",
+  placeholder: "請輸入…",
   mediaUrlInvalid: "請輸入合法的 URL 網址",
   color: "文字顏色",
   colorCustom: "自訂",

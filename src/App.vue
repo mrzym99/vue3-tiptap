@@ -6,12 +6,11 @@ import type { LocaleTranslations } from "./locales";
 import zhTW from "./zh-TW";
 const content = ref("");
 
-content.value = `43242423432432432423423423432423432423432423432424`;
+content.value = ``;
 const theme = ref<ThemeName>("light");
 const locale = ref("zh");
 // Demo: add a third language ("zh-TW") via the `translations` prop
 const translations: LocaleTranslations = { "zh-TW": zhTW };
-const placeholder = ref("输入 @ 提及成员…");
 // `limit` is read once at editor creation (runtime changes are not applied) —
 // edit this constant to try the character limit instead of binding a control.
 const limit = ref(0);
@@ -81,11 +80,6 @@ const extensions = [
       </select>
     </div>
 
-    <div>
-      占位
-      <input v-model="placeholder" class="app-select" style="width: 160px" />
-    </div>
-
     <div class="app-status">
       {{ statusEvents.join(" → ") }}
       <button class="app-select" @click="editorRef?.focus()">聚焦</button>
@@ -115,7 +109,6 @@ const extensions = [
       :theme="theme"
       :locale="locale"
       :translations="translations"
-      :placeholder="placeholder"
       :limit="limit"
       :extensions="extensions"
       autofocus="end"

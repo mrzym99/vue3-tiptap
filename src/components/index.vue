@@ -19,7 +19,7 @@ import BubbleMenuBar from "@/components/ui-editor/bubble-menu/index.vue";
 import ExtensionBubbleMenus from "@/components/ui-editor/bubble-menu/extension-bubble-menus/index.vue";
 import FloatingMenuBar from "@/components/ui-editor/bubble-menu/floating-menu/index.vue";
 import CharacterLimit from "@/components/ui-editor/character-limit/index.vue";
-import { toRef } from "vue";
+import { computed, toRef } from "vue";
 import { useEditor } from "@tiptap/vue-3";
 import type { Editor } from "@tiptap/core";
 import type { Transaction } from "@tiptap/pm/state";
@@ -47,7 +47,7 @@ const props = withDefaults(defineProps<TipTapEditorProps>(), {
 });
 
 // Self-contained locale context (no vue-i18n needed)
-useEditorLocale(toRef(props, "locale"), toRef(props, "translations"));
+const { t } = useEditorLocale(toRef(props, "locale"), toRef(props, "translations"));
 
 const emit = defineEmits<{
   focus: [payload: { editor: Editor; event: FocusEvent; transaction: Transaction }];
@@ -62,10 +62,14 @@ const emit = defineEmits<{
 
 const modelValue = defineModel<string>({ required: true });
 
-// Placeholder stays reactive: `extension.options` re-runs `addOptions()` on
-// every access, so runtime mutation is useless — close over a mutable variable
-// instead (the option accepts a function, re-evaluated per decoration rebuild).
-let currentPlaceholder = props.placeholder ?? "";
+// Placeholder stays reactive: the option accepts a function, re-evaluated per
+// decoration rebuild. Falls back to the locale pack when the prop is unset.
+const effectivePlaceholder = computed(() => {
+  if (props.placeholder !== undefined) return props.placeholder;
+  const localized = t("placeholder");
+  // Untranslated custom locale → no placeholder (t returns the bare key)
+  return localized === "placeholder" ? "" : localized;
+});
 // Hosts opt in via the `extensions` prop; later entries win on name conflicts.
 const STRUCTURAL_NAMES = new Set(["doc", "paragraph", "text", "placeholder"]);
 
@@ -83,7 +87,7 @@ const mergedExtensions = [
   Paragraph,
   Text,
   Placeholder.configure({
-    placeholder: () => currentPlaceholder,
+    placeholder: () => effectivePlaceholder.value,
   }),
   ...(needsLimit ? [CharacterCount.configure({ limit: props.limit, autoTrim: false })] : []),
   ...userExtensions,
@@ -124,12 +128,11 @@ watch(
   },
 );
 
-// Sync runtime `placeholder` changes and force a decoration rebuild (the
-// plugin skips transactions without a doc or selection change).
+// Sync runtime placeholder changes (prop or locale) and force a decoration
+// rebuild — the plugin skips transactions without a doc or selection change.
 watch(
-  () => props.placeholder,
-  (next) => {
-    currentPlaceholder = next ?? "";
+  effectivePlaceholder,
+  () => {
     if (!editor.value) return;
     const { state, view } = editor.value;
     view.dispatch(state.tr.setSelection(state.selection));

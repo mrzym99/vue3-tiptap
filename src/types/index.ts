@@ -16,7 +16,7 @@ export interface TipTapEditorProps {
   theme?: ThemeName;
   /** Custom CSS variables (`--tiptap-*`) layered on top of `theme` */
   themeOverrides?: Theme;
-  /** Placeholder text shown when the document is empty */
+  /** Placeholder text shown when the document is empty; falls back to the locale pack's `placeholder` key */
   placeholder?: string;
   /** UI language ("zh" | "en", or a custom id provided via `translations`) */
   locale?: LocaleName | (string & {});

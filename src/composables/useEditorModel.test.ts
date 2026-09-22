@@ -57,7 +57,7 @@ describe("useEditorModel", () => {
     // Not written back before the debounce delay elapses.
     expect(modelValue.value).toBe("");
 
-    await vi.advanceTimersByTimeAsync(300);
+    await vi.advanceTimersByTimeAsync(150);
     expect(modelValue.value).toBe("<p>hello</p>");
   });
 
@@ -75,9 +75,9 @@ describe("useEditorModel", () => {
     editor.commands.setContent("<p>b</p>");
     model.handleUpdate(editor, noopTxn);
 
-    await vi.advanceTimersByTimeAsync(150);
+    await vi.advanceTimersByTimeAsync(100);
     expect(modelValue.value).toBe("");
-    await vi.advanceTimersByTimeAsync(200);
+    await vi.advanceTimersByTimeAsync(100);
     expect(modelValue.value).toBe("<p>b</p>");
   });
 

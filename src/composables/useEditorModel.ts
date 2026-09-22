@@ -27,7 +27,7 @@ export interface UseEditorModelOptions {
 export function useEditorModel(options: UseEditorModelOptions) {
   const { editor, modelValue, limit, onUpdate, onTruncated } = options;
 
-  const MODEL_SYNC_DELAY = 300;
+  const MODEL_SYNC_DELAY = 150;
   let modelSyncTimer: ReturnType<typeof setTimeout> | undefined;
 
   // A value that changed before the editor instance existed (useEditor creates
@@ -55,8 +55,7 @@ export function useEditorModel(options: UseEditorModelOptions) {
     // Only write back when actually truncated — otherwise an empty document
     // would immediately rewrite the parent value "" → "<p></p>".
     const currentLimit = limit();
-    const current =
-      created.storage.characterCount?.characters?.() ?? created.getText({ blockSeparator: "" }).length;
+    const current = created.storage.characterCount?.characters?.() ?? created.getText({ blockSeparator: "" }).length;
     if (currentLimit && current > currentLimit) {
       checkLimit(created, currentLimit);
       modelValue.value = created.getHTML();
