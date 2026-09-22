@@ -24,13 +24,7 @@ function handleImageFiles(editor: Editor, files: File[]): boolean {
 }
 
 export const FileHandler = TiptapFileHandler.configure({
-  allowedMimeTypes: [
-    "image/jpeg",
-    "image/png",
-    "image/gif",
-    "image/webp",
-    "image/svg+xml",
-  ],
+  allowedMimeTypes: ["image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml"],
   onDrop: (editor, files) => handleImageFiles(editor, files),
   onPaste: (editor, files) => handleImageFiles(editor, files),
 });

@@ -33,7 +33,11 @@ export interface MentionOptions extends TiptapMentionOptions {
 }
 
 /** Resolve the host data source into a list of items for the given query. */
-function resolveItems(items: MentionItems | undefined, query: string, editor: Editor): MentionItem[] | Promise<MentionItem[]> {
+function resolveItems(
+  items: MentionItems | undefined,
+  query: string,
+  editor: Editor,
+): MentionItem[] | Promise<MentionItem[]> {
   if (typeof items === "function") return items({ query, editor });
   const q = query.toLowerCase();
   return (items ?? []).filter(

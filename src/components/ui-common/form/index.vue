@@ -15,22 +15,13 @@ import {
   type FormRule as _FormRule,
 } from "./types";
 
-export type {
-  _FormRule as FormRule,
-  _FormErrors as FormErrors,
-  _FormContext as FormContext,
-};
+export type { _FormRule as FormRule, _FormErrors as FormErrors, _FormContext as FormContext };
 export { _formContextKey as formContextKey };
 </script>
 
 <script setup lang="ts">
 import { provide, reactive, ref, type PropType } from "vue";
-import {
-  formContextKey,
-  type FormContext,
-  type FormErrors,
-  type FormRule,
-} from "./types";
+import { formContextKey, type FormContext, type FormErrors, type FormRule } from "./types";
 
 const props = defineProps({
   /** Field value getters `{ [field]: () => value }`, read by validation on submit */

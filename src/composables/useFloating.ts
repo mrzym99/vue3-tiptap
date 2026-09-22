@@ -1,13 +1,5 @@
 import { ref, type Ref } from "vue";
-import {
-  computePosition,
-  autoUpdate,
-  offset,
-  flip,
-  shift,
-  type Placement,
-  type Middleware,
-} from "@floating-ui/dom";
+import { computePosition, autoUpdate, offset, flip, shift, type Placement, type Middleware } from "@floating-ui/dom";
 
 export interface UseFloatingOptions {
   placement?: Placement;
@@ -21,11 +13,7 @@ export function useFloating(
   floatingRef: Ref<HTMLElement | null>,
   options: UseFloatingOptions = {},
 ) {
-  const {
-    placement = "bottom-start",
-    offset: offsetValue = 4,
-    strategy = "fixed",
-  } = options;
+  const { placement = "bottom-start", offset: offsetValue = 4, strategy = "fixed" } = options;
 
   const floatingStyle = ref<Record<string, string>>({
     position: strategy,

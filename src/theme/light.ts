@@ -47,8 +47,7 @@ export const lightTheme: Theme = {
   "--tiptap-popover-bg": "var(--tiptap-color-bg)",
   "--tiptap-popover-text": "var(--tiptap-color-text)",
   "--tiptap-popover-border": "var(--tiptap-color-border)",
-  "--tiptap-popover-shadow":
-    "0 1px 3px rgba(15, 15, 15, 0.13), 0 4px 16px rgba(15, 15, 15, 0.05)",
+  "--tiptap-popover-shadow": "0 1px 3px rgba(15, 15, 15, 0.13), 0 4px 16px rgba(15, 15, 15, 0.05)",
 
   // dialog (modal mask; dialog panel follows popover tokens)
   "--tiptap-dialog-mask": "rgba(15, 15, 15, 0.4)",

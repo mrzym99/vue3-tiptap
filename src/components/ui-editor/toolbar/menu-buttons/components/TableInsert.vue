@@ -53,9 +53,7 @@ const gridCells = computed<GridCell[]>(() => {
 
 const t = props.t;
 const insertLabel = computed(() =>
-  t("insertTableGrid")
-    .replace("{rows}", `${hoverRows.value}`)
-    .replace("{cols}", `${hoverCols.value}`),
+  t("insertTableGrid").replace("{rows}", `${hoverRows.value}`).replace("{cols}", `${hoverCols.value}`),
 );
 
 function insertTable(rows: number, cols: number) {

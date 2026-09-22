@@ -27,11 +27,7 @@ declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     video: {
       /** Insert a video node (src is auto-converted to an embed URL). */
-      setVideo: (options: {
-        src: string;
-        width?: number;
-        height?: number;
-      }) => ReturnType;
+      setVideo: (options: { src: string; width?: number; height?: number }) => ReturnType;
     };
   }
 }
@@ -61,13 +57,11 @@ export const Video = /* @__PURE__ */ Node.create<VideoOptions>({
       embedSrc: { default: null },
       width: {
         default: this.options.width,
-        parseHTML: (element) =>
-          element.getAttribute("width") ?? this.options.width,
+        parseHTML: (element) => element.getAttribute("width") ?? this.options.width,
       },
       height: {
         default: this.options.height,
-        parseHTML: (element) =>
-          element.getAttribute("height") ?? this.options.height,
+        parseHTML: (element) => element.getAttribute("height") ?? this.options.height,
       },
     };
   },
@@ -90,8 +84,7 @@ export const Video = /* @__PURE__ */ Node.create<VideoOptions>({
             width: attrs.width ?? this.options.width,
             height: attrs.height ?? this.options.height,
             frameborder: "0",
-            allow:
-              "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+            allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
           },
           this.options.allowFullscreen ? { allowfullscreen: "true" } : {},
         ),

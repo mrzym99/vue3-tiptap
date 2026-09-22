@@ -2,14 +2,8 @@
   <div class="toolbar" v-if="props.editor && menus.keys.length">
     <div class="tiptap-toolbar">
       <template v-for="(item, index) in menus.keys" :key="item">
-        <div
-          v-if="menus.separators.includes(index)"
-          class="tiptap-toolbar-sep"
-        />
-        <RenderItem
-          :editor="props.editor"
-          :button="menus.byName[item].options.button"
-        />
+        <div v-if="menus.separators.includes(index)" class="tiptap-toolbar-sep" />
+        <RenderItem :editor="props.editor" :button="menus.byName[item].options.button" />
       </template>
     </div>
   </div>
@@ -37,12 +31,8 @@ const menus = computed(() => {
   // Tiptap re-sorts extensions internally, so iterate the configured layout
   // (defaultToolbar or the user's toolbar) and map each key back to its
   // extension rather than trusting extensionManager order.
-  const extensions = props.editor.extensionManager.extensions.filter(
-    (extension) => extension.options.button,
-  );
-  const byName = Object.fromEntries(
-    extensions.map((extension) => [extension.name, extension]),
-  );
+  const extensions = props.editor.extensionManager.extensions.filter((extension) => extension.options.button);
+  const byName = Object.fromEntries(extensions.map((extension) => [extension.name, extension]));
   const layout = resolveToolbar(
     props.toolbar,
     extensions.map((extension) => extension.name),

@@ -1,13 +1,13 @@
 <template>
   <ThemeProvider :theme="theme" :theme-overrides="themeOverrides">
-    <div class="tiptap-box" v-if="editor">
+    <section class="tiptap-box" v-if="editor">
       <ToolBar :editor="editor" :toolbar="props.toolbar" />
       <EditorContent :editor="editor" />
       <BubbleMenuBar :editor="editor" :toolbar="props.bubbleMenu" />
       <FloatingMenuBar :editor="editor" :toolbar="props.floatingMenu" />
       <ExtensionBubbleMenus :editor="editor" />
       <CharacterLimit :editor="editor" :limit="props.limit" />
-    </div>
+    </section>
   </ThemeProvider>
 </template>
 
@@ -130,14 +130,11 @@ watch(
 
 // Sync runtime placeholder changes (prop or locale) and force a decoration
 // rebuild — the plugin skips transactions without a doc or selection change.
-watch(
-  effectivePlaceholder,
-  () => {
-    if (!editor.value) return;
-    const { state, view } = editor.value;
-    view.dispatch(state.tr.setSelection(state.selection));
-  },
-);
+watch(effectivePlaceholder, () => {
+  if (!editor.value) return;
+  const { state, view } = editor.value;
+  view.dispatch(state.tr.setSelection(state.selection));
+});
 
 /** Imperative helpers for template-ref access: `editorRef.value.focus()` */
 defineExpose({

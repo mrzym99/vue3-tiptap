@@ -8,11 +8,7 @@ function getTheme(name: ThemeName): Theme {
 }
 
 /** Apply base + selected color theme + overrides as `--tiptap-*` vars on the target element. */
-export function applyTheme(
-  name: ThemeName,
-  target: HTMLElement = document.documentElement,
-  overrides?: Theme,
-) {
+export function applyTheme(name: ThemeName, target: HTMLElement = document.documentElement, overrides?: Theme) {
   const merged: Theme = { ...baseTheme, ...getTheme(name), ...overrides };
   // Drop previously applied `--tiptap-*` variables first so removed keys
   // (e.g. a deleted override or a theme switch) don't leak stale values.

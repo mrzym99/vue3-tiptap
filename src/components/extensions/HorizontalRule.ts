@@ -6,15 +6,13 @@ import { HorizontalRule as TiptapHorizontalRule } from "@tiptap/extension-horizo
 import HorizontalRuleButton from "@/components/ui-editor/toolbar/buttons/HorizontalRuleButton.vue";
 import { withButton } from "@/utils/button";
 
-export interface HorizontalRuleOptions
-  extends TiptapHorizontalRuleOptions, GeneralOptions {}
+export interface HorizontalRuleOptions extends TiptapHorizontalRuleOptions, GeneralOptions {}
 
-export const HorizontalRule =
-  /* @__PURE__ */ TiptapHorizontalRule.extend<HorizontalRuleOptions>({
-    addOptions() {
-      return {
-        ...(this.parent?.() as TiptapHorizontalRuleOptions),
-        button: withButton(HorizontalRuleButton),
-      };
-    },
-  });
+export const HorizontalRule = /* @__PURE__ */ TiptapHorizontalRule.extend<HorizontalRuleOptions>({
+  addOptions() {
+    return {
+      ...(this.parent?.() as TiptapHorizontalRuleOptions),
+      button: withButton(HorizontalRuleButton),
+    };
+  },
+});

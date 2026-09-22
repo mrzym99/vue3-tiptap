@@ -24,10 +24,7 @@ export const Details = /* @__PURE__ */ TiptapDetails.extend<DetailsOptions>({
       persist: false,
       renderToggleButton: ({ element, isOpen }) => {
         // Visible chevron that flips with the open state (Notion toggle style).
-        element.setAttribute(
-          "aria-label",
-          isOpen ? "Collapse details" : "Expand details",
-        );
+        element.setAttribute("aria-label", isOpen ? "Collapse details" : "Expand details");
         element.setAttribute("data-open", isOpen ? "true" : "false");
         element.innerHTML = isOpen ? CHEVRON_DOWN_SVG : CHEVRON_RIGHT_SVG;
       },

@@ -52,9 +52,7 @@ export function getDraggedBlockElement(view: Editor["view"], pos: number): HTMLE
 /** Resolves the text direction for the block being dragged. */
 export function getDraggedBlockDir(view: Editor["view"], pos: number): string {
   const draggedDom = getDraggedBlockElement(view, pos);
-  return (
-    (draggedDom ? getComputedStyle(draggedDom).direction : getComputedStyle(view.dom).direction) || "ltr"
-  );
+  return (draggedDom ? getComputedStyle(draggedDom).direction : getComputedStyle(view.dom).direction) || "ltr";
 }
 
 export function removeNode(node: globalThis.Node | null | undefined): void {

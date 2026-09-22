@@ -28,9 +28,7 @@ const { t } = useTiptapLocale();
 
 const MEDIA_TYPES = ["image", "video", "youtube", "audio", "twitch"] as const;
 
-const activeType = computed(() =>
-  (MEDIA_TYPES as readonly string[]).find((type) => props.editor.isActive(type)),
-);
+const activeType = computed(() => (MEDIA_TYPES as readonly string[]).find((type) => props.editor.isActive(type)));
 
 // Anchor below the media node element itself (not the caret): like the table
 // toolbar, the menu stays glued to the media while it stays selected.
@@ -62,7 +60,6 @@ function getReferencedVirtualElement(): HTMLElement | null {
 /** Show when a media node is selected/active. */
 function shouldShow({
   editor: e,
-  state,
 }: {
   editor: any;
   element: HTMLElement;

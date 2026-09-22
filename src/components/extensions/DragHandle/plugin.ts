@@ -126,8 +126,9 @@ export const DragHandlePlugin = ({
   }
 
   function repositionDragHandle(dom: HTMLElement) {
-    const virtualElement =
-      getReferencedVirtualElement?.() || { getBoundingClientRect: () => dom.getBoundingClientRect() };
+    const virtualElement = getReferencedVirtualElement?.() || {
+      getBoundingClientRect: () => dom.getBoundingClientRect(),
+    };
     const token = ++positionToken;
     computePosition(virtualElement, element, computePositionConfig)
       .then((val) => {
@@ -341,12 +342,7 @@ export const DragHandlePlugin = ({
               // edge and the handle jumps to the parent (ungrabbable nested blocks)
               if (element && element.style.visibility !== "hidden") {
                 const rect = element.getBoundingClientRect();
-                if (
-                  x >= rect.left - 6 &&
-                  x <= rect.right + 6 &&
-                  y >= rect.top - 6 &&
-                  y <= rect.bottom + 6
-                ) {
+                if (x >= rect.left - 6 && x <= rect.right + 6 && y >= rect.top - 6 && y <= rect.bottom + 6) {
                   return;
                 }
               }

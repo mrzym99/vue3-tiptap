@@ -1,6 +1,6 @@
 allowBuilds:
   # sass 的可选原生 watcher：不需要，保持禁用
-  '@parcel/watcher': false
+  "@parcel/watcher": false
   esbuild: true
 
 # Unify ProseMirror versions to avoid duplicate prosemirror-model copies

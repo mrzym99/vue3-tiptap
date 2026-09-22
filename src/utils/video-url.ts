@@ -8,9 +8,7 @@ export function toEmbedUrl(url: string): string | null {
   m = u.match(/bilibili\.com\/video\/av(\d+)/i);
   if (m) return `https://player.bilibili.com/player.html?aid=${m[1]}&page=1`;
 
-  m = u.match(
-    /v\.qq\.com\/x\/(?:page\/([0-9a-zA-Z]+)|cover\/[^/]+\/([0-9a-zA-Z]+))\.html/i,
-  );
+  m = u.match(/v\.qq\.com\/x\/(?:page\/([0-9a-zA-Z]+)|cover\/[^/]+\/([0-9a-zA-Z]+))\.html/i);
   if (m) {
     const vid = m[1] ?? m[2];
     if (vid) return `https://v.qq.com/txp/iframe/player.html?vid=${vid}`;

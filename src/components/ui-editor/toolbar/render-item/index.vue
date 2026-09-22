@@ -25,10 +25,5 @@ const buttons = computed<ButtonViewReturn[]>(() => {
 </script>
 
 <template>
-  <component
-    v-for="(btn, index) in buttons"
-    :key="index"
-    :is="btn.component"
-    v-bind="btn.componentProps"
-  />
+  <component v-for="(btn, index) in buttons" :key="index" :is="btn.component" v-bind="btn.componentProps" />
 </template>

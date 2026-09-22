@@ -13,19 +13,11 @@
     </template>
     <div class="fr-panel">
       <div class="fr-row">
-        <TiptapInput
-          v-model="searchTerm"
-          :placeholder="t('findPlaceholder')"
-          @keydown.enter.prevent="goNext"
-        />
+        <TiptapInput v-model="searchTerm" :placeholder="t('findPlaceholder')" @keydown.enter.prevent="goNext" />
         <span class="fr-count">{{ totalResults }}</span>
       </div>
       <div class="fr-row">
-        <TiptapInput
-          v-model="replaceTerm"
-          :placeholder="t('replacePlaceholder')"
-          @keydown.enter.prevent="replaceOne"
-        />
+        <TiptapInput v-model="replaceTerm" :placeholder="t('replacePlaceholder')" @keydown.enter.prevent="replaceOne" />
       </div>
       <div class="fr-actions">
         <TiptapButton @click="goPrev">
@@ -62,49 +54,25 @@ const searchTerm = ref("");
 const replaceTerm = ref("");
 
 const results = computed(
-  () =>
-    (props.editor.storage.findAndReplace as { results: unknown[] } | undefined)
-      ?.results ?? [],
+  () => (props.editor.storage.findAndReplace as { results: unknown[] } | undefined)?.results ?? [],
 );
 const totalResults = computed(() => results.value.length);
 const hasResults = computed(() => totalResults.value > 0);
 
 function goNext() {
-  props.editor
-    .chain()
-    .focus()
-    .setSearchTerm(searchTerm.value)
-    .goToNextResult()
-    .run();
+  props.editor.chain().focus().setSearchTerm(searchTerm.value).goToNextResult().run();
 }
 
 function goPrev() {
-  props.editor
-    .chain()
-    .focus()
-    .setSearchTerm(searchTerm.value)
-    .goToPreviousResult()
-    .run();
+  props.editor.chain().focus().setSearchTerm(searchTerm.value).goToPreviousResult().run();
 }
 
 function replaceOne() {
-  props.editor
-    .chain()
-    .focus()
-    .setSearchTerm(searchTerm.value)
-    .setReplaceTerm(replaceTerm.value)
-    .replace()
-    .run();
+  props.editor.chain().focus().setSearchTerm(searchTerm.value).setReplaceTerm(replaceTerm.value).replace().run();
 }
 
 function replaceAll() {
-  props.editor
-    .chain()
-    .focus()
-    .setSearchTerm(searchTerm.value)
-    .setReplaceTerm(replaceTerm.value)
-    .replaceAll()
-    .run();
+  props.editor.chain().focus().setSearchTerm(searchTerm.value).setReplaceTerm(replaceTerm.value).replaceAll().run();
 }
 
 function clear() {

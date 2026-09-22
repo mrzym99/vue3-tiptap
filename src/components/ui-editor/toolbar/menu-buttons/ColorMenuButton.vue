@@ -63,9 +63,7 @@ const PRESET_COLORS = [
   "#6E56CF",
 ];
 
-const currentColor = computed(
-  () => props.editor.getAttributes("textStyle").color as string | undefined,
-);
+const currentColor = computed(() => props.editor.getAttributes("textStyle").color as string | undefined);
 const isColorActive = computed(() => !!currentColor.value);
 
 function onPick(color: string) {

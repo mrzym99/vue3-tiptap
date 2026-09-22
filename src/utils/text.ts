@@ -5,8 +5,7 @@ export function checkLimit(editor: Editor, limit: number): boolean {
   if (!limit) return false;
 
   // Fast path: reuse the incremental CharacterCount storage
-  const current =
-    editor.storage.characterCount?.characters?.() ?? editor.getText({ blockSeparator: "" }).length;
+  const current = editor.storage.characterCount?.characters?.() ?? editor.getText({ blockSeparator: "" }).length;
   if (current <= limit) return false;
 
   const doc = editor.state.doc;

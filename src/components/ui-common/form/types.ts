@@ -21,5 +21,4 @@ export interface FormContext {
   validateField: (name: string) => string | undefined;
 }
 
-export const formContextKey: InjectionKey<FormContext> =
-  Symbol("tiptap-form");
+export const formContextKey: InjectionKey<FormContext> = Symbol("tiptap-form");

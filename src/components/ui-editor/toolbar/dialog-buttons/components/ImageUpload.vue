@@ -1,12 +1,6 @@
 <template>
   <div class="image-upload">
-    <input
-      ref="fileInputRef"
-      type="file"
-      accept="image/*"
-      class="image-upload-input"
-      @change="onFilePicked"
-    />
+    <input ref="fileInputRef" type="file" accept="image/*" class="image-upload-input" @change="onFilePicked" />
     <TiptapButton :disabled="uploading" @click="fileInputRef?.click()">
       {{ uploading ? t("imageUploading") : t("imageUpload") }}
     </TiptapButton>
@@ -36,9 +30,7 @@ const uploadError = ref("");
 
 /** Upload callback from the image extension config. */
 const upload = computed(() => {
-  const ext = props.editor.extensionManager.extensions.find(
-    (e) => e.name === "image",
-  );
+  const ext = props.editor.extensionManager.extensions.find((e) => e.name === "image");
   return (ext?.options as ImageOptions | undefined)?.upload;
 });
 

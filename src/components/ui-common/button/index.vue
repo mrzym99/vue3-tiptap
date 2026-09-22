@@ -1,11 +1,5 @@
 <template>
-  <button
-    type="button"
-    class="tiptap-btn"
-    :class="`tiptap-btn--${variant}`"
-    :disabled="disabled"
-    @click="onClick"
-  >
+  <button type="button" class="tiptap-btn" :class="`tiptap-btn--${variant}`" :disabled="disabled" @click="onClick">
     <slot />
   </button>
 </template>

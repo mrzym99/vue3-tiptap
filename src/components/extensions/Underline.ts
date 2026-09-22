@@ -6,15 +6,13 @@ import { Underline as TiptapUnderline } from "@tiptap/extension-underline";
 import UnderlineButton from "@/components/ui-editor/toolbar/buttons/UnderlineButton.vue";
 import { withButton } from "@/utils/button";
 
-export interface UnderlineOptions
-  extends TiptapUnderlineOptions, GeneralOptions {}
+export interface UnderlineOptions extends TiptapUnderlineOptions, GeneralOptions {}
 
-export const Underline =
-  /* @__PURE__ */ TiptapUnderline.extend<UnderlineOptions>({
-    addOptions() {
-      return {
-        ...(this.parent?.() as TiptapUnderlineOptions),
-        button: withButton(UnderlineButton),
-      };
-    },
-  });
+export const Underline = /* @__PURE__ */ TiptapUnderline.extend<UnderlineOptions>({
+  addOptions() {
+    return {
+      ...(this.parent?.() as TiptapUnderlineOptions),
+      button: withButton(UnderlineButton),
+    };
+  },
+});

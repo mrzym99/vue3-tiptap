@@ -119,11 +119,7 @@ export function normalizeNestedOptions(
 }
 
 /** True if the cursor is within the threshold zone of any configured edge. */
-function isNearEdge(
-  coords: { x: number; y: number },
-  element: Element,
-  config: EdgeDetectionConfig,
-): boolean {
+function isNearEdge(coords: { x: number; y: number }, element: Element, config: EdgeDetectionConfig): boolean {
   if (config.edges.length === 0) return false;
   const rect = element.getBoundingClientRect();
   const { threshold, edges } = config;
@@ -319,12 +315,7 @@ function edgeBlockRect(container: HTMLElement, edge: "first" | "last"): DOMRect 
   return null;
 }
 
-function clampToContent(
-  view: EditorView,
-  x: number,
-  y: number,
-  inset = 5,
-): { x: number; y: number } | null {
+function clampToContent(view: EditorView, x: number, y: number, inset = 5): { x: number; y: number } | null {
   if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
   const container = view.dom as HTMLElement;
   const topRect = edgeBlockRect(container, "first");

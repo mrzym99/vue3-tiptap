@@ -1,7 +1,5 @@
 <template>
-  <span v-if="limit" class="character-limit" :class="{ 'is-over': count > limit }">
-    {{ count }} / {{ limit }}
-  </span>
+  <span v-if="limit" class="character-limit" :class="{ 'is-over': count > limit }"> {{ count }} / {{ limit }} </span>
 </template>
 
 <script setup lang="ts">
@@ -19,8 +17,7 @@ const count = ref(0);
 
 const readCount = () => {
   count.value =
-    props.editor.storage.characterCount?.characters?.() ??
-    props.editor.getText({ blockSeparator: "" }).length;
+    props.editor.storage.characterCount?.characters?.() ?? props.editor.getText({ blockSeparator: "" }).length;
 };
 
 const onUpdate = () => readCount();

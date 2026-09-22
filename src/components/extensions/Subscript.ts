@@ -6,15 +6,13 @@ import { Subscript as TiptapSubscript } from "@tiptap/extension-subscript";
 import SubscriptButton from "@/components/ui-editor/toolbar/buttons/SubscriptButton.vue";
 import { withButton } from "@/utils/button";
 
-export interface SubscriptOptions
-  extends TiptapSubscriptOptions, GeneralOptions {}
+export interface SubscriptOptions extends TiptapSubscriptOptions, GeneralOptions {}
 
-export const Subscript =
-  /* @__PURE__ */ TiptapSubscript.extend<SubscriptOptions>({
-    addOptions() {
-      return {
-        ...(this.parent?.() as TiptapSubscriptOptions),
-        button: withButton(SubscriptButton),
-      };
-    },
-  });
+export const Subscript = /* @__PURE__ */ TiptapSubscript.extend<SubscriptOptions>({
+  addOptions() {
+    return {
+      ...(this.parent?.() as TiptapSubscriptOptions),
+      button: withButton(SubscriptButton),
+    };
+  },
+});

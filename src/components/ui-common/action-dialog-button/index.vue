@@ -1,11 +1,5 @@
 <template>
-  <ActionButton
-    :icon="icon"
-    :tooltip="tooltip ?? ''"
-    :disabled="disabled"
-    :is-active="isActive"
-    :action="open"
-  >
+  <ActionButton :icon="icon" :tooltip="tooltip ?? ''" :disabled="disabled" :is-active="isActive" :action="open">
     <template #suffix>
       <slot name="suffix" />
     </template>

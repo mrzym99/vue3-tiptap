@@ -8,10 +8,7 @@ export type ToolbarLayout = {
   separators: number[];
 };
 
-export function resolveToolbar(
-  toolbar: Toolbar | undefined,
-  allKeys: string[],
-): ToolbarLayout {
+export function resolveToolbar(toolbar: Toolbar | undefined, allKeys: string[]): ToolbarLayout {
   const source = toolbar ?? defaultToolbar;
   const known = (key: string) => allKeys.includes(key);
 

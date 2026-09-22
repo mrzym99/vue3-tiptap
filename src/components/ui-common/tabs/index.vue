@@ -57,7 +57,9 @@ const emit = defineEmits<{ "update:modelValue": [name: string] }>();
   cursor: pointer;
   font-size: var(--tiptap-font-size-sm);
   padding: var(--tiptap-padding-sm) var(--tiptap-padding-md);
-  transition: color 150ms ease, border-color 150ms ease;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease;
 
   &:hover {
     color: var(--tiptap-color-text);
