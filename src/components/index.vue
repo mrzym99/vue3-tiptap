@@ -6,9 +6,7 @@
       <BubbleMenuBar :editor="editor" :toolbar="props.bubbleMenu ?? props.toolbar" />
       <FloatingMenuBar :editor="editor" :toolbar="props.floatingMenu ?? props.toolbar" />
       <ExtensionBubbleMenus :editor="editor" />
-      <span v-if="props.maxLength" class="max-limit">
-        {{ editor.storage.characterCount?.characters?.() ?? editor.getText().length }} / {{ props.maxLength }}
-      </span>
+      <CharacterLimit :editor="editor" :limit="props.limit" />
     </div>
   </ThemeProvider>
 </template>
@@ -20,6 +18,7 @@ import EditorContent from "@/components/ui-editor/editor-content/index.vue";
 import BubbleMenuBar from "@/components/ui-editor/bubble-menu/index.vue";
 import ExtensionBubbleMenus from "@/components/ui-editor/bubble-menu/extension-bubble-menus/index.vue";
 import FloatingMenuBar from "@/components/ui-editor/bubble-menu/floating-menu/index.vue";
+import CharacterLimit from "@/components/ui-editor/character-limit/index.vue";
 // https://tiptap.dev/docs/editor/getting-started/install/vue3#next-steps
 import { toRef } from "vue";
 import { useEditor } from "@tiptap/vue-3";
@@ -34,7 +33,7 @@ import { CharacterCount } from "@tiptap/extensions";
 import { useEditorLocale } from "@/composables/useEditorLocale";
 import { useEditorModel } from "@/composables/useEditorModel";
 const props = withDefaults(defineProps<TipTapEditorProps>(), {
-  maxLength: 0,
+  limit: 0,
   disabled: false,
   theme: "light",
   themeOverrides: undefined,
@@ -58,8 +57,8 @@ const emit = defineEmits<{
   update: [payload: { editor: Editor; transaction: Transaction }];
   /** The editor instance was created and is ready to use */
   ready: [editor: Editor];
-  /** Content exceeded `maxLength` and was truncated */
-  truncated: [info: { maxLength: number }];
+  /** Content exceeded `limit` and was truncated */
+  truncated: [info: { limit: number }];
 }>();
 
 const modelValue = defineModel<string>({ required: true });
@@ -75,14 +74,14 @@ let currentPlaceholder = props.placeholder ?? "";
 // core (document / paragraph / text / placeholder) is always the component's.
 const STRUCTURAL_NAMES = new Set(["doc", "paragraph", "text", "placeholder"]);
 
-// When `maxLength` is set, add the official `CharacterCount` limit ourselves so
+// When `limit` is set, add the official `CharacterCount` limit ourselves so
 // the prop works without the host importing the extension: typing/formatting
 // past the limit is REJECTED at the ProseMirror level (`autoTrim: false` keeps
 // the plugin from lazily trimming during edits; create-time over-limit trimming
 // is owned by `useEditorModel.handleCreate`, which also emits `truncated`).
-// Note: `limit` is fixed at editor-creation — live `maxLength` changes won't
+// Note: `limit` is fixed at editor-creation — live `limit` changes won't
 // re-take effect (the plugin reads its options when constructed).
-const needsLimit = props.maxLength > 0;
+const needsLimit = props.limit > 0;
 const structuralNames = needsLimit ? new Set([...STRUCTURAL_NAMES, "characterCount"]) : STRUCTURAL_NAMES;
 const userExtensions = [...new Map(props.extensions.map((e) => [e.name, e])).values()].filter(
   (e) => !structuralNames.has(e.name),
@@ -94,7 +93,7 @@ const mergedExtensions = [
   Placeholder.configure({
     placeholder: () => currentPlaceholder,
   }),
-  ...(needsLimit ? [CharacterCount.configure({ limit: props.maxLength, autoTrim: false })] : []),
+  ...(needsLimit ? [CharacterCount.configure({ limit: props.limit, autoTrim: false })] : []),
   ...userExtensions,
 ];
 
@@ -105,28 +104,28 @@ const editor = useEditor({
   autofocus: props.autofocus,
   onCreate: ({ editor: created }) => {
     // Apply a value that changed before the editor was created + initial
-    // maxLength truncation (lives in the model composable)
+    // limit truncation (lives in the model composable)
     model.handleCreate(created);
     emit("ready", created);
   },
   onUpdate: ({ editor: created, transaction }) => {
-    // maxLength truncation + `update` emit + debounced write-back
+    // limit truncation + `update` emit + debounced write-back
     model.handleUpdate(created, transaction);
   },
   onFocus: (props) => emit("focus", props),
   onBlur: (props) => emit("blur", props),
 });
 
-// v-model two-way binding + maxLength truncation (debounced HTML write-back
+// v-model two-way binding + limit truncation (debounced HTML write-back
 // and external-value sync). Defined after `editor` so the composable can read
 // the editor ref; the callbacks above run post-mount, so referencing `model`
 // here is safe.
 const model = useEditorModel({
   editor,
   modelValue,
-  maxLength: () => props.maxLength,
+  limit: () => props.limit,
   onUpdate: (ed, tr) => emit("update", { editor: ed, transaction: tr }),
-  onTruncated: (max) => emit("truncated", { maxLength: max }),
+  onTruncated: (max) => emit("truncated", { limit: max }),
 });
 model.watchModel();
 
@@ -173,14 +172,5 @@ defineExpose({
   display: flex;
   flex-direction: column;
   overflow: hidden;
-}
-
-.max-limit {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  font-size: var(--tiptap-font-size);
-  color: var(--tiptap-color-text-muted);
-  padding: var(--tiptap-padding-sm);
 }
 </style>

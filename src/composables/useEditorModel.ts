@@ -5,12 +5,12 @@ import { checkLimit } from "@/utils/text";
 
 /**
  * v-model two-way binding for the editor: debounced `editor.getHTML()` write-back
- * to `modelValue`, and (on create) `maxLength` truncation.
+ * to `modelValue`, and (on create) `limit` truncation.
  *
- * Typing/formatting past `maxLength` is blocked by the official `CharacterCount`
+ * Typing/formatting past `limit` is blocked by the official `CharacterCount`
  * `limit` plugin (component-configured), so no per-keystroke truncation happens
  * here. This composable only trims once — on `handleCreate`, when the initial
- * content already exceeds `maxLength` — via `checkLimit`, and emits `truncated`.
+ * content already exceeds `limit` — via `checkLimit`, and emits `truncated`.
  *
  * The component's `onUpdate` writes the debounced HTML back, so serializing on
  * every keystroke (O(n) for large docs) is avoided. Any pending write-back is
@@ -27,16 +27,16 @@ export interface UseEditorModelOptions {
   editor: Ref<Editor | undefined>;
   /** The v-model binding (write-back target). `defineModel` must stay in the component. */
   modelValue: Ref<string>;
-  /** Current `maxLength` (0 = unlimited), as a getter so it stays live. */
-  maxLength: () => number;
+  /** Current `limit` (0 = unlimited), as a getter so it stays live. */
+  limit: () => number;
   /** Called on every content-changing transaction (debounced write-back handled inside). */
   onUpdate?: (editor: Editor, transaction: Transaction) => void;
-  /** Called when initial content exceeded `maxLength` and was trimmed on create. */
-  onTruncated?: (maxLength: number) => void;
+  /** Called when initial content exceeded `limit` and was trimmed on create. */
+  onTruncated?: (limit: number) => void;
 }
 
 export function useEditorModel(options: UseEditorModelOptions) {
-  const { editor, modelValue, maxLength, onUpdate, onTruncated } = options;
+  const { editor, modelValue, limit, onUpdate, onTruncated } = options;
 
   const MODEL_SYNC_DELAY = 300;
   let modelSyncTimer: ReturnType<typeof setTimeout> | undefined;
@@ -60,7 +60,7 @@ export function useEditorModel(options: UseEditorModelOptions) {
 
   /**
    * onCreate: apply a value that arrived before the editor was created, and
-   * truncate the initial content if it already exceeds `maxLength`.
+   * truncate the initial content if it already exceeds `limit`.
    */
   const handleCreate = (created: Editor) => {
     if (pendingContent !== undefined && pendingContent !== created.getHTML()) {
@@ -71,18 +71,18 @@ export function useEditorModel(options: UseEditorModelOptions) {
     // from "" to "<p></p>".
     // Guard the fast-path read the same way checkLimit does: CharacterCount
     // isn't guaranteed to be loaded, fall back to plain text length.
-    const limit = maxLength();
+    const currentLimit = limit();
     const current =
       created.storage.characterCount?.characters?.() ?? created.getText({ blockSeparator: "" }).length;
-    if (limit && current > limit) {
-      checkLimit(created, limit);
+    if (currentLimit && current > currentLimit) {
+      checkLimit(created, currentLimit);
       modelValue.value = created.getHTML();
-      onTruncated?.(limit);
+      onTruncated?.(currentLimit);
     }
   };
 
   /**
-   * Call from the editor's `onUpdate`. Typing/formatting beyond `maxLength` is
+   * Call from the editor's `onUpdate`. Typing/formatting beyond `limit` is
    * blocked by the official `CharacterCount` plugin (`limit` + `autoTrim:
    * false`, configured by the component) BEFORE it reaches the document, so no
    * post-commit truncation is needed here — just forward the update and debounce

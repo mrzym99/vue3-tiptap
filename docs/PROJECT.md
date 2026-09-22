@@ -4,7 +4,7 @@
 
 `tip-tap-editor` 是一个基于 **TipTap**（`@tiptap/vue-3`）与 **Vue 3** 构建的富文本编辑器组件，内置可扩展的工具栏 UI。项目采用「扩展即配置」的设计理念：每一个编辑能力（加粗、斜体、下划线、引用、文本对齐等）都是一个 TipTap 扩展，同时通过扩展的 `button` 选项声明自己的工具栏按钮，工具栏会自动收集并渲染这些按钮，实现**功能与 UI 的自动绑定**。
 
-当前项目形态为一个可运行、可演进的 Demo / 组件原型，`App.vue` 中演示了组件的 `v-model` 双向绑定、`max-length` 字数限制、主题切换与中英文切换等能力。
+当前项目形态为一个可运行、可演进的 Demo / 组件原型，`App.vue` 中演示了组件的 `v-model` 双向绑定、`limit` 字数限制、主题切换与中英文切换等能力。
 
 ## 2. 技术栈
 
@@ -77,7 +77,8 @@ tip-tap-editor/
     │   │   │   ├── dialog-buttons/  # 模态对话框插入（图片/视频/YouTube/音频/Twitch/链接）
     │   │   │   └── render-item/     # 按扩展 button 声明动态渲染按钮
     │   │   ├── bubble-menu/    # 气泡菜单（格式条 + 浮动菜单 + extension 声明的气泡工具栏）
-    │   │   └── editor-content/ # 编辑区容器与内容样式
+    │   │   ├── editor-content/ # 编辑区容器与内容样式
+    │   │   └── character-limit/ # 字数上限计数器（123 / 500，右下角）
     │   └── ui-common/          # 通用 UI 基础组件（自研，零 UI 框架依赖）
     │       ├── action-button/      # 工具栏基础按钮（含 tooltip/active 态）
     │       ├── action-menu-button/ # 下拉菜单按钮
@@ -100,7 +101,7 @@ tip-tap-editor/
 | 属性          | 类型                | 默认值      | 说明                       |
 | ------------- | ------------------- | ----------- | -------------------------- |
 | `v-model`     | `string`            | 必填        | 编辑器 HTML 内容，双向绑定 |
-| `max-length`  | `number`            | `0`（不限） | 最大字数限制，超出自动截断 |
+| `limit`  | `number`            | `0`（不限） | 最大字数限制，超出自动截断 |
 | `disabled`    | `boolean`           | `false`     | 是否禁用编辑（只读）       |
 | `theme`       | `'light' \| 'dark'` | `'light'`   | 主题模式                   |
 | `placeholder` | `string`            | `-`         | 空文档时显示的占位文本     |

@@ -6,13 +6,15 @@ import type { LocaleTranslations } from "./locales";
 import zhTW from "./zh-TW";
 const content = ref("");
 
-content.value = ``;
+content.value = `43242423432432432423423423432423432423432423432424`;
 const theme = ref<ThemeName>("light");
 const locale = ref("zh");
 // Demo: add a third language ("zh-TW") via the `translations` prop
 const translations: LocaleTranslations = { "zh-TW": zhTW };
 const placeholder = ref("输入 @ 提及成员…");
-const maxLength = ref(0);
+// `limit` is read once at editor creation (runtime changes are not applied) —
+// edit this constant to try the character limit instead of binding a control.
+const limit = ref(0);
 const status = ref("(init)");
 // Show the sequence of editor events (deduped) so the new API is visible
 const statusEvents = ref<string[]>([]);
@@ -83,11 +85,6 @@ const extensions = [
       <input v-model="placeholder" class="app-select" style="width: 160px" />
     </div>
 
-    <div>
-      字数上限
-      <input v-model.number="maxLength" type="number" class="app-select" style="width: 70px" />
-    </div>
-
     <div class="app-status">
       {{ statusEvents.join(" → ") }}
       <button class="app-select" @click="editorRef?.focus()">聚焦</button>
@@ -118,12 +115,12 @@ const extensions = [
       :locale="locale"
       :translations="translations"
       :placeholder="placeholder"
-      :max-length="maxLength"
+      :limit="limit"
       :extensions="extensions"
       autofocus="end"
       @ready="pushStatus('ready')"
       @update="pushStatus('update')"
-      @truncated="pushStatus('truncated: max ' + $event.maxLength)"
+      @truncated="pushStatus('truncated: max ' + $event.limit)"
     />
     <br />
     Content:

@@ -10,8 +10,11 @@ export type { ImageUploader } from "./upload";
  * Props of the `TipTapEditor` component (modelValue is handled by v-model).
  */
 export interface TipTapEditorProps {
-  /** Max number of characters, 0 means unlimited */
-  maxLength?: number;
+  /**
+   * Max number of characters, 0 means unlimited. Read once at editor
+   * creation — runtime changes to this prop are not applied.
+   */
+  limit?: number;
   /** Whether editing is disabled (read-only) */
   disabled?: boolean;
   /** Theme mode */

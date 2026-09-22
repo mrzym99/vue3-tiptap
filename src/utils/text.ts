@@ -2,8 +2,8 @@ import type { Editor } from "@tiptap/core";
 
 /**
  * Trim content once on editor-creation when the initial document already
- * exceeds `maxLength`, cutting at the exact document position of the
- * maxLength-th character. (Typing past the limit while editing is handled by
+ * exceeds `limit`, cutting at the exact document position of the
+ * limit-th character. (Typing past the limit while editing is handled by
  * the official `CharacterCount.limit` plugin, so this runs only at create.)
  *
  * Note: plain text length cannot be used as a ProseMirror position — every
@@ -12,22 +12,22 @@ import type { Editor } from "@tiptap/core";
  * computes the real cut position.
  *
  * Newlines (paragraph breaks) do not count towards the limit: Enter is allowed
- * at exactly `maxLength` visible characters and the count stays put, because
+ * at exactly `limit` visible characters and the count stays put, because
  * both the fast path here and the counter UI rely on the `editor.storage`
  * `characterCount` (textSize mode, which strips block separators).
  *
  * @param editor editor instance
- * @param maxLength max length (0 = unlimited)
+ * @param limit max length (0 = unlimited)
  * @returns whether the document was truncated
  */
-export function checkLimit(editor: Editor, maxLength: number): boolean {
-  if (!maxLength) return false;
+export function checkLimit(editor: Editor, limit: number): boolean {
+  if (!limit) return false;
 
   // Fast path: nothing exceeds the limit. Reuse the incremental CharacterCount
   // storage instead of rescanning the whole document.
   const current =
     editor.storage.characterCount?.characters?.() ?? editor.getText({ blockSeparator: "" }).length;
-  if (current <= maxLength) return false;
+  if (current <= limit) return false;
 
   const doc = editor.state.doc;
   let textLength = 0;
@@ -39,9 +39,9 @@ export function checkLimit(editor: Editor, maxLength: number): boolean {
 
     if (node.isText) {
       const len = (node.text ?? "").length;
-      if (textLength + len > maxLength) {
-        // The maxLength-th character ends at pos + (maxLength - textLength)
-        cutPos = pos + (maxLength - textLength);
+      if (textLength + len > limit) {
+        // The limit-th character ends at pos + (limit - textLength)
+        cutPos = pos + (limit - textLength);
         return false;
       }
       textLength += len;

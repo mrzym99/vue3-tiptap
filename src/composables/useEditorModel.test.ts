@@ -8,7 +8,7 @@ import { CharacterCount } from "@tiptap/extensions";
 import { useEditorModel } from "./useEditorModel";
 import type { Transaction } from "@tiptap/pm/state";
 
-// CharacterCount is included because handleCreate's maxLength guard reads
+// CharacterCount is included because handleCreate's limit guard reads
 // `editor.storage.characterCount.characters()` directly (mirrors the component).
 const base = [Document, Paragraph, Text, CharacterCount];
 
@@ -46,7 +46,7 @@ describe("useEditorModel", () => {
     const model = useEditorModel({
       editor: editorRef,
       modelValue,
-      maxLength: () => 0,
+      limit: () => 0,
       onUpdate: () => updates++,
     });
     model.handleCreate(editor);
@@ -66,7 +66,7 @@ describe("useEditorModel", () => {
     const editor = createEditor();
     const editorRef = shallowRef(editor);
     const modelValue = ref("");
-    const model = useEditorModel({ editor: editorRef, modelValue, maxLength: () => 0 });
+    const model = useEditorModel({ editor: editorRef, modelValue, limit: () => 0 });
     model.handleCreate(editor);
     model.watchModel();
 
@@ -84,7 +84,7 @@ describe("useEditorModel", () => {
   it("applies a modelValue set before the editor was ready", async () => {
     const editorRef = shallowRef<Editor | undefined>(undefined);
     const modelValue = ref("");
-    const model = useEditorModel({ editor: editorRef, modelValue, maxLength: () => 0 });
+    const model = useEditorModel({ editor: editorRef, modelValue, limit: () => 0 });
     model.watchModel();
     // Value arrives while editor is still undefined.
     modelValue.value = "<p>pending</p>";
@@ -102,7 +102,7 @@ describe("useEditorModel", () => {
     const editor = createEditor("<p>origin</p>");
     const editorRef = shallowRef(editor);
     const modelValue = ref(editor.getHTML());
-    const model = useEditorModel({ editor: editorRef, modelValue, maxLength: () => 0 });
+    const model = useEditorModel({ editor: editorRef, modelValue, limit: () => 0 });
     model.handleCreate(editor);
     model.watchModel();
 
@@ -119,7 +119,7 @@ describe("useEditorModel", () => {
     const model = useEditorModel({
       editor: editorRef,
       modelValue,
-      maxLength: () => 5,
+      limit: () => 5,
       onTruncated: () => truncated++,
     });
     model.handleCreate(editor);
@@ -142,7 +142,7 @@ describe("useEditorModel", () => {
     const model = useEditorModel({
       editor: editorRef,
       modelValue,
-      maxLength: () => 6,
+      limit: () => 6,
       onTruncated: () => truncated++,
     });
     model.handleCreate(editor);

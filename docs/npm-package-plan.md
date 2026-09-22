@@ -17,7 +17,7 @@
 
 | 项        | 现状                                                                                                                      | 库化要求                                        |
 | --------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| 组件入口  | `src/components/index.vue`（已具备 modelValue/maxLength/disabled/theme/placeholder/autofocus props）                      | 需要导出                                        |
+| 组件入口  | `src/components/index.vue`（已具备 modelValue/limit/disabled/theme/placeholder/autofocus props）                      | 需要导出                                        |
 | i18n      | `src/plugins/i18.ts` 全局单例 + 4 个组件裸用 `useI18n()`（url-popover-button / RenderItem / bubble-menu / floating-menu） | **必须解耦**（宿主可能没有 vue-i18n）           |
 | naive-ui  | devDependencies，组件内显式 import                                                                                        | 应改为 **peerDependency**（宿主提供）           |
 | vue       | dependencies                                                                                                              | 应改为 **peerDependency**                       |
@@ -128,7 +128,7 @@ const content = ref("<p>hello</p>");
 <template>
   <TipTapEditor
     v-model="content"
-    :max-length="1000"
+    :limit="1000"
     theme="light"
     locale="zh"
     placeholder="请输入内容…"
