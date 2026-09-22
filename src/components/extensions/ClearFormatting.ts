@@ -6,13 +6,7 @@ import { withButton } from "@/utils/button";
 
 export interface ClearFormattingOptions extends GeneralOptions {}
 
-/**
- * One-click removal of all inline marks (bold/italic/code/highlight/color/
- * fontFamily/…) on the selection plus resetting block types (heading,
- * blockquote, …) back to plain paragraph.
- *
- * Pure ProseMirror commands, zero extra dependencies.
- */
+/** One-click removal of inline marks + block types on the selection (pure PM commands). */
 export const ClearFormatting = /* @__PURE__ */ Extension.create<ClearFormattingOptions>({
   // Must match the button key used in `defaultToolbar`
   name: "clearFormatting",

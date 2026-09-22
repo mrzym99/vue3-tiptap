@@ -40,11 +40,7 @@ import { useMediaForm } from "../../../../composables/useMediaForm.ts";
 import { isVideoUrl } from "@/utils/video-url";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
-/**
- * Video insert dialog: URL (Bilibili/Tencent/Youku/iQIYI or generic) +
- * optional width/height. The extension converts the URL to an embed player.
- * The URL is validated with the same rule the dialog uses to build the embed.
- */
+/** Video insert dialog: URL (validated like the embed converter) + optional width/height. */
 const props = defineProps<EXTActionButtonProps>();
 const dialogRef = useTemplateRef<InstanceType<typeof ActionDialogButton>>("dialog");
 const formEl = useTemplateRef<InstanceType<typeof Form>>("form");

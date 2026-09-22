@@ -22,11 +22,7 @@ export interface MentionItemsParams {
   editor: Editor;
 }
 
-/**
- * Data source injected by the host — either a static list (filtered by
- * `query` automatically) or a resolver function (sync or async):
- * `Mention.configure({ items: ({ query }) => fetchUsers(query) })`
- */
+/** Host-injected data source: a static list (auto-filtered by `query`) or a sync/async resolver. */
 export type MentionItems = MentionItem[] | ((props: MentionItemsParams) => MentionItem[] | Promise<MentionItem[]>);
 
 export interface MentionOptions extends TiptapMentionOptions {
@@ -45,11 +41,7 @@ function resolveItems(items: MentionItems | undefined, query: string, editor: Ed
   );
 }
 
-/**
- * Render the suggestion popup with a Vue component, re-parented into the
- * theme root so `--tiptap-*` vars apply (viewport coords stay valid via
- * `floatingUi.strategy: "fixed"`).
- */
+/** Render the suggestion popup as a Vue component, re-parented into the theme root. */
 function renderSuggestion() {
   let component: VueRenderer | null = null;
   let unmount: (() => void) | null = null;

@@ -1,8 +1,6 @@
 import type { InjectionKey } from "vue";
 
-/**
- * Validation rule for a form field.
- */
+/** Validation rule for a form field. */
 export interface FormRule {
   /** True when the value is acceptable. */
   validator: (value: unknown) => boolean;
@@ -14,9 +12,7 @@ export interface FormErrors {
   [field: string]: string | undefined;
 }
 
-/**
- * Context exposed to {@link FormItem} fields via provide/inject.
- */
+/** Context exposed to {@link FormItem} fields via provide/inject. */
 export interface FormContext {
   registerField: (name: string, rules: FormRule[]) => void;
   unregisterField: (name: string) => void;

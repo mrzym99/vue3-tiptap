@@ -34,13 +34,7 @@ import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import type { TranslateFn } from "@/types";
 
-/**
- * Presentational width/height field pair for media dialogs.
- *
- * A controlled input through `v-model:width` / `v-model:height`; registers both
- * fields (name="width"/"height") with the parent {@link Form} so they validate
- * and submit along with `src`.
- */
+/** Controlled width/height pair (`v-model:width`/`v-model:height`), registered with the parent Form. */
 defineProps<{
   width: string;
   height: string;

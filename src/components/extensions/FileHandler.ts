@@ -5,10 +5,7 @@ import { FileHandler as TiptapFileHandler } from "@tiptap/extension-file-handler
 
 export interface FileHandlerOptions extends TiptapFileHandlerOptions {}
 
-/**
- * Handle dropped / pasted image files by inserting them as base64 images.
- * @returns true when at least one image file was handled
- */
+/** Insert dropped/pasted image files as base64 images; returns true when any was handled. */
 function handleImageFiles(editor: Editor, files: File[]): boolean {
   let handled = false;
   files.forEach((file) => {

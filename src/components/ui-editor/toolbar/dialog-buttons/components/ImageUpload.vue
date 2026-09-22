@@ -23,11 +23,7 @@ import TiptapButton from "@/components/ui-common/button/index.vue";
 import { useTiptapLocale } from "@/locales";
 import type { ImageOptions } from "@/components/extensions/Image";
 
-/**
- * Standalone image upload control.
- * Reads the upload callback from the configured `image` extension options
- * (`Image.configure({ upload })`) and emits the uploaded URL on success.
- */
+/** Upload control reading `Image.configure({ upload })`; emits the uploaded URL on success. */
 const props = defineProps<{ editor: Editor }>();
 
 const emit = defineEmits<{ success: [url: string] }>();

@@ -11,14 +11,7 @@
 </template>
 
 <script setup lang="ts">
-/**
- * Shared text button (Notion Style).
- *
- * - default: transparent bg, hover/active only deepen the background
- *   (#efedea / #e3e1db) — no translate/scale, no border/shadow jump
- * - primary: blue bg + white text (--tiptap-btn-primary-*)
- * - all transitions are 150ms (duration-150)
- */
+/** Shared text button (Notion Style): default variant deepens bg on hover; primary is accent-filled. */
 const props = withDefaults(
   defineProps<{
     variant?: "default" | "primary";

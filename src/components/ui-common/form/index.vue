@@ -33,10 +33,7 @@ import {
 } from "./types";
 
 const props = defineProps({
-  /**
-   * Field value getters: `{ [field]: () => value }` used by validation.
-   * FormItem reads its current value through this map on submit.
-   */
+  /** Field value getters `{ [field]: () => value }`, read by validation on submit */
   model: {
     type: Object as PropType<Record<string, () => unknown>>,
     default: () => ({}),

@@ -15,11 +15,7 @@ export interface UseFloatingOptions {
   strategy?: "fixed" | "absolute";
 }
 
-/**
- * Shared floating-layer positioning (computePosition + autoUpdate).
- * Popover (click interaction) and Tooltip (hover interaction) both use this
- * for positioning while keeping their own interaction logic.
- */
+/** Shared floating positioning (computePosition + autoUpdate) for popover/tooltip layers. */
 export function useFloating(
   triggerRef: Ref<HTMLElement | null>,
   floatingRef: Ref<HTMLElement | null>,

@@ -39,9 +39,7 @@ import MediaDimensionFields from "./components/MediaDimensionFields.vue";
 import { useMediaForm } from "../../../../composables/useMediaForm.ts";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
-/**
- * YouTube insert dialog: URL + optional width/height.
- */
+/** YouTube insert dialog: URL + optional width/height. */
 const props = defineProps<EXTActionButtonProps>();
 const dialogRef = useTemplateRef<InstanceType<typeof ActionDialogButton>>("dialog");
 const formEl = useTemplateRef<InstanceType<typeof Form>>("form");

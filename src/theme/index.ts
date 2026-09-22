@@ -7,12 +7,7 @@ function getTheme(name: ThemeName): Theme {
   return name === "dark" ? darkTheme : lightTheme;
 }
 
-/**
- * Apply theme CSS variables to a target element (defaults to the document
- * root): base tokens + the selected color theme (`light` | `dark`) +
- * `overrides` merged last. Scoping to an element keeps multiple editor
- * instances' themes independent.
- */
+/** Apply base + selected color theme + overrides as `--tiptap-*` vars on the target element. */
 export function applyTheme(
   name: ThemeName,
   target: HTMLElement = document.documentElement,

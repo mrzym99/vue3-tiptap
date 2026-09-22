@@ -37,11 +37,7 @@ const show = ref(false);
 const href = ref("");
 const label = ref("");
 
-/**
- * Snapshot of whether a text range was selected when the popover opened.
- * The popover's content (URL-only vs URL+label) depends on this, and it must
- * NOT react to later selection changes (e.g. clicking the apply button).
- */
+/** Whether a text range was selected at open; must not react to later selection changes. */
 const hasSelectionAtOpen = ref(false);
 
 const isLinkActive = computed(() => props.editor.isActive("link"));

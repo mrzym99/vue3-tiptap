@@ -53,14 +53,9 @@ const visibleButtons = computed(() => {
   return buttons.filter((b) => keys.includes(b.key));
 });
 
-/**
- * Hide the text-selection bubble menu while the caret is inside a link or a
- * media node — the dedicated link/media bubbles take over there. Drag-
- * selected table cells (a CellSelection) are left to the table bubble, while
- * text selected inside a single cell still shows the formatting bubble.
- * (`editor` is typed loosely: tiptap's shouldShow passes its own Editor
- *  subclass, which differs from the @tiptap/vue-3 Editor type.)
- */
+// Hide while a link/media/table bubble owns the caret; text in a single cell
+// still gets the formatting bubble. (`editor` typed loosely: tiptap's
+// shouldShow passes its own Editor subclass.)
 function shouldShow({
   editor: e,
   state,

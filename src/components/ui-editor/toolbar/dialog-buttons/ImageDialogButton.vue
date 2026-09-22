@@ -55,10 +55,7 @@ import { isHttpUrl, useMediaForm } from "../../../../composables/useMediaForm.ts
 import type { ImageOptions } from "@/components/extensions/Image";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
-/**
- * Image insert dialog: URL tab (http(s) or `data:image/...`) and Upload tab
- * (via the `image` extension's `upload` option), shared width/height fields.
- */
+/** Image insert dialog: URL / Upload tabs + shared width/height fields. */
 const props = defineProps<EXTActionButtonProps>();
 const t = props.t;
 

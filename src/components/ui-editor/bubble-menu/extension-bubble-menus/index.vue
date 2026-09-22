@@ -18,14 +18,7 @@ const props = defineProps({
 const { t } = useTiptapLocale();
 const translate = t as TranslateFn;
 
-/**
- * Floating toolbars declared by extensions via their `bubbleMenu` option
- * (e.g. the table toolbar). Mirrors the toolbar's `options.button` discovery:
- * scan `extensionManager.extensions`, call each view with `{ editor, t }`, and
- * mount what it returns — so an extension ships its own bubble UI with no
- * hardcoding in the editor component. Extensions set `bubbleMenu: false` (or
- * omit it) to opt out; `undefined`/`false` are skipped here.
- */
+/** Mounts the floating toolbars extensions declare via their `bubbleMenu` option (e.g. table). */
 const menus = computed<ButtonViewReturn[]>(() =>
   props.editor.extensionManager.extensions.flatMap((extension) => {
     const view = (extension.options as Record<string, unknown> | undefined)?.bubbleMenu;

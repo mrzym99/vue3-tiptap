@@ -39,9 +39,7 @@ import MediaDimensionFields from "./components/MediaDimensionFields.vue";
 import { useMediaForm } from "../../../../composables/useMediaForm.ts";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
-/**
- * Twitch insert dialog: URL + optional width/height.
- */
+/** Twitch insert dialog: URL + optional width/height. */
 const props = defineProps<EXTActionButtonProps>();
 const dialogRef = useTemplateRef<InstanceType<typeof ActionDialogButton>>("dialog");
 const formEl = useTemplateRef<InstanceType<typeof Form>>("form");

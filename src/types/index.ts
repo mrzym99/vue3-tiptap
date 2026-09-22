@@ -24,31 +24,17 @@ export interface TipTapEditorProps {
   translations?: LocaleTranslations;
   /** Focus on mount; `"start"` / `"end"` / a position pass through to tiptap */
   autofocus?: boolean | "start" | "end" | number;
-  /**
-   * Toolbar button selection. Keys are extension names.
-   * - `string`: TinyMCE-style layout, e.g. "bold italic | underline strike"
-   * - `string[]`: render only these buttons, in this order
-   * - `{ include?, exclude? }`: filter buttons
-   * - `undefined`: default layout
-   */
+  /** Toolbar button selection; keys are extension names, `undefined` = default layout */
   toolbar?: Toolbar;
   /** Bubble-menu selection; `undefined`/`false` = disabled (does NOT fall back to `toolbar`) */
   bubbleMenu?: Toolbar | false;
   /** Floating-menu selection; `undefined`/`false` = disabled (does NOT fall back to `toolbar`) */
   floatingMenu?: Toolbar | false;
-  /**
-   * Extensions to load — nothing is included automatically.
-   * `extensions: [StarterKit.configure({ twitch: false })]` or hand-pick
-   * `[Bold, Italic, Mention.configure({ items })]`. Later entries win on
-   * name conflicts.
-   */
+  /** Extensions to load — nothing included automatically; later entries win on name conflicts */
   extensions?: import("@tiptap/core").Extensions;
 }
 
-/**
- * Toolbar configuration: a TinyMCE-style string, an ordered key list,
- * `{ include?, exclude? }` filters, or undefined for {@link defaultToolbar}.
- */
+/** Toolbar config: a TinyMCE-style string, an ordered key list, or `{ include?, exclude? }` filters. */
 export type Toolbar = string | string[] | { include?: string[]; exclude?: string[] };
 
 /** Default toolbar layout, TinyMCE-style; keys are Tiptap extension names. */
@@ -66,10 +52,7 @@ export type TranslateFn = (key: string, named?: Record<string, unknown> | number
 export interface GeneralOptions {
   /** Toolbar button view */
   button: ButtonView;
-  /**
-   * Floating toolbar owned by the extension while the caret is inside its
-   * content. Set to `false` to disable.
-   */
+  /** Extension-owned floating toolbar while the caret is inside its content; `false` disables */
   bubbleMenu?: ButtonView | false;
 }
 

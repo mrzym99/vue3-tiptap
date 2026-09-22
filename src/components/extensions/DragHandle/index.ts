@@ -16,10 +16,7 @@ export interface DragHandleOptions {
   render(): HTMLElement;
   /** floating-ui position computation config for the handle. */
   computePositionConfig?: ComputePositionConfig;
-  /**
-   * Returns the virtual element the handle is positioned against. Defaults to
-   * the bounding rect of the hovered block.
-   */
+  /** Virtual element to position against; defaults to the hovered block's rect. */
   getReferencedVirtualElement?: () => VirtualElement | null;
   /** Locks the drag handle in place and visibility. */
   locked?: boolean;
@@ -29,16 +26,9 @@ export interface DragHandleOptions {
   onElementDragStart?: (e: DragEvent) => void;
   /** Called when the drag ends on the handle. */
   onElementDragEnd?: (e: DragEvent) => void;
-  /**
-   * Enable drag handles for nested content (list items, blockquotes, etc.).
-   * `false` (default) targets root-level blocks only; `true` enables with
-   * sensible defaults; an object gives full rule/edge-detection control.
-   */
+  /** Nested-content dragging: `false` (default) = root blocks only; `true` = defaults; object = full control */
   nested?: boolean | NestedDragHandleOptions;
-  /**
-   * Limit the drag image clone to a subset of CSS properties instead of
-   * copying all computed styles (perf win on complex selections).
-   */
+  /** Limit the drag image clone to a subset of CSS properties (perf win on complex selections) */
   dragImageProperties?: string[];
   /** Accessible label / title for the handle. */
   ariaLabel?: string;

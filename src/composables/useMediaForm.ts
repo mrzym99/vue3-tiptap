@@ -23,13 +23,7 @@ export interface MediaPayload {
   height?: number;
 }
 
-/**
- * Shared state + plumbing for media-insert dialog buttons: form model
- * (src/width/height), required-URL rule, and the submit→insert→close flow.
- *
- * Pass `validateUrl` to additionally require a well-formed URL; empty values
- * always fall through to the required rule.
- */
+/** Shared form state + rules for media-insert dialogs; `validateUrl` adds a well-formed-URL check. */
 export function useMediaForm(
   props: EXTActionButtonProps,
   command: (payload: MediaPayload) => void,

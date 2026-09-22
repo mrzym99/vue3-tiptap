@@ -3,13 +3,7 @@
 </template>
 
 <script setup lang="ts">
-/**
- * Shared text input (Notion Style).
- *
- * - v-model aware (modelValue / update:modelValue)
- * - native attrs/events (type, keydown, …) fall through to the <input>
- * - focus: border turns accent blue + 2px focus ring (--tiptap-focus-ring)
- */
+/** Shared text input (Notion Style); native attrs/events fall through to the <input>. */
 defineOptions({ inheritAttrs: false });
 
 withDefaults(

@@ -21,11 +21,7 @@ import Dialog from "@/components/ui-common/dialog/index.vue";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { ActionButtonProps } from "@/components/ui-common/action-button/props";
 
-/**
- * Action button that opens a centered modal dialog. The default slot receives
- * `{ close }`; `opened` fires after open (for prefilling) and `closed` after
- * any close (submit / cancel / Esc / mask click).
- */
+/** Action button that opens a centered modal dialog; the slot receives `{ close }`. */
 defineProps<{
   icon: Component;
   tooltip?: string;

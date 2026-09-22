@@ -13,14 +13,7 @@ import { computed, inject, onBeforeUnmount, onMounted } from "vue";
 import { formContextKey } from "@/components/ui-common/form/types";
 import type { FormItemProps } from "./props";
 
-/**
- * Form item: label + control slot + inline error, wired to the parent
- * {@link Form} context.
- *
- * - `name` + `rules` register the field for form-level validation
- * - the default slot receives `{ id, error, validate }` so the control can
- *   bind `:id` (label for=) and validate on input/blur
- */
+/** Form item: label + control slot + inline error; the slot receives `{ id, error, validate }`. */
 const props = withDefaults(defineProps<FormItemProps>(), {
   label: undefined,
   rules: () => [],

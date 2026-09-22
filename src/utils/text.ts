@@ -1,12 +1,6 @@
 import type { Editor } from "@tiptap/core";
 
-/**
- * Trim over-limit content once on editor-creation (typing past the limit while
- * editing is handled by the official `CharacterCount.limit` plugin). Cuts at
- * the exact document position of the limit-th character — plain text length
- * can't be used as a position, since block nodes occupy extra positions.
- * Newlines don't count towards the limit, matching the characterCount storage.
- */
+/** Trim over-limit content once on editor-creation; cuts at the exact position of the limit-th character. */
 export function checkLimit(editor: Editor, limit: number): boolean {
   if (!limit) return false;
 

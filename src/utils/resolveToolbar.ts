@@ -1,11 +1,6 @@
 import { defaultToolbar, type Toolbar } from "@/types";
 
-/**
- * Resolve a Toolbar config against the full button-key list. Supports a
- * TinyMCE-style string (space-separated keys, `|` separators), a plain key
- * array, `{ include?, exclude? }`, or `undefined` (= {@link defaultToolbar}).
- * Unknown keys are ignored.
- */
+/** Resolve a Toolbar config to ordered keys + separator positions; unknown keys are ignored. */
 export type ToolbarLayout = {
   /** Ordered button keys to render */
   keys: string[];

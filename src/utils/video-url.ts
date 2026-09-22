@@ -1,8 +1,4 @@
-/**
- * Convert a video platform page URL to its embeddable player URL
- * (Bilibili, Tencent, Youku, iQIYI, Xigua, MangoTV, Douyin, NetEase;
- * generic http(s) URLs pass through). Returns null when not recognized.
- */
+/** Convert a supported platform's page URL to its embed URL; generic http(s) URLs pass through, unknown → null. */
 export function toEmbedUrl(url: string): string | null {
   const u = url.trim();
   if (!u) return null;

@@ -1,9 +1,6 @@
 import type { Theme } from "@/types";
 
-/**
- * Dark theme — dark Notion palette (#191919 canvas, #E6E6E6 text), mirroring
- * the light theme's token structure.
- */
+/** Dark theme — dark Notion palette mirroring the light theme's token structure. */
 export const darkTheme: Theme = {
   // --- surfaces ---
   "--tiptap-color-bg": "#1F1F1F",

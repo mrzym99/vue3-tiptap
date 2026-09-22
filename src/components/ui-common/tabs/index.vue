@@ -26,12 +26,7 @@ export interface TabItem {
   label: string;
 }
 
-/**
- * Minimal tab switcher.
- * - `v-model` holds the active tab name
- * - the panel renders the slot matching the active name
- *   (e.g. `<template #url>…</template>` for the "url" tab)
- */
+/** Minimal tab switcher: `v-model` holds the active name; the matching slot (e.g. `#url`) is the panel. */
 defineProps<{
   tabs: TabItem[];
   modelValue: string;

@@ -7,11 +7,7 @@ import MediaBubbleMenu from "@/components/ui-editor/bubble-menu/media-bubble-men
 import { withButton } from "@/utils/button";
 
 export interface ImageOptions extends TiptapImageOptions, GeneralOptions {
-  /**
-   * Custom image uploader. Configure the extension to enable the "upload"
-   * tab in the image dialog:
-   * `Image.configure({ upload: async (file) => url })`
-   */
+  /** Custom uploader; enables the "upload" tab: `Image.configure({ upload: async (file) => url })` */
   upload?: ImageUploader;
 }
 

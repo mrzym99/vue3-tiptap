@@ -40,11 +40,7 @@ const bubbleOptions = {
   shift: { padding: 8 },
 };
 
-/**
- * The media node's DOM element — anchoring to the node (instead of the
- * default selection rect) keeps the toolbar attached to the media. Returns
- * `null` to fall back to tiptap's selection-based positioning.
- */
+/** Anchor to the media node's DOM element; `null` falls back to selection-based positioning. */
 function getReferencedVirtualElement(): HTMLElement | null {
   const { view, state } = props.editor;
   const { selection } = state;

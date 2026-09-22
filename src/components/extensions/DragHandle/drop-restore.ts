@@ -78,10 +78,7 @@ interface DragHandleRange {
   $to: ResolvedPos;
 }
 
-/**
- * Computes the selection ranges to drag: the hovered block (or the current
- * multi-block NodeRange selection when the drag starts inside it).
- */
+/** Ranges to drag: the hovered block, or the current NodeRange selection when inside one. */
 function getDragHandleRanges(
   event: DragEvent,
   editor: Editor,
@@ -107,11 +104,7 @@ function getDragHandleRanges(
   return getSelectionRanges($from, $to, 0, { extendOnBoundaryOverlap: false });
 }
 
-/**
- * Handles the native dragstart on the handle: builds the drag preview
- * (styled clones of the dragged blocks), sets `view.dragging` so ProseMirror
- * performs the move on drop, and dispatches the block selection.
- */
+/** dragstart on the handle: build the drag preview, set `view.dragging`, dispatch the selection. */
 export function dragHandler(
   event: DragEvent,
   editor: Editor,
@@ -220,10 +213,7 @@ export interface PendingDropRestore {
   depth: number;
 }
 
-/**
- * Maps the pending drop-restore anchor through a document change; returns
- * `null` when the anchor was deleted.
- */
+/** Map the pending drop-restore anchor through a doc change; null when deleted. */
 export function mapPendingRestoreAnchor(
   pendingRestore: PendingDropRestore,
   tr: Transaction,
@@ -249,10 +239,7 @@ export function getActiveDragRange(selection: import("@tiptap/pm/state").Selecti
   };
 }
 
-/**
- * Computes the position range of the freshly dropped blocks so a
- * `NodeRangeSelection` can be restored over them after a drag-and-drop.
- */
+/** Position range of the freshly dropped blocks, for restoring the selection. */
 function getDroppedBlockRange(
   doc: PMNode,
   anchorPos: number,

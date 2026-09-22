@@ -1,9 +1,6 @@
 import { Focus as TiptapFocus } from "@tiptap/extension-focus";
 
-/**
- * Highlights the currently focused block and dims the rest.
- * No toolbar button — pure behavior (see editor-content styles for .has-focus).
- */
+/** Highlights the focused block (no button; see the `.has-focus` styles). */
 export const Focus = TiptapFocus.configure({
   className: "has-focus",
   mode: "shallowest",

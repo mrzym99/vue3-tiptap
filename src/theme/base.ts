@@ -1,11 +1,6 @@
 import type { Theme } from "@/types";
 
-/**
- * Base tokens: non-color values only (sizes/radius/spacing/z-index).
- * All colors live in the concrete themes (light.ts / dark.ts) — including the
- * FIXED tooltip colors (black bg + white text), which both themes set to the
- * same value so the tooltip does not follow the theme, unlike the popover.
- */
+/** Base tokens: non-color values only; colors (incl. fixed tooltip colors) live in light.ts / dark.ts. */
 export const baseTheme: Theme = {
   "--tiptap-btn-size": "32px",
   "--tiptap-gap-xs": "2px",

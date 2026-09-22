@@ -37,9 +37,7 @@ import TiptapButton from "@/components/ui-common/button/index.vue";
 import { isHttpUrl, useMediaForm } from "../../../../composables/useMediaForm";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
-/**
- * Audio insert dialog: plain URL.
- */
+/** Audio insert dialog: plain URL. */
 const props = defineProps<EXTActionButtonProps>();
 const dialogRef = useTemplateRef<InstanceType<typeof ActionDialogButton>>("dialog");
 const formEl = useTemplateRef<InstanceType<typeof Form>>("form");

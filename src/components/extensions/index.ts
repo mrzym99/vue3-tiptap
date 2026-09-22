@@ -124,12 +124,7 @@ export default builtinExtensions;
 export type StarterKitOption = Record<string, unknown> | false;
 export type StarterKitOptions = Record<string, StarterKitOption | undefined>;
 
-/**
- * Tiptap-style bundle of all built-in extensions (Document / Paragraph / Text /
- * Placeholder are excluded — the editor component always provides them). Pass
- * it via the `extensions` prop, or hand-pick individual named exports for a
- * smaller bundle. `false` disables an entry, an object configures it.
- */
+/** All built-in extensions minus the structural core (Document/Paragraph/Text/Placeholder); `false` disables, an object configures. */
 export const StarterKit = Extension.create<StarterKitOptions>({
   name: "starterKit",
   addExtensions() {

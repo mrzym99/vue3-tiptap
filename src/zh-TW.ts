@@ -1,8 +1,4 @@
-/**
- * Demo: Traditional Chinese provided by the HOST via the `translations` prop
- * (not built into the library). Shows how to add a third language without
- * touching src/locales — any locale id not colliding with "zh"/"en" works.
- */
+/** Demo: a host-provided third language ("zh-TW") via the `translations` prop. */
 export default {
   bold: "粗體",
   italic: "斜體",

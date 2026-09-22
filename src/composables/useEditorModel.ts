@@ -3,16 +3,9 @@ import type { Editor } from "@tiptap/core";
 import type { Transaction } from "@tiptap/pm/state";
 import { checkLimit } from "@/utils/text";
 
-/**
- * v-model two-way binding: debounced HTML write-back to `modelValue`, plus
- * one-time `limit` truncation on create (typing past the limit is blocked by
- * the CharacterCount plugin, configured in the component).
- */
+/** v-model binding: debounced HTML write-back + one-time `limit` truncation on create. */
 export interface UseEditorModelOptions {
-  /**
-   * The editor ref. Must be a SHALLOW ref — a deep ref proxies the Editor and
-   * dispatched transactions then fail ProseMirror's checks.
-   */
+  /** Must be a SHALLOW ref — a deep ref breaks ProseMirror's transaction checks */
   editor: Ref<Editor | undefined>;
   /** The v-model binding. */
   modelValue: Ref<string>;

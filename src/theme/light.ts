@@ -1,10 +1,6 @@
 import type { Theme } from "@/types";
 
-/**
- * Light theme — Notion style (docs/style/notion.md): beige canvas #F7F6F3,
- * dark-gray text #37352F, purple accent #7C5CF0.
- * Old token names (--tiptap-btn--bg-*, --tiptap-color-text-3) stay as aliases.
- */
+/** Light theme — Notion style (docs/style/notion.md); old token names stay as aliases. */
 export const lightTheme: Theme = {
   // --- surfaces ---
   "--tiptap-color-bg": "#FFFFFF",

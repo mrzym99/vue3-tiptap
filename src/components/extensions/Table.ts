@@ -14,11 +14,7 @@ import { withButton } from "@/utils/button";
 
 export interface TableOptions extends TiptapTableOptions, GeneralOptions {}
 
-/**
- * Table grid, composed from the four pieces explicitly (not via `TableKit`,
- * whose inner `Table` causes a duplicate-name conflict) so a single `table`
- * extension carries the toolbar button + bubble menu.
- */
+/** Table grid, composed explicitly (not via `TableKit` — duplicate-name conflict). */
 export const Table = TiptapTable.extend<TableOptions>({
   addOptions() {
     return {
