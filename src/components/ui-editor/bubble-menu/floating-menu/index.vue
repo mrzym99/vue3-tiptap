@@ -1,6 +1,6 @@
 <template>
   <FloatingMenu
-    v-if="editor && !visibleButtons.length"
+    v-if="editor && visibleButtons.length"
     :editor="editor"
     :tippy-options="{ duration: 150, maxWidth: 'none' }"
   >
@@ -24,7 +24,8 @@ import TaskListButton from "@/components/ui-editor/toolbar/buttons/TaskListButto
 
 const props = defineProps<{
   editor: Editor;
-  toolbar?: Toolbar;
+  /** Opt-in: `undefined`/`false` disable the menu entirely */
+  toolbar?: Toolbar | false;
 }>();
 
 const { t } = useTiptapLocale();
@@ -37,6 +38,8 @@ const buttons: { key: string; component: Component }[] = [
 ];
 
 const visibleButtons = computed(() => {
+  // Disabled (undefined / false) renders nothing — never the default layout
+  if (!props.toolbar) return [];
   const { keys } = resolveToolbar(
     props.toolbar,
     buttons.map((b) => b.key),

@@ -3,8 +3,8 @@
     <div class="tiptap-box" v-if="editor">
       <ToolBar :editor="editor" :toolbar="props.toolbar" />
       <EditorContent :editor="editor" />
-      <BubbleMenuBar :editor="editor" :toolbar="props.bubbleMenu ?? props.toolbar" />
-      <FloatingMenuBar :editor="editor" :toolbar="props.floatingMenu ?? props.toolbar" />
+      <BubbleMenuBar :editor="editor" :toolbar="props.bubbleMenu" />
+      <FloatingMenuBar :editor="editor" :toolbar="props.floatingMenu" />
       <ExtensionBubbleMenus :editor="editor" />
       <CharacterLimit :editor="editor" :limit="props.limit" />
     </div>

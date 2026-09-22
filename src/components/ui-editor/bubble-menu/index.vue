@@ -29,7 +29,8 @@ import LinkButton from "@/components/ui-editor/toolbar/buttons/LinkButton.vue";
 
 const props = defineProps<{
   editor: Editor;
-  toolbar?: Toolbar;
+  /** Opt-in: `undefined`/`false` disable the menu entirely */
+  toolbar?: Toolbar | false;
 }>();
 
 const { t } = useTiptapLocale();
@@ -43,6 +44,8 @@ const buttons: { key: string; component: Component }[] = [
 ];
 
 const visibleButtons = computed(() => {
+  // Disabled (undefined / false) renders nothing — never the default layout
+  if (!props.toolbar) return [];
   const { keys } = resolveToolbar(
     props.toolbar,
     buttons.map((b) => b.key),

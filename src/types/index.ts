@@ -32,10 +32,10 @@ export interface TipTapEditorProps {
    * - `undefined`: default layout
    */
   toolbar?: Toolbar;
-  /** Bubble-menu selection, falls back to `toolbar` when omitted */
-  bubbleMenu?: Toolbar;
-  /** Floating-menu selection, falls back to `toolbar` when omitted */
-  floatingMenu?: Toolbar;
+  /** Bubble-menu selection; `undefined`/`false` = disabled (does NOT fall back to `toolbar`) */
+  bubbleMenu?: Toolbar | false;
+  /** Floating-menu selection; `undefined`/`false` = disabled (does NOT fall back to `toolbar`) */
+  floatingMenu?: Toolbar | false;
   /**
    * Extensions to load — nothing is included automatically.
    * `extensions: [StarterKit.configure({ twitch: false })]` or hand-pick
