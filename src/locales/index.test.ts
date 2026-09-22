@@ -1,5 +1,8 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createLocaleContext, detectLocale } from "./index";
+import en from "./en";
+import zh from "./zh";
+import zhTW from "@/zh-TW";
 
 describe("detectLocale", () => {
   afterEach(() => vi.unstubAllGlobals());
@@ -39,5 +42,17 @@ describe("createLocaleContext().t", () => {
   it("resolves host-provided translations for a custom locale", () => {
     const ctx = createLocaleContext("fr", { fr: { bold: "Gras" } });
     expect(ctx.t("bold")).toBe("Gras");
+  });
+});
+
+describe("locale pack key parity", () => {
+  // New UI strings must be added to every pack at once — this catches a pack
+  // that missed a key (missing keys render as the raw key at runtime).
+  it("en and zh expose identical key sets", () => {
+    expect(Object.keys(en).sort()).toEqual(Object.keys(zh).sort());
+  });
+
+  it("the zh-TW host pack covers the same keys as zh", () => {
+    expect(Object.keys(zhTW).sort()).toEqual(Object.keys(zh).sort());
   });
 });

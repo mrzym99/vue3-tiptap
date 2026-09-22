@@ -77,6 +77,12 @@ export function isVideoUrl(url: string): boolean {
   return toEmbedUrl(url) !== null;
 }
 
-/** Paste-rule pattern matching supported video page URLs. */
+/**
+ * Paste-rule pattern matching supported video page URLs.
+ *
+ * Must carry the `g` flag: tiptap's paste rules consume it via
+ * `String.prototype.matchAll`, which throws on a non-global regex
+ * (the official URL extensions mark theirs global for the same reason).
+ */
 export const VIDEO_URL_REGEX =
-  /(?:bilibili\.com\/video\/|v\.qq\.com\/x\/|v\.youku\.com\/v_show|iqiyi\.com\/[av]_|ixigua\.com\/|mgtv\.com\/b\/|douyin\.com\/video\/|open\.163\.com\/newview\/movie\/)[^\s<>]+/i;
+  /(?:bilibili\.com\/video\/|v\.qq\.com\/x\/|v\.youku\.com\/v_show|iqiyi\.com\/[av]_|ixigua\.com\/|mgtv\.com\/b\/|douyin\.com\/video\/|open\.163\.com\/newview\/movie\/)[^\s<>]+/gi;
