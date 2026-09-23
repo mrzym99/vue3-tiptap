@@ -44,6 +44,7 @@ const props = withDefaults(defineProps<TipTapEditorProps>(), {
   toolbar: undefined,
   bubbleMenu: undefined,
   floatingMenu: undefined,
+  showInvisibleCharacters: false,
   extensions: () => [],
 });
 
@@ -100,6 +101,11 @@ const editor = useEditor({
   editable: !props.disabled,
   autofocus: props.autofocus,
   onCreate: ({ editor: created }) => {
+    // Invisible characters are opt-in via prop; the extension may be disabled
+    // by the host, so guard the command before dispatching.
+    if (props.showInvisibleCharacters && typeof created.commands.showInvisibleCharacters === "function") {
+      created.commands.showInvisibleCharacters();
+    }
     model.handleCreate(created);
     emit("ready", created);
   },
@@ -126,6 +132,18 @@ watch(
   (newValue) => {
     if (!editor.value) return;
     editor.value.setEditable(!newValue);
+  },
+);
+
+// Invisible characters are opt-in via prop; the extension may be disabled by
+// the host, so guard the command before dispatching.
+watch(
+  () => props.showInvisibleCharacters,
+  (visible) => {
+    const ed = editor.value;
+    if (ed && typeof ed.commands.showInvisibleCharacters === "function") {
+      visible ? ed.commands.showInvisibleCharacters() : ed.commands.hideInvisibleCharacters();
+    }
   },
 );
 

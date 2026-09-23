@@ -82,7 +82,6 @@ export default {
   prevMatch: "上一个",
   nextMatch: "下一个",
   clear: "清除",
-  invisibleCharacters: "显示隐藏字符",
   textAlign: "文本对齐",
   alignLeft: "左对齐",
   alignRight: "右对齐",

@@ -30,6 +30,8 @@ export interface TipTapEditorProps {
   bubbleMenu?: Toolbar | false;
   /** Floating-menu selection; `undefined`/`false` = disabled (does NOT fall back to `toolbar`) */
   floatingMenu?: Toolbar | false;
+  /** Show invisible characters (spaces, hard breaks, paragraph marks); default hidden */
+  showInvisibleCharacters?: boolean;
   /** Extensions to load — nothing included automatically; later entries win on name conflicts */
   extensions?: import("@tiptap/core").Extensions;
 }
@@ -43,7 +45,7 @@ export const defaultToolbar =
   "bold italic strike underline | code highlight subscript superscript | " +
   "heading horizontalRule blockquote textAlign | bulletList orderedList taskList | " +
   "link codeBlock details | image video youtube audio twitch | color fontFamily fontSize | " +
-  "table | findAndReplace invisibleCharacters";
+  "table | findAndReplace";
 
 /** Translation function compatible with the basic vue-i18n `t` signature. */
 export type TranslateFn = (key: string, named?: Record<string, unknown> | number, plural?: number) => string;

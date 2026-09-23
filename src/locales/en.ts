@@ -82,7 +82,6 @@ export default {
   prevMatch: "Prev",
   nextMatch: "Next",
   clear: "Clear",
-  invisibleCharacters: "Invisible Characters",
   textAlign: "Text Align",
   alignLeft: "Align Left",
   alignRight: "Align Right",

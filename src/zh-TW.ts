@@ -83,7 +83,6 @@ export default {
   prevMatch: "上一個",
   nextMatch: "下一個",
   clear: "清除",
-  invisibleCharacters: "顯示隱藏字元",
   textAlign: "文字對齊",
   alignLeft: "靠左對齊",
   alignRight: "靠右對齊",
