@@ -58,19 +58,21 @@ describe("extension UI declarations", () => {
 });
 
 describe("StarterKit", () => {
-  it("expands into the built-in extensions", () => {
+  it("expands into the built-in extensions except youtube/twitch", () => {
     const editor = createKitEditor();
     const names = editor.extensionManager.extensions.map((e) => e.name);
-    for (const expected of ["bold", "italic", "link", "image", "table", "twitch", "mention"]) {
+    for (const expected of ["bold", "italic", "link", "image", "table", "mention"]) {
       expect(names, expected).toContain(expected);
     }
+    expect(names).not.toContain("youtube");
+    expect(names).not.toContain("twitch");
     editor.destroy();
   });
 
   it("`false` removes an extension, an object configures it", () => {
-    const editor = createKitEditor({ twitch: false, image: { width: 123 } });
+    const editor = createKitEditor({ audio: false, image: { width: 123 } });
     const names = editor.extensionManager.extensions.map((e) => e.name);
-    expect(names).not.toContain("twitch");
+    expect(names).not.toContain("audio");
     const image = editor.extensionManager.extensions.find((e) => e.name === "image");
     expect((image!.options as { width?: number }).width).toBe(123);
     editor.destroy();
