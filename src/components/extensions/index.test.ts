@@ -4,13 +4,8 @@ import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import { StarterKit } from "./index";
-import { Audio } from "./Audio";
-import { Image } from "./Image";
 import { Link } from "./Link";
 import { Table } from "./Table";
-import { Twitch } from "./Twitch";
-import { Video } from "./Video";
-import { Youtube } from "./Youtube";
 import type { ButtonView, GeneralOptions } from "@/types";
 
 // StarterKit excludes Document/Paragraph/Text (the editor component always
@@ -42,7 +37,7 @@ describe("extension UI declarations", () => {
   });
 
   it("the extensions with their own floating toolbar declare a `bubbleMenu` view", () => {
-    for (const extension of [Link, Table, Image, Video, Youtube, Audio, Twitch]) {
+    for (const extension of [Link, Table]) {
       const bubble = (extension.options as GeneralOptions).bubbleMenu;
       expect(typeof bubble, `${extension.name}.bubbleMenu`).toBe("function");
       const view = (bubble as ButtonView)({ editor: {} as Editor, t: (key: string) => key });
@@ -51,7 +46,7 @@ describe("extension UI declarations", () => {
   });
 
   it("`bubbleMenu: false` disables a floating toolbar", () => {
-    const ext = Twitch.configure({ bubbleMenu: false });
+    const ext = Link.configure({ bubbleMenu: false });
     expect((ext.options as GeneralOptions).bubbleMenu).toBe(false);
     expect((ext.options as GeneralOptions).button).toBeDefined();
   });

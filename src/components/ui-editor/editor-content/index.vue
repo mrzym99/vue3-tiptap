@@ -227,27 +227,43 @@ const props = defineProps({
       padding: 0.5rem 0;
     }
 
-    /* media */
+    /* media — natural size when no width is set, centered either way */
     img {
       border-radius: var(--tiptap-border-radius-sm);
+      display: block;
       height: auto;
-      margin: 0.75rem 0;
+      // !important beats the inline width/height the image resizer writes
+      max-height: var(--tiptap-media-max-height, 400px) !important;
       max-width: 100%;
+      margin: 1rem auto;
+      // keep the aspect ratio when max-height clamps an explicitly sized image
+      object-fit: contain;
     }
 
     audio {
-      margin: 0.75rem 0;
+      margin: 1rem auto;
       width: 100%;
     }
 
     iframe {
       border: none;
+      display: block;
+      margin: 1rem auto;
       max-width: 100%;
     }
 
     /* focus extension: highlight the active block */
     .has-focus {
       border-radius: var(--tiptap-border-radius-sm);
+      box-shadow: 0 0 0 2px var(--tiptap-focus-ring);
+    }
+
+    // Media nodes have no text background — highlight their node selection with
+    // a ring (the background tint applied to selected blocks is invisible here)
+    img.ProseMirror-selectednode,
+    iframe.ProseMirror-selectednode,
+    audio.ProseMirror-selectednode,
+    video.ProseMirror-selectednode {
       box-shadow: 0 0 0 2px var(--tiptap-focus-ring);
     }
 

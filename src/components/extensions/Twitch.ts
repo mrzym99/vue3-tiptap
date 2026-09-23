@@ -3,7 +3,6 @@ import type { GeneralOptions } from "@/types";
 
 import { Twitch as TiptapTwitch } from "@tiptap/extension-twitch";
 import TwitchDialogButton from "@/components/ui-editor/toolbar/dialog-buttons/TwitchDialogButton.vue";
-import MediaBubbleMenu from "@/components/ui-editor/bubble-menu/media-bubble-menu/index.vue";
 import { withButton } from "@/utils/button";
 
 export interface TwitchOptions extends TiptapTwitchOptions, GeneralOptions {}
@@ -13,9 +12,6 @@ export const Twitch = /* @__PURE__ */ TiptapTwitch.extend<TwitchOptions>({
     return {
       ...(this.parent?.() as TiptapTwitchOptions),
       button: withButton(TwitchDialogButton),
-      // Floating toolbar below the stream while it is selected. Disable with
-      // `Twitch.configure({ bubbleMenu: false })`.
-      bubbleMenu: withButton(MediaBubbleMenu),
     };
   },
 });

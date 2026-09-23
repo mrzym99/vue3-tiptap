@@ -3,7 +3,6 @@ import type { GeneralOptions, ImageUploader } from "@/types";
 
 import { Image as TiptapImage } from "@tiptap/extension-image";
 import ImageDialogButton from "@/components/ui-editor/toolbar/dialog-buttons/ImageDialogButton.vue";
-import MediaBubbleMenu from "@/components/ui-editor/bubble-menu/media-bubble-menu/index.vue";
 import { withButton } from "@/utils/button";
 
 export interface ImageOptions extends TiptapImageOptions, GeneralOptions {
@@ -17,9 +16,6 @@ export const Image = /* @__PURE__ */ TiptapImage.extend<ImageOptions>({
       ...(this.parent?.() as TiptapImageOptions),
       upload: undefined,
       button: withButton(ImageDialogButton),
-      // Floating toolbar below the image while it is selected. Disable with
-      // `Image.configure({ bubbleMenu: false })`.
-      bubbleMenu: withButton(MediaBubbleMenu),
     };
   },
 });
