@@ -4,7 +4,7 @@ import { defaultToolbar, type Toolbar } from "@/types";
 export type ToolbarLayout = {
   /** Ordered button keys to render */
   keys: string[];
-  /** Index of `keys` after which a group separator is inserted */
+  /** Index of the key before which a group separator is inserted */
   separators: number[];
 };
 
@@ -34,7 +34,9 @@ export function resolveToolbar(toolbar: Toolbar | undefined, allKeys: string[]):
     groups.forEach((group, gi) => {
       const groupKeys = group.trim().split(/\s+/).filter(known);
       if (groupKeys.length === 0) return;
-      if (gi > 0 && keys.length > 0) separators.push(keys.length - 1);
+      // Separator renders before the first key of this group (templates insert
+      // the divider ahead of the item at the recorded index)
+      if (gi > 0 && keys.length > 0) separators.push(keys.length);
       keys.push(...groupKeys);
     });
     return { keys, separators };

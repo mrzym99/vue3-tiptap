@@ -23,7 +23,8 @@ describe("resolveToolbar", () => {
   it("parses a TinyMCE-style string and inserts group separators", () => {
     const layout = resolveToolbar("bold italic | underline strike", allKeys);
     expect(layout.keys).toEqual(["bold", "italic", "underline", "strike"]);
-    expect(layout.separators).toEqual([1]);
+    // Separator index points at the first key of the next group ("underline")
+    expect(layout.separators).toEqual([2]);
   });
 
   it("renders an array in the given order without separators", () => {
