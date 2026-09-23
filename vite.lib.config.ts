@@ -14,6 +14,7 @@ export default defineConfig({
       formats: ["es", "cjs"],
       fileName: (format) => (format === "es" ? "index.js" : "index.cjs"),
     },
+    copyPublicDir: false, // keep favicon.svg (demo asset) out of dist
     cssCodeSplit: false,
     emptyOutDir: false, // types (dist/index.d.ts) are emitted by vue-tsc first
     rollupOptions: {

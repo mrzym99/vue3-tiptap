@@ -31,6 +31,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { CharacterCount } from "@tiptap/extensions";
 import { useEditorLocale } from "@/composables/useEditorLocale";
 import { useEditorModel } from "@/composables/useEditorModel";
+
 const props = withDefaults(defineProps<TipTapEditorProps>(), {
   limit: 0,
   disabled: false,
