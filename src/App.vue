@@ -41,7 +41,6 @@ const mentionUsers = [
 // an object configures it (image uploader, mention member list).
 const extensions = [
   StarterKit.configure({
-    twitch: false,
     image: {
       upload: async (_file: File) => {
         await new Promise((resolve) => setTimeout(resolve, 1000));

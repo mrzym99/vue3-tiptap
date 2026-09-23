@@ -36,7 +36,7 @@ export default {
   imageUploadUnavailable: "Upload is not configured",
   imageTabUrl: "URL",
   imageTabUpload: "Upload",
-  youtube: "Video",
+  youtube: "YouTube",
   youtubePlaceholder: "YouTube URL",
   video: "Video",
   videoPlaceholder: "Bilibili / Tencent / Youku / iQIYI URL",
