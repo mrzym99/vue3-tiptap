@@ -3,6 +3,7 @@ import type { GeneralOptions, ImageUploader } from "@/types";
 
 import { Image as TiptapImage } from "@tiptap/extension-image";
 import ImageDialogButton from "@/components/ui-editor/toolbar/dialog-buttons/ImageDialogButton.vue";
+import { createResizableMediaView } from "@/utils/resizableMediaView";
 import { withButton } from "@/utils/button";
 
 export interface ImageOptions extends TiptapImageOptions, GeneralOptions {
@@ -17,5 +18,18 @@ export const Image = /* @__PURE__ */ TiptapImage.extend<ImageOptions>({
       upload: undefined,
       button: withButton(ImageDialogButton),
     };
+  },
+
+  // Shared Notion-style corner-drag resize (same as Video) — see resizableMediaView.
+  addNodeView() {
+    return createResizableMediaView({
+      nodeName: "image",
+      createElement: (node) => {
+        const img = document.createElement("img");
+        img.src = node.attrs.src;
+        img.alt = node.attrs.alt ?? node.attrs.title ?? "";
+        return img;
+      },
+    });
   },
 });

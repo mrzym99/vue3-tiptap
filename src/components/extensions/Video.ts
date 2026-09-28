@@ -2,6 +2,7 @@ import { mergeAttributes, Node, nodePasteRule } from "@tiptap/core";
 import type { GeneralOptions } from "@/types";
 import VideoDialogButton from "@/components/ui-editor/toolbar/dialog-buttons/VideoDialogButton.vue";
 import { withButton } from "@/utils/button";
+import { createResizableMediaView } from "@/utils/resizableMediaView";
 import { toEmbedUrl, VIDEO_URL_REGEX } from "@/utils/video-url";
 
 export { toEmbedUrl, isVideoUrl } from "@/utils/video-url";
@@ -86,6 +87,22 @@ export const Video = /* @__PURE__ */ Node.create<VideoOptions>({
         ),
       ],
     ];
+  },
+
+  // Shared Notion-style corner-drag resize (same as Image) — wraps the embed
+  addNodeView() {
+    return createResizableMediaView({
+      nodeName: "video",
+      createElement: (node) => {
+        const frame = document.createElement("iframe");
+        frame.src = node.attrs.embedSrc || node.attrs.src;
+        frame.width = node.attrs.width;
+        frame.height = node.attrs.height;
+        frame.allowFullscreen = true;
+        frame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        return frame;
+      },
+    });
   },
 
   addCommands() {

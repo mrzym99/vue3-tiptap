@@ -63,6 +63,7 @@ const extensions = [StarterKit.configure({}), Youtube, Twitch, Image];
 | `theme` / `themeOverrides`| `"light" \| "dark"` + 自定义 `--tiptap-*` CSS 变量              |
 | `locale` / `translations` | `"zh" \| "en" \| "zh-TW"` 或自定义语言包浅合并                  |
 | `toolbar`                 | 工具栏布局,TinyMCE 风格字符串如 `"bold italic \| underline"`,undefined = 默认 |
+| `toolbarWrap`             | 工具栏按钮多行换行(true)而非单行横向滚动(false)                |
 | `bubbleMenu` / `floatingMenu` | 选中文字/空行菜单,默认关闭,传 key 才开启,`false` 可动态关  |
 | `showInvisibleCharacters` | 显示隐藏字符(空格、段落标记),默认隐藏                          |
 | `placeholder`             | 占位文本,不传时回落到语言包的 `placeholder`                    |

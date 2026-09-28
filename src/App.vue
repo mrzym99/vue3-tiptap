@@ -118,10 +118,6 @@ const extensions = [
       @update="pushStatus('update')"
       @truncated="pushStatus('truncated: max ' + $event.limit)"
     />
-    <br />
-    Content:
-    <br />
-    <div style="word-break: break-word" v-html="content"></div>
   </div>
 </template>
 

@@ -26,6 +26,8 @@ export interface TipTapEditorProps {
   autofocus?: boolean | "start" | "end" | number;
   /** Toolbar button selection; keys are extension names, `undefined` = default layout */
   toolbar?: Toolbar;
+  /** Wrap the toolbar buttons onto multiple rows instead of one scrollable line */
+  toolbarWrap?: boolean;
   /** Bubble-menu selection; `undefined`/`false` = disabled (does NOT fall back to `toolbar`) */
   bubbleMenu?: Toolbar | false;
   /** Floating-menu selection; `undefined`/`false` = disabled (does NOT fall back to `toolbar`) */

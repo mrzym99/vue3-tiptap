@@ -1,11 +1,14 @@
 <template>
-  <div class="toolbar" v-if="props.editor && menus.keys.length">
-    <div class="tiptap-toolbar">
-      <template v-for="(item, index) in menus.keys" :key="item">
-        <div v-if="menus.separators.includes(index)" class="tiptap-toolbar-sep" />
-        <RenderItem :editor="props.editor" :button="menus.byName[item].options.button" />
-      </template>
-    </div>
+  <div
+    v-if="props.editor && menus.keys.length"
+    class="tiptap-toolbar"
+    :class="{ 'tiptap-toolbar-wrap': props.wrap }"
+    tabindex="-1"
+  >
+    <template v-for="(item, index) in menus.keys" :key="item">
+      <div v-if="menus.separators.includes(index)" class="tiptap-toolbar-sep" />
+      <RenderItem :editor="props.editor" :button="menus.byName[item].options.button" />
+    </template>
   </div>
 </template>
 
@@ -24,6 +27,10 @@ const props = defineProps({
   toolbar: {
     type: [Array, Object, String] as PropType<Toolbar | undefined>,
     default: undefined,
+  },
+  wrap: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -47,14 +54,24 @@ const menus = computed(() => {
 
 <style lang="scss" scoped>
 .tiptap-toolbar {
+  width: 100%;
   color: var(--tiptap-color-text);
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
   align-items: center;
   gap: var(--tiptap-gap-xs);
   outline: none;
   border-bottom: 1px solid var(--tiptap-color-border);
-  padding: var(--tiptap-padding-sm);
+  padding: var(--tiptap-padding-sm) var(--tiptap-padding-md);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tiptap-toolbar-wrap {
+  flex-wrap: wrap;
 }
 
 .tiptap-toolbar-sep {

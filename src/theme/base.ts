@@ -23,9 +23,7 @@ export const baseTheme: Theme = {
   "--tiptap-input-padding": "6px 10px",
 
   "--tiptap-min-width": "220px",
+  "--tiptap-max-content-width": "648px",
 
-  // Writing-surface padding: page-level density, larger than the control-level
-  // padding scale (max 12px). Hosts may override per embedding (smaller in
-  // narrow sidebars, 32px+ in document layouts).
   "--tiptap-content-padding": "24px",
 };

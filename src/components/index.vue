@@ -1,7 +1,7 @@
 <template>
   <ThemeProvider :theme="theme" :theme-overrides="themeOverrides">
     <section class="tiptap-box" v-if="editor">
-      <ToolBar :editor="editor" :toolbar="props.toolbar" />
+      <ToolBar :editor="editor" :toolbar="props.toolbar" :wrap="props.toolbarWrap" />
       <EditorContent :editor="editor" />
       <BubbleMenuBar :editor="editor" :toolbar="props.bubbleMenu" />
       <FloatingMenuBar :editor="editor" :toolbar="props.floatingMenu" />
@@ -42,6 +42,7 @@ const props = withDefaults(defineProps<TipTapEditorProps>(), {
   locale: undefined,
   translations: undefined,
   toolbar: undefined,
+  toolbarWrap: false,
   bubbleMenu: undefined,
   floatingMenu: undefined,
   showInvisibleCharacters: false,
@@ -176,6 +177,15 @@ defineExpose({
   background-color: var(--tiptap-color-bg);
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
+}
+</style>
+
+<style lang="scss">
+.tiptap-box,
+.tiptap-box * {
+  box-sizing: border-box;
 }
 </style>

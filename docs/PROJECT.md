@@ -91,7 +91,9 @@ tip-tap-editor/
     │   ├── base.ts / light.ts / dark.ts / index.ts / overwirte.ts
     ├── locales/                # 内置轻量 i18n（zh/en 语言包 + context/inject）
     │   ├── index.ts / zh.ts / en.ts
-    └── types/                  # 全局类型定义（扩展选项、按钮视图、主题等）
+    ├── types/                  # 全局类型定义（扩展选项、按钮视图、主题等）
+    └── utils/
+        └── resizableMediaView.ts  # 媒体四角拖拽改尺寸的公共 NodeView（复用 ResizableNodeView，Image/Video 共用）
 ```
 
 ## 5. 核心特性
@@ -106,6 +108,7 @@ tip-tap-editor/
 | `theme`       | `'light' \| 'dark'` | `'light'`   | 主题模式                   |
 | `placeholder` | `string`            | `-`         | 空文档时显示的占位文本     |
 | `autofocus`   | `boolean`           | `false`     | 挂载后是否自动聚焦         |
+| `toolbarWrap` | `boolean`           | `false`     | 工具栏按钮多行换行（false 时单行横向滚动） |
 
 事件：`focus` / `blur`（payload 为 `{ editor, event }`，类型来自 `EditorEvents`）。
 
@@ -189,7 +192,8 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 | Link 链接                    | 自定义（基于 @tiptap/extension-link，自动识别/粘贴链接）              | 弹窗按钮（输入 URL）                  |
 | CodeBlock 代码块             | 自定义（基于 @tiptap/extension-code-block）                           | 图标按钮                              |
 | Details 折叠块               | 自定义（基于 @tiptap/extension-details）                              | 图标按钮                              |
-| Image 图片                   | 自定义（基于 @tiptap/extension-image）                                | URL 弹窗按钮（也可拖拽/粘贴图片文件） |
+| Image 图片                   | 自定义（基于 @tiptap/extension-image）                                | URL 弹窗按钮（也可拖拽/粘贴图片文件）；四角拖拽改尺寸 |
+| Video 视频                   | 自定义（基于 @tiptap/extension-video，URL 自动转嵌入）                 | URL 弹窗按钮；四角拖拽改尺寸          |
 | Youtube 视频                 | 自定义（基于 @tiptap/extension-youtube）                              | URL 弹窗按钮                          |
 | Audio 音频                   | 自定义（基于 @tiptap/extension-audio）                                | URL 弹窗按钮                          |
 | Twitch 直播                  | 自定义（基于 @tiptap/extension-twitch）                               | URL 弹窗按钮                          |

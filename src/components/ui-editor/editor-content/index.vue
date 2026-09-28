@@ -14,19 +14,19 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .tiptap-editor {
+  width: 100%;
+  max-width: var(--tiptap-max-content-width);
   min-height: 0;
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: auto;
-  // The drag-handle wrapper (absolutely positioned) anchors to this scroll container
   position: relative;
 }
 </style>
 
 <style lang="scss">
 .tiptap-editor {
-  // Block drag handle (Notion-style grip, mounted by the DragHandle extension)
   .drag-handle {
     display: flex;
     align-items: center;
@@ -53,13 +53,6 @@ const props = defineProps({
     &[data-dragging="true"] {
       cursor: grabbing;
     }
-  }
-
-  // Dragged-block highlight (block background; no ::before overlay, it would cover text)
-  .tiptap .ProseMirror-selectednode,
-  .tiptap .ProseMirror-selectednoderange {
-    background-color: var(--tiptap-accent-blue-bg);
-    border-radius: var(--tiptap-border-radius-sm);
   }
 
   .tiptap {
@@ -231,13 +224,68 @@ const props = defineProps({
     img {
       border-radius: var(--tiptap-border-radius-sm);
       display: block;
-      height: auto;
-      // !important beats the inline width/height the image resizer writes
-      max-height: var(--tiptap-media-max-height, 400px) !important;
       max-width: 100%;
-      margin: 1rem auto;
-      // keep the aspect ratio when max-height clamps an explicitly sized image
-      object-fit: contain;
+      height: auto;
+      margin: 0;
+      object-fit: cover;
+    }
+
+    // Media (image, video) is rendered through a shared ResizableNodeView
+    .tiptap-media-resizer {
+      justify-content: center;
+      margin: 2rem 0;
+      max-width: 100%;
+    }
+
+    .tiptap-media-resizer-wrapper {
+      max-width: 100%;
+    }
+
+    .tiptap-media-resizer iframe {
+      display: block;
+      margin: 0;
+      max-width: 100%;
+    }
+
+    .tiptap-media-resizer[data-resize-state="true"] iframe {
+      pointer-events: none;
+    }
+
+    .tiptap-media-resizer [data-resize-handle] {
+      box-sizing: border-box;
+      width: 12px;
+      height: 12px;
+      background: var(--tiptap-accent-blue);
+      border: 2px solid var(--tiptap-color-bg);
+      border-radius: 4px;
+      opacity: 0;
+      transition: opacity 150ms ease;
+    }
+
+    .tiptap-media-resizer:hover [data-resize-handle],
+    .tiptap-media-resizer.ProseMirror-selectednode [data-resize-handle],
+    .tiptap-media-resizer[data-resize-state="true"] [data-resize-handle] {
+      opacity: 1;
+    }
+
+    .tiptap-media-resizer [data-resize-handle="bottom-right"] {
+      transform: translate(50%, 50%);
+      cursor: nwse-resize;
+    }
+
+    .tiptap-media-resizer [data-resize-handle="top-left"] {
+      transform: translate(-50%, -50%);
+      cursor: nwse-resize;
+    }
+
+    .tiptap-media-resizer [data-resize-handle="top-right"] {
+      transform: translate(50%, -50%);
+      cursor: nesw-resize;
+    }
+
+    .tiptap-media-resizer [data-resize-handle="bottom-left"] {
+      transform: translate(-50%, 50%);
+      cursor: nesw-resize;
     }
 
     audio {
@@ -252,19 +300,24 @@ const props = defineProps({
       max-width: 100%;
     }
 
-    /* focus extension: highlight the active block */
     .has-focus {
       border-radius: var(--tiptap-border-radius-sm);
       box-shadow: 0 0 0 2px var(--tiptap-focus-ring);
     }
 
-    // Media nodes have no text background — highlight their node selection with
-    // a ring (the background tint applied to selected blocks is invisible here)
-    img.ProseMirror-selectednode,
     iframe.ProseMirror-selectednode,
     audio.ProseMirror-selectednode,
     video.ProseMirror-selectednode {
-      box-shadow: 0 0 0 2px var(--tiptap-focus-ring);
+      outline: 2px solid var(--tiptap-focus-ring);
+    }
+
+    .tiptap-media-resizer.ProseMirror-selectednode .tiptap-media-resizer-wrapper {
+      outline: 2px solid var(--tiptap-focus-ring);
+      border-radius: var(--tiptap-border-radius-sm);
+    }
+
+    .tiptap .tiptap-media-resizer.ProseMirror-selectednode {
+      background-color: transparent;
     }
 
     table {
@@ -368,19 +421,12 @@ const props = defineProps({
     }
 
     /* refined, quiet scrollbar inside the writing surface */
-    ::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
+    &::-webkit-scrollbar {
+      display: none;
     }
 
-    ::-webkit-scrollbar-thumb {
-      background-color: var(--tiptap-color-border-strong);
-      border-radius: 999px;
-      border: 3px solid var(--tiptap-color-bg);
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background-color: var(--tiptap-color-text-muted);
+    &::-webkit-scrollbar-thumb {
+      display: none;
     }
   }
 }
