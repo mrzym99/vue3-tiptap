@@ -1,12 +1,13 @@
 :root {
   --app-color-blue: #7c5cf0;
-  --app-color-background: #ffffff;
+  --app-color-header-bg: #ffffff;
+  --app-color-background: #f5f4f4;
   --app-color-text: #151413;
-  --app-color-btn-bg: #efedea;
+  --app-color-btn-bg: #ffffff;
   --app-color-border: #e5e5e5;
 }
-
 :root.dark {
+  --app-color-header-bg: #1f1f1f;
   --app-color-background: #1b1b1c;
   --app-color-text: #fafafa;
   --app-color-btn-bg: #262626;
@@ -21,6 +22,8 @@ body {
   font-size: 14px;
   color: var(--app-color-text);
   background-color: var(--app-color-background);
+  height: 100vh;
+  overflow: hidden;
   transition:
     color 0.15s ease,
     background-color ease,

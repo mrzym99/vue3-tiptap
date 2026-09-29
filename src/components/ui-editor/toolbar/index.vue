@@ -63,7 +63,7 @@ const menus = computed(() => {
   gap: var(--tiptap-gap-xs);
   outline: none;
   border-bottom: 1px solid var(--tiptap-color-border);
-  padding: var(--tiptap-padding-sm) var(--tiptap-padding-md);
+  padding: var(--tiptap-padding-md);
 
   &::-webkit-scrollbar {
     display: none;
@@ -76,6 +76,7 @@ const menus = computed(() => {
 
 .tiptap-toolbar-sep {
   align-self: stretch;
+  flex-shrink: 0;
   background-color: var(--tiptap-color-border);
   margin: var(--tiptap-gap-xs) var(--tiptap-gap-sm);
   width: 1px;
