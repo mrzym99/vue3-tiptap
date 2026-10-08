@@ -177,8 +177,6 @@ defineExpose({
   background-color: var(--tiptap-color-bg);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
 }
 </style>

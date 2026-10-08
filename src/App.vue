@@ -144,6 +144,7 @@ const extensions = [
 
 .editor-container {
   flex: 1;
+  min-height: 0;
   max-width: 1080px;
   padding: 24px;
   width: 100%;
