@@ -17,6 +17,7 @@ import type { Editor } from "@tiptap/vue-3";
 import type { EditorState } from "@tiptap/pm/state";
 import type { EditorView } from "@tiptap/pm/view";
 import { CellSelection } from "@tiptap/pm/tables";
+import { NodeSelection } from "@tiptap/pm/state";
 import type { Component } from "vue";
 import type { Toolbar } from "@/types";
 import { resolveToolbar } from "@/utils/resolveToolbar";
@@ -69,8 +70,9 @@ function shouldShow({
   to: number;
 }) {
   if (e.isActive("link")) return false;
-  if (e.isActive("image") || e.isActive("youtube")) return false;
-  if (e.isActive("audio") || e.isActive("twitch")) return false;
+  // A whole node being selected (image, video, embeds, …) never gets the
+  // formatting bubble — media has its own bubble/resize handles.
+  if (state.selection instanceof NodeSelection) return false;
   if (state.selection instanceof CellSelection) return false;
   return state.selection.from !== state.selection.to;
 }
