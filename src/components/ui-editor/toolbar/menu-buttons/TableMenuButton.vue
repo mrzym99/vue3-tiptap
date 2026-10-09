@@ -18,7 +18,7 @@
           :hide-on-click="false"
         >
           <template #trigger>
-            <button type="button" class="tiptap-menu-item">
+            <button @click.stop type="button" class="tiptap-menu-item">
               <component :is="RiTableLine" />
               <span>{{ t("insertTable") }}</span>
             </button>
