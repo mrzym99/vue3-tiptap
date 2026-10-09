@@ -35,6 +35,9 @@ export const darkTheme: Theme = {
   "--tiptap-btn-primary-bg": "#7C6CE0",
   "--tiptap-btn-primary-bg-hover": "#8B7CE8",
   "--tiptap-btn-primary-text": "#FFFFFF",
+  "--tiptap-btn-danger-bg": "#EB5757",
+  "--tiptap-btn-danger-bg-hover": "#F26D6D",
+  "--tiptap-btn-danger-text": "#FFFFFF",
   "--tiptap-btn-secondary-bg": "#2B2B2B",
   "--tiptap-btn-secondary-text": "#CFCFCF",
 

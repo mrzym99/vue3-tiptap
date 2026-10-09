@@ -35,6 +35,9 @@ export const lightTheme: Theme = {
   "--tiptap-btn-primary-bg": "#7C5CF0",
   "--tiptap-btn-primary-bg-hover": "#6748E8",
   "--tiptap-btn-primary-text": "#FFFFFF",
+  "--tiptap-btn-danger-bg": "#EB5757",
+  "--tiptap-btn-danger-bg-hover": "#D64545",
+  "--tiptap-btn-danger-text": "#FFFFFF",
   "--tiptap-btn-secondary-bg": "#F5F5F5", // gray-100
   "--tiptap-btn-secondary-text": "#404040", // gray-700
 

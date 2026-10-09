@@ -1,16 +1,12 @@
 <template>
-  <Popover v-model:show="show" trigger="click" placement="bottom-start">
-    <template #trigger>
-      <button
-        type="button"
-        class="fr-button"
-        :class="{ 'is-active': hasResults }"
-        :aria-label="t('findAndReplace')"
-        :aria-expanded="show"
-      >
-        <RiSearchLine />
-      </button>
-    </template>
+  <ActionDialogButton
+    ref="dialog"
+    :icon="RiSearchLine"
+    :tooltip="t('findAndReplace')"
+    :title="t('findAndReplace')"
+    :is-active="() => hasResults"
+    @closed="props.editor.commands.focus()"
+  >
     <div class="fr-panel">
       <div class="fr-row">
         <TiptapInput v-model="searchTerm" :placeholder="t('findPlaceholder')" @keydown.enter.prevent="goNext" />
@@ -29,27 +25,26 @@
         <TiptapButton variant="primary" @click="replaceOne">
           {{ t("replace") }}
         </TiptapButton>
-        <TiptapButton @click="replaceAll">
+        <TiptapButton variant="primary" @click="replaceAll">
           {{ t("replaceAll") }}
         </TiptapButton>
-        <TiptapButton @click="clear">
+        <TiptapButton variant="danger" @click="clear">
           {{ t("clear") }}
         </TiptapButton>
       </div>
     </div>
-  </Popover>
+  </ActionDialogButton>
 </template>
 
 <script lang="ts" setup>
 import RiSearchLine from "~icons/lucide/search";
-import Popover from "@/components/ui-common/popover/index.vue";
+import ActionDialogButton from "@/components/ui-common/action-dialog-button/index.vue";
 import TiptapButton from "@/components/ui-common/button/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
 const props = defineProps<EXTActionButtonProps>();
 
-const show = ref(false);
 const searchTerm = ref("");
 const replaceTerm = ref("");
 
@@ -83,34 +78,10 @@ function clear() {
 </script>
 
 <style lang="scss" scoped>
-.fr-button {
-  align-items: center;
-  background: none;
-  color: var(--tiptap-color-text);
-  border: none;
-  border-radius: var(--tiptap-border-radius-md);
-  cursor: pointer;
-  display: inline-flex;
-  height: var(--tiptap-btn-size);
-  justify-content: center;
-  min-width: var(--tiptap-btn-size);
-  outline: none;
-  padding: var(--tiptap-padding-sm);
-
-  &:hover:not(:disabled) {
-    background-color: var(--tiptap-btn-bg-hover);
-  }
-
-  &.is-active {
-    background-color: var(--tiptap-btn-bg-active);
-  }
-}
-
 .fr-panel {
   display: flex;
   flex-direction: column;
   gap: var(--tiptap-gap);
-  min-width: 240px;
 }
 
 .fr-row {
@@ -130,5 +101,6 @@ function clear() {
   flex-wrap: wrap;
   gap: var(--tiptap-gap);
   justify-content: flex-end;
+  margin-top: var(--tiptap-gap);
 }
 </style>
