@@ -30,7 +30,6 @@
           </Tabs>
         </template>
       </FormItem>
-      <MediaDimensionFields v-model:width="width" v-model:height="height" :t="t" :submit="submit" />
       <template #actions>
         <TiptapButton @click="dialogRef?.close()">{{ t("cancel") }}</TiptapButton>
         <TiptapButton variant="primary" type="submit">{{ t("insert") }}</TiptapButton>
@@ -49,19 +48,18 @@ import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import TiptapButton from "@/components/ui-common/button/index.vue";
 import Tabs, { type TabItem } from "@/components/ui-common/tabs/index.vue";
-import MediaDimensionFields from "./components/MediaDimensionFields.vue";
 import ImageUpload from "./components/ImageUpload.vue";
 import { isHttpUrl, useMediaForm } from "../../../../composables/useMediaForm.ts";
 import type { ImageOptions } from "@/components/extensions/Image";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
-/** Image insert dialog: URL / Upload tabs + shared width/height fields. */
+/** Image insert dialog: URL / Upload tabs (dimensions are set by drag-resize). */
 const props = defineProps<EXTActionButtonProps>();
 const t = props.t;
 
 const dialogRef = useTemplateRef<InstanceType<typeof ActionDialogButton>>("dialog");
 const formEl = useTemplateRef<InstanceType<typeof Form>>("form");
-const { src, width, height, model, rules, submit, onSubmit } = useMediaForm(
+const { src, model, rules, submit, onSubmit } = useMediaForm(
   props,
   (payload) => props.editor.chain().focus().setImage(payload).run(),
   dialogRef,

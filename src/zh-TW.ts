@@ -47,8 +47,6 @@ export default {
   twitchPlaceholder: "Twitch 連結",
   insert: "插入",
   media: "媒體",
-  mediaWidth: "寬度",
-  mediaHeight: "高度",
   mediaUrlRequired: "請輸入網址",
   placeholder: "請輸入…",
   mediaUrlInvalid: "請輸入合法的 URL 網址",

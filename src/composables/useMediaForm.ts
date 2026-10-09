@@ -16,11 +16,9 @@ export function isHttpUrl(value: unknown): boolean {
   }
 }
 
-/** Payload passed to a media-insert command: source URL + optional dimensions. */
+/** Payload passed to a media-insert command: the source URL. */
 export interface MediaPayload {
   src: string;
-  width?: number;
-  height?: number;
 }
 
 /** Shared form state + rules for media-insert dialogs; `validateUrl` adds a well-formed-URL check. */
@@ -32,13 +30,9 @@ export function useMediaForm(
   validateUrl?: (value: string) => boolean,
 ) {
   const src = ref("");
-  const width = ref("");
-  const height = ref("");
 
   const model = {
     src: () => src.value,
-    width: () => width.value,
-    height: () => height.value,
   };
 
   const rules: FormRule[] = [
@@ -58,25 +52,17 @@ export function useMediaForm(
     });
   }
 
-  /** Empty/NaN/non-positive numbers collapse to `undefined`. */
-  const toPositive = (value: unknown): number | undefined => {
-    const n = Number(String(value ?? ""));
-    return Number.isFinite(n) && n > 0 ? n : undefined;
-  };
-
   /** Submit on Enter inside any field — the form validates first. */
   const submit = () => formEl.value?.formEl?.requestSubmit();
 
   const onSubmit = (values: Record<string, unknown>) => {
     command({
       src: String(values.src ?? "").trim(),
-      width: toPositive(values.width),
-      height: toPositive(values.height),
     });
     // Reset so the next open starts clean.
     src.value = "";
     dialogRef.value?.close();
   };
 
-  return { src, width, height, model, rules, submit, onSubmit };
+  return { src, model, rules, submit, onSubmit };
 }

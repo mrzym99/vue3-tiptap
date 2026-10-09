@@ -46,8 +46,6 @@ export default {
   twitchPlaceholder: "Twitch 链接",
   insert: "插入",
   media: "媒体",
-  mediaWidth: "宽度",
-  mediaHeight: "高度",
   mediaUrlRequired: "请输入地址",
   mediaUrlInvalid: "请输入合法的 URL 地址",
   placeholder: "请输入…",

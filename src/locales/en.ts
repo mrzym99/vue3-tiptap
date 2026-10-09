@@ -46,8 +46,6 @@ export default {
   twitchPlaceholder: "Twitch URL",
   insert: "Insert",
   media: "Media",
-  mediaWidth: "Width",
-  mediaHeight: "Height",
   mediaUrlRequired: "Please enter a URL",
   mediaUrlInvalid: "Please enter a valid URL",
   placeholder: "Enter text…",
