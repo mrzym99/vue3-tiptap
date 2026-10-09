@@ -70,6 +70,11 @@ const props = defineProps({
     padding: 0 var(--tiptap-content-padding);
     overflow-y: auto;
 
+    /* text selection highlight (select-all / drag select) */
+    ::selection {
+      background-color: var(--tiptap-selection-bg);
+    }
+
     h1,
     h2,
     h3 {
