@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import TipTapEditor from "./components/index.vue";
 import { StarterKit } from "./components/extensions";
-import type { ThemeName } from "./types";
 import type { LocaleTranslations } from "./locales";
 import zhTW from "./zh-TW";
+import { useDemoConfig } from "./composables/useDemoConfig";
+
 const content = ref("");
 
-content.value = ``;
-const theme = ref<ThemeName>("light");
-const locale = ref("zh");
+// Theme / locale with localStorage persistence (see useDemoConfig)
+const { theme, locale } = useDemoConfig();
 // Demo: add a third language ("zh-TW") via the `translations` prop
 const translations: LocaleTranslations = { "zh-TW": zhTW };
 // `limit` is read once at editor creation (runtime changes are not applied) —
@@ -24,9 +24,6 @@ function pushStatus(name: string) {
   status.value = name;
 }
 const editorRef = ref<InstanceType<typeof TipTapEditor> | null>(null);
-const toggleTheme = () => {
-  document.documentElement.classList.toggle("dark");
-};
 
 // Configure the image extension with a custom uploader (demo: fake upload).
 // Configure the mention extension with a host-injected member list.
@@ -51,12 +48,8 @@ const extensions = [
     mention: {
       items: mentionUsers,
     },
-    // Drag handle: enable nested mode (list items, quotes, paragraphs inside
-    // table cells, etc. are draggable). Whole tables: hover the gutter to the
-    // left of a cell (edge detection) to grab the table itself.
-    dragHandle: {
-      nested: true,
-    },
+    // Drag handle disabled: StarterKit filters out extensions set to `false`.
+    dragHandle: false,
   }),
 ];
 </script>
@@ -66,7 +59,7 @@ const extensions = [
     <div class="app-bar">
       <div>
         主题
-        <select class="app-select" v-model="theme" @change="toggleTheme">
+        <select class="app-select" v-model="theme">
           <option value="light">Light</option>
           <option value="dark">Dark</option>
         </select>
@@ -146,9 +139,12 @@ const extensions = [
   flex: 1;
   min-height: 0;
   max-width: 1080px;
-  padding: 24px;
+  margin: 24px;
   width: 100%;
   box-sizing: border-box;
+  box-shadow: var(--app-box-shadow);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .app-select {
