@@ -172,7 +172,7 @@ defineExpose({
   position: relative;
   height: 100%;
   border: 1px solid var(--tiptap-color-border);
-  border-radius: var(--tiptap-border-radius-md);
+  border-radius: var(--tiptap-border-radius-lg);
   color: var(--tiptap-color-text);
   background-color: var(--tiptap-color-bg);
   display: flex;

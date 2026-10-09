@@ -65,6 +65,10 @@ const menus = computed(() => {
   outline: none;
   border-bottom: 1px solid var(--tiptap-color-border);
   padding: var(--tiptap-padding-md);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .tiptap-toolbar-wrap {

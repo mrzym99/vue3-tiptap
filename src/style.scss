@@ -1,17 +1,19 @@
 :root {
   --app-color-blue: #7c5cf0;
   --app-color-header-bg: #ffffff;
-  --app-color-background: #f5f4f4;
+  --app-color-background: #ffffff;
   --app-color-text: #151413;
   --app-color-btn-bg: #ffffff;
   --app-color-border: #e5e5e5;
+  --app-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 :root.dark {
   --app-color-header-bg: #1f1f1f;
-  --app-color-background: #1b1b1c;
+  --app-color-background: #1f1f1f;
   --app-color-text: #fafafa;
-  --app-color-btn-bg: #262626;
+  --app-color-btn-bg: #1f1f1f;
   --app-color-border: #3a3a3a;
+  --app-box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
 }
 
 html,
