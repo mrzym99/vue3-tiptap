@@ -77,4 +77,5 @@ export const lightTheme: Theme = {
   "--tiptap-color-text-3": "var(--tiptap-color-text-muted)",
   "--tiptap-btn--bg-hover": "var(--tiptap-color-bg-hover)",
   "--tiptap-btn--bg-active": "var(--tiptap-color-bg-active)",
+  "--tiptap-btn--bg-active-hover": "#D9D6CE",
 };

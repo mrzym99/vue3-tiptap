@@ -76,5 +76,6 @@ export const darkTheme: Theme = {
   // --- backward-compatible aliases (used by existing components) ---
   "--tiptap-color-text-3": "var(--tiptap-color-text-muted)",
   "--tiptap-btn--bg-hover": "var(--tiptap-color-bg-hover)",
-  "--tiptap-btn--bg-active": "var(--tiptap-color-bg-active)",
+  "--tiptap-btn--bg-active": "#333333",
+  "--tiptap-btn--bg-active-hover": "#3B3B3B",
 };

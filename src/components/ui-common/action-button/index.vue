@@ -56,6 +56,13 @@ const handleClick = () => {
 
   &.is-active {
     background-color: var(--tiptap-btn--bg-active);
+    color: var(--tiptap-accent-blue);
+
+    /* hover on an active button: bg deepens slightly, icon back to normal color */
+    &:hover:not(:disabled) {
+      background-color: var(--tiptap-btn--bg-active-hover, var(--tiptap-btn--bg-active));
+      color: var(--tiptap-color-text);
+    }
   }
 
   &:disabled {
