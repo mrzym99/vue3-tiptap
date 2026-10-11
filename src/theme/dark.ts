@@ -47,7 +47,7 @@ export const darkTheme: Theme = {
 
   // --- interaction feedback (Halo Focus: soft large-radius ring) ---
   "--tiptap-focus-ring": "rgba(129, 140, 248, 0.30)", // indigo-400/30
-  "--tiptap-selection-bg": "rgba(129, 140, 248, 0.28)",
+  "--tiptap-selection-bg": "rgba(129, 140, 248, 0.38)",
   "--tiptap-drag-handle": "rgba(230, 230, 230, 0.35)",
 
   // popover / menu (follow the theme; shadows carry color tint, never hard)

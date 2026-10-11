@@ -14,6 +14,7 @@ export const baseTheme: Theme = {
   "--tiptap-border-radius-lg": "16px",
   "--tiptap-gap": "8px",
   "--tiptap-font-size": "1em",
+  "--tiptap-font-size-sm": "13px",
 
   // --- non-color, theme-independent values ---
   "--tiptap-tooltip-radius": "10px",

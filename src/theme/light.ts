@@ -47,7 +47,7 @@ export const lightTheme: Theme = {
 
   // --- interaction feedback (Halo Focus: soft large-radius ring) ---
   "--tiptap-focus-ring": "rgba(99, 102, 241, 0.25)", // indigo-500/25
-  "--tiptap-selection-bg": "rgba(99, 102, 241, 0.20)",
+  "--tiptap-selection-bg": "rgba(99, 102, 241, 0.26)",
   "--tiptap-drag-handle": "rgba(31, 41, 55, 0.35)",
 
   // popover / menu (follow the theme; shadows carry color tint, never hard)

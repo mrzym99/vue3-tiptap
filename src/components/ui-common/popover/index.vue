@@ -116,7 +116,11 @@ function onKeydown(e: KeyboardEvent) {
   if (props.trigger === "click" && e.key === "Escape") doClose();
 }
 
-function captureClickItem() {
+function captureClickItem(e: MouseEvent) {
+  // Elements marked `data-popover-keep-open` (e.g. the native color picker
+  // inside a menu) keep the popover open; the owner closes it when done.
+  const target = e.target as HTMLElement | null;
+  if (target?.closest("[data-popover-keep-open]")) return;
   props.hideOnClick && doClose();
 }
 
