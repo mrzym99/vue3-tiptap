@@ -17,9 +17,6 @@ export const Link = /* @__PURE__ */ TiptapLink.extend<LinkOptions>({
       autolink: true,
       linkOnPaste: true,
       button: withButton(LinkDialogButton),
-      // Floating toolbar below the link while the caret is inside it; rendered
-      // by the editor component via the extension's `bubbleMenu` option.
-      // Disable with `Link.configure({ bubbleMenu: false })`.
       bubbleMenu: withButton(LinkBubbleMenu),
     };
   },

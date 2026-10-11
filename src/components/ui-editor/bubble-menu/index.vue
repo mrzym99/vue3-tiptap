@@ -17,10 +17,11 @@ import type { Editor } from "@tiptap/vue-3";
 import type { EditorState } from "@tiptap/pm/state";
 import type { EditorView } from "@tiptap/pm/view";
 import { CellSelection } from "@tiptap/pm/tables";
-import { NodeSelection } from "@tiptap/pm/state";
+import { AllSelection, NodeSelection } from "@tiptap/pm/state";
 import type { Component } from "vue";
 import type { Toolbar } from "@/types";
 import { resolveToolbar } from "@/utils/resolveToolbar";
+import { isSelectionInsideLink } from "@/utils/selectionInLink";
 import { useTiptapLocale } from "@/locales";
 import BoldButton from "@/components/ui-editor/toolbar/buttons/BoldButton.vue";
 import ItalicButton from "@/components/ui-editor/toolbar/buttons/ItalicButton.vue";
@@ -54,11 +55,11 @@ const visibleButtons = computed(() => {
   return buttons.filter((b) => keys.includes(b.key));
 });
 
-// Hide while a link/media/table bubble owns the caret; text in a single cell
-// still gets the formatting bubble. (`editor` typed loosely: tiptap's
-// shouldShow passes its own Editor subclass.)
+// Hide while the selection sits entirely inside one link (the link bubble
+// owns it) or a media/table bubble owns the caret; text in a single cell
+// still gets the formatting bubble.
 function shouldShow({
-  editor: e,
+  view,
   state,
 }: {
   editor: any;
@@ -69,12 +70,13 @@ function shouldShow({
   from: number;
   to: number;
 }) {
-  if (e.isActive("link")) return false;
-  // A whole node being selected (image, video, embeds, …) never gets the
-  // formatting bubble — media has its own bubble/resize handles.
-  if (state.selection instanceof NodeSelection) return false;
-  if (state.selection instanceof CellSelection) return false;
-  return state.selection.from !== state.selection.to;
+  if (isSelectionInsideLink(view, state)) return false;
+  const { selection } = state;
+  if (selection instanceof NodeSelection) return false;
+  if (selection instanceof CellSelection) return false;
+  if (selection instanceof AllSelection) return false;
+  if (selection.from === 0 && selection.to === state.doc.content.size) return false;
+  return !selection.empty;
 }
 </script>
 
