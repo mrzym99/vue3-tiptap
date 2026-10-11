@@ -27,7 +27,7 @@ declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     video: {
       /** Insert a video node (src is auto-converted to an embed URL). */
-      setVideo: (options: { src: string; width?: number; height?: number }) => ReturnType;
+      setVideo: (options: { src: string; width?: number | string; height?: number | string }) => ReturnType;
     };
   }
 }
@@ -41,7 +41,7 @@ export const Video = /* @__PURE__ */ Node.create<VideoOptions>({
 
   addOptions() {
     return {
-      width: 640,
+      width: "100%",
       height: 480,
       allowFullscreen: true,
       button: withButton(VideoDialogButton),
@@ -89,10 +89,15 @@ export const Video = /* @__PURE__ */ Node.create<VideoOptions>({
     ];
   },
 
-  // Shared Notion-style corner-drag resize (same as Image) — wraps the embed
+  // Shared Notion-style drag resize (same machinery as Image), plus edge
+  // handles so width/height can be dragged independently — corners resize
+  // freely too; Shift temporarily locks the aspect ratio. Image keeps its
+  // corner-only, aspect-locked behavior.
   addNodeView() {
     return createResizableMediaView({
       nodeName: "video",
+      directions: ["top-left", "top-right", "bottom-left", "bottom-right", "left", "right", "top", "bottom"],
+      preserveAspectRatio: false,
       createElement: (node) => {
         const frame = document.createElement("iframe");
         frame.src = node.attrs.embedSrc || node.attrs.src;
@@ -112,12 +117,14 @@ export const Video = /* @__PURE__ */ Node.create<VideoOptions>({
         ({ commands }) => {
           const embedSrc = toEmbedUrl(options.src);
           if (!embedSrc) return false;
+          // Default width stays a percentage ("100%") — only an explicit drag
+          // resize commits concrete px via the node view.
           return commands.insertContent({
             type: this.name,
             attrs: {
               src: options.src,
               embedSrc,
-              width: options.width ?? this.options.width ?? 640,
+              width: options.width ?? this.options.width ?? "100%",
               height: options.height ?? this.options.height ?? 480,
             } satisfies VideoAttributes,
           });

@@ -292,6 +292,43 @@ const props = defineProps({
       cursor: nesw-resize;
     }
 
+    /* Edge handles (video): slim bars centered on each side, half overhanging.
+       Inline styles pin them top:0/bottom:0 (or left:0/right:0); fixed size +
+       auto margin centers them on that axis. */
+    .tiptap-media-resizer [data-resize-handle="left"],
+    .tiptap-media-resizer [data-resize-handle="right"] {
+      width: 6px;
+      height: 24px;
+      margin: auto 0;
+      border-radius: 3px;
+      cursor: ew-resize;
+    }
+
+    .tiptap-media-resizer [data-resize-handle="left"] {
+      transform: translateX(-50%);
+    }
+
+    .tiptap-media-resizer [data-resize-handle="right"] {
+      transform: translateX(50%);
+    }
+
+    .tiptap-media-resizer [data-resize-handle="top"],
+    .tiptap-media-resizer [data-resize-handle="bottom"] {
+      width: 24px;
+      height: 6px;
+      margin: 0 auto;
+      border-radius: 3px;
+      cursor: ns-resize;
+    }
+
+    .tiptap-media-resizer [data-resize-handle="top"] {
+      transform: translateY(-50%);
+    }
+
+    .tiptap-media-resizer [data-resize-handle="bottom"] {
+      transform: translateY(50%);
+    }
+
     audio {
       margin: 1rem auto;
       width: 100%;

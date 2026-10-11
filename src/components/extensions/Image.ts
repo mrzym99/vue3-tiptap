@@ -20,10 +20,13 @@ export const Image = /* @__PURE__ */ TiptapImage.extend<ImageOptions>({
     };
   },
 
-  // Shared Notion-style corner-drag resize (same as Video) — see resizableMediaView.
+  // Shared drag resize (same as Video): corners + edge handles, width/height
+  // dragged independently; Shift temporarily locks the aspect ratio.
   addNodeView() {
     return createResizableMediaView({
       nodeName: "image",
+      directions: ["top-left", "top-right", "bottom-left", "bottom-right", "left", "right", "top", "bottom"],
+      preserveAspectRatio: false,
       createElement: (node) => {
         const img = document.createElement("img");
         img.src = node.attrs.src;
