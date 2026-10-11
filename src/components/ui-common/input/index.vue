@@ -36,17 +36,20 @@ function onInput(event: Event) {
   outline: none;
   padding: var(--tiptap-input-padding);
   transition:
-    border-color 150ms ease,
-    box-shadow 150ms ease;
+    border-color 200ms ease-in-out,
+    background-color 200ms ease-in-out,
+    box-shadow 200ms ease-in-out;
   width: 100%;
 
   &::placeholder {
     color: var(--tiptap-input-placeholder);
   }
 
+  /* Halo Focus: soft large-radius ring, no hard border */
   &:focus {
     border-color: var(--tiptap-input-border-hover);
-    box-shadow: 0 0 0 2px var(--tiptap-focus-ring);
+    background-color: var(--tiptap-color-bg);
+    box-shadow: 0 0 0 3px var(--tiptap-focus-ring);
   }
 }
 </style>

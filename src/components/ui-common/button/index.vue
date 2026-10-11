@@ -34,7 +34,10 @@ function onClick(event: MouseEvent) {
   cursor: pointer;
   font-size: var(--tiptap-font-size);
   padding: var(--tiptap-padding-sm) var(--tiptap-padding-md);
-  transition: background-color 150ms ease;
+  transition:
+    background-color 200ms ease-in-out,
+    box-shadow 200ms ease-in-out,
+    transform 200ms ease-in-out;
 
   &:hover:not(:disabled) {
     background-color: var(--tiptap-btn-bg-hover);
@@ -53,26 +56,52 @@ function onClick(event: MouseEvent) {
 .tiptap-btn--primary {
   background-color: var(--tiptap-btn-primary-bg);
   color: var(--tiptap-btn-primary-text);
+  box-shadow: var(--tiptap-btn-primary-shadow);
 
+  /* Cloud Float: lift + accent-tinted shadow bloom */
   &:hover:not(:disabled) {
     background-color: var(--tiptap-btn-primary-bg-hover);
+    box-shadow: var(--tiptap-btn-primary-shadow-hover);
+    transform: translateY(-1px);
   }
 
+  /* Pillow Press: press into the surface */
   &:active:not(:disabled) {
     background-color: var(--tiptap-btn-primary-bg-hover);
+    box-shadow: var(--tiptap-btn-primary-shadow);
+    transform: scale(0.97);
   }
 }
 
 .tiptap-btn--danger {
   background-color: var(--tiptap-btn-danger-bg);
   color: var(--tiptap-btn-danger-text);
+  box-shadow: var(--tiptap-btn-danger-shadow);
 
   &:hover:not(:disabled) {
     background-color: var(--tiptap-btn-danger-bg-hover);
+    box-shadow: var(--tiptap-btn-danger-shadow-hover);
+    transform: translateY(-1px);
   }
 
   &:active:not(:disabled) {
     background-color: var(--tiptap-btn-danger-bg-hover);
+    box-shadow: var(--tiptap-btn-danger-shadow);
+    transform: scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tiptap-btn {
+    transition: background-color 200ms ease-in-out, box-shadow 200ms ease-in-out;
+  }
+
+  .tiptap-btn--primary,
+  .tiptap-btn--danger {
+    &:hover:not(:disabled),
+    &:active:not(:disabled) {
+      transform: none;
+    }
   }
 }
 </style>

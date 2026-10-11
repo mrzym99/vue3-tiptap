@@ -14,17 +14,13 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .tiptap-editor {
+  position: relative;
   width: 100%;
-  max-width: var(--tiptap-max-content-width);
-  /* Centered within the stretch-aligned .tiptap-box column */
-  margin-inline: auto;
   min-height: 0;
   flex: 1;
   display: flex;
   flex-direction: column;
-  /* Scrolling is owned by the inner .tiptap surface */
   overflow: hidden;
-  position: relative;
 }
 </style>
 

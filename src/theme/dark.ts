@@ -1,56 +1,64 @@
 import type { Theme } from "@/types";
 
-/** Dark theme — dark Notion palette mirroring the light theme's token structure. */
+/** Dark theme — Soft UI dark palette mirroring the light theme's token structure. */
 export const darkTheme: Theme = {
-  // --- surfaces ---
+  // --- surfaces (slate-tinted, soft) ---
   "--tiptap-color-bg": "#1F1F1F",
-  "--tiptap-color-bg-canvas": "#191919",
-  "--tiptap-color-bg-hover": "#262626",
-  "--tiptap-color-bg-active": "#2F2F2F",
-  "--tiptap-color-bg-subtle": "#2B2B2B",
+  "--tiptap-color-bg-canvas": "#191A1D",
+  "--tiptap-color-bg-hover": "#2A2B30",
+  "--tiptap-color-bg-active": "#34353B",
+  "--tiptap-color-bg-subtle": "#26272B",
 
   // --- text ---
   "--tiptap-color-text": "#E6E6E6",
   "--tiptap-color-text-secondary": "#A6A6A6",
   "--tiptap-color-text-muted": "#7A7A7A",
 
-  // --- borders ---
-  "--tiptap-color-border": "#3A3A3A",
-  "--tiptap-color-border-strong": "#4A4A4A",
+  // --- borders (kept hairline-soft; shadows carry the layering) ---
+  "--tiptap-color-border": "#34353B",
+  "--tiptap-color-border-strong": "#44454C",
 
   // --- accents (text + soft bg) ---
-  "--tiptap-accent-blue": "#9480F4",
+  "--tiptap-accent-blue": "#818CF8", // indigo-400
   "--tiptap-accent-red": "#EB5757",
   "--tiptap-accent-green": "#2E8B7E",
   "--tiptap-accent-yellow": "#DFAB01",
-  "--tiptap-accent-blue-bg": "rgba(124, 92, 240, 0.22)",
+  "--tiptap-accent-blue-bg": "rgba(99, 102, 241, 0.25)", // indigo-500/25
   "--tiptap-accent-red-bg": "rgba(235, 87, 87, 0.14)",
   "--tiptap-accent-green-bg": "rgba(15, 123, 108, 0.18)",
   "--tiptap-accent-yellow-bg": "rgba(223, 171, 1, 0.14)",
 
   // --- buttons (transparent default, hover/active only deepen bg) ---
   "--tiptap-btn-bg": "transparent",
-  "--tiptap-btn-bg-hover": "#262626",
-  "--tiptap-btn-bg-active": "#2F2F2F",
-  "--tiptap-btn-primary-bg": "#7C6CE0",
-  "--tiptap-btn-primary-bg-hover": "#8B7CE8",
+  "--tiptap-btn-bg-hover": "#2A2B30",
+  "--tiptap-btn-bg-active": "#34353B",
+  "--tiptap-btn-primary-bg": "#6366F1", // indigo-500
+  "--tiptap-btn-primary-bg-hover": "#818CF8", // indigo-400
   "--tiptap-btn-primary-text": "#FFFFFF",
+  "--tiptap-btn-primary-shadow": "0 4px 14px rgba(0, 0, 0, 0.35), 0 4px 14px rgba(99, 102, 241, 0.25)",
+  "--tiptap-btn-primary-shadow-hover": "0 8px 20px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(99, 102, 241, 0.32)",
   "--tiptap-btn-danger-bg": "#EB5757",
   "--tiptap-btn-danger-bg-hover": "#F26D6D",
   "--tiptap-btn-danger-text": "#FFFFFF",
+  "--tiptap-btn-danger-shadow": "0 4px 14px rgba(0, 0, 0, 0.35), 0 4px 14px rgba(235, 87, 87, 0.22)",
+  "--tiptap-btn-danger-shadow-hover": "0 8px 20px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(235, 87, 87, 0.28)",
   "--tiptap-btn-secondary-bg": "#2B2B2B",
   "--tiptap-btn-secondary-text": "#CFCFCF",
 
-  // --- interaction feedback ---
-  "--tiptap-focus-ring": "rgba(148, 128, 244, 0.32)",
-  "--tiptap-selection-bg": "rgba(148, 128, 244, 0.28)",
+  // --- interaction feedback (Halo Focus: soft large-radius ring) ---
+  "--tiptap-focus-ring": "rgba(129, 140, 248, 0.30)", // indigo-400/30
+  "--tiptap-selection-bg": "rgba(129, 140, 248, 0.28)",
   "--tiptap-drag-handle": "rgba(230, 230, 230, 0.35)",
 
-  // popover / menu (follow the theme)
+  // popover / menu (follow the theme; shadows carry color tint, never hard)
   "--tiptap-popover-bg": "var(--tiptap-color-bg)",
   "--tiptap-popover-text": "var(--tiptap-color-text)",
   "--tiptap-popover-border": "var(--tiptap-color-border)",
-  "--tiptap-popover-shadow": "0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3)",
+  "--tiptap-popover-shadow":
+    "0 2px 8px rgba(0, 0, 0, 0.35), 0 12px 32px rgba(0, 0, 0, 0.35)",
+
+  // toolbar divider (deeper black layers — dark-on-dark is the only visible tint here)
+  "--tiptap-toolbar-shadow": "0 1px 2px rgba(0, 0, 0, 0.45), 0 4px 14px rgba(0, 0, 0, 0.35)",
 
   // dialog (modal mask; dialog panel follows popover tokens)
   "--tiptap-dialog-mask": "rgba(0, 0, 0, 0.6)",
@@ -59,9 +67,9 @@ export const darkTheme: Theme = {
   "--tiptap-menu-item-hover": "var(--tiptap-color-bg-hover)",
   "--tiptap-menu-item-active": "var(--tiptap-color-bg-active)",
 
-  // input (follow the theme)
-  "--tiptap-input-bg": "var(--tiptap-color-bg)",
-  "--tiptap-input-border": "var(--tiptap-color-border)",
+  // input (Soft UI: borderless, tinted field bg, focus ring carries feedback)
+  "--tiptap-input-bg": "#26272B",
+  "--tiptap-input-border": "transparent",
   "--tiptap-input-border-hover": "var(--tiptap-accent-blue)",
   "--tiptap-input-text": "var(--tiptap-color-text)",
   "--tiptap-input-placeholder": "var(--tiptap-color-text-muted)",
@@ -79,6 +87,6 @@ export const darkTheme: Theme = {
   // --- backward-compatible aliases (used by existing components) ---
   "--tiptap-color-text-3": "var(--tiptap-color-text-muted)",
   "--tiptap-btn--bg-hover": "var(--tiptap-color-bg-hover)",
-  "--tiptap-btn--bg-active": "#333333",
-  "--tiptap-btn--bg-active-hover": "#3B3B3B",
+  "--tiptap-btn--bg-active": "#34353B",
+  "--tiptap-btn--bg-active-hover": "#3C3D44",
 };

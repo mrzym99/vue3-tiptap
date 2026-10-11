@@ -1,29 +1,29 @@
 import type { Theme } from "@/types";
 
-/** Light theme — Notion style (docs/style/notion.md); old token names stay as aliases. */
+/** Light theme — Soft UI (docs/style/soft-ui-hard-prompt.md); old token names stay as aliases. */
 export const lightTheme: Theme = {
-  // --- surfaces ---
+  // --- surfaces (slate-tinted, soft) ---
   "--tiptap-color-bg": "#FFFFFF",
-  "--tiptap-color-bg-canvas": "#F7F6F3",
-  "--tiptap-color-bg-hover": "#EFEDEA",
-  "--tiptap-color-bg-active": "#E3E1DB",
-  "--tiptap-color-bg-subtle": "#F5F5F5", // gray-100
+  "--tiptap-color-bg-canvas": "#F8FAFC", // slate-50
+  "--tiptap-color-bg-hover": "#F1F5F9", // slate-100
+  "--tiptap-color-bg-active": "#E2E8F0", // slate-200
+  "--tiptap-color-bg-subtle": "#F6F7F9",
 
   // --- text ---
-  "--tiptap-color-text": "#37352F",
-  "--tiptap-color-text-secondary": "#525252", // gray-600
-  "--tiptap-color-text-muted": "#A3A3A3", // gray-400
+  "--tiptap-color-text": "#1F2937", // gray-800
+  "--tiptap-color-text-secondary": "#4B5563", // gray-600
+  "--tiptap-color-text-muted": "#9CA3AF", // gray-400
 
-  // --- borders ---
-  "--tiptap-color-border": "#E5E5E5", // gray-200
-  "--tiptap-color-border-strong": "#D4D4D4", // gray-300
+  // --- borders (kept hairline-soft; shadows carry the layering) ---
+  "--tiptap-color-border": "#E8EAEE",
+  "--tiptap-color-border-strong": "#D5D9E0",
 
-  // --- accents (primary accent is purple; text + soft bg) ---
-  "--tiptap-accent-blue": "#7C5CF0",
+  // --- accents (primary accent is indigo per Soft UI; text + soft bg) ---
+  "--tiptap-accent-blue": "#6366F1", // indigo-500
   "--tiptap-accent-red": "#EB5757",
   "--tiptap-accent-green": "#0F7B6C",
   "--tiptap-accent-yellow": "#DFAB01",
-  "--tiptap-accent-blue-bg": "#EFEAFE",
+  "--tiptap-accent-blue-bg": "#EEF2FF", // indigo-50
   "--tiptap-accent-red-bg": "#FEF2F2", // red-50
   "--tiptap-accent-green-bg": "#F0FDF4", // green-50
   "--tiptap-accent-yellow-bg": "#FEFCE8", // yellow-50
@@ -32,36 +32,45 @@ export const lightTheme: Theme = {
   "--tiptap-btn-bg": "transparent",
   "--tiptap-btn-bg-hover": "#EFEDEA",
   "--tiptap-btn-bg-active": "#E3E1DB",
-  "--tiptap-btn-primary-bg": "#7C5CF0",
-  "--tiptap-btn-primary-bg-hover": "#6748E8",
+  "--tiptap-btn-primary-bg": "#4F46E5", // indigo-600
+  "--tiptap-btn-primary-bg-hover": "#4338CA", // indigo-700
   "--tiptap-btn-primary-text": "#FFFFFF",
+  "--tiptap-btn-primary-shadow": "0 4px 14px rgba(79, 70, 229, 0.28)", // indigo-600/28
+  "--tiptap-btn-primary-shadow-hover": "0 8px 20px rgba(79, 70, 229, 0.35)",
   "--tiptap-btn-danger-bg": "#EB5757",
   "--tiptap-btn-danger-bg-hover": "#D64545",
   "--tiptap-btn-danger-text": "#FFFFFF",
+  "--tiptap-btn-danger-shadow": "0 4px 14px rgba(235, 87, 87, 0.25)",
+  "--tiptap-btn-danger-shadow-hover": "0 8px 20px rgba(235, 87, 87, 0.32)",
   "--tiptap-btn-secondary-bg": "#F5F5F5", // gray-100
   "--tiptap-btn-secondary-text": "#404040", // gray-700
 
-  // --- interaction feedback ---
-  "--tiptap-focus-ring": "rgba(124, 92, 240, 0.30)",
-  "--tiptap-selection-bg": "rgba(124, 92, 240, 0.20)",
-  "--tiptap-drag-handle": "rgba(55, 53, 47, 0.35)",
+  // --- interaction feedback (Halo Focus: soft large-radius ring) ---
+  "--tiptap-focus-ring": "rgba(99, 102, 241, 0.25)", // indigo-500/25
+  "--tiptap-selection-bg": "rgba(99, 102, 241, 0.20)",
+  "--tiptap-drag-handle": "rgba(31, 41, 55, 0.35)",
 
-  // popover / menu (follow the theme)
+  // popover / menu (follow the theme; shadows carry color tint, never hard)
   "--tiptap-popover-bg": "var(--tiptap-color-bg)",
   "--tiptap-popover-text": "var(--tiptap-color-text)",
   "--tiptap-popover-border": "var(--tiptap-color-border)",
-  "--tiptap-popover-shadow": "0 1px 3px rgba(15, 15, 15, 0.13), 0 4px 16px rgba(15, 15, 15, 0.05)",
+  "--tiptap-popover-shadow":
+    "0 2px 6px rgba(99, 102, 241, 0.06), 0 12px 32px rgba(15, 15, 15, 0.08)",
+
+  // toolbar divider (soft tinted shadow instead of a hard border line)
+  "--tiptap-toolbar-shadow":
+    "0 1px 3px rgba(15, 15, 15, 0.06), 0 4px 12px rgba(99, 102, 241, 0.06)",
 
   // dialog (modal mask; dialog panel follows popover tokens)
-  "--tiptap-dialog-mask": "rgba(15, 15, 15, 0.4)",
+  "--tiptap-dialog-mask": "rgba(30, 27, 45, 0.35)",
 
   // menu item (follow the theme)
   "--tiptap-menu-item-hover": "var(--tiptap-color-bg-hover)",
   "--tiptap-menu-item-active": "var(--tiptap-color-bg-active)",
 
-  // input (follow the theme)
-  "--tiptap-input-bg": "var(--tiptap-color-bg)",
-  "--tiptap-input-border": "var(--tiptap-color-border)",
+  // input (Soft UI: borderless, tinted field bg, focus ring carries feedback)
+  "--tiptap-input-bg": "#F6F7F9",
+  "--tiptap-input-border": "transparent",
   "--tiptap-input-border-hover": "var(--tiptap-accent-blue)",
   "--tiptap-input-text": "var(--tiptap-color-text)",
   "--tiptap-input-placeholder": "var(--tiptap-color-text-muted)",
@@ -80,5 +89,5 @@ export const lightTheme: Theme = {
   "--tiptap-color-text-3": "var(--tiptap-color-text-muted)",
   "--tiptap-btn--bg-hover": "var(--tiptap-color-bg-hover)",
   "--tiptap-btn--bg-active": "var(--tiptap-color-bg-active)",
-  "--tiptap-btn--bg-active-hover": "#D9D6CE",
+  "--tiptap-btn--bg-active-hover": "#D3DAE3",
 };

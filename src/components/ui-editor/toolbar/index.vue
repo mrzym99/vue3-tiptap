@@ -54,6 +54,8 @@ const menus = computed(() => {
 
 <style lang="scss" scoped>
 .tiptap-toolbar {
+  position: relative;
+  z-index: 1; /* paint above the editor content, or its opaque bg hides the shadow */
   flex-shrink: 0;
   width: 100%;
   color: var(--tiptap-color-text);
@@ -63,8 +65,9 @@ const menus = computed(() => {
   align-items: center;
   gap: var(--tiptap-gap-xs);
   outline: none;
-  border-bottom: 1px solid var(--tiptap-color-border);
-  padding: var(--tiptap-padding-md);
+  /* Soft UI: diffuse tinted shadow instead of a hard divider line (theme token) */
+  box-shadow: var(--tiptap-toolbar-shadow);
+  padding: var(--tiptap-padding-sm) var(--tiptap-padding-md);
 
   &::-webkit-scrollbar {
     display: none;

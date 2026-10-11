@@ -186,4 +186,17 @@ defineExpose({
 .tiptap-box * {
   box-sizing: border-box;
 }
+
+/* Theme-switch transition: every surface inside the editor fades over 0.2s to
+   stay in sync with the host app's own background/border transitions on theme
+   toggle. Components that declare their own transitions keep theirs (higher
+   specificity), so hover/press animations are unaffected. */
+.tiptap-box,
+.tiptap-box * {
+  transition:
+    background-color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out,
+    color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+}
 </style>
