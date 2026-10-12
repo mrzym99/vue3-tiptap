@@ -95,12 +95,11 @@ function applyLink(values: Record<string, unknown>) {
   if (editModeAtOpen.value) {
     props.editor.chain().focus().extendMarkRange("link").setLink({ href: value }).run();
   } else {
-    // Collapsed caret on plain text: insert a link with a label
     const text = String(values.label ?? "").trim() || value;
     props.editor
       .chain()
       .focus()
-      .insertContent(`<a href="${escapeHtml(value)}">${escapeHtml(text)}</a>`)
+      .insertContent({ type: "text", text, marks: [{ type: "link", attrs: { href: value } }] })
       .run();
   }
   dialogRef.value?.close();
@@ -109,9 +108,5 @@ function applyLink(values: Record<string, unknown>) {
 function removeLink() {
   props.editor.chain().focus().extendMarkRange("link").unsetLink().run();
   dialogRef.value?.close();
-}
-
-function escapeHtml(value: string) {
-  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 </script>

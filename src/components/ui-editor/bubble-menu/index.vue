@@ -27,7 +27,7 @@ import BoldButton from "@/components/ui-editor/toolbar/buttons/BoldButton.vue";
 import ItalicButton from "@/components/ui-editor/toolbar/buttons/ItalicButton.vue";
 import StrikeButton from "@/components/ui-editor/toolbar/buttons/StrikeButton.vue";
 import HighlightButton from "@/components/ui-editor/toolbar/buttons/HighlightButton.vue";
-import LinkButton from "@/components/ui-editor/toolbar/buttons/LinkButton.vue";
+import LinkDialogButton from "@/components/ui-editor/toolbar/dialog-buttons/LinkDialogButton.vue";
 
 const props = defineProps<{
   editor: Editor;
@@ -42,7 +42,7 @@ const buttons: { key: string; component: Component }[] = [
   { key: "italic", component: ItalicButton },
   { key: "strike", component: StrikeButton },
   { key: "highlight", component: HighlightButton },
-  { key: "link", component: LinkButton },
+  { key: "link", component: LinkDialogButton },
 ];
 
 const visibleButtons = computed(() => {

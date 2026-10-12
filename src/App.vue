@@ -4,7 +4,6 @@ import { StarterKit } from "./components/extensions";
 import type { LocaleTranslations } from "./locales";
 import zhTW from "./zh-TW";
 import { useDemoConfig } from "./composables/useDemoConfig";
-import Logo from "./assets/icons/logo.svg";
 import SunIcon from "~icons/lucide/sun";
 import MoonIcon from "~icons/lucide/moon";
 

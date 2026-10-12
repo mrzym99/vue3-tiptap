@@ -3,12 +3,7 @@
     <Form ref="formRef" :model="model" @submit="applyLink">
       <FormItem name="href" :rules="rules">
         <template #default="{ id }">
-          <TiptapInput
-            :id="id"
-            v-model="href"
-            :placeholder="t('linkPlaceholder')"
-            @keydown.enter.prevent="submit"
-          />
+          <TiptapInput :id="id" v-model="href" :placeholder="t('linkPlaceholder')" @keydown.enter.prevent="submit" />
         </template>
       </FormItem>
       <template #actions>
@@ -27,7 +22,7 @@ import Form from "@/components/ui-common/form/index.vue";
 import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import TiptapButton from "@/components/ui-common/button/index.vue";
-import type { Editor } from "@tiptap/vue-3";
+import type { Editor } from "@tiptap/core";
 import type { TranslateFn } from "@/types";
 import type { FormRule } from "@/components/ui-common/form/types";
 
