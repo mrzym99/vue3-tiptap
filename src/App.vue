@@ -71,7 +71,7 @@ const extensions = [
             </g>
           </svg>
         </span>
-        <span class="app-brand-name">tiptap-editor</span>
+        <span class="app-brand-name">@yumine/vue3-tiptap</span>
       </div>
 
       <div class="app-actions">
