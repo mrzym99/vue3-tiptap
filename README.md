@@ -1,11 +1,11 @@
-# tip-tap-editor
+# @yumine/vue3-tiptap
 
 Vue 3 富文本编辑器,基于 [@tiptap/vue-3](https://tiptap.dev) 封装:内置自动收集的工具栏、气泡/浮动菜单、主题系统与 i18n,打包产物零外部依赖(vue 除外)。
 
 ## 安装
 
 ```bash
-pnpm add tip-tap-editor
+pnpm add @yumine/vue3-tiptap
 ```
 
 ## 引入样式(必须)
@@ -13,7 +13,7 @@ pnpm add tip-tap-editor
 库的构建产物把全部组件样式抽成了独立的 `dist/style.css`,JS 不会自动加载它——**需要在使用方引一次**(整个库只需一次),否则功能正常但视觉是坏的(工具栏无布局、弹层错位、placeholder 不显示):
 
 ```ts
-import "tip-tap-editor/style.css";
+import "@yumine/vue3-tiptap/style.css";
 ```
 
 单独导出这个文件是刻意的:`index.cjs` 要在 Node/SSR 场景下 `require`(引入 `.css` 会报错),同时消费方保留覆盖样式、自建 CSS 管线的控制权。
@@ -23,8 +23,8 @@ import "tip-tap-editor/style.css";
 ```vue
 <script setup lang="ts">
 import { ref } from "vue";
-import { TipTapEditor } from "tip-tap-editor";
-import "tip-tap-editor/style.css";
+import { TipTapEditor } from "@yumine/vue3-tiptap";
+import "@yumine/vue3-tiptap/style.css";
 
 const content = ref("<p>hello</p>");
 </script>
@@ -37,7 +37,7 @@ const content = ref("<p>hello</p>");
 或注册为全局组件后直接用 `<TipTapEditor />`:
 
 ```ts
-import TipTapEditorPlugin from "tip-tap-editor";
+import TipTapEditorPlugin from "@yumine/vue3-tiptap";
 app.use(TipTapEditorPlugin);
 ```
 
@@ -46,7 +46,7 @@ app.use(TipTapEditorPlugin);
 `extensions` prop 传入的扩展会与内置结构合并(同名时后者生效)。`StarterKit` 打包了全部内置扩展,**但不含 Youtube / Twitch**——需要时从包根单独引入:
 
 ```ts
-import { StarterKit, Youtube, Twitch, Image } from "tip-tap-editor";
+import { StarterKit, Youtube, Twitch, Image } from "@yumine/vue3-tiptap";
 
 const extensions = [StarterKit.configure({}), Youtube, Twitch, Image];
 ```

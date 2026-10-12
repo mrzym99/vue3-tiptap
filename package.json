@@ -1,8 +1,8 @@
 {
-  "name": "tip-tap-editor",
+  "name": "@yumine/vue3-tiptap",
   "version": "1.0.0",
   "type": "module",
-  "description": "Vue 3 rich text editor built on TipTap with an auto-collected toolbar, themes and i18n.",
+  "description": "Ready-made UI for TipTap in Vue 3 — themeable rich text editor with an auto-collected toolbar, bubble menus and i18n.",
   "license": "MIT",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -24,7 +24,10 @@
     "tiptap",
     "rich-text",
     "editor",
-    "wysiwyg"
+    "wysiwyg",
+    "ui",
+    "themeable",
+    "toolbar"
   ],
   "scripts": {
     "dev": "vite",

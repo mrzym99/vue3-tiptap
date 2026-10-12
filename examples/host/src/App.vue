@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 // Consume the published-style API
-import { TipTapEditor, StarterKit, Youtube, Twitch, Image } from "tip-tap-editor";
-import "tip-tap-editor/style.css";
+import { TipTapEditor, StarterKit, Youtube, Twitch, Image } from "@yumine/vue3-tiptap";
+import "@yumine/vue3-tiptap/style.css";
 
 const content = ref("<p>hello from host app</p>");
 
