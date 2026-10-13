@@ -85,15 +85,13 @@ const props = defineProps<{ editor: Editor }>();
 
 const { t } = useTiptapLocale();
 
-// Anchor below the table (flip to top when there's no room below)
 const bubbleOptions = {
   placement: "bottom" as const,
   offset: 8,
   shift: { padding: 8 },
 };
 
-// Anchor to the `<table>` node so the bar stays at the table bottom instead
-// of floating above the caret; `null` falls back to selection-based positioning.
+// Anchor to the <table> node, not the caret
 function getReferencedVirtualElement(): HTMLElement | null {
   const { view, state } = props.editor;
   const { $from } = state.selection;
@@ -106,8 +104,7 @@ function getReferencedVirtualElement(): HTMLElement | null {
   return null;
 }
 
-// Show for a caret inside a cell or a CellSelection (drag-selected cells);
-// non-collapsed text selections go to the regular formatting bubble.
+// Caret in a cell or CellSelection; text selections go to the format bubble
 // (`editor` is typed loosely: tiptap's shouldShow passes its own Editor subclass.)
 function shouldShow({
   editor: e,

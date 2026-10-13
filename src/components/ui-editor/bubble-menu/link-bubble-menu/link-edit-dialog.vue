@@ -41,7 +41,6 @@ const emit = defineEmits<{
 const formRef = useTemplateRef<InstanceType<typeof Form>>("formRef");
 const href = ref("");
 
-// Prefill from the current link each time the dialog opens
 watch(
   () => props.show,
   (visible) => {
@@ -60,7 +59,6 @@ const rules: FormRule[] = [
   },
 ];
 
-/** Submit on Enter inside the field — the form validates first. */
 const submit = () => formRef.value?.formEl?.requestSubmit();
 
 function onShowChange(value: boolean) {

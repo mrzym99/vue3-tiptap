@@ -38,7 +38,6 @@ import type { ActionMenuButtonItem } from "./type.ts";
 
 const props = defineProps<ActionButtonMenuProps>();
 
-// Expose the open state for `aria-expanded` on the trigger button
 const menuOpen = ref(false);
 
 const active = computed<ActionMenuButtonItem>(() => {

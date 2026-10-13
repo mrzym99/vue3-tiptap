@@ -38,7 +38,7 @@ const buttons: { key: string; component: Component }[] = [
 ];
 
 const visibleButtons = computed(() => {
-  // Disabled (undefined / false) renders nothing — never the default layout
+  // undefined/false render nothing — never the default layout
   if (!props.toolbar) return [];
   const { keys } = resolveToolbar(
     props.toolbar,

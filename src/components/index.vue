@@ -49,7 +49,6 @@ const props = withDefaults(defineProps<TipTapEditorProps>(), {
   extensions: () => [],
 });
 
-// Self-contained locale context (no vue-i18n needed)
 const { t } = useEditorLocale(toRef(props, "locale"), toRef(props, "translations"));
 
 const emit = defineEmits<{
@@ -65,21 +64,18 @@ const emit = defineEmits<{
 
 const modelValue = defineModel<string>({ required: true });
 
-// Placeholder stays reactive: the option accepts a function, re-evaluated per
-// decoration rebuild. Falls back to the locale pack when the prop is unset.
+// Function option keeps placeholder reactive; falls back to the locale pack
 const effectivePlaceholder = computed(() => {
   if (props.placeholder !== undefined) return props.placeholder;
   const localized = t("placeholder");
   // Untranslated custom locale → no placeholder (t returns the bare key)
   return localized === "placeholder" ? "" : localized;
 });
-// Hosts opt in via the `extensions` prop; later entries win on name conflicts.
+// Later entries win on name conflicts
 const STRUCTURAL_NAMES = new Set(["doc", "paragraph", "text", "placeholder"]);
 
-// `limit` works without the host importing CharacterCount: typing past the
-// limit is rejected at the ProseMirror level (`autoTrim: false`); create-time
-// over-limit trimming is owned by useEditorModel.handleCreate (emits `truncated`).
-// `limit` is read once at editor creation — live changes don't take effect.
+// Read once at creation: typing past the limit is rejected at the ProseMirror
+// level; create-time trimming lives in useEditorModel (emits `truncated`)
 const needsLimit = props.limit > 0;
 const structuralNames = needsLimit ? new Set([...STRUCTURAL_NAMES, "characterCount"]) : STRUCTURAL_NAMES;
 const userExtensions = [...new Map(props.extensions.map((e) => [e.name, e])).values()].filter(
@@ -102,8 +98,7 @@ const editor = useEditor({
   editable: !props.disabled,
   autofocus: props.autofocus,
   onCreate: ({ editor: created }) => {
-    // Invisible characters are opt-in via prop; the extension may be disabled
-    // by the host, so guard the command before dispatching.
+    // The extension may be disabled by the host — guard before dispatching
     if (props.showInvisibleCharacters && typeof created.commands.showInvisibleCharacters === "function") {
       created.commands.showInvisibleCharacters();
     }
@@ -117,8 +112,7 @@ const editor = useEditor({
   onBlur: (props) => emit("blur", props),
 });
 
-// v-model binding + limit truncation; defined after `editor` — the callbacks
-// above run post-mount, so referencing `model` inside them is safe.
+// Defined after `editor` — the callbacks above run post-mount
 const model = useEditorModel({
   editor,
   modelValue,
@@ -136,8 +130,6 @@ watch(
   },
 );
 
-// Invisible characters are opt-in via prop; the extension may be disabled by
-// the host, so guard the command before dispatching.
 watch(
   () => props.showInvisibleCharacters,
   (visible) => {
@@ -148,8 +140,8 @@ watch(
   },
 );
 
-// Sync runtime placeholder changes (prop or locale) and force a decoration
-// rebuild — the plugin skips transactions without a doc or selection change.
+// Force a decoration rebuild — the plugin skips transactions without a
+// doc/selection change
 watch(effectivePlaceholder, () => {
   if (!editor.value) return;
   const { state, view } = editor.value;
@@ -187,10 +179,8 @@ defineExpose({
   box-sizing: border-box;
 }
 
-/* Theme-switch transition: every surface inside the editor fades over 0.2s to
-   stay in sync with the host app's own background/border transitions on theme
-   toggle. Components that declare their own transitions keep theirs (higher
-   specificity), so hover/press animations are unaffected. */
+/* 0.2s fade keeps theme switches in sync with the host app; component-level
+   transitions win on specificity, so hover/press animations are unaffected. */
 .tiptap-box,
 .tiptap-box * {
   transition:

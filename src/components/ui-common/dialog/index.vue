@@ -1,6 +1,5 @@
 <template>
-  <!-- Teleported to body so host-page transforms/filters can't break the
-       fixed overlay; theme vars are re-applied onto the overlay (see below). -->
+  <!-- Host transforms/filters can't break a body-level fixed overlay -->
   <Teleport to="body">
     <div v-if="show" ref="overlayEl" class="tiptap-dialog-overlay" @mousedown.self="doClose">
       <div
@@ -50,15 +49,13 @@ const { t } = useTiptapLocale();
 const panelEl = useTemplateRef<HTMLElement>("panelEl");
 const overlayEl = useTemplateRef<HTMLElement>("overlayEl");
 
-// The teleported overlay leaves the ThemeProvider subtree, so the current
-// theme's `--tiptap-*` variables are re-applied onto the overlay itself
+// Teleport leaves the ThemeProvider subtree — re-apply the theme vars
 const syncTheme = inject(themeSyncKey, null);
 
 function doClose() {
   emit("update:show", false);
 }
 
-// --- modal focus management ---
 let previouslyFocused: HTMLElement | null = null;
 
 const FOCUSABLE_SELECTOR = [
@@ -70,8 +67,7 @@ const FOCUSABLE_SELECTOR = [
   "[tabindex]:not([tabindex='-1'])",
 ].join(", ");
 
-/** Escape closes; Tab cycles inside the panel (aria-modal promises the
-    background is inert — focus must not leak out of the modal). */
+/** Escape closes; Tab cycles inside the modal. */
 function onPanelKeydown(e: KeyboardEvent) {
   if (e.key === "Escape") {
     e.preventDefault();
@@ -103,9 +99,8 @@ function trapFocus(e: KeyboardEvent) {
   }
 }
 
-// Focus the panel when opened so Esc works without a prior click inside;
-// restore page scroll and the trigger's focus when closed. `immediate`
-// covers hosts that render with the dialog already open.
+// Lock scroll + focus the panel on open, restore the trigger's focus on
+// close; `immediate` covers mounting while already open
 watch(
   () => props.show,
   (visible) => {

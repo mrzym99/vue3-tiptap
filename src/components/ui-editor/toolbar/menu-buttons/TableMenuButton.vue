@@ -117,8 +117,7 @@ const opsItems = computed<ActionMenuButtonItem[]>(() => [
 ]);
 
 const disabled = computed(() => {
-  // keep the menu enabled (grid insertion always possible), but reflect the
-  // editing ops being unavailable when not inside a table
+  // Not `!inTable` — grid insertion is always possible
   return !props.editor.can().insertTable({ rows: 1, cols: 1 });
 });
 const isActive = computed(() => inTable.value);

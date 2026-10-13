@@ -12,8 +12,7 @@ export function resolveToolbar(toolbar: Toolbar | undefined, allKeys: string[]):
   const source = toolbar ?? defaultToolbar;
   const known = (key: string) => allKeys.includes(key);
 
-  // Warn only for the default layout: a defaultToolbar key with no loaded
-  // extension silently drops its button; user toolbars reference a subset.
+  // Only warn for the default layout — user toolbars reference a subset
   if (toolbar === undefined) {
     const dropped = defaultToolbar
       .split(/\s+/)
@@ -34,20 +33,17 @@ export function resolveToolbar(toolbar: Toolbar | undefined, allKeys: string[]):
     groups.forEach((group, gi) => {
       const groupKeys = group.trim().split(/\s+/).filter(known);
       if (groupKeys.length === 0) return;
-      // Separator renders before the first key of this group (templates insert
-      // the divider ahead of the item at the recorded index)
+      // Separator renders before the first key of the group
       if (gi > 0 && keys.length > 0) separators.push(keys.length);
       keys.push(...groupKeys);
     });
     return { keys, separators };
   }
 
-  // Ordered array: ["bold", "italic"]
   if (Array.isArray(source)) {
     return { keys: source.filter(known), separators: [] };
   }
 
-  // Object: { include?, exclude? }
   const exclude = source.exclude ?? [];
   const include = source.include ?? allKeys;
   return {

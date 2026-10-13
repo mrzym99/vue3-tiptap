@@ -31,9 +31,7 @@ const props = withDefaults(
 );
 
 const menus = computed(() => {
-  // Tiptap re-sorts extensions internally, so iterate the configured layout
-  // (defaultToolbar or the user's toolbar) and map each key back to its
-  // extension rather than trusting extensionManager order.
+  // Iterate the configured layout — extensionManager order is re-sorted
   const extensions = props.editor.extensionManager.extensions.filter((extension) => extension.options.button);
   const byName = Object.fromEntries(extensions.map((extension) => [extension.name, extension]));
   const layout = resolveToolbar(
@@ -51,7 +49,7 @@ const menus = computed(() => {
 <style lang="scss" scoped>
 .tiptap-toolbar {
   position: relative;
-  z-index: 1; /* paint above the editor content, or its opaque bg hides the shadow */
+  z-index: 1; /* paints above the editor's opaque bg */
   flex-shrink: 0;
   width: 100%;
   color: var(--tiptap-color-text);
@@ -61,7 +59,6 @@ const menus = computed(() => {
   align-items: center;
   gap: var(--tiptap-gap-xs);
   outline: none;
-  /* Soft UI: diffuse tinted shadow instead of a hard divider line (theme token) */
   box-shadow: var(--tiptap-toolbar-shadow);
   padding: var(--tiptap-padding-sm) var(--tiptap-padding-md);
 

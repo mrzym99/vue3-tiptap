@@ -10,7 +10,6 @@
       <FormItem name="src" :rules="rules">
         <template #default="{ id }">
           <Tabs v-model="activeTab" :tabs="tabs">
-            <!-- URL tab -->
             <template #url>
               <TiptapInput
                 :id="id"
@@ -20,7 +19,6 @@
                 @keydown.enter.prevent="submit"
               />
             </template>
-            <!-- Upload tab -->
             <template #upload>
               <ImageUpload v-if="hasUpload" :editor="editor" @success="(url) => (src = url)" />
               <span v-else class="image-dialog-upload-disabled">

@@ -73,8 +73,7 @@ function handleSubmit() {
 const context: FormContext = {
   registerField: (name, rules) => {
     rulesMap.set(name, rules);
-    // No initial validation: errors only appear after the user interacts
-    // (input/blur) or on submit, so the form opens clean.
+    // No initial validation — the form opens clean
   },
   unregisterField: (name) => {
     rulesMap.delete(name);

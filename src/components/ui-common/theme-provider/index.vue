@@ -23,8 +23,7 @@ const props = withDefaults(
 
 const rootEl = useTemplateRef<HTMLElement>("rootEl");
 
-// Read on every call, so late invocations (teleported overlays mounting
-// afterwards) always see the current theme + overrides
+// Reads current props so late callers (teleported overlays) get the latest theme
 provide(themeSyncKey, (el) => applyTheme(props.theme, el, props.themeOverrides));
 
 function syncTheme() {

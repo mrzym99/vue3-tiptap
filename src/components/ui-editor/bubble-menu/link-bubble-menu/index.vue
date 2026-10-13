@@ -43,15 +43,13 @@ function openEditDialog() {
   editDialogShow.value = true;
 }
 
-// Anchor below the `<a>` element itself (not the caret)
+// Anchor to the <a> element, not the caret
 const bubbleOptions = {
   placement: "bottom" as const,
   offset: 8,
   shift: { padding: 8 },
 };
 
-// Anchoring to the link keeps the toolbar glued to it instead of floating
-// above the caret; `null` falls back to selection-based positioning.
 function getReferencedVirtualElement(): HTMLElement | null {
   const { view, state } = props.editor;
   const resolved = view.domAtPos(state.selection.from);
@@ -72,8 +70,7 @@ function shouldShow({
   from: number;
   to: number;
 }) {
-  // Same predicate the formatting bubble uses to defer — a selection spanning
-  // a link plus surrounding text gets the format bubble, not this one.
+  // Selections spanning link + text get the format bubble instead
   return isSelectionInsideLink(view, state);
 }
 

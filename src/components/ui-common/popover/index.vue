@@ -34,8 +34,6 @@ const props = withDefaults(defineProps<PopoverProps>(), {
   hideOnClick: true,
 });
 
-// Controlled visibility (v-model:show) — defineModel keeps local toggles and
-// external prop changes in sync without a manual mirror ref
 const show = defineModel<boolean>("show", { default: false });
 
 const triggerEl = useTemplateRef<HTMLElement>("triggerEl");
@@ -55,8 +53,7 @@ watch(show, async (v) => {
     stopFloating();
     return;
   }
-  // The floating element is rendered by `v-if="show"` — it only exists after
-  // the next DOM flush, so wait for nextTick before measuring/positioning.
+  // The v-if element only exists after the next DOM flush
   await nextTick();
   startFloating();
 });
@@ -68,7 +65,6 @@ watch(
   },
 );
 
-// --- interactions ---
 let hoverTimer: number | null = null;
 
 function clearHoverTimer() {
@@ -95,7 +91,6 @@ function onLeave() {
   hoverTimer = setTimeout(() => doClose(), 120);
 }
 
-// click-mode only: doClose on outside click / Esc
 function onDocMousedown(e: MouseEvent) {
   if (!show.value || props.trigger !== "click") return;
   const target = e.target as Node;
@@ -108,8 +103,7 @@ function onKeydown(e: KeyboardEvent) {
 }
 
 function captureClickItem(e: MouseEvent) {
-  // Elements marked `data-popover-keep-open` (e.g. the native color picker
-  // inside a menu) keep the popover open; the owner closes it when done.
+  // The owner closes the popover itself when done
   const target = e.target as HTMLElement | null;
   if (target?.closest("[data-popover-keep-open]")) return;
   props.hideOnClick && doClose();

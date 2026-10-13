@@ -23,8 +23,7 @@ export function useEditorModel(options: UseEditorModelOptions) {
   const MODEL_SYNC_DELAY = 150;
   let modelSyncTimer: ReturnType<typeof setTimeout> | undefined;
 
-  // A value that changed before the editor instance existed (useEditor creates
-  // it on mount, so the initial watcher run can race with it).
+  // A value that changed before useEditor created the editor (mount race)
   let pendingContent: string | undefined;
 
   const flushModelValue = () => {
@@ -45,8 +44,7 @@ export function useEditorModel(options: UseEditorModelOptions) {
     if (pendingContent !== undefined && pendingContent !== created.getHTML()) {
       created.commands.setContent(pendingContent, { emitUpdate: false });
     }
-    // Only write back when actually truncated — otherwise an empty document
-    // would immediately rewrite the parent value "" → "<p></p>".
+    // Only write back when truncated — else an empty doc rewrites "" → "<p></p>"
     const currentLimit = limit();
     const current = created.storage.characterCount?.characters?.() ?? created.getText({ blockSeparator: "" }).length;
     if (currentLimit && current > currentLimit) {

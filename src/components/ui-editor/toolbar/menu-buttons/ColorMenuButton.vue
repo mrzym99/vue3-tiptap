@@ -48,7 +48,6 @@ import type { EXTActionButtonProps } from "@/components/ui-common/action-button/
 
 const props = defineProps<EXTActionButtonProps>();
 
-// Expose the open state for `aria-expanded` on the trigger button
 const colorMenuOpen = ref(false);
 
 const PRESET_COLORS = [
@@ -117,8 +116,7 @@ function onPick(color: string) {
   props.editor.chain().focus().setColor(color).run();
 }
 
-// `input` live-previews while the OS picker is open; `change` fires once the
-// user commits — only then does the popover close.
+// `input` live-previews while the OS picker is open; `change` fires on commit
 function onCustomChange(color: string) {
   onPick(color);
   colorMenuOpen.value = false;
@@ -176,13 +174,11 @@ function clearColor() {
   transition: filter 150ms ease;
   width: 24px;
 
-  /* hover: only brighten the swatch — no border/shadow/translate/scale
-     changes (Notion: hover feedback must be background-only) */
+  /* hover feedback is background-only */
   &:hover {
     filter: brightness(1.1);
   }
 
-  /* selected state: blue ring, mirrors focus-ring pattern */
   &.active {
     box-shadow: 0 0 0 2px var(--tiptap-accent-blue);
   }
@@ -195,7 +191,7 @@ function clearColor() {
   gap: var(--tiptap-gap);
 }
 
-/* Same rounded-square shape as the preset swatches above (24×24, 8px radius) */
+/* Same rounded-square as the preset swatches */
 .color-custom input[type="color"] {
   border: 1px solid var(--tiptap-color-border);
   border-radius: var(--tiptap-border-radius-sm);

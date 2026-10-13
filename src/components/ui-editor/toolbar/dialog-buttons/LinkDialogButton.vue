@@ -78,7 +78,6 @@ const rules: FormRule[] = [
   },
 ];
 
-/** Submit on Enter inside any field — the form validates first. */
 const submit = () => formEl.value?.formEl?.requestSubmit();
 
 // Snapshot selection/link state + prefill at open (fields remount per open)

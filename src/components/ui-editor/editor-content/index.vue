@@ -62,7 +62,6 @@ const props = defineProps<{ editor: Editor }>();
     padding: 0 var(--tiptap-content-padding);
     overflow-y: auto;
 
-    /* text selection highlight (select-all / drag select) */
     ::selection {
       background-color: var(--tiptap-selection-bg);
     }
@@ -119,7 +118,6 @@ const props = defineProps<{ editor: Editor }>();
       margin: 0.25rem 0;
     }
 
-    /* task list */
     ul[data-type="taskList"] {
       list-style: none;
       padding-left: 0;
@@ -146,7 +144,6 @@ const props = defineProps<{ editor: Editor }>();
       margin: 0;
     }
 
-    /* code block */
     pre {
       background-color: var(--tiptap-code-bg);
       border-radius: var(--tiptap-border-radius-sm);
@@ -165,7 +162,6 @@ const props = defineProps<{ editor: Editor }>();
       padding: 0;
     }
 
-    /* details (toggle block) */
     div[data-type="details"] {
       border: 1px solid var(--tiptap-color-border);
       border-radius: var(--tiptap-border-radius-sm);
@@ -198,13 +194,12 @@ const props = defineProps<{ editor: Editor }>();
         }
       }
 
-      /* content wrapper (summary + content block) */
       > div:last-child {
         flex: 1 1 auto;
         min-width: 0;
       }
 
-      /* folded state: hide the content block, keep the summary header */
+      /* folded state: keep the summary, hide the content */
       &:not(.is-open) [data-type="detailsContent"] {
         display: none;
       }
@@ -288,9 +283,8 @@ const props = defineProps<{ editor: Editor }>();
       cursor: nesw-resize;
     }
 
-    /* Edge handles (video): slim bars centered on each side, half overhanging.
-       Inline styles pin them top:0/bottom:0 (or left:0/right:0); fixed size +
-       auto margin centers them on that axis. */
+    /* Edge handles (video): slim bars centered per side — inline styles pin
+       them to the edge, auto margin centers on that axis */
     .tiptap-media-resizer [data-resize-handle="left"],
     .tiptap-media-resizer [data-resize-handle="right"] {
       width: 6px;
@@ -457,7 +451,6 @@ const props = defineProps<{ editor: Editor }>();
       cursor: move;
     }
 
-    /* refined, quiet scrollbar inside the writing surface */
     &::-webkit-scrollbar {
       display: none;
     }

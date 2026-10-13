@@ -43,9 +43,8 @@ const props = withDefaults(
 const triggerEl = useTemplateRef<HTMLElement>("triggerEl");
 const floatingEl = useTemplateRef<HTMLElement>("floatingEl");
 const show = ref(false);
-// Keyboard focus on the slotted trigger bubbles up as focusin/focusout (see
-// template), so Tab reveals the tooltip just like hover does; the id links
-// trigger and tooltip for screen readers.
+// focusin bubbles from the slotted trigger, so keyboard focus reveals the
+// tooltip too; the id links trigger and tooltip for screen readers
 const tooltipId = useId();
 
 const {
