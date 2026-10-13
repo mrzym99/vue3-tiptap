@@ -1,11 +1,21 @@
 <template>
-  <span ref="triggerEl" class="tiptap-tooltip-trigger" @mouseenter="onEnter" @mouseleave="onLeave">
+  <span
+    ref="triggerEl"
+    class="tiptap-tooltip-trigger"
+    :aria-describedby="show ? tooltipId : undefined"
+    @mouseenter="onEnter"
+    @mouseleave="onLeave"
+    @focusin="onEnter"
+    @focusout="onLeave"
+  >
     <slot name="trigger" />
   </span>
   <div
     v-if="show"
+    :id="tooltipId"
     ref="floatingEl"
     class="tiptap-tooltip"
+    role="tooltip"
     :style="floatingStyle"
     @mouseenter="onEnter"
     @mouseleave="onLeave"
@@ -15,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, nextTick, onBeforeUnmount, useTemplateRef } from "vue";
+import { ref, watch, nextTick, onBeforeUnmount, useId, useTemplateRef } from "vue";
 import type { Placement } from "@floating-ui/dom";
 import { useFloating } from "@/composables/useFloating";
 
@@ -33,6 +43,10 @@ const props = withDefaults(
 const triggerEl = useTemplateRef<HTMLElement>("triggerEl");
 const floatingEl = useTemplateRef<HTMLElement>("floatingEl");
 const show = ref(false);
+// Keyboard focus on the slotted trigger bubbles up as focusin/focusout (see
+// template), so Tab reveals the tooltip just like hover does; the id links
+// trigger and tooltip for screen readers.
+const tooltipId = useId();
 
 const {
   floatingStyle,

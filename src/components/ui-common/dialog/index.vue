@@ -8,7 +8,7 @@
       aria-modal="true"
       :aria-label="title"
       tabindex="-1"
-      @keydown.escape.prevent="doClose"
+      @keydown="onPanelKeydown"
     >
       <div class="tiptap-dialog-header">
         <span class="tiptap-dialog-title">{{ title }}</span>
@@ -45,14 +45,64 @@ function doClose() {
   emit("update:show", false);
 }
 
+// --- modal focus management ---
+let previouslyFocused: HTMLElement | null = null;
+
+const FOCUSABLE_SELECTOR = [
+  "a[href]",
+  "button:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  "[tabindex]:not([tabindex='-1'])",
+].join(", ");
+
+/** Escape closes; Tab cycles inside the panel (aria-modal promises the
+    background is inert — focus must not leak out of the modal). */
+function onPanelKeydown(e: KeyboardEvent) {
+  if (e.key === "Escape") {
+    e.preventDefault();
+    doClose();
+    return;
+  }
+  if (e.key !== "Tab") return;
+  trapFocus(e);
+}
+
+function trapFocus(e: KeyboardEvent) {
+  const panel = panelEl.value;
+  if (!panel) return;
+  const focusables = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
+  if (focusables.length === 0) {
+    e.preventDefault();
+    panel.focus();
+    return;
+  }
+  const first = focusables[0];
+  const last = focusables[focusables.length - 1];
+  const active = document.activeElement;
+  if (e.shiftKey && (active === first || active === panel)) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && active === last) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
 // Focus the panel when opened so Esc works without a prior click inside;
-// restore page scroll when closed.
+// restore page scroll and the trigger's focus when closed.
 watch(
   () => props.show,
   (visible) => {
     document.documentElement.style.overflow = visible ? "hidden" : "";
-    if (!visible) return;
-    nextTick(() => panelEl.value?.focus());
+    if (visible) {
+      previouslyFocused = document.activeElement as HTMLElement | null;
+      nextTick(() => panelEl.value?.focus());
+      return;
+    }
+    previouslyFocused?.focus();
+    previouslyFocused = null;
   },
 );
 
