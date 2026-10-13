@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, nextTick, onBeforeUnmount } from "vue";
+import { ref, watch, nextTick, onBeforeUnmount, useTemplateRef } from "vue";
 import type { Placement } from "@floating-ui/dom";
 import { useFloating } from "@/composables/useFloating";
 
@@ -30,8 +30,8 @@ const props = withDefaults(
   },
 );
 
-const triggerEl = ref<HTMLElement | null>(null);
-const floatingEl = ref<HTMLElement | null>(null);
+const triggerEl = useTemplateRef<HTMLElement>("triggerEl");
+const floatingEl = useTemplateRef<HTMLElement>("floatingEl");
 const show = ref(false);
 
 const {

@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import { FloatingMenu } from "@tiptap/vue-3/menus";
-import type { Editor } from "@tiptap/vue-3";
+import type { Editor } from "@tiptap/core";
 import type { Component } from "vue";
 import type { Toolbar } from "@/types";
 import { resolveToolbar } from "@/utils/resolveToolbar";

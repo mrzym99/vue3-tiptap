@@ -23,12 +23,7 @@
 <script lang="ts" setup>
 import type { TranslateFn } from "@/types";
 
-const props = defineProps({
-  t: {
-    type: Function as PropType<TranslateFn>,
-    required: true,
-  },
-});
+const props = defineProps<{ t: TranslateFn }>();
 
 type GridCell = { row: number; col: number };
 

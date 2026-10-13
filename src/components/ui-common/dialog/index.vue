@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onBeforeUnmount, ref, watch } from "vue";
+import { nextTick, onBeforeUnmount, watch, useTemplateRef } from "vue";
 import XIcon from "~icons/lucide/x";
 import { useTiptapLocale } from "@/locales";
 import type { DialogProps } from "./props";
@@ -39,7 +39,7 @@ const emit = defineEmits<{ "update:show": [value: boolean] }>();
 
 const { t } = useTiptapLocale();
 
-const panelEl = ref<HTMLElement | null>(null);
+const panelEl = useTemplateRef<HTMLElement>("panelEl");
 
 function doClose() {
   emit("update:show", false);

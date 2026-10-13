@@ -19,7 +19,7 @@ const translations: LocaleTranslations = { "zh-TW": zhTW };
 // `limit` is read once at editor creation (runtime changes are not applied) —
 // edit this constant to try the character limit instead of binding a control.
 const limit = ref(0);
-const editorRef = ref<InstanceType<typeof TipTapEditor> | null>(null);
+const editorRef = useTemplateRef<InstanceType<typeof TipTapEditor>>("editorRef");
 
 // Configure the image extension with a custom uploader (demo: fake upload).
 // Configure the mention extension with a host-injected member list.

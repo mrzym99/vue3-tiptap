@@ -20,16 +20,16 @@ export { _formContextKey as formContextKey };
 </script>
 
 <script setup lang="ts">
-import { provide, reactive, ref, type PropType } from "vue";
+import { provide, reactive, useTemplateRef } from "vue";
 import { formContextKey, type FormContext, type FormErrors, type FormRule } from "./types";
 
-const props = defineProps({
-  /** Field value getters `{ [field]: () => value }`, read by validation on submit */
-  model: {
-    type: Object as PropType<Record<string, () => unknown>>,
-    default: () => ({}),
-  },
-});
+const props = withDefaults(
+  defineProps<{
+    /** Field value getters `{ [field]: () => value }`, read by validation on submit */
+    model?: Record<string, () => unknown>;
+  }>(),
+  { model: () => ({}) },
+);
 
 const emit = defineEmits<{
   /** Fired after validation passes (and only then). */
@@ -38,7 +38,7 @@ const emit = defineEmits<{
   errorsChange: [errors: FormErrors];
 }>();
 
-const formEl = ref<HTMLFormElement | null>(null);
+const formEl = useTemplateRef<HTMLFormElement>("formEl");
 
 const rulesMap = new Map<string, FormRule[]>();
 const errors = reactive<FormErrors>({});

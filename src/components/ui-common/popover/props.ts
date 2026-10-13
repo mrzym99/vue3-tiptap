@@ -9,8 +9,6 @@ export type PopoverProps = {
   offset?: number;
   /** Disable opening */
   disabled?: boolean;
-  /** Controlled visibility (v-model:show) */
-  show?: boolean;
   /** Whether to hide the popover when clicking popover */
   hideOnClick?: boolean;
 };

@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, nextTick, onMounted, onBeforeUnmount } from "vue";
+import { watch, nextTick, onMounted, onBeforeUnmount, useTemplateRef } from "vue";
 import { useFloating } from "@/composables/useFloating";
 import type { PopoverProps } from "./props";
 
@@ -31,15 +31,15 @@ const props = withDefaults(defineProps<PopoverProps>(), {
   placement: "bottom-start",
   offset: 4,
   disabled: false,
-  show: false,
   hideOnClick: true,
 });
 
-const emit = defineEmits<{ "update:show": [value: boolean] }>();
+// Controlled visibility (v-model:show) — defineModel keeps local toggles and
+// external prop changes in sync without a manual mirror ref
+const show = defineModel<boolean>("show", { default: false });
 
-const triggerEl = ref<HTMLElement | null>(null);
-const floatingEl = ref<HTMLElement | null>(null);
-const show = ref(props.show);
+const triggerEl = useTemplateRef<HTMLElement>("triggerEl");
+const floatingEl = useTemplateRef<HTMLElement>("floatingEl");
 
 const {
   floatingStyle,
@@ -50,16 +50,7 @@ const {
   offset: props.offset,
 });
 
-// External (v-model:show) changes mirror into internal state.
-watch(
-  () => props.show,
-  (v) => {
-    if (show.value !== v) show.value = v;
-  },
-);
-
 watch(show, async (v) => {
-  emit("update:show", v);
   if (!v) {
     stopFloating();
     return;

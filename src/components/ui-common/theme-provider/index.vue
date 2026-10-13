@@ -8,19 +8,19 @@
 import type { Theme, ThemeName } from "@/types";
 import { applyTheme } from "@/theme";
 
-const props = defineProps({
-  theme: {
-    type: String as PropType<ThemeName>,
-    default: "light",
+const props = withDefaults(
+  defineProps<{
+    theme?: ThemeName;
+    /** Custom CSS variables (`--tiptap-*`) layered over the built-in theme */
+    themeOverrides?: Theme;
+  }>(),
+  {
+    theme: "light",
+    themeOverrides: undefined,
   },
-  /** Custom CSS variables (`--tiptap-*`) layered over the built-in theme */
-  themeOverrides: {
-    type: Object as PropType<Theme>,
-    default: undefined,
-  },
-});
+);
 
-const rootEl = ref<HTMLElement | null>(null);
+const rootEl = useTemplateRef<HTMLElement>("rootEl");
 
 function syncTheme() {
   if (rootEl.value) {

@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { BubbleMenu } from "@tiptap/vue-3/menus";
-import type { Editor } from "@tiptap/vue-3";
+import type { Editor } from "@tiptap/core";
 import type { EditorState } from "@tiptap/pm/state";
 import type { EditorView } from "@tiptap/pm/view";
 import { useTiptapLocale } from "@/locales";

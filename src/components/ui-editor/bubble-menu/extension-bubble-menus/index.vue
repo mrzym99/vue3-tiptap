@@ -3,17 +3,11 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from "vue";
-import type { Editor } from "@tiptap/vue-3";
+import type { Editor } from "@tiptap/core";
 import type { ButtonView, ButtonViewReturn, TranslateFn } from "@/types";
 import { useTiptapLocale } from "@/locales";
 
-const props = defineProps({
-  editor: {
-    type: Object as PropType<Editor>,
-    required: true,
-  },
-});
+const props = defineProps<{ editor: Editor }>();
 
 const { t } = useTiptapLocale();
 const translate = t as TranslateFn;

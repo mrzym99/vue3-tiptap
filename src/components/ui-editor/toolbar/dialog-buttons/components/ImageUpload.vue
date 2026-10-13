@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, useTemplateRef } from "vue";
 import type { Editor } from "@tiptap/core";
 import TiptapButton from "@/components/ui-common/button/index.vue";
 import { useTiptapLocale } from "@/locales";
@@ -24,7 +24,7 @@ const emit = defineEmits<{ success: [url: string] }>();
 
 const { t } = useTiptapLocale();
 
-const fileInputRef = ref<HTMLInputElement | null>(null);
+const fileInputRef = useTemplateRef<HTMLInputElement>("fileInputRef");
 const uploading = ref(false);
 const uploadError = ref("");
 

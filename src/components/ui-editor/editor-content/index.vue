@@ -3,13 +3,9 @@
 </template>
 
 <script setup lang="ts">
-import { EditorContent, Editor } from "@tiptap/vue-3";
-const props = defineProps({
-  editor: {
-    type: Editor,
-    required: true,
-  },
-});
+import { Editor, EditorContent } from "@tiptap/vue-3";
+
+const props = defineProps<{ editor: Editor }>();
 </script>
 
 <style lang="scss" scoped>

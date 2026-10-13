@@ -13,26 +13,22 @@
 </template>
 
 <script setup lang="ts">
-import type { Editor } from "@tiptap/vue-3";
-import type { PropType } from "vue";
+import type { Editor } from "@tiptap/core";
 import type { Toolbar } from "@/types";
 import { resolveToolbar } from "@/utils/resolveToolbar";
 import RenderItem from "./render-item/index.vue";
 
-const props = defineProps({
-  editor: {
-    type: Object as PropType<Editor>,
-    required: true,
+const props = withDefaults(
+  defineProps<{
+    editor: Editor;
+    toolbar?: Toolbar;
+    wrap?: boolean;
+  }>(),
+  {
+    toolbar: undefined,
+    wrap: false,
   },
-  toolbar: {
-    type: [Array, Object, String] as PropType<Toolbar | undefined>,
-    default: undefined,
-  },
-  wrap: {
-    type: Boolean,
-    default: false,
-  },
-});
+);
 
 const menus = computed(() => {
   // Tiptap re-sorts extensions internally, so iterate the configured layout

@@ -1,21 +1,15 @@
 <script setup lang="ts">
-import type { Editor } from "@tiptap/vue-3";
+import type { Editor } from "@tiptap/core";
 import type { ButtonView, ButtonViewReturn, TranslateFn } from "@/types";
 import { useTiptapLocale } from "@/locales";
 
 const { t } = useTiptapLocale();
 const translate = t as TranslateFn;
 
-const props = defineProps({
-  editor: {
-    type: Object as PropType<Editor>,
-    required: true,
-  },
-  button: {
-    type: Function as PropType<ButtonView>,
-    required: true,
-  },
-});
+const props = defineProps<{
+  editor: Editor;
+  button: ButtonView;
+}>();
 
 // A single extension may return one button or an array of buttons
 const buttons = computed<ButtonViewReturn[]>(() => {
