@@ -1,32 +1,40 @@
 <template>
-  <div v-if="show" class="tiptap-dialog-overlay" @mousedown.self="doClose">
-    <div
-      ref="panelEl"
-      class="tiptap-dialog"
-      :style="{ width: width }"
-      role="dialog"
-      aria-modal="true"
-      :aria-label="title"
-      tabindex="-1"
-      @keydown="onPanelKeydown"
-    >
-      <div class="tiptap-dialog-header">
-        <span class="tiptap-dialog-title">{{ title }}</span>
-        <button type="button" class="tiptap-dialog-close" :aria-label="t('close')" @click="doClose">
-          <XIcon />
-        </button>
-      </div>
-      <div class="tiptap-dialog-body">
-        <slot />
+  <!-- Teleported to body so host-page transforms/filters can't break the
+       fixed overlay; theme vars are re-applied onto the overlay (see below). -->
+  <Teleport to="body">
+    <div v-if="show" ref="overlayEl" class="tiptap-dialog-overlay" @mousedown.self="doClose">
+      <div
+        ref="panelEl"
+        class="tiptap-dialog"
+        :style="{ width: width }"
+        role="dialog"
+        aria-modal="true"
+        :aria-label="title"
+        tabindex="-1"
+        @keydown="onPanelKeydown"
+      >
+        <div class="tiptap-dialog-header">
+          <span class="tiptap-dialog-title">{{ title }}</span>
+          <button type="button" class="tiptap-dialog-close" :aria-label="t('close')" @click="doClose">
+            <XIcon />
+          </button>
+        </div>
+        <div class="tiptap-dialog-body">
+          <slot />
+        </div>
+        <div v-if="$slots.footer" class="tiptap-dialog-footer">
+          <slot name="footer" />
+        </div>
       </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onBeforeUnmount, watch, useTemplateRef } from "vue";
+import { nextTick, onBeforeUnmount, inject, watch, useTemplateRef } from "vue";
 import XIcon from "~icons/lucide/x";
 import { useTiptapLocale } from "@/locales";
+import { themeSyncKey } from "@/components/ui-common/theme-provider/context";
 import type { DialogProps } from "./props";
 
 const props = withDefaults(defineProps<DialogProps>(), {
@@ -40,6 +48,11 @@ const emit = defineEmits<{ "update:show": [value: boolean] }>();
 const { t } = useTiptapLocale();
 
 const panelEl = useTemplateRef<HTMLElement>("panelEl");
+const overlayEl = useTemplateRef<HTMLElement>("overlayEl");
+
+// The teleported overlay leaves the ThemeProvider subtree, so the current
+// theme's `--tiptap-*` variables are re-applied onto the overlay itself
+const syncTheme = inject(themeSyncKey, null);
 
 function doClose() {
   emit("update:show", false);
@@ -91,19 +104,24 @@ function trapFocus(e: KeyboardEvent) {
 }
 
 // Focus the panel when opened so Esc works without a prior click inside;
-// restore page scroll and the trigger's focus when closed.
+// restore page scroll and the trigger's focus when closed. `immediate`
+// covers hosts that render with the dialog already open.
 watch(
   () => props.show,
   (visible) => {
     document.documentElement.style.overflow = visible ? "hidden" : "";
     if (visible) {
       previouslyFocused = document.activeElement as HTMLElement | null;
-      nextTick(() => panelEl.value?.focus());
+      nextTick(() => {
+        if (overlayEl.value) syncTheme?.(overlayEl.value);
+        panelEl.value?.focus();
+      });
       return;
     }
     previouslyFocused?.focus();
     previouslyFocused = null;
   },
+  { immediate: true },
 );
 
 onBeforeUnmount(() => {
@@ -169,6 +187,14 @@ onBeforeUnmount(() => {
 }
 
 .tiptap-dialog-body {
+  padding: var(--tiptap-padding-lg);
+}
+
+.tiptap-dialog-footer {
+  border-top: 1px solid var(--tiptap-popover-border);
+  display: flex;
+  gap: var(--tiptap-gap);
+  justify-content: flex-end;
   padding: var(--tiptap-padding-lg);
 }
 

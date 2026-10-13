@@ -7,6 +7,7 @@
 <script lang="ts" setup>
 import type { Theme, ThemeName } from "@/types";
 import { applyTheme } from "@/theme";
+import { themeSyncKey } from "./context";
 
 const props = withDefaults(
   defineProps<{
@@ -21,6 +22,10 @@ const props = withDefaults(
 );
 
 const rootEl = useTemplateRef<HTMLElement>("rootEl");
+
+// Read on every call, so late invocations (teleported overlays mounting
+// afterwards) always see the current theme + overrides
+provide(themeSyncKey, (el) => applyTheme(props.theme, el, props.themeOverrides));
 
 function syncTheme() {
   if (rootEl.value) {
