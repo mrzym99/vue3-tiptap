@@ -66,12 +66,10 @@
 
 <script lang="ts" setup>
 import { BubbleMenu } from "@tiptap/vue-3/menus";
-import type { Editor } from "@tiptap/core";
 import type { EditorState } from "@tiptap/pm/state";
 import type { EditorView } from "@tiptap/pm/view";
 import { CellSelection } from "@tiptap/pm/tables";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
-import { useTiptapLocale } from "@/locales";
 import RowInsertBottomIcon from "~icons/tabler/row-insert-bottom";
 import ColumnInsertRightIcon from "~icons/tabler/column-insert-right";
 import RowRemoveIcon from "~icons/tabler/row-remove";
@@ -81,9 +79,10 @@ import SplitCellsIcon from "~icons/lucide/table-cells-split";
 import ToggleHeaderIcon from "~icons/tabler/arrows-exchange";
 import DeleteTableIcon from "~icons/tabler/trash";
 
-const props = defineProps<{ editor: Editor }>();
+import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
-const { t } = useTiptapLocale();
+const props = defineProps<EXTActionButtonProps>();
+
 
 const bubbleOptions = {
   placement: "bottom" as const,

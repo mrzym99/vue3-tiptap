@@ -22,10 +22,8 @@
 
 <script lang="ts" setup>
 import { BubbleMenu } from "@tiptap/vue-3/menus";
-import type { Editor } from "@tiptap/core";
 import type { EditorState } from "@tiptap/pm/state";
 import type { EditorView } from "@tiptap/pm/view";
-import { useTiptapLocale } from "@/locales";
 import { isSelectionInsideLink } from "@/utils/selectionInLink";
 import ExternalLinkIcon from "~icons/lucide/external-link";
 import EditIcon from "~icons/lucide/edit";
@@ -33,9 +31,10 @@ import Trash2Icon from "~icons/lucide/trash-2";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import LinkEditDialog from "./link-edit-dialog.vue";
 
-const props = defineProps<{ editor: Editor }>();
+import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
-const { t } = useTiptapLocale();
+const props = defineProps<EXTActionButtonProps>();
+
 
 const editDialogShow = ref(false);
 

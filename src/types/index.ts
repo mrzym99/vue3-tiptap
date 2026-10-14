@@ -46,7 +46,7 @@ export const defaultToolbar =
   "undo redo |" +
   "bold italic strike underline | code highlight subscript superscript | " +
   "heading horizontalRule blockquote textAlign | bulletList orderedList taskList | " +
-  "link codeBlock details | image video youtube audio twitch | color fontFamily fontSize | " +
+  "link codeBlock details | image video audio | color fontFamily fontSize | " +
   "table | findAndReplace | clearFormatting";
 
 /** Translation function compatible with the basic vue-i18n `t` signature. */
