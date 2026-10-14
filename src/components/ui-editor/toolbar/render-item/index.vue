@@ -1,19 +1,16 @@
 <script setup lang="ts">
 import type { Editor } from "@tiptap/core";
 import type { ButtonView, ButtonViewReturn, TranslateFn } from "@/types";
-import { useTiptapLocale } from "@/locales";
-
-const { t } = useTiptapLocale();
-const translate = t as TranslateFn;
 
 const props = defineProps<{
   editor: Editor;
   button: ButtonView;
+  t: TranslateFn;
 }>();
 
 // A single extension may return one button or an array of buttons
 const buttons = computed<ButtonViewReturn[]>(() => {
-  const result = props.button({ editor: props.editor, t: translate });
+  const result = props.button({ editor: props.editor, t: props.t });
   return Array.isArray(result) ? result : [result];
 });
 </script>

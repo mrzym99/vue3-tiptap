@@ -13,16 +13,15 @@
 <script setup lang="ts">
 import { computed, ref, useTemplateRef } from "vue";
 import type { Editor } from "@tiptap/core";
+import type { TranslateFn } from "@/types";
 import TiptapButton from "@/components/ui-common/button/index.vue";
-import { useTiptapLocale } from "@/locales";
 import type { ImageOptions } from "@/components/extensions/Image";
 
 /** Upload control reading `Image.configure({ upload })`; emits the uploaded URL on success. */
-const props = defineProps<{ editor: Editor }>();
+const props = defineProps<{ editor: Editor; t: TranslateFn }>();
 
 const emit = defineEmits<{ success: [url: string] }>();
 
-const { t } = useTiptapLocale();
 
 const fileInputRef = useTemplateRef<HTMLInputElement>("fileInputRef");
 const uploading = ref(false);
@@ -45,7 +44,7 @@ async function onFilePicked(event: Event) {
     const url = await uploadFn(file);
     emit("success", url);
   } catch {
-    uploadError.value = t("imageUploadFailed");
+    uploadError.value = props.t("imageUploadFailed");
   } finally {
     uploading.value = false;
     input.value = "";

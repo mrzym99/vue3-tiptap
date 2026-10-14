@@ -19,10 +19,9 @@ import type { EditorView } from "@tiptap/pm/view";
 import { CellSelection } from "@tiptap/pm/tables";
 import { AllSelection, NodeSelection } from "@tiptap/pm/state";
 import type { Component } from "vue";
-import type { Toolbar } from "@/types";
+import type { Toolbar, TranslateFn } from "@/types";
 import { resolveToolbar } from "@/utils/resolveToolbar";
 import { isSelectionInsideLink } from "@/utils/selectionInLink";
-import { useTiptapLocale } from "@/locales";
 import BoldButton from "@/components/ui-editor/toolbar/buttons/BoldButton.vue";
 import ItalicButton from "@/components/ui-editor/toolbar/buttons/ItalicButton.vue";
 import StrikeButton from "@/components/ui-editor/toolbar/buttons/StrikeButton.vue";
@@ -33,9 +32,8 @@ const props = defineProps<{
   editor: Editor;
   /** Opt-in: `undefined`/`false` disable the menu entirely */
   toolbar?: Toolbar | false;
+  t: TranslateFn;
 }>();
-
-const { t } = useTiptapLocale();
 
 const buttons: { key: string; component: Component }[] = [
   { key: "bold", component: BoldButton },

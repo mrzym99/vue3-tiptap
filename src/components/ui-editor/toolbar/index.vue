@@ -7,14 +7,14 @@
   >
     <template v-for="(item, index) in menus.keys" :key="item">
       <div v-if="menus.separators.includes(index)" class="tiptap-toolbar-sep" />
-      <RenderItem :editor="props.editor" :button="menus.byName[item].options.button" />
+      <RenderItem :editor="props.editor" :button="menus.byName[item].options.button" :t="props.t" />
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { Editor } from "@tiptap/core";
-import type { Toolbar } from "@/types";
+import type { Toolbar, TranslateFn } from "@/types";
 import { resolveToolbar } from "@/utils/resolveToolbar";
 import RenderItem from "./render-item/index.vue";
 
@@ -23,6 +23,7 @@ const props = withDefaults(
     editor: Editor;
     toolbar?: Toolbar;
     wrap?: boolean;
+    t: TranslateFn;
   }>(),
   {
     toolbar: undefined,

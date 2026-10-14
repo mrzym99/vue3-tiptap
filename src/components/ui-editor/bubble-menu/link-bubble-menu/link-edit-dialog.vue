@@ -1,5 +1,5 @@
 <template>
-  <Dialog :show="props.show" :title="t('link')" @update:show="onShowChange">
+  <Dialog :show="props.show" :title="t('link')" :t="t" @update:show="onShowChange">
     <Form ref="formRef" :model="model" @submit="applyLink">
       <FormItem name="href" :rules="rules">
         <template #default="{ id }">

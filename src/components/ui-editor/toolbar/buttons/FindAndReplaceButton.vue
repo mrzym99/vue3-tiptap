@@ -1,6 +1,7 @@
 <template>
   <ActionDialogButton
     ref="dialog"
+    :t="t"
     :icon="RiSearchLine"
     :tooltip="t('findAndReplace')"
     :title="t('findAndReplace')"

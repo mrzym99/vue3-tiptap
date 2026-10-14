@@ -14,9 +14,8 @@
 import { FloatingMenu } from "@tiptap/vue-3/menus";
 import type { Editor } from "@tiptap/core";
 import type { Component } from "vue";
-import type { Toolbar } from "@/types";
+import type { Toolbar, TranslateFn } from "@/types";
 import { resolveToolbar } from "@/utils/resolveToolbar";
-import { useTiptapLocale } from "@/locales";
 import HeadingMenuButton from "@/components/ui-editor/toolbar/menu-buttons/HeadingMenuButton.vue";
 import HorizontalRuleButton from "@/components/ui-editor/toolbar/buttons/HorizontalRuleButton.vue";
 import BulletListButton from "@/components/ui-editor/toolbar/buttons/BulletListButton.vue";
@@ -26,9 +25,8 @@ const props = defineProps<{
   editor: Editor;
   /** Opt-in: `undefined`/`false` disable the menu entirely */
   toolbar?: Toolbar | false;
+  t: TranslateFn;
 }>();
-
-const { t } = useTiptapLocale();
 
 const buttons: { key: string; component: Component }[] = [
   { key: "heading", component: HeadingMenuButton },

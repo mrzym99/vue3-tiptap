@@ -32,7 +32,6 @@
 <script lang="ts" setup>
 import { nextTick, onBeforeUnmount, inject, watch, useTemplateRef } from "vue";
 import XIcon from "~icons/lucide/x";
-import { useTiptapLocale } from "@/locales";
 import { themeSyncKey } from "@/components/ui-common/theme-provider/context";
 import type { DialogProps } from "./props";
 
@@ -43,8 +42,6 @@ const props = withDefaults(defineProps<DialogProps>(), {
 });
 
 const emit = defineEmits<{ "update:show": [value: boolean] }>();
-
-const { t } = useTiptapLocale();
 
 const panelEl = useTemplateRef<HTMLElement>("panelEl");
 const overlayEl = useTemplateRef<HTMLElement>("overlayEl");

@@ -1,11 +1,11 @@
 <template>
   <ThemeProvider :theme="theme" :theme-overrides="themeOverrides">
     <section class="tiptap-box" v-if="editor">
-      <ToolBar :editor="editor" :toolbar="props.toolbar" :wrap="props.toolbarWrap" />
+      <ToolBar :editor="editor" :toolbar="props.toolbar" :wrap="props.toolbarWrap" :t="t" />
       <EditorContent :editor="editor" />
-      <BubbleMenuBar :editor="editor" :toolbar="props.bubbleMenu" />
-      <FloatingMenuBar :editor="editor" :toolbar="props.floatingMenu" />
-      <ExtensionBubbleMenus :editor="editor" />
+      <BubbleMenuBar :editor="editor" :toolbar="props.bubbleMenu" :t="t" />
+      <FloatingMenuBar :editor="editor" :toolbar="props.floatingMenu" :t="t" />
+      <ExtensionBubbleMenus :editor="editor" :t="t" />
       <CharacterLimit :editor="editor" :limit="props.limit" />
     </section>
   </ThemeProvider>

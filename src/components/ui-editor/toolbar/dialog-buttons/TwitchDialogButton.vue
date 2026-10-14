@@ -1,5 +1,6 @@
 <template>
   <ActionDialogButton
+    :t="t"
     ref="dialog"
     :icon="RiTwitchLine"
     :tooltip="t('twitch')"

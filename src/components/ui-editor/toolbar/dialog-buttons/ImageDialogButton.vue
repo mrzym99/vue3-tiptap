@@ -1,5 +1,6 @@
 <template>
   <ActionDialogButton
+    :t="t"
     ref="dialog"
     :icon="RiImageLine"
     :tooltip="t('image')"
@@ -20,7 +21,7 @@
               />
             </template>
             <template #upload>
-              <ImageUpload v-if="hasUpload" :editor="editor" @success="(url) => (src = url)" />
+              <ImageUpload v-if="hasUpload" :editor="editor" :t="t" @success="(url) => (src = url)" />
               <span v-else class="image-dialog-upload-disabled">
                 {{ t("imageUploadUnavailable") }}
               </span>

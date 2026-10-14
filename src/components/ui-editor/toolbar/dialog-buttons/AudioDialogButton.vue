@@ -1,5 +1,6 @@
 <template>
   <ActionDialogButton
+    :t="t"
     ref="dialog"
     :icon="RiVolumeUpLine"
     :tooltip="t('audio')"
