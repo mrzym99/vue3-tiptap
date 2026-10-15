@@ -23,8 +23,11 @@
         :disabled="item.disabled"
         @click="item.action?.()"
       >
-        <component :is="item.icon" />
-        <span>{{ item.label }}</span>
+        <component v-if="item.render" :is="item.render" />
+        <template v-else>
+          <component v-if="item.icon" :is="item.icon" />
+          <span>{{ item.label }}</span>
+        </template>
       </button>
     </div>
   </Popover>

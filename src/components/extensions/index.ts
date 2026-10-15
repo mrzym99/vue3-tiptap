@@ -90,7 +90,7 @@ export * from "./UniqueId";
 export * from "./Video";
 export * from "./Youtube";
 
-const HeadingExtension = Heading.configure({ levels: [1, 2, 3] });
+const HeadingExtension = Heading.configure({ levels: [1, 2, 3, 4, 5, 6] });
 
 const TextAlignExtension = TextAlign.configure({
   types: ["heading", "paragraph"],

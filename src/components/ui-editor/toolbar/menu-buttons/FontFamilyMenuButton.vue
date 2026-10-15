@@ -26,32 +26,26 @@ const SERIF = 'Georgia, "Times New Roman", serif';
 const MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 const YAHEI = '"Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif';
 
-function createOption(label: string, fontFamily?: string): ActionMenuButtonItem {
-  const set =
-    fontFamily === undefined
-      ? () => props.editor.chain().focus().unsetFontFamily().run()
-      : () => props.editor.chain().focus().setFontFamily(fontFamily).run();
+function createOption(label: string, fontFamily: string): ActionMenuButtonItem {
+  const set = () => props.editor.chain().focus().setFontFamily(fontFamily).run();
   return {
     label,
-    icon: RiFontFamily,
+    // preview: render the label in the actual font
+    render: () => h("span", { style: { fontFamily } }, label),
     action: set,
     disabled: !props.editor
       .can()
       .chain()
       .focus()
-      .setFontFamily(fontFamily ?? SANS)
+      .setFontFamily(fontFamily)
       .run(),
-    isActive: () =>
-      fontFamily === undefined
-        ? !props.editor.getAttributes("textStyle").fontFamily
-        : props.editor.isActive("textStyle", { fontFamily }),
+    isActive: () => props.editor.isActive("textStyle", { fontFamily }),
   };
 }
 
 const t = props.t;
 
 const options = computed<ActionMenuButtonItem[]>(() => [
-  createOption(t("fontDefault")),
   createOption(t("fontSans"), SANS),
   createOption(t("fontSerif"), SERIF),
   createOption(t("fontMono"), MONO),

@@ -66,27 +66,6 @@ const props = defineProps<{ editor: Editor }>();
       background-color: var(--tiptap-selection-bg);
     }
 
-    h1,
-    h2,
-    h3 {
-      font-weight: 600;
-      line-height: 1.3;
-      letter-spacing: -0.01em;
-      margin: 1.6rem 0 0.7rem;
-    }
-
-    h1 {
-      font-size: 1.7em;
-    }
-
-    h2 {
-      font-size: 1.35em;
-    }
-
-    h3 {
-      font-size: 1.15em;
-    }
-
     code {
       background-color: var(--tiptap-code-bg);
       border-radius: var(--tiptap-border-radius-sm);
