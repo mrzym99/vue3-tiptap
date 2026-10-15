@@ -2,7 +2,7 @@
   <ActionDialogButton
     :t="t"
     ref="dialog"
-    :icon="RiVideoLine"
+    :icon="RiClapperboard"
     :tooltip="t('video')"
     :title="t('video')"
     @closed="props.editor.commands.focus()"
@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import RiVideoLine from "~icons/lucide/video";
+import RiClapperboard from "~icons/lucide/clapperboard";
 import { useTemplateRef } from "vue";
 import ActionDialogButton from "@/components/ui-common/action-dialog-button/index.vue";
 import Form from "@/components/ui-common/form/index.vue";
