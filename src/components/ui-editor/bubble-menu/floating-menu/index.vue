@@ -54,5 +54,6 @@ const visibleButtons = computed(() => {
   border-radius: var(--tiptap-border-radius-md);
   padding: var(--tiptap-padding-sm);
   box-shadow: var(--tiptap-popover-shadow);
+  z-index: var(--tiptap-z-popover);
 }
 </style>

@@ -10,24 +10,27 @@
   >
     <slot name="trigger" />
   </span>
-  <div
-    v-if="show"
-    :id="tooltipId"
-    ref="floatingEl"
-    class="tiptap-tooltip"
-    role="tooltip"
-    :style="floatingStyle"
-    @mouseenter="onEnter"
-    @mouseleave="onLeave"
-  >
-    <slot />
-  </div>
+  <Teleport to="body">
+    <div
+      v-if="show"
+      :id="tooltipId"
+      ref="floatingEl"
+      class="tiptap-tooltip"
+      role="tooltip"
+      :style="floatingStyle"
+      @mouseenter="onEnter"
+      @mouseleave="onLeave"
+    >
+      <slot />
+    </div>
+  </Teleport>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, nextTick, onBeforeUnmount, useId, useTemplateRef } from "vue";
+import { ref, watch, nextTick, inject, onBeforeUnmount, useId, useTemplateRef } from "vue";
 import type { Placement } from "@floating-ui/dom";
 import { useFloating } from "@/composables/useFloating";
+import { themeSyncKey } from "@/components/ui-common/theme-provider/context";
 
 const props = withDefaults(
   defineProps<{
@@ -56,12 +59,16 @@ const {
   offset: 8,
 });
 
+// Teleport leaves the ThemeProvider subtree — re-apply the theme vars
+const syncTheme = inject(themeSyncKey, null);
+
 watch(show, async (v) => {
   if (!v) {
     stopFloating();
     return;
   }
   await nextTick();
+  if (floatingEl.value) syncTheme?.(floatingEl.value);
   startFloating();
 });
 

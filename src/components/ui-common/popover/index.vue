@@ -8,22 +8,25 @@
   >
     <slot name="trigger" />
   </div>
-  <div
-    v-if="show"
-    ref="floatingEl"
-    class="tiptap-popover"
-    :style="floatingStyle"
-    @mouseenter="onEnter"
-    @mouseleave="onLeave"
-    @click.stop="captureClickItem"
-  >
-    <slot />
-  </div>
+  <Teleport to="body">
+    <div
+      v-if="show"
+      ref="floatingEl"
+      class="tiptap-popover"
+      :style="floatingStyle"
+      @mouseenter="onEnter"
+      @mouseleave="onLeave"
+      @click.stop="captureClickItem"
+    >
+      <slot />
+    </div>
+  </Teleport>
 </template>
 
 <script lang="ts" setup>
-import { watch, nextTick, onMounted, onBeforeUnmount, useTemplateRef } from "vue";
+import { watch, nextTick, inject, onMounted, onBeforeUnmount, useTemplateRef } from "vue";
 import { useFloating } from "@/composables/useFloating";
+import { themeSyncKey } from "@/components/ui-common/theme-provider/context";
 import type { PopoverProps } from "./props";
 
 const props = withDefaults(defineProps<PopoverProps>(), {
@@ -48,6 +51,9 @@ const {
   offset: props.offset,
 });
 
+// Teleport leaves the ThemeProvider subtree — re-apply the theme vars
+const syncTheme = inject(themeSyncKey, null);
+
 watch(show, async (v) => {
   if (!v) {
     stopFloating();
@@ -55,6 +61,7 @@ watch(show, async (v) => {
   }
   // The v-if element only exists after the next DOM flush
   await nextTick();
+  if (floatingEl.value) syncTheme?.(floatingEl.value);
   startFloating();
 });
 

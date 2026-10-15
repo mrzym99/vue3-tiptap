@@ -9,4 +9,6 @@ export type DialogProps = {
   title?: string;
   /** Panel width (any CSS width value) */
   width?: string;
+  /** Whether clicking the overlay backdrop closes the dialog (default false) */
+  closeOnClickModal?: boolean;
 };

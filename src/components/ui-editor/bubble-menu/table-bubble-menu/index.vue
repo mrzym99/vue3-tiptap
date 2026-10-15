@@ -133,6 +133,7 @@ function shouldShow({
   display: flex;
   gap: var(--tiptap-gap-xs);
   padding: var(--tiptap-padding-sm);
+  z-index: var(--tiptap-z-popover);
 }
 
 .table-bubble-sep {

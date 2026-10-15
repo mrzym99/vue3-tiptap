@@ -1,7 +1,7 @@
 <template>
   <!-- Host transforms/filters can't break a body-level fixed overlay -->
   <Teleport to="body">
-    <div v-if="show" ref="overlayEl" class="tiptap-dialog-overlay" @mousedown.self="doClose">
+    <div v-if="show" ref="overlayEl" class="tiptap-dialog-overlay" @mousedown.self="onOverlayMousedown">
       <div
         ref="panelEl"
         class="tiptap-dialog"
@@ -39,6 +39,8 @@ const props = withDefaults(defineProps<DialogProps>(), {
   show: false,
   title: undefined,
   width: "400px",
+  /** clicking the overlay backdrop does NOT close by default */
+  closeOnClickModal: false,
 });
 
 const emit = defineEmits<{ "update:show": [value: boolean] }>();
@@ -51,6 +53,10 @@ const syncTheme = inject(themeSyncKey, null);
 
 function doClose() {
   emit("update:show", false);
+}
+
+function onOverlayMousedown() {
+  if (props.closeOnClickModal) doClose();
 }
 
 let previouslyFocused: HTMLElement | null = null;

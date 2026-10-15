@@ -88,5 +88,8 @@ function shouldShow({
   border-radius: var(--tiptap-border-radius-md);
   padding: var(--tiptap-padding-sm);
   box-shadow: var(--tiptap-popover-shadow);
+  /* keep the menu at the popover layer — host content with any z-index
+     would otherwise paint over it, and so would the toolbar (z-index: 1) */
+  z-index: var(--tiptap-z-popover);
 }
 </style>

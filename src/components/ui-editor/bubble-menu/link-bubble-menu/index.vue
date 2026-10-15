@@ -102,6 +102,7 @@ function removeLink() {
   display: flex;
   gap: var(--tiptap-gap-xs);
   padding: var(--tiptap-padding-sm);
+  z-index: var(--tiptap-z-popover);
 }
 
 .link-bubble-url {
