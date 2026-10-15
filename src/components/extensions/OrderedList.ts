@@ -3,16 +3,6 @@ import type { GeneralOptions } from "@/types";
 
 import { OrderedList as TiptapOrderedList } from "@tiptap/extension-list";
 
-import OrderedListButton from "@/components/ui-editor/toolbar/buttons/OrderedListButton.vue";
-import { withButton } from "@/utils/button";
+export interface OrderedListOptions extends TiptapOrderedListOptions, Omit<GeneralOptions, "button"> {}
 
-export interface OrderedListOptions extends TiptapOrderedListOptions, GeneralOptions {}
-
-export const OrderedList = /* @__PURE__ */ TiptapOrderedList.extend<OrderedListOptions>({
-  addOptions() {
-    return {
-      ...(this.parent?.() as TiptapOrderedListOptions),
-      button: withButton(OrderedListButton),
-    };
-  },
-});
+export const OrderedList = /* @__PURE__ */ TiptapOrderedList.extend<OrderedListOptions>({});

@@ -3,7 +3,7 @@ import type { GeneralOptions } from "@/types";
 
 import { BulletList as TiptapBulletList } from "@tiptap/extension-list";
 
-import BulletListButton from "@/components/ui-editor/toolbar/buttons/BulletListButton.vue";
+import ListMenuButton from "@/components/ui-editor/toolbar/menu-buttons/ListMenuButton.vue";
 import { withButton } from "@/utils/button";
 
 export interface BulletListOptions extends TiptapBulletListOptions, GeneralOptions {}
@@ -12,7 +12,7 @@ export const BulletList = /* @__PURE__ */ TiptapBulletList.extend<BulletListOpti
   addOptions() {
     return {
       ...(this.parent?.() as TiptapBulletListOptions),
-      button: withButton(BulletListButton),
+      button: withButton(ListMenuButton),
     };
   },
 });

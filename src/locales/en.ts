@@ -16,6 +16,7 @@ export default {
   bulletList: "Bullet List",
   orderedList: "Ordered List",
   taskList: "Task List",
+  list: "List",
   link: "Link",
   linkPlaceholder: "Enter link URL (https://…)",
   linkLabelPlaceholder: "Link text (optional, defaults to URL)",

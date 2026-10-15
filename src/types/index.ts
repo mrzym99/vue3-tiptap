@@ -44,9 +44,13 @@ export type Toolbar = string | string[] | { include?: string[]; exclude?: string
 /** Default toolbar layout, TinyMCE-style; keys are Tiptap extension names. */
 export const defaultToolbar =
   "undo redo |" +
-  "bold italic strike underline | code highlight subscript superscript | " +
-  "heading horizontalRule blockquote textAlign | bulletList orderedList taskList | " +
-  "link codeBlock details | image video audio | color fontFamily fontSize | " +
+  "heading bulletList codeBlock | " +
+  "bold italic strike code underline highlight link | " +
+  "superscript subscript | " +
+  "textAlign | " +
+  "image | " +
+  "horizontalRule blockquote details video audio | " +
+  "color fontFamily fontSize | " +
   "table | findAndReplace | clearFormatting";
 
 /** Translation function compatible with the basic vue-i18n `t` signature. */

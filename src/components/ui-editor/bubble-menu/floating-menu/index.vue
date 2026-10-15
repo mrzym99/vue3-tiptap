@@ -17,9 +17,8 @@ import type { Component } from "vue";
 import type { Toolbar, TranslateFn } from "@/types";
 import { resolveToolbar } from "@/utils/resolveToolbar";
 import HeadingMenuButton from "@/components/ui-editor/toolbar/menu-buttons/HeadingMenuButton.vue";
+import ListMenuButton from "@/components/ui-editor/toolbar/menu-buttons/ListMenuButton.vue";
 import HorizontalRuleButton from "@/components/ui-editor/toolbar/buttons/HorizontalRuleButton.vue";
-import BulletListButton from "@/components/ui-editor/toolbar/buttons/BulletListButton.vue";
-import TaskListButton from "@/components/ui-editor/toolbar/buttons/TaskListButton.vue";
 
 const props = defineProps<{
   editor: Editor;
@@ -31,8 +30,7 @@ const props = defineProps<{
 const buttons: { key: string; component: Component }[] = [
   { key: "heading", component: HeadingMenuButton },
   { key: "horizontalRule", component: HorizontalRuleButton },
-  { key: "bulletList", component: BulletListButton },
-  { key: "taskList", component: TaskListButton },
+  { key: "bulletList", component: ListMenuButton },
 ];
 
 const visibleButtons = computed(() => {

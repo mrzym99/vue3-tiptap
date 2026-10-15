@@ -1,5 +1,5 @@
 <template>
-  <ActionMenuButton :icon="RiH1" :disabled="disabled" :is-active="isActive" :items="options" :tooltip="t('heading')">
+  <ActionMenuButton :icon="RiH" :disabled="disabled" :is-active="isActive" :items="options" :tooltip="t('heading')">
     <template #suffix>
       <RiArrowDropDownLine />
     </template>
@@ -7,10 +7,10 @@
 </template>
 
 <script lang="ts" setup>
+import RiH from "~icons/lucide/heading";
 import RiH1 from "~icons/lucide/heading-1";
 import RiH2 from "~icons/lucide/heading-2";
 import RiH3 from "~icons/lucide/heading-3";
-import RiParagraph from "~icons/lucide/pilcrow";
 import RiArrowDropDownLine from "~icons/lucide/chevron-down";
 import ActionMenuButton from "@/components/ui-common/action-menu-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
@@ -37,13 +37,6 @@ function createOption(
 const t = props.t;
 
 const options = computed<ActionMenuButtonItem[]>(() => [
-  createOption(
-    t("paragraph"),
-    RiParagraph,
-    () => props.editor.chain().focus().setParagraph().run(),
-    () => !props.editor.isActive("heading"),
-    () => props.editor.can().setParagraph(),
-  ),
   createOption(
     t("heading1"),
     RiH1,

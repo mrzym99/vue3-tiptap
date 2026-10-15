@@ -16,6 +16,7 @@ export default {
   bulletList: "无序列表",
   orderedList: "有序列表",
   taskList: "任务列表",
+  list: "列表",
   link: "链接",
   linkPlaceholder: "输入链接地址（https://…）",
   linkLabelPlaceholder: "链接名称（可选，默认用地址）",

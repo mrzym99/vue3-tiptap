@@ -17,6 +17,7 @@ export default {
   bulletList: "符號清單",
   orderedList: "編號清單",
   taskList: "待辦清單",
+  list: "清單",
   link: "連結",
   linkPlaceholder: "輸入連結網址（https://…）",
   linkLabelPlaceholder: "連結名稱（可選，預設使用網址）",
