@@ -14,6 +14,7 @@
       ref="floatingEl"
       class="tiptap-popover"
       :style="floatingStyle"
+      @mousedown.stop
       @mouseenter="onEnter"
       @mouseleave="onLeave"
       @click.stop="captureClickItem"
