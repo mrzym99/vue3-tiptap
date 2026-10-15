@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import RiCodeBoxLine from "~icons/lucide/code-xml";
+import RiCodeBoxLine from "~icons/lucide/square-code";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 

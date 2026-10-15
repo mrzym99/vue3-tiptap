@@ -74,7 +74,7 @@ const handleClick = () => {
 .icon-container {
   display: flex;
   align-items: center;
-  gap: var(--tiptap-gap-sm, var(--tiptap-gap));
+  gap: var(--tiptap-gap-xs, var(--tiptap-gap));
   justify-content: center;
 }
 </style>

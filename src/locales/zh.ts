@@ -31,7 +31,7 @@ export default {
   details: "折叠块",
   image: "图片",
   imagePlaceholder: "图片地址（https://…）",
-  imageUpload: "上传图片",
+  imageUploadHint: "点击或拖拽图片到此处上传",
   imageUploading: "上传中…",
   imageUploadFailed: "上传失败，请重试",
   imageUploadUnavailable: "未配置上传功能",

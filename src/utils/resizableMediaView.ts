@@ -73,6 +73,10 @@ export const createResizableMediaView = ({
     const isPercent = (value: unknown) => typeof value === "string" && value.trim().endsWith("%");
     if (isPercent(node.attrs.width)) {
       element.style.width = node.attrs.width;
+      // The container is a flex row, so the wrapper shrink-wraps its content
+      // and a percentage width collapses to the media's fallback (~300px).
+      // Stretch the wrapper so the percentage resolves against the full row.
+      resizable.wrapper.style.width = "100%";
     }
     if (isPercent(node.attrs.height)) {
       element.style.height = node.attrs.height;

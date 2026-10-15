@@ -32,7 +32,7 @@ export default {
   details: "摺疊區塊",
   image: "圖片",
   imagePlaceholder: "圖片網址（https://…）",
-  imageUpload: "上傳圖片",
+  imageUploadHint: "點擊或拖曳圖片至此上傳",
   imageUploading: "上傳中…",
   imageUploadFailed: "上傳失敗，請重試",
   imageUploadUnavailable: "未設定上傳功能",

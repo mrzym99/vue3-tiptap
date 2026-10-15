@@ -142,7 +142,7 @@ onBeforeUnmount(() => {
   border-radius: var(--tiptap-border-radius-md);
   box-shadow: var(--tiptap-popover-shadow);
   color: var(--tiptap-popover-text);
-  padding: var(--tiptap-padding-sm);
+  padding: var(--tiptap-padding-md);
   transform-origin: var(--tiptap-popover-origin, top);
   animation: tiptap-popover-in 140ms ease-out;
 }
