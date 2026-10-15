@@ -6,6 +6,7 @@
     :tooltip="t('link')"
     :title="t('link')"
     :is-active="isActiveFn"
+    :disabled="!props.editor.can().setLink({ href: 'https://example.com' })"
     @opened="onOpened"
     @closed="props.editor.commands.focus()"
   >
