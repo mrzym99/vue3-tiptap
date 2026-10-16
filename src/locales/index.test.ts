@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { createLocaleContext, detectLocale } from "./index";
 import en from "./en";
 import zh from "./zh";
-import zhTW from "@/zh-TW";
+import zhTW from "../../demo/zh-TW";
 
 describe("detectLocale", () => {
   afterEach(() => vi.unstubAllGlobals());

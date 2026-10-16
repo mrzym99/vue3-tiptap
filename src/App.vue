@@ -2,8 +2,8 @@
 import TipTapEditor from "./components/index.vue";
 import { StarterKit } from "./components/extensions";
 import type { LocaleTranslations } from "./locales";
-import zhTW from "./zh-TW";
-import { useDemoConfig } from "./composables/useDemoConfig";
+import zhTW from "../demo/zh-TW";
+import { useDemoConfig } from "../demo/useDemoConfig";
 import SunIcon from "~icons/lucide/sun";
 import MoonIcon from "~icons/lucide/moon";
 
