@@ -39,6 +39,10 @@ export default defineConfig({
     ],
   },
   build: {
+    // Demo output only — the lib build owns `dist/` (see package.json files/exports
+    // and vite.lib.config.ts, which wipes it). Sharing one dir meant each build
+    // destroyed the other's output.
+    outDir: "dist-demo",
     rollupOptions: {
       output: {
         codeSplitting: {

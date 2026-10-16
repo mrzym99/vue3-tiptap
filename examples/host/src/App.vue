@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
 // Consume the published-style API
-import { TipTapEditor, StarterKit, Youtube, Twitch, Image } from "@yumine/vue3-tiptap";
+import { TipTapEditor, StarterKit, Image } from "@yumine/vue3-tiptap";
 import "@yumine/vue3-tiptap/style.css";
 
 const content = ref("<p>hello from host app</p>");
 
-// StarterKit excludes Youtube/Twitch — hand-pick them (or any extension)
-// from the package root and pass them via `extensions`.
+// Hand-pick extensions (or any extension from the package root) and pass
+// them via `extensions`; YouTube links are handled by Video's URL conversion.
 const extensions = [StarterKit.configure({})];
 </script>
 
@@ -18,6 +18,7 @@ const extensions = [StarterKit.configure({})];
       :limit="500"
       theme="light"
       locale="zh"
+      style="height: 400px"
       placeholder="请输入…"
       :extensions="extensions"
     />
