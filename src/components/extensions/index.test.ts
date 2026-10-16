@@ -53,14 +53,12 @@ describe("extension UI declarations", () => {
 });
 
 describe("StarterKit", () => {
-  it("expands into the built-in extensions except youtube/twitch", () => {
+  it("expands into the built-in extensions", () => {
     const editor = createKitEditor();
     const names = editor.extensionManager.extensions.map((e) => e.name);
     for (const expected of ["bold", "italic", "link", "image", "table", "mention"]) {
       expect(names, expected).toContain(expected);
     }
-    expect(names).not.toContain("youtube");
-    expect(names).not.toContain("twitch");
     editor.destroy();
   });
 

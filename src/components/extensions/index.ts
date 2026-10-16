@@ -33,13 +33,11 @@ import { Table, TableRow, TableHeader, TableCell } from "./Table";
 import { TaskList } from "./TaskList";
 import { TextAlign } from "./TextAlign";
 import { TextStyle } from "./TextStyle";
-import { Twitch } from "./Twitch";
 import { Typography } from "./Typography";
 import { Underline } from "./Underline";
 import { Undo } from "./Undo";
 import { UndoRedo } from "./UndoRedo";
 import { Video } from "./Video";
-import { Youtube } from "./Youtube";
 
 import { Extension, type Extensions } from "@tiptap/core";
 
@@ -78,13 +76,11 @@ export * from "./Table";
 export * from "./TaskList";
 export * from "./TextAlign";
 export * from "./TextStyle";
-export * from "./Twitch";
 export * from "./Typography";
 export * from "./Underline";
 export * from "./Undo";
 export * from "./UndoRedo";
 export * from "./Video";
-export * from "./Youtube";
 
 const HeadingExtension = Heading.configure({ levels: [1, 2, 3, 4, 5, 6] });
 
@@ -127,9 +123,7 @@ const builtinExtensions: Extensions = [
   // Media
   Image,
   Video,
-  Youtube,
   Audio,
-  Twitch,
   FileHandler,
   // Styles (text-style base)
   TextStyle,
@@ -159,22 +153,18 @@ const builtinExtensions: Extensions = [
 
 export default builtinExtensions;
 
-/** The full built-in set (including Youtube/Twitch) — `StarterKit` bundles all of these except Youtube/Twitch. */
+/** The full built-in set — `StarterKit` bundles all of these (the structural core Document/Paragraph/Text/Placeholder is provided by the component). */
 export { builtinExtensions };
-
-/** Extensions StarterKit omits (heavy embeds; import from the package root when needed). */
-const STARTERKIT_EXCLUDED = new Set(["youtube", "twitch"]);
 
 /** Per-extension entry: `false` disables it, an object configures it. */
 export type StarterKitOption = Record<string, unknown> | false;
 export type StarterKitOptions = Record<string, StarterKitOption | undefined>;
 
-/** All built-in extensions except Youtube/Twitch (import those separately) and the structural core (Document/Paragraph/Text/Placeholder); `false` disables, an object configures. */
+/** All built-in extensions; `false` disables, an object configures. */
 export const StarterKit = Extension.create<StarterKitOptions>({
   name: "starterKit",
   addExtensions() {
     return builtinExtensions
-      .filter((extension) => !STARTERKIT_EXCLUDED.has(extension.name))
       .map((extension) => {
         const option = this.options[extension.name];
         if (option === false) return null;

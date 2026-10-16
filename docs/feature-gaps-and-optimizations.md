@@ -8,7 +8,7 @@
 
 ## 1. 现状盘点（2026-08 快照）
 
-**已启用**：Bold / Italic / Underline / Strike / Code / Highlight / Subscript / Superscript / Color / FontFamily / Typography / Heading / HorizontalRule / Blockquote / TextAlign / CodeBlock / Details / Bullet·Ordered·TaskList / Link / Image·Video·Youtube·Audio·Twitch + FileHandler / Table（可调列宽）/ FindAndReplace / InvisibleCharacters / NodeRange / HardBreak / **Undo·Redo + ClearFormatting + CharacterCount** / **Gapcursor·Dropcursor·TrailingNode** / BubbleMenu / FloatingMenu。
+**已启用**：Bold / Italic / Underline / Strike / Code / Highlight / Subscript / Superscript / Color / FontFamily / Typography / Heading / HorizontalRule / Blockquote / TextAlign / CodeBlock / Details / Bullet·Ordered·TaskList / Link / Image·Video·Audio + FileHandler（Youtube/Twitch 已于 2026-10-16 移除，YouTube 链接由 Video 的 URL 转嵌入覆盖） / Table（可调列宽）/ FindAndReplace / InvisibleCharacters / NodeRange / HardBreak / **Undo·Redo + ClearFormatting + CharacterCount** / **Gapcursor·Dropcursor·TrailingNode** / BubbleMenu / FloatingMenu。
 
 **已移除**：`UniqueId`（2026-10-16：未配置 `types` 从不生效，且按数据保真原则不自动写入节点属性；需要时宿主自行引入 `@tiptap/extension-unique-id`）。
 
@@ -77,7 +77,7 @@
 2. **关闭不必要的 Vue 重渲染**：~~`useEditor({ shouldRerenderOnTransaction: false })`~~ → **不适用（2026-09-07 核实）**：该选项是 `@tiptap/react` 专属（v3 默认已改为 false，配合 `useEditorState` 精细订阅）；`@tiptap/vue-3` 没有此选项，其内部已用 `useDebouncedRef`（双层 `requestAnimationFrame` 延迟 trigger 的响应式 state/storage）合并同帧事务，模板中读 `editor.can()` / `isActive()` 自动刷新且天然去抖，无需改造。
 3. **字数统计改用 CharacterCount**：✅ **已完成**，底部统计已改用 `editor.storage.characterCount`（见 2.1）；超限不再自动截断（2026-10-16 决策：数据保真，仅警告）。
 4. **重扩展懒加载**：Mathematics(KaTeX)、Markdown(turndown) 等用 `import()` 按需，不进首屏主包（构建已按 group 分包，见 `vite.config.ts`）。
-   - **StarterKit 全量打包**：`StarterKit` 急切 `import` 全部内置扩展（含 image/video/youtube/audio/twitch 等媒体扩展），且本地自定义 wrapper/UI 代码在库构建中被单 chunk 输出（`vite.lib.config.ts` 单入口、无分包），故 `@tiptap/*` 虽已 external，本地代码无法 tree-shake。需更小体积时用命名导出手选扩展（`[Bold, Italic, Image]`）替代全套 kit；按扩展子路径分包属后续工作。
+   - **StarterKit 全量打包**：`StarterKit` 急切 `import` 全部内置扩展（含 image/video/audio 等媒体扩展），且本地自定义 wrapper/UI 代码在库构建中被单 chunk 输出（`vite.lib.config.ts` 单入口、无分包），故 `@tiptap/*` 虽已 external，本地代码无法 tree-shake。需更小体积时用命名导出手选扩展（`[Bold, Italic, Image]`）替代全套 kit；按扩展子路径分包属后续工作。
 
 ### 4.2 响应式 / 正确性细节
 

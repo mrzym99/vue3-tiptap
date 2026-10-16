@@ -11,6 +11,8 @@ describe("VIDEO_URL_REGEX", () => {
 
   it("matches supported platform URLs", () => {
     const urls = [
+      "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "https://youtu.be/dQw4w9WgXcQ",
       "https://www.bilibili.com/video/BV1xx411c7mD",
       "https://v.qq.com/x/page/u0322h706y2.html",
       "https://v.youku.com/v_show/id_XNTgxMzU0NzY0NA==.html",
@@ -33,6 +35,15 @@ describe("VIDEO_URL_REGEX", () => {
 
 describe("toEmbedUrl", () => {
   it("converts platform URLs to embed players", () => {
+    expect(toEmbedUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ")).toBe(
+      "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    );
+    expect(toEmbedUrl("https://youtu.be/dQw4w9WgXcQ")).toBe(
+      "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    );
+    expect(toEmbedUrl("https://www.youtube.com/shorts/dQw4w9WgXcQ")).toBe(
+      "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    );
     expect(toEmbedUrl("https://www.bilibili.com/video/BV1xx411c7mD")).toBe(
       "https://player.bilibili.com/player.html?bvid=BV1xx411c7mD&page=1",
     );

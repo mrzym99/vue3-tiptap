@@ -30,8 +30,7 @@ const mentionUsers = [
   { id: "4", label: "Alice" },
   { id: "5", label: "Bob" },
 ];
-// Demo: StarterKit bundles every built-in except Youtube/Twitch — those are
-// added explicitly. `false` disables one, an object configures it (image
+// Demo: `false` disables a bundled extension, an object configures it (image
 // uploader, mention member list).
 const extensions = [
   StarterKit.configure({

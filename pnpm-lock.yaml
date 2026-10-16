@@ -104,16 +104,10 @@ importers:
       '@tiptap/extension-text-style':
         specifier: ^3.30.1
         version: 3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))
-      '@tiptap/extension-twitch':
-        specifier: ^3.30.1
-        version: 3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))
       '@tiptap/extension-typography':
         specifier: ^3.30.1
         version: 3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))
       '@tiptap/extension-underline':
-        specifier: ^3.30.1
-        version: 3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))
-      '@tiptap/extension-youtube':
         specifier: ^3.30.1
         version: 3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))
       '@tiptap/extensions':
@@ -618,11 +612,6 @@ packages:
     peerDependencies:
       '@tiptap/core': 3.30.1
 
-  '@tiptap/extension-twitch@3.30.1':
-    resolution: {integrity: sha512-GePllLhnncXLP4xM4yFmOmTfXstqqbtGffy87zEJWl4WCcT8lgULwckArbtsFKzCFyBDMZk55IA9r/7R3BY1oQ==}
-    peerDependencies:
-      '@tiptap/core': 3.30.1
-
   '@tiptap/extension-typography@3.30.1':
     resolution: {integrity: sha512-5NxHzMBaiNL8ntHEMoaQO5R3Dpf64Ha1Hgo/wqUmW5KaPAKZtqeukohmDUC7lWENgMWglnWVYCwUtYhEn+2gHA==}
     peerDependencies:
@@ -630,11 +619,6 @@ packages:
 
   '@tiptap/extension-underline@3.30.1':
     resolution: {integrity: sha512-Xro/EzEgWW+46ztrw5f4epDWQvcGpD+HUykzigj30bpIS8Vv4XDXFt+89dAcyDC7zRUMQULlWZV0UCyRLFEKBw==}
-    peerDependencies:
-      '@tiptap/core': 3.30.1
-
-  '@tiptap/extension-youtube@3.30.1':
-    resolution: {integrity: sha512-DUbp0ukM6ZNBBaEaH9PqFO1Lx6SWNWV/c0KN4fMlV8BSCloJEGx4OqFUQ80RNBpQcL/r08AaFFVvWqdTj/JLlA==}
     peerDependencies:
       '@tiptap/core': 3.30.1
 
@@ -1654,19 +1638,11 @@ snapshots:
     dependencies:
       '@tiptap/core': 3.30.1(@tiptap/pm@3.30.1)
 
-  '@tiptap/extension-twitch@3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))':
-    dependencies:
-      '@tiptap/core': 3.30.1(@tiptap/pm@3.30.1)
-
   '@tiptap/extension-typography@3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))':
     dependencies:
       '@tiptap/core': 3.30.1(@tiptap/pm@3.30.1)
 
   '@tiptap/extension-underline@3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))':
-    dependencies:
-      '@tiptap/core': 3.30.1(@tiptap/pm@3.30.1)
-
-  '@tiptap/extension-youtube@3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))':
     dependencies:
       '@tiptap/core': 3.30.1(@tiptap/pm@3.30.1)
 

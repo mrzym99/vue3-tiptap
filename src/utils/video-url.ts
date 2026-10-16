@@ -3,7 +3,10 @@ export function toEmbedUrl(url: string): string | null {
   const u = url.trim();
   if (!u) return null;
 
-  let m = u.match(/bilibili\.com\/video\/(BV[0-9A-Za-z]+)/i);
+  let m = u.match(/youtube\.com\/(?:watch\?v=|shorts\/|embed\/|live\/)([\w-]{6,})/i) ?? u.match(/youtu\.be\/([\w-]{6,})/i);
+  if (m) return `https://www.youtube.com/embed/${m[1]}`;
+
+  m = u.match(/bilibili\.com\/video\/(BV[0-9A-Za-z]+)/i);
   if (m) return `https://player.bilibili.com/player.html?bvid=${m[1]}&page=1`;
   m = u.match(/bilibili\.com\/video\/av(\d+)/i);
   if (m) return `https://player.bilibili.com/player.html?aid=${m[1]}&page=1`;
@@ -46,4 +49,4 @@ export function isVideoUrl(url: string): boolean {
 
 /** Paste-rule pattern for supported video page URLs. Must stay global: tiptap consumes it via String.matchAll, which throws on non-global regexes. */
 export const VIDEO_URL_REGEX =
-  /(?:bilibili\.com\/video\/|v\.qq\.com\/x\/|v\.youku\.com\/v_show|iqiyi\.com\/[av]_|ixigua\.com\/|mgtv\.com\/b\/|douyin\.com\/video\/|open\.163\.com\/newview\/movie\/)[^\s<>]+/gi;
+  /(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/|live\/)|youtu\.be\/|bilibili\.com\/video\/|v\.qq\.com\/x\/|v\.youku\.com\/v_show|iqiyi\.com\/[av]_|ixigua\.com\/|mgtv\.com\/b\/|douyin\.com\/video\/|open\.163\.com\/newview\/movie\/)[^\s<>]+/gi;

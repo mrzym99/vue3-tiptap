@@ -66,7 +66,7 @@ pnpm preview
     │   │   ├── Bold / Italic / Strike / Underline / Code / Highlight
     │   │   ├── Subscript / Superscript / Heading / HorizontalRule
     │   │   ├── BulletList / OrderedList / TaskList / Link / CodeBlock / Details
-    │   │   ├── Image / Youtube / Audio / Twitch / FileHandler
+    │   │   ├── Image / Video / Audio / FileHandler
     │   │   ├── TextStyle / Color / FontFamily / Typography / Table
     │   │   ├── FindAndReplace / InvisibleCharacters / NodeRange
     │   │   ├── Undo / Redo / UndoRedo / ClearFormatting
@@ -75,7 +75,7 @@ pnpm preview
     │   │   ├── toolbar/        # 工具栏（自动收集扩展按钮）
     │   │   │   ├── buttons/         # 简单功能按钮（加粗/撤销/清除格式等）
     │   │   │   ├── menu-buttons/    # 下拉菜单按钮（标题/对齐/颜色/字体/表格）
-    │   │   │   ├── dialog-buttons/  # 模态对话框插入（图片/视频/YouTube/音频/Twitch/链接）
+    │   │   │   ├── dialog-buttons/  # 模态对话框插入（图片/视频/音频/链接）
     │   │   │   └── render-item/     # 按扩展 button 声明动态渲染按钮
     │   │   ├── bubble-menu/    # 气泡菜单（格式条 + 浮动菜单 + extension 声明的气泡工具栏）
     │   │   ├── editor-content/ # 编辑区容器与内容样式
@@ -194,10 +194,8 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 | CodeBlock 代码块             | 自定义（基于 @tiptap/extension-code-block）                           | 图标按钮                              |
 | Details 折叠块               | 自定义（基于 @tiptap/extension-details）                              | 图标按钮                              |
 | Image 图片                   | 自定义（基于 @tiptap/extension-image）                                | URL 弹窗按钮（也可拖拽/粘贴图片文件）；四角拖拽改尺寸 |
-| Video 视频                   | 自定义（基于 @tiptap/extension-video，URL 自动转嵌入）                 | URL 弹窗按钮；四角拖拽改尺寸          |
-| Youtube 视频                 | 自定义（基于 @tiptap/extension-youtube）                              | URL 弹窗按钮                          |
+| Video 视频                   | 自定义（基于 @tiptap/extension-video，URL 自动转嵌入：YouTube/B站/腾讯/优酷/爱奇艺/西瓜/芒果/抖音/网易） | URL 弹窗按钮；四角拖拽改尺寸          |
 | Audio 音频                   | 自定义（基于 @tiptap/extension-audio）                                | URL 弹窗按钮                          |
-| Twitch 直播                  | 自定义（基于 @tiptap/extension-twitch）                               | URL 弹窗按钮                          |
 | Color 文字颜色               | 自定义（基于 @tiptap/extension-text-style 的 Color）                  | 颜色选择菜单（色板 + 自定义色值）     |
 | FontFamily 字体              | 自定义（基于 @tiptap/extension-text-style 的 FontFamily）             | 下拉菜单（无衬线/衬线/等宽/雅黑）     |
 | Table 表格                   | 自定义（基于 @tiptap/extension-table 的 TableKit，可调整列宽）        | 下拉菜单（插入/行列/合并/表头/删除）  |
@@ -249,8 +247,10 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 - 可继续接入（对应扩展文件已就绪或可按需新增）：列表（有序/无序/任务）、链接 Link、图片 Image、表格 Table、代码块、气泡菜单、查找替换、Emoji、@提及、数学公式等；集成清单与分阶段计划见 `docs/tiptap-extensions-integration-plan.md`；
 - `StarterKit` 已作为依赖引入但暂未启用，可按需替换当前的逐节点注册方式；
 - 可抽取为独立 npm 包 / Vue 组件库，暴露统一的扩展注册 API；`src/index.ts` 已命名导出全部内置扩展（`Mention` / `Image` 等）与 `StarterKit`；
-- **显式引入扩展**（2026-09-12 决策，对齐 tiptap 模式）：组件**不再自动包含内置扩展**，由宿主通过 `extensions` prop 选择——一键全量用 `StarterKit.configure({...})`（`false` 禁用某项，对象配置某项，如 `{ twitch: false, image: { upload } }`），或手动逐个 `import`（如 `[Bold, Mention.configure({ items })]`）；同名冲突后者胜出；Document / Paragraph / Text / Placeholder 结构核心始终由组件提供；
+- **显式引入扩展**（2026-09-12 决策，对齐 tiptap 模式）：组件**不再自动包含内置扩展**，由宿主通过 `extensions` prop 选择——一键全量用 `StarterKit.configure({...})`（`false` 禁用某项，对象配置某项，如 `{ audio: false, image: { upload } }`），或手动逐个 `import`（如 `[Bold, Mention.configure({ items })]`）；同名冲突后者胜出；Document / Paragraph / Text / Placeholder 结构核心始终由组件提供；
 - `Focus`（聚焦高亮）已于 2026-10-16 移除（低价值、纯死代码）：需要时宿主自行引入 `@tiptap/extension-focus`；
+- `Youtube` / `Twitch` 扩展已于 2026-10-16 移除：YouTube 链接由 `Video` 的 URL 转嵌入覆盖（`src/utils/video-url.ts` → `toEmbedUrl`），Twitch 国内不可用；存量文档若含 `youtube`/`twitch` 节点将无法解析，宿主需自行引入对应官方扩展；
+- `DragHandle`（`src/components/extensions/DragHandle/`，约 1200 行）是从 `@tiptap/extension-drag-handle` v3.31.3 vendor 并剥离 Yjs 协作支持的自维护副本——因为官方包 peerDependencies 强制要求 `@tiptap/y-tiptap` + `extension-collaboration`。升级方式：对比上游同版本 diff 手动移植，勿直接覆盖；
 - 可补充 TableKit（可调整列宽）等高级能力的完整 UI。
 
 ## 9. 已知事项

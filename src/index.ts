@@ -8,7 +8,7 @@ export * from "./types";
 export type { ImageUploader } from "./types";
 export type { LocaleName, LocaleT, LocaleMessages, LocaleTranslations, LocaleContext } from "./locales";
 
-/** Every built-in extension (hand-pick via `extensions`), plus the `StarterKit` bundle (Youtube/Twitch excluded — add them separately). */
+/** Every built-in extension (hand-pick via `extensions`), plus the `StarterKit` bundle. */
 export * from "./components/extensions";
 
 export { TipTapEditor, applyTheme };

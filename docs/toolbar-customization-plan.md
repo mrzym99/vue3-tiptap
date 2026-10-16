@@ -15,7 +15,7 @@
 <TipTapEditor v-model="content" :toolbar="['bold', 'italic', 'heading', 'textAlign']" />
 
 <!-- 3) 对象：include（可省 = 全部）+ exclude（排除个别） -->
-<TipTapEditor v-model="content" :toolbar="{ exclude: ['twitch', 'findAndReplace'] }" />
+<TipTapEditor v-model="content" :toolbar="{ exclude: ['audio', 'findAndReplace'] }" />
 <TipTapEditor v-model="content" :toolbar="{ include: ['bold', 'heading', 'table'], exclude: ['table'] }" />
 
 <!-- 4) 隐藏工具栏 -->
@@ -26,12 +26,12 @@
 
 ```vue
 <!-- bubble-menu / floating-menu 缺省跟随 toolbar 配置 -->
-<TipTapEditor v-model="content" :toolbar="{ exclude: ['twitch'] }" />
+<TipTapEditor v-model="content" :toolbar="{ exclude: ['audio'] }" />
 
 <!-- 单独覆盖（缺省回退到 toolbar） -->
 <TipTapEditor
   v-model="content"
-  :toolbar="{ exclude: ['twitch'] }"
+  :toolbar="{ exclude: ['audio'] }"
   :bubble-menu="['bold', 'italic', 'link']"
   :floating-menu="{ exclude: ['taskList'] }"
 />
@@ -47,9 +47,9 @@
 | `italic` | 斜体 | `codeBlock` | 代码块 |
 | `strike` | 删除线 | `details` | 折叠块 |
 | `underline` | 下划线 | `image` | 图片 |
-| `code` | 行内代码 | `youtube` | 视频 |
+| `code` | 行内代码 | `video` | 视频 |
 | `highlight` | 高亮 | `audio` | 音频 |
-| `subscript` | 下标 | `twitch` | 直播 |
+| `subscript` | 下标 | `blockquote` | 引用 |
 | `superscript` | 上标 | `color` | 文字颜色 |
 | `heading` | 标题（菜单） | `fontFamily` | 字体（菜单） |
 | `horizontalRule` | 分隔线 | `table` | 表格（菜单） |
