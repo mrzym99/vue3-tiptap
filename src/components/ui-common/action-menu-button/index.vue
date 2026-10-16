@@ -9,6 +9,7 @@
         :aria-expanded="menuOpen"
       >
         <template #suffix>
+          <span v-if="showLabel" class="trigger-label">{{ active.label }}</span>
           <slot name="suffix" />
         </template>
       </ActionButton>
@@ -53,7 +54,7 @@ const active = computed<ActionMenuButtonItem>(() => {
   }
 
   const item: ActionMenuButtonItem = {
-    label: props.tooltip,
+    label: "",
     icon: props.icon,
     isActive: () => false,
   };
@@ -68,6 +69,13 @@ const active = computed<ActionMenuButtonItem>(() => {
   flex-direction: column;
   gap: var(--tiptap-gap-xs);
   min-width: 100px;
+}
+
+.trigger-label {
+  max-width: 6em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tiptap-menu-item {

@@ -6,4 +6,6 @@ type OmitActionButtonProps = Omit<ActionButtonProps, "action" | "isActive">;
 export type ActionButtonMenuProps = {
   isActive: boolean;
   items: ActionMenuButtonItem[];
+  /** Show the active item's label in the trigger button */
+  showLabel?: boolean;
 } & OmitActionButtonProps;

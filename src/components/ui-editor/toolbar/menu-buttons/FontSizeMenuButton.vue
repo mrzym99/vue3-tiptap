@@ -4,6 +4,7 @@
     :disabled="disabled"
     :is-active="isActive"
     :items="options"
+    show-label
     :tooltip="t('fontSize')"
   >
     <template #suffix>
@@ -30,21 +31,14 @@ function createOption(label: string, sizePx: string): ActionMenuButtonItem {
     // preview: render the label at the actual size
     render: () => h("span", { style: { fontSize: sizePx } }, label),
     action: set,
-    disabled: !props.editor
-      .can()
-      .chain()
-      .focus()
-      .setFontSize(sizePx)
-      .run(),
+    disabled: !props.editor.can().chain().focus().setFontSize(sizePx).run(),
     isActive: () => props.editor.isActive("textStyle", { fontSize: sizePx }),
   };
 }
 
 const t = props.t;
 
-const options = computed<ActionMenuButtonItem[]>(() =>
-  SIZES.map((size) => createOption(`${size} px`, `${size}px`)),
-);
+const options = computed<ActionMenuButtonItem[]>(() => SIZES.map((size) => createOption(`${size} px`, `${size}px`)));
 
 const disabled = computed(() => options.value.every((item) => item.disabled));
 const isActive = computed(() => options.value.some((item) => item.isActive()));

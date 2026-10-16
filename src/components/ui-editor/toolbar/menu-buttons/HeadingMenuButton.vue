@@ -30,7 +30,12 @@ function createOption(level: number): ActionMenuButtonItem {
     // used by the trigger button to show the active level; menu rows use render
     icon: [RiH1, RiH2, RiH3, RiH4, RiH5, RiH6][level - 1],
     render: () => h(`h${level}`, { style: { margin: 0 } }, label),
-    action: () => props.editor.chain().focus().toggleHeading({ level: level as 1 }).run(),
+    action: () =>
+      props.editor
+        .chain()
+        .focus()
+        .toggleHeading({ level: level as 1 })
+        .run(),
     isActive: () => props.editor.isActive("heading", { level }),
     disabled: !props.editor.can().toggleHeading({ level: level as 1 }),
   };
@@ -38,9 +43,7 @@ function createOption(level: number): ActionMenuButtonItem {
 
 const t = props.t;
 
-const options = computed<ActionMenuButtonItem[]>(() =>
-  [1, 2, 3, 4, 5, 6].map((level) => createOption(level)),
-);
+const options = computed<ActionMenuButtonItem[]>(() => [1, 2, 3, 4, 5, 6].map((level) => createOption(level)));
 
 const disabled = computed(() => options.value.every((item) => item.disabled));
 const isActive = computed(() => options.value.some((item) => item.isActive()));

@@ -4,6 +4,7 @@
     :disabled="disabled"
     :is-active="isActive"
     :items="options"
+    show-label
     :tooltip="t('fontFamily')"
   >
     <template #suffix>
@@ -33,12 +34,7 @@ function createOption(label: string, fontFamily: string): ActionMenuButtonItem {
     // preview: render the label in the actual font
     render: () => h("span", { style: { fontFamily } }, label),
     action: set,
-    disabled: !props.editor
-      .can()
-      .chain()
-      .focus()
-      .setFontFamily(fontFamily)
-      .run(),
+    disabled: !props.editor.can().chain().focus().setFontFamily(fontFamily).run(),
     isActive: () => props.editor.isActive("textStyle", { fontFamily }),
   };
 }
