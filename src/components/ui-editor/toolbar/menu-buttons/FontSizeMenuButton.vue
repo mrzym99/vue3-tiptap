@@ -25,12 +25,15 @@ const props = defineProps<EXTActionButtonProps>();
 const SIZES = [12, 14, 16, 20, 24, 32];
 
 function createOption(label: string, sizePx: string): ActionMenuButtonItem {
-  const set = () => props.editor.chain().focus().setFontSize(sizePx).run();
   return {
     label,
     // preview: render the label at the actual size
     render: () => h("span", { style: { fontSize: sizePx } }, label),
-    action: set,
+    // clicking the active item again unsets the style
+    action: () =>
+      props.editor.isActive("textStyle", { fontSize: sizePx })
+        ? props.editor.chain().focus().unsetFontSize().run()
+        : props.editor.chain().focus().setFontSize(sizePx).run(),
     disabled: !props.editor.can().chain().focus().setFontSize(sizePx).run(),
     isActive: () => props.editor.isActive("textStyle", { fontSize: sizePx }),
   };

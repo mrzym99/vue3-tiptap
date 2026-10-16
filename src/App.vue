@@ -7,7 +7,7 @@ import { useDemoConfig } from "./composables/useDemoConfig";
 import SunIcon from "~icons/lucide/sun";
 import MoonIcon from "~icons/lucide/moon";
 
-const content = ref("");
+const content = ref("1234567891011");
 
 // Theme / locale with localStorage persistence (see useDemoConfig)
 const { theme, locale } = useDemoConfig();
@@ -18,7 +18,7 @@ const toggleTheme = () => {
 const translations: LocaleTranslations = { "zh-TW": zhTW };
 // `limit` is read once at editor creation (runtime changes are not applied) —
 // edit this constant to try the character limit instead of binding a control.
-const limit = ref(0);
+const limit = ref(10);
 const editorRef = useTemplateRef<InstanceType<typeof TipTapEditor>>("editorRef");
 
 // Configure the image extension with a custom uploader (demo: fake upload).

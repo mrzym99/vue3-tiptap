@@ -58,7 +58,7 @@ const emit = defineEmits<{
   update: [payload: { editor: Editor; transaction: Transaction }];
   /** The editor instance was created and is ready to use */
   ready: [editor: Editor];
-  /** Content exceeded `limit` and was truncated */
+  /** Initial content exceeded the character limit */
   truncated: [info: { limit: number }];
 }>();
 
@@ -74,8 +74,8 @@ const effectivePlaceholder = computed(() => {
 // Later entries win on name conflicts
 const STRUCTURAL_NAMES = new Set(["doc", "paragraph", "text", "placeholder"]);
 
-// Read once at creation: typing past the limit is rejected at the ProseMirror
-// level; create-time trimming lives in useEditorModel (emits `truncated`)
+// Read once at creation: over-limit content is left untouched and only
+// reported via the `truncated` event (see useEditorModel)
 const needsLimit = props.limit > 0;
 const structuralNames = needsLimit ? new Set([...STRUCTURAL_NAMES, "characterCount"]) : STRUCTURAL_NAMES;
 const userExtensions = [...new Map(props.extensions.map((e) => [e.name, e])).values()].filter(

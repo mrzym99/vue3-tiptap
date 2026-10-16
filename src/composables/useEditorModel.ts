@@ -1,9 +1,8 @@
 import { onUnmounted, watch, type Ref } from "vue";
 import type { Editor } from "@tiptap/core";
 import type { Transaction } from "@tiptap/pm/state";
-import { checkLimit } from "@/utils/text";
 
-/** v-model binding: debounced HTML write-back + one-time `limit` truncation on create. */
+/** v-model binding: debounced HTML write-back + over-`limit` warning on create. */
 export interface UseEditorModelOptions {
   /** Must be a SHALLOW ref — a deep ref breaks ProseMirror's transaction checks */
   editor: Ref<Editor | undefined>;
@@ -13,7 +12,7 @@ export interface UseEditorModelOptions {
   limit: () => number;
   /** Called on every content-changing transaction. */
   onUpdate?: (editor: Editor, transaction: Transaction) => void;
-  /** Called when initial content exceeded `limit` and was trimmed on create. */
+  /** Called when initial content exceeded `limit`. The content is NOT modified — the host decides what to do. */
   onTruncated?: (limit: number) => void;
 }
 
@@ -39,17 +38,16 @@ export function useEditorModel(options: UseEditorModelOptions) {
     modelSyncTimer = setTimeout(flushModelValue, MODEL_SYNC_DELAY);
   };
 
-  /** onCreate: apply a pre-create value, trim initial content over `limit`. */
+  /** onCreate: apply a pre-create value, warn when initial content exceeds `limit`. */
   const handleCreate = (created: Editor) => {
     if (pendingContent !== undefined && pendingContent !== created.getHTML()) {
       created.commands.setContent(pendingContent, { emitUpdate: false });
     }
-    // Only write back when truncated — else an empty doc rewrites "" → "<p></p>"
+    // Over-limit initial content is NOT trimmed: the library never rewrites
+    // host content on its own — the host listens for the event and decides.
     const currentLimit = limit();
     const current = created.storage.characterCount?.characters?.() ?? created.getText({ blockSeparator: "" }).length;
     if (currentLimit && current > currentLimit) {
-      checkLimit(created, currentLimit);
-      modelValue.value = created.getHTML();
       onTruncated?.(currentLimit);
     }
   };

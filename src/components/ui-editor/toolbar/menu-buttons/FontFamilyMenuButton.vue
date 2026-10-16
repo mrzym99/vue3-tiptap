@@ -28,12 +28,15 @@ const MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 const YAHEI = '"Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif';
 
 function createOption(label: string, fontFamily: string): ActionMenuButtonItem {
-  const set = () => props.editor.chain().focus().setFontFamily(fontFamily).run();
   return {
     label,
     // preview: render the label in the actual font
     render: () => h("span", { style: { fontFamily } }, label),
-    action: set,
+    // clicking the active item again unsets the style
+    action: () =>
+      props.editor.isActive("textStyle", { fontFamily })
+        ? props.editor.chain().focus().unsetFontFamily().run()
+        : props.editor.chain().focus().setFontFamily(fontFamily).run(),
     disabled: !props.editor.can().chain().focus().setFontFamily(fontFamily).run(),
     isActive: () => props.editor.isActive("textStyle", { fontFamily }),
   };

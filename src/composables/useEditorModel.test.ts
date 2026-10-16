@@ -111,7 +111,7 @@ describe("useEditorModel", () => {
     expect(editor.getHTML()).toBe("<p>external</p>");
   });
 
-  it("truncates over-limit content on create", async () => {
+  it("warns without modifying over-limit content on create", async () => {
     const editor = createEditor("<p>hello world</p>");
     const editorRef = shallowRef(editor);
     const modelValue = ref(editor.getHTML());
@@ -124,13 +124,14 @@ describe("useEditorModel", () => {
     });
     model.handleCreate(editor);
     expect(truncated).toBe(1);
-    expect(editor.getText().length).toBeLessThanOrEqual(5);
+    // Content must be left untouched — the host decides what to do.
+    expect(editor.getText()).toBe("hello world");
+    expect(modelValue.value).toBe("<p>hello world</p>");
   });
 
-  it("truncates on create even when CharacterCount is not loaded", () => {
-    // Eager maximum-length guard reads compound from storage.characterCount; with
-    // a bare extension set the fast-path fallback (plain text length) must still
-    // cover it and truncate without throwing.
+  it("warns on create even when CharacterCount is not loaded", () => {
+    // The over-limit check reads from storage.characterCount; with a bare
+    // extension set the plain-text fallback must still cover it.
     const editor = new Editor({
       content: "<p>hello world</p>",
       extensions: [Document, Paragraph, Text],
@@ -147,6 +148,6 @@ describe("useEditorModel", () => {
     });
     model.handleCreate(editor);
     expect(truncated).toBe(1);
-    expect(editor.getText().length).toBeLessThanOrEqual(6);
+    expect(editor.getText()).toBe("hello world");
   });
 });

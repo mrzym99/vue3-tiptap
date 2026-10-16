@@ -39,7 +39,6 @@ import { Typography } from "./Typography";
 import { Underline } from "./Underline";
 import { Undo } from "./Undo";
 import { UndoRedo } from "./UndoRedo";
-import { UniqueId } from "./UniqueId";
 import { Video } from "./Video";
 import { Youtube } from "./Youtube";
 
@@ -86,7 +85,6 @@ export * from "./Typography";
 export * from "./Underline";
 export * from "./Undo";
 export * from "./UndoRedo";
-export * from "./UniqueId";
 export * from "./Video";
 export * from "./Youtube";
 
@@ -149,7 +147,6 @@ const builtinExtensions: Extensions = [
   // Editing experience
   FindAndReplace,
   InvisibleCharacters,
-  UniqueId,
   NodeRange,
   DragHandle,
   HardBreak,
