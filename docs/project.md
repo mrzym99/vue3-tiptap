@@ -59,7 +59,8 @@ pnpm preview
     ├── style.scss / reset.scss # 全局样式与重置（SCSS，仅演示页）
     ├── components/
     │   ├── index.vue           # ★ 核心导出组件 TipTapEditor
-    │   ├── utils.ts            # 工具函数（checkLimit 字数限制）
+    │   ├── composables/        # useEditorModel（v-model 绑定 / 超限警告）等
+    │   ├── utils/              # 工具函数（button / video-url / storage 等）
     │   ├── extensions/         # 自定义 TipTap 扩展（每个扩展自带工具栏按钮）
     │   │   ├── index.ts        # 扩展集合入口
     │   │   ├── Bold / Italic / Strike / Underline / Code / Highlight
@@ -67,7 +68,7 @@ pnpm preview
     │   │   ├── BulletList / OrderedList / TaskList / Link / CodeBlock / Details
     │   │   ├── Image / Youtube / Audio / Twitch / FileHandler
     │   │   ├── TextStyle / Color / FontFamily / Typography / Table
-    │   │   ├── FindAndReplace / InvisibleCharacters / UniqueId / NodeRange
+    │   │   ├── FindAndReplace / InvisibleCharacters / NodeRange
     │   │   ├── Undo / Redo / UndoRedo / ClearFormatting
     │   │   ├── Blockquote / TextAlign / HardBreak（每扩展一个文件）
     │   ├── ui-editor/          # 编辑器 UI 层
@@ -103,7 +104,7 @@ pnpm preview
 | 属性          | 类型                | 默认值      | 说明                       |
 | ------------- | ------------------- | ----------- | -------------------------- |
 | `v-model`     | `string`            | 必填        | 编辑器 HTML 内容，双向绑定 |
-| `limit`  | `number`            | `0`（不限） | 最大字数限制，超出自动截断 |
+| `limit`  | `number`            | `0`（不限） | 最大字数提示；超出时计数变红并 emit `truncated`，**不修改内容**（数据保真，由宿主处理） |
 | `disabled`    | `boolean`           | `false`     | 是否禁用编辑（只读）       |
 | `theme`       | `'light' \| 'dark'` | `'light'`   | 主题模式                   |
 | `placeholder` | `string`            | `-`         | 空文档时显示的占位文本     |
@@ -115,8 +116,8 @@ pnpm preview
 组件内部逻辑：
 
 - 通过 `useEditor` 创建编辑器实例，注册 `Document` / `Paragraph` / `Text` / `Placeholder` 及自定义扩展；
-- `onCreate` 中：若编辑器创建前 `v-model` 已变化则先 `setContent` 同步；仅当初始内容**超限被截断**时才把截断结果写回 `v-model`（避免空文档把父组件值从 `""` 改写为 `<p></p>`）；
-- `onUpdate` 中调用 `checkLimit` 做字数截断（同步执行），`editor.getHTML()` 写回 `v-model` 采用 **300ms 防抖**（避免大文档每键 O(n) 序列化；组件卸载时 flush 未写回的内容）；
+- `onCreate` 中：若编辑器创建前 `v-model` 已变化则先 `setContent` 同步；初始内容超限时仅 emit `truncated`，**不修改内容**（2026-10-16 决策：数据保真）；
+- `onUpdate` 中 `editor.getHTML()` 写回 `v-model` 采用 **150ms 防抖**（避免大文档每键 O(n) 序列化；组件卸载时 flush 未写回的内容）；
 - 监听 `v-model` 外部变化（与编辑器当前 HTML 不一致时）通过 `setContent` 同步，编辑器未就绪时暂存、`onCreate` 后应用；
 - 监听 `disabled` 变化调用 `setEditable` 切换只读；
 - 底部展示实时字数统计 `当前字数 / 最大字数`（基于 `CharacterCount` 扩展，增量计算）。
@@ -211,7 +212,6 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 | ClearFormatting 清除格式     | 自定义                                                                 | 图标按钮                              |
 | CharacterCount 字数统计      | @tiptap/extensions 的 CharacterCount                                   | 无按钮（底部实时统计）                |
 | Gapcursor / Dropcursor / TrailingNode | @tiptap/extensions                                            | 无按钮（光标兜底/拖拽落点/末尾段落）  |
-| UniqueId 唯一 ID             | @tiptap/extension-unique-id                                           | 无按钮（节点 id 属性）                |
 | Blockquote 引用              | 自定义（基于 @tiptap/extension-blockquote）                           | 图标按钮                              |
 | TextAlign 文本对齐           | 自定义（基于 @tiptap/extension-text-align，作用于 heading/paragraph） | 下拉菜单按钮（左/中/右/两端）         |
 | HardBreak 硬换行             | @tiptap/extension-hard-break（Shift+Enter）                           | 无按钮（快捷键）                      |
@@ -224,6 +224,25 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 3. **可插拔扩展集**：`src/components/extensions/index.ts` 是扩展的唯一入口，新增能力在此注册即可；
 4. **统一主题变量**：所有 UI 颜色、尺寸均通过 `--tiptap-*` CSS 变量驱动（基础 token + 语义 token），主题可作用域到组件根节点；
 5. **完整的类型约束**：扩展选项、按钮视图等均有对应 TS 类型（`src/types/`），开发时享受类型提示。
+
+### 7.1 数据写入行为说明（重要）
+
+本库承诺**只提供 UI 与交互**，除以下列出的行为外不会修改文档数据；所有 `getHTML()` / `getJSON()` 原样透传，无自定义序列化 / 净化 / 属性注入。
+
+以下行为会写入文档数据，宿主需知晓：
+
+| 行为 | 触发方式 | 说明 |
+| --- | --- | --- |
+| 超限警告 | 创建时（`limit` + `modelValue` 超限） | **不修改内容**，仅 emit `truncated` 事件 + 计数提示变红，由宿主决定如何处理 |
+| 末尾补空段落 | 任何使文档末尾变为非段落块的操作 | Tiptap 官方 `TrailingNode` 行为（Notion 式 UX），保证光标可移到末块下方；`getJSON()` 会包含尾段落 |
+| 粘贴视频 URL 重写 | 用户粘贴视频链接 | 匹配视频 URL 时替换为 `video` 节点，`src` 存储为 embed 地址（`toEmbedUrl()`），非用户粘贴原文 |
+| 排版替换 | 用户输入 | Tiptap 官方 `Typography`：直引号→弯引号、`--`→–、`->`→→ 等 |
+| 自动链接 | 用户输入 / 粘贴 | Tiptap 官方 `Link`：`autolink` + `linkOnPaste`，输入或粘贴 URL 自动加链接 mark |
+| 图片粘贴/拖放 | 用户操作 | 文件读为 base64 data-URL 存入文档（仅 jpeg/png/gif/webp，**不允许 SVG** 以避免存储型 XSS） |
+| 列表键位 | 用户按键 | Tiptap 官方 `ListKeymap`：列表内 Enter/Backspace/Tab 会执行合并 / 提升 / 缩进等非显然操作 |
+| 媒体尺寸持久化 | 用户拖拽调尺寸 | 拖拽结束后 `updateAttributes` 将 px 尺寸写入节点属性 |
+
+除上表外，所有命令均在用户点击 / 按键回调中执行；DragHandle 的 `appendTransaction` 仅恢复选区，不改文档。
 
 ## 8. 扩展建议 / 路线图
 
@@ -239,7 +258,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 
 - 演示页 `App.vue` 中初始内容为占位文本，正式使用时应由业务方传入；
 - 代码中存在部分被注释的扩展/表格代码（`StarterKit`），属于演进中的预留能力；
-- 字数限制与字数统计统一使用「可见字符数」口径（`getEditorTextLength`，不含换行与 HTML 标签）：**按 Enter 换行不计入字数**，内容满额时换行不会导致字数虚增，超限输入会被精确截断（基于文档 position 计算截断点）；
+- 字数限制与字数统计统一使用「可见字符数」口径（`CharacterCount`，不含换行与 HTML 标签）：**按 Enter 换行不计入字数**；超限**不自动截断**（2026-10-16 决策：数据保真——计数变红 + emit `truncated`，由宿主决定如何处理）；
 - `InvisibleCharacters`（隐藏字符）默认关闭（`visible: false`），需点击工具栏按钮手动开启——该扩展官方默认是 `visible: true`，直接注册会导致每个段落显示 ¶ 标记；
 - `pnpm-workspace.yaml` 中配置了 `overrides: prosemirror-model: ^1.25.11`，且 `vite.config.ts` 的 `resolve.dedupe` 强制 `prosemirror-model` / `@tiptap/pm` / `@tiptap/core` 等单一副本：双重保险避免出现多份 `prosemirror-model`（ProseMirror 官方警告：重复副本会导致「节点拆分/包裹失败」，表现为按 Enter 无法换行，报 `Can not convert ... to a Fragment (looks like multiple versions of prosemirror-model)`）；
 
