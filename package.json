@@ -55,7 +55,6 @@
     "@tiptap/extension-document": "^3.30.1",
     "@tiptap/extension-file-handler": "^3.30.1",
     "@tiptap/extension-find-and-replace": "^3.30.1",
-    "@tiptap/extension-focus": "^3.30.1",
     "@tiptap/extension-hard-break": "^3.30.1",
     "@tiptap/extension-heading": "^3.30.1",
     "@tiptap/extension-highlight": "^3.30.1",

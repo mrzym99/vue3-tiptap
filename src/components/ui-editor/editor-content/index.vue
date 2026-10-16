@@ -310,11 +310,6 @@ const props = defineProps<{ editor: Editor }>();
       max-width: 100%;
     }
 
-    .has-focus {
-      border-radius: var(--tiptap-border-radius-sm);
-      box-shadow: 0 0 0 2px var(--tiptap-focus-ring);
-    }
-
     iframe.ProseMirror-selectednode,
     audio.ProseMirror-selectednode,
     video.ProseMirror-selectednode {

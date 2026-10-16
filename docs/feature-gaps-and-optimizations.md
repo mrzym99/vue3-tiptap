@@ -4,8 +4,6 @@
 >
 > 结论一句话：**「能编辑的功能」已经相当全（文本/列表/表格/媒体/折叠/链接/查找替换），P0（Undo/Redo、清除格式、字符统计）已完成；剩余缺口集中在「编辑体验（拖拽、缩进）」「富文本常见高级能力（字体大小 / Markdown / 目录 / Emoji / 提及）」「性能与 Reactive 细节」三块。**
 
-> **决策记录（2026-09-07）**：`Focus`（聚焦高亮）**默认不启用**——依赖与样式已就绪但保持注释状态，避免非活动块淡化对部分宿主场景造成干扰；如需开启，去掉 `src/components/extensions/index.ts` 中两处注释即可。
-
 ---
 
 ## 1. 现状盘点（2026-08 快照）
@@ -62,7 +60,7 @@
 
 | 项目 | 现状 | 建议 |
 | ---- | ---- | ---- |
-| **Focus（聚焦高亮）** | `src/components/extensions/index.ts` 中注释 | **默认不启用（2026-09-07 决策）**：聚焦时淡化非活动块可能干扰部分宿主场景，故保持关闭。代码与依赖均已就绪，需要时去掉两处注释即可启用；样式已内置（`.has-focus`）。 |
+| **Focus（聚焦高亮）** | 已移除（2026-10-16） | 需要时宿主自行引入 `@tiptap/extension-focus` 并配置 `className: "has-focus"`（样式需自带）。 |
 | **StarterKit** | 依赖已装但未使用 | 用 StarterKit 替代「逐节点手写注册」，可集中获得 DropCursor / GapCursor / History / TrailingNode / undo-redo 命令等；但与「扩展即按钮 + 逐文件命名」的架构会叠加，**需权衡在 index.ts 中整合的方式**（StarterKit 不进工具栏，仅提供行为基座）。 |
 | **Link 自动识别** | Link 已配置 | 确认 `autolink` / `HTMLAttributes` 按需开启，补齐「粘贴 / 输入时自动转链接」的体验。 |
 
@@ -114,7 +112,7 @@
 
 ## 5. 一句话路线建议
 
-1. ~~**先做（半天）**：Undo/Redo 按钮 + 清除格式~~ → ✅ 已完成（Focus 按决策默认不启用）。
+1. ~~**先做（半天）**：Undo/Redo 按钮 + 清除格式~~ → ✅ 已完成（Focus 已于 2026-10-16 移除）。
 2. **再做（1 天）**：`shouldRerenderOnTransaction:false` + ~~v-model 写回防抖~~ ✅ + ~~CharacterCount 替换手工计数~~ ✅ + 映射 i18n/aria-label。
 3. **按业务做**：Markdown（含导出）→ 拖拽手柄 / Emoji / 提及 → Table of Contents → 协作。
 4. ~~**随做随改**：`docs/PROJECT.md` 中 Naive UI 与 `--tiptap-*` 前缀的漂移描述~~ → ✅ 已同步（2026-09-07）。

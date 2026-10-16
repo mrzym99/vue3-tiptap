@@ -12,7 +12,6 @@ import { Details, DetailsSummary, DetailsContent } from "./Details";
 import { DragHandle } from "./DragHandle";
 import { FileHandler } from "./FileHandler";
 import { FindAndReplace } from "./FindAndReplace";
-// import { Focus } from "./Focus";
 import { FontFamily } from "./FontFamily";
 import { FontSize } from "./FontSize";
 import { HardBreak } from "./HardBreak";
@@ -58,7 +57,6 @@ export * from "./Details";
 export * from "./DragHandle";
 export * from "./FileHandler";
 export * from "./FindAndReplace";
-export * from "./Focus";
 export * from "./FontFamily";
 export * from "./FontSize";
 export * from "./HardBreak";
@@ -153,7 +151,6 @@ const builtinExtensions: Extensions = [
   // Mention @ (typing @ triggers it; data source injected by the host via items)
   Mention,
   // Behavior-only (no buttons)
-  // Focus,
   Gapcursor,
   Dropcursor,
   TrailingNode,

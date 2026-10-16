@@ -207,7 +207,6 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 | FloatingMenu 浮动菜单        | @tiptap/vue-3 的 FloatingMenu 组件                                    | 空行左侧浮现插入菜单                  |
 | HorizontalRule 分隔线        | 自定义（基于 @tiptap/extension-horizontal-rule）                      | 图标按钮                              |
 | Typography 排版替换          | @tiptap/extension-typography                                          | 无按钮（智能替换）                    |
-| Focus 聚焦高亮               | @tiptap/extension-focus                                               | 无按钮（聚焦块描边）**默认未启用**    |
 | Undo 撤销 / Redo 重做        | 自定义（基于 @tiptap/extension-undo-redo）                             | 图标按钮 ×2（含禁用态）               |
 | ClearFormatting 清除格式     | 自定义                                                                 | 图标按钮                              |
 | CharacterCount 字数统计      | @tiptap/extensions 的 CharacterCount                                   | 无按钮（底部实时统计）                |
@@ -251,7 +250,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 - `StarterKit` 已作为依赖引入但暂未启用，可按需替换当前的逐节点注册方式；
 - 可抽取为独立 npm 包 / Vue 组件库，暴露统一的扩展注册 API；`src/index.ts` 已命名导出全部内置扩展（`Mention` / `Image` 等）与 `StarterKit`；
 - **显式引入扩展**（2026-09-12 决策，对齐 tiptap 模式）：组件**不再自动包含内置扩展**，由宿主通过 `extensions` prop 选择——一键全量用 `StarterKit.configure({...})`（`false` 禁用某项，对象配置某项，如 `{ twitch: false, image: { upload } }`），或手动逐个 `import`（如 `[Bold, Mention.configure({ items })]`）；同名冲突后者胜出；Document / Paragraph / Text / Placeholder 结构核心始终由组件提供；
-- `Focus`（聚焦高亮）**默认不在 StarterKit 中**（2026-09-07 决策）：非活动块淡化可能干扰部分宿主场景，依赖与样式已就绪，需要时去掉 `src/components/extensions/index.ts` 中两处注释即可启用，详见 `docs/feature-gaps-and-optimizations.md` 决策记录；
+- `Focus`（聚焦高亮）已于 2026-10-16 移除（低价值、纯死代码）：需要时宿主自行引入 `@tiptap/extension-focus`；
 - 可补充 TableKit（可调整列宽）等高级能力的完整 UI。
 
 ## 9. 已知事项

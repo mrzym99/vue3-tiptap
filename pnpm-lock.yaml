@@ -44,9 +44,6 @@ importers:
       '@tiptap/extension-find-and-replace':
         specifier: ^3.30.1
         version: 3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1)
-      '@tiptap/extension-focus':
-        specifier: ^3.30.1
-        version: 3.30.1(@tiptap/extensions@3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1))
       '@tiptap/extension-hard-break':
         specifier: ^3.30.1
         version: 3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))
@@ -509,11 +506,6 @@ packages:
       '@floating-ui/dom': ^1.0.0
       '@tiptap/core': 3.30.1
       '@tiptap/pm': 3.30.1
-
-  '@tiptap/extension-focus@3.30.1':
-    resolution: {integrity: sha512-BXCWbqPpi7abq1SBEYeLb17ZayECSI9mmpduiFboqwzIgL/+C9H1Pdg6t2LIJj/RDymNI356Pyvh0OTudx8XJQ==}
-    peerDependencies:
-      '@tiptap/extensions': 3.30.1
 
   '@tiptap/extension-hard-break@3.30.1':
     resolution: {integrity: sha512-2emcEkSSj+Y3dXXEugKQZDNeWCum0LBuKFmun7SiJyLOdxNuRnxwm2l4/LLiEHGDJBchDti4Oo8jZGLTRt4uog==}
@@ -1569,10 +1561,6 @@ snapshots:
       '@tiptap/core': 3.30.1(@tiptap/pm@3.30.1)
       '@tiptap/pm': 3.30.1
     optional: true
-
-  '@tiptap/extension-focus@3.30.1(@tiptap/extensions@3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1))':
-    dependencies:
-      '@tiptap/extensions': 3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))(@tiptap/pm@3.30.1)
 
   '@tiptap/extension-hard-break@3.30.1(@tiptap/core@3.30.1(@tiptap/pm@3.30.1))':
     dependencies:
