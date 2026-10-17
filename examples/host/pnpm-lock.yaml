@@ -401,7 +401,7 @@ packages:
   '@yumine/vue3-tiptap@file:../..':
     resolution: {directory: ../.., type: directory}
     peerDependencies:
-      vue: ^3.5.0
+      vue: ^3.5.13
 
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
