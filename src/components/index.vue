@@ -1,5 +1,5 @@
 <template>
-  <ThemeProvider :theme="theme" :theme-overrides="themeOverrides">
+  <ThemeProvider :theme="theme" :theme-overrides="mergedThemeOverrides">
     <section class="tiptap-box" v-if="editor">
       <ToolBar :editor="editor" :toolbar="props.toolbar" :wrap="props.toolbarWrap" :t="t" />
       <EditorContent :editor="editor" />
@@ -23,7 +23,7 @@ import { computed, toRef } from "vue";
 import { useEditor } from "@tiptap/vue-3";
 import type { Editor } from "@tiptap/core";
 import type { Transaction } from "@tiptap/pm/state";
-import type { TipTapEditorProps } from "@/types";
+import type { Theme, TipTapEditorProps } from "@/types";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
@@ -36,6 +36,7 @@ const props = withDefaults(defineProps<TipTapEditorProps>(), {
   limit: 0,
   disabled: false,
   theme: "light",
+  primaryColor: undefined,
   themeOverrides: undefined,
   placeholder: undefined,
   autofocus: false,
@@ -50,6 +51,13 @@ const props = withDefaults(defineProps<TipTapEditorProps>(), {
 });
 
 const { t } = useEditorLocale(toRef(props, "locale"), toRef(props, "translations"));
+
+// primaryColor layers over theme/themeOverrides by re-pointing the accent hue;
+// every accent-derived token in the theme files is a color-mix() of it.
+const mergedThemeOverrides = computed<Theme | undefined>(() => {
+  if (!props.primaryColor) return props.themeOverrides;
+  return { "--tiptap-accent-blue": props.primaryColor, ...props.themeOverrides };
+});
 
 const emit = defineEmits<{
   focus: [payload: { editor: Editor; event: FocusEvent; transaction: Transaction }];
@@ -177,16 +185,5 @@ defineExpose({
 .tiptap-box,
 .tiptap-box * {
   box-sizing: border-box;
-}
-
-/* 0.2s fade keeps theme switches in sync with the host app; component-level
-   transitions win on specificity, so hover/press animations are unaffected. */
-.tiptap-box,
-.tiptap-box * {
-  transition:
-    background-color 0.2s ease-in-out,
-    border-color 0.2s ease-in-out,
-    color 0.2s ease-in-out,
-    box-shadow 0.2s ease-in-out;
 }
 </style>

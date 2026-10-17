@@ -114,6 +114,8 @@ pnpm preview
 | `limit`  | `number`            | `0`（不限） | 最大字数提示；超出时计数变红并 emit `truncated`，**不修改内容**（数据保真，由宿主处理） |
 | `disabled`    | `boolean`           | `false`     | 是否禁用编辑（只读）       |
 | `theme`       | `'light' \| 'dark'` | `'light'`   | 主题模式                   |
+| `primaryColor` | `string`            | `-`         | 主色（任意 CSS 颜色）；工具栏激活态、主按钮、选区、链接等派生色在浅/暗两种模式下自动跟随（见 5.4） |
+| `themeOverrides` | `Record<'--tiptap-*', string>` | `-` | 自定义 CSS 变量，优先级高于 theme/primaryColor（逃生舱） |
 | `placeholder` | `string`            | `-`         | 空文档时显示的占位文本     |
 | `autofocus`   | `boolean`           | `false`     | 挂载后是否自动聚焦         |
 | `toolbarWrap` | `boolean`           | `false`     | 工具栏按钮多行换行（false 时单行横向滚动） |
@@ -164,7 +166,10 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 - `theme/index.ts`：`applyTheme()` 将主题 CSS 变量写入 `document.documentElement` 的 style 上；
 - `theme/index.ts`：`applyTheme()` 将主题 CSS 变量写入目标元素（默认 `document.documentElement`，组件内传根节点实现**作用域化**——多实例不同主题互不干扰）；
 - `theme-provider`：根据 `theme` prop 应用变量（支持 `'light' | 'dark'`）；
-- **自定义变量叠加**：`themeOverrides` prop（`Theme` 类型，键为 `--tiptap-*` 变量名）叠加在内置主题之上，优先级最高，可覆盖颜色或尺寸变量，如 `{ "--tiptap-color-bg": "#FAFAFA" }`；`applyTheme(name, target?, overrides?)` 第三个参数同效。
+- **主色派生（primaryColor）**：主色只需配置 `--tiptap-accent-blue` 一个色相，所有主色派生 token（accent-bg、主按钮、focus-ring、selection、主按钮阴影、popover/toolbar 阴影色染）均为它的 `color-mix()` 表达式，浅/暗模式按各自混合白/黑/transparent 自动派生；组件提供 `primaryColor` prop（内部合入 themeOverrides）即可整体换肤，无需逐个覆盖变量；
+- **自定义变量叠加**：`themeOverrides` prop（`Theme` 类型，键为 `--tiptap-*` 变量名）叠加在内置主题之上，优先级最高，可覆盖颜色或尺寸变量，如 `{ "--tiptap-color-bg": "#FAFAFA" }`；`applyTheme(name, target?, overrides?)` 第三个参数同效；
+- **主题切换过渡**：库级 0.2s 主题过渡规则覆盖编辑器主体（`.tiptap-box`）及所有 teleport 到 body 的弹层（菜单/Popover/Tooltip/Dialog），切换主题时整体同步淡入；宿主页面自身的过渡由宿主自行处理；
+- 独立使用的导出组件（Dialog/Popover 等）在未传入主题上下文时回退到默认 indigo 主色；
 
 所有主题变量以 `--tiptap-*` 前缀命名，类型由 `src/types/theme.ts` 约束（`--tiptap-${string}`）。
 

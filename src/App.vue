@@ -145,7 +145,6 @@ const extensions = [
   justify-content: space-between;
   gap: 8px;
   box-sizing: border-box;
-  transition: background-color 0.2s ease-in-out;
 }
 
 .app-brand {
@@ -188,7 +187,6 @@ const extensions = [
   outline: none;
   border: 1px solid var(--app-color-border);
   transition:
-    background-color 0.2s ease-in-out,
     border-color 0.2s ease-in-out,
     color 0.2s ease-in-out,
     box-shadow 0.2s ease-in-out;
@@ -215,7 +213,6 @@ const extensions = [
   justify-content: center;
   outline: none;
   transition:
-    background-color 0.2s ease-in-out,
     border-color 0.2s ease-in-out,
     color 0.2s ease-in-out,
     box-shadow 0.2s ease-in-out;

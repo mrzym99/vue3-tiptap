@@ -14,6 +14,8 @@ export interface TipTapEditorProps {
   disabled?: boolean;
   /** Theme mode */
   theme?: ThemeName;
+  /** Primary accent color (any CSS color); all accent-derived UI follows it in both modes */
+  primaryColor?: string;
   /** Custom CSS variables (`--tiptap-*`) layered on top of `theme` */
   themeOverrides?: Theme;
   /** Placeholder text shown when the document is empty; falls back to the locale pack's `placeholder` key */

@@ -35,9 +35,10 @@ function onClick(event: MouseEvent) {
   font-size: var(--tiptap-font-size);
   padding: var(--tiptap-padding-sm) var(--tiptap-padding-md);
   transition:
-    background-color 200ms ease-in-out,
     box-shadow 200ms ease-in-out,
-    transform 200ms ease-in-out;
+    transform 200ms ease-in-out,
+    border-color 0.2s ease-in-out,
+    color 0.2s ease-in-out;
 
   &:hover:not(:disabled) {
     background-color: var(--tiptap-btn-bg-hover);
@@ -93,7 +94,10 @@ function onClick(event: MouseEvent) {
 
 @media (prefers-reduced-motion: reduce) {
   .tiptap-btn {
-    transition: background-color 200ms ease-in-out, box-shadow 200ms ease-in-out;
+    transition:
+      box-shadow 200ms ease-in-out,
+      border-color 0.2s ease-in-out,
+      color 0.2s ease-in-out;
   }
 
   .tiptap-btn--primary,

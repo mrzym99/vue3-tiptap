@@ -18,12 +18,12 @@ export const darkTheme: Theme = {
   "--tiptap-color-border": "#34353B",
   "--tiptap-color-border-strong": "#44454C",
 
-  // --- accents (text + soft bg) ---
+  // --- accents (primary accent hue; everything derived follows it via color-mix) ---
   "--tiptap-accent-blue": "#818CF8", // indigo-400
   "--tiptap-accent-red": "#EB5757",
   "--tiptap-accent-green": "#2E8B7E",
   "--tiptap-accent-yellow": "#DFAB01",
-  "--tiptap-accent-blue-bg": "rgba(99, 102, 241, 0.25)", // indigo-500/25
+  "--tiptap-accent-blue-bg": "color-mix(in srgb, var(--tiptap-accent-blue) 25%, transparent)",
   "--tiptap-accent-red-bg": "rgba(235, 87, 87, 0.14)",
   "--tiptap-accent-green-bg": "rgba(15, 123, 108, 0.18)",
   "--tiptap-accent-yellow-bg": "rgba(223, 171, 1, 0.14)",
@@ -32,11 +32,11 @@ export const darkTheme: Theme = {
   "--tiptap-btn-bg": "transparent",
   "--tiptap-btn-bg-hover": "#2A2B30",
   "--tiptap-btn-bg-active": "#34353B",
-  "--tiptap-btn-primary-bg": "#6366F1", // indigo-500
-  "--tiptap-btn-primary-bg-hover": "#818CF8", // indigo-400
+  "--tiptap-btn-primary-bg": "color-mix(in srgb, var(--tiptap-accent-blue) 88%, black)",
+  "--tiptap-btn-primary-bg-hover": "var(--tiptap-accent-blue)",
   "--tiptap-btn-primary-text": "#FFFFFF",
-  "--tiptap-btn-primary-shadow": "0 4px 14px rgba(0, 0, 0, 0.35), 0 4px 14px rgba(99, 102, 241, 0.25)",
-  "--tiptap-btn-primary-shadow-hover": "0 8px 20px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(99, 102, 241, 0.32)",
+  "--tiptap-btn-primary-shadow": "0 4px 14px rgba(0, 0, 0, 0.35), 0 4px 14px color-mix(in srgb, var(--tiptap-accent-blue) 25%, transparent)",
+  "--tiptap-btn-primary-shadow-hover": "0 8px 20px rgba(0, 0, 0, 0.4), 0 8px 20px color-mix(in srgb, var(--tiptap-accent-blue) 32%, transparent)",
   "--tiptap-btn-danger-bg": "#EB5757",
   "--tiptap-btn-danger-bg-hover": "#F26D6D",
   "--tiptap-btn-danger-text": "#FFFFFF",
@@ -46,8 +46,8 @@ export const darkTheme: Theme = {
   "--tiptap-btn-secondary-text": "#CFCFCF",
 
   // --- interaction feedback (Halo Focus: soft large-radius ring) ---
-  "--tiptap-focus-ring": "rgba(129, 140, 248, 0.30)", // indigo-400/30
-  "--tiptap-selection-bg": "rgba(129, 140, 248, 0.38)",
+  "--tiptap-focus-ring": "color-mix(in srgb, var(--tiptap-accent-blue) 30%, transparent)",
+  "--tiptap-selection-bg": "color-mix(in srgb, var(--tiptap-accent-blue) 38%, transparent)",
   "--tiptap-drag-handle": "rgba(230, 230, 230, 0.35)",
 
   // popover / menu (follow the theme; shadows carry color tint, never hard)

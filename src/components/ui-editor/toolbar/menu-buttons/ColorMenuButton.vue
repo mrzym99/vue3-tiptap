@@ -171,7 +171,10 @@ function clearColor() {
   cursor: pointer;
   height: 24px;
   padding: 0;
-  transition: filter 150ms ease;
+  transition:
+    filter 150ms ease,
+    border-color 0.2s ease-in-out,
+    color 0.2s ease-in-out;
   width: 24px;
 
   /* hover feedback is background-only */
@@ -198,7 +201,10 @@ function clearColor() {
   cursor: pointer;
   height: 24px;
   padding: 0;
-  transition: filter 150ms ease;
+  transition:
+    filter 150ms ease,
+    border-color 0.2s ease-in-out,
+    color 0.2s ease-in-out;
   width: 24px;
 
   &:hover {

@@ -36,7 +36,6 @@ const props = defineProps<{ editor: Editor }>();
     cursor: grab;
     transition:
       color 0.15s,
-      background-color 0.15s,
       border-color 0.15s;
 
     &:hover {
@@ -147,7 +146,6 @@ const props = defineProps<{ editor: Editor }>();
       display: flex;
       margin: 0.75rem 0;
       padding: var(--tiptap-padding-xs) var(--tiptap-padding-md);
-      transition: background-color 150ms ease;
 
       /* toggle button (chevron) injected by the Details node view */
       > button[data-open] {
@@ -163,9 +161,7 @@ const props = defineProps<{ editor: Editor }>();
         justify-content: center;
         margin-top: var(--tiptap-padding-sm);
         padding: var(--tiptap-padding-xs);
-        transition:
-          background-color 150ms ease,
-          color 150ms ease;
+        transition: color 150ms ease;
 
         &:hover {
           background-color: var(--tiptap-btn-bg-hover);

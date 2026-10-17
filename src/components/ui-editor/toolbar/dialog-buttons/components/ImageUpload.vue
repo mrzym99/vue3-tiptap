@@ -90,7 +90,10 @@ function onDrop(event: DragEvent) {
   justify-content: center;
   padding: var(--tiptap-content-padding);
   text-align: center;
-  transition: border-color 120ms ease, background-color 120ms ease;
+  transition:
+    border-color 120ms ease,
+    color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
   width: 100%;
 
   &:hover,

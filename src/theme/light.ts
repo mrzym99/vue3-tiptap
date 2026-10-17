@@ -18,12 +18,12 @@ export const lightTheme: Theme = {
   "--tiptap-color-border": "#E8EAEE",
   "--tiptap-color-border-strong": "#D5D9E0",
 
-  // --- accents (primary accent is indigo per Soft UI; text + soft bg) ---
+  // --- accents (primary accent hue; everything derived follows it via color-mix) ---
   "--tiptap-accent-blue": "#6366F1", // indigo-500
   "--tiptap-accent-red": "#EB5757",
   "--tiptap-accent-green": "#0F7B6C",
   "--tiptap-accent-yellow": "#DFAB01",
-  "--tiptap-accent-blue-bg": "#EEF2FF", // indigo-50
+  "--tiptap-accent-blue-bg": "color-mix(in srgb, var(--tiptap-accent-blue) 10%, white)",
   "--tiptap-accent-red-bg": "#FEF2F2", // red-50
   "--tiptap-accent-green-bg": "#F0FDF4", // green-50
   "--tiptap-accent-yellow-bg": "#FEFCE8", // yellow-50
@@ -32,11 +32,11 @@ export const lightTheme: Theme = {
   "--tiptap-btn-bg": "transparent",
   "--tiptap-btn-bg-hover": "#EFEDEA",
   "--tiptap-btn-bg-active": "#E3E1DB",
-  "--tiptap-btn-primary-bg": "#4F46E5", // indigo-600
-  "--tiptap-btn-primary-bg-hover": "#4338CA", // indigo-700
+  "--tiptap-btn-primary-bg": "color-mix(in srgb, var(--tiptap-accent-blue) 90%, black)",
+  "--tiptap-btn-primary-bg-hover": "color-mix(in srgb, var(--tiptap-accent-blue) 78%, black)",
   "--tiptap-btn-primary-text": "#FFFFFF",
-  "--tiptap-btn-primary-shadow": "0 4px 14px rgba(79, 70, 229, 0.28)", // indigo-600/28
-  "--tiptap-btn-primary-shadow-hover": "0 8px 20px rgba(79, 70, 229, 0.35)",
+  "--tiptap-btn-primary-shadow": "0 4px 14px color-mix(in srgb, var(--tiptap-accent-blue) 28%, transparent)",
+  "--tiptap-btn-primary-shadow-hover": "0 8px 20px color-mix(in srgb, var(--tiptap-accent-blue) 35%, transparent)",
   "--tiptap-btn-danger-bg": "#EB5757",
   "--tiptap-btn-danger-bg-hover": "#D64545",
   "--tiptap-btn-danger-text": "#FFFFFF",
@@ -46,8 +46,8 @@ export const lightTheme: Theme = {
   "--tiptap-btn-secondary-text": "#404040", // gray-700
 
   // --- interaction feedback (Halo Focus: soft large-radius ring) ---
-  "--tiptap-focus-ring": "rgba(99, 102, 241, 0.25)", // indigo-500/25
-  "--tiptap-selection-bg": "rgba(99, 102, 241, 0.26)",
+  "--tiptap-focus-ring": "color-mix(in srgb, var(--tiptap-accent-blue) 25%, transparent)",
+  "--tiptap-selection-bg": "color-mix(in srgb, var(--tiptap-accent-blue) 26%, transparent)",
   "--tiptap-drag-handle": "rgba(31, 41, 55, 0.35)",
 
   // popover / menu (follow the theme; shadows carry color tint, never hard)
@@ -55,11 +55,11 @@ export const lightTheme: Theme = {
   "--tiptap-popover-text": "var(--tiptap-color-text)",
   "--tiptap-popover-border": "var(--tiptap-color-border)",
   "--tiptap-popover-shadow":
-    "0 2px 6px rgba(99, 102, 241, 0.06), 0 12px 32px rgba(15, 15, 15, 0.08)",
+    "0 2px 6px color-mix(in srgb, var(--tiptap-accent-blue) 6%, transparent), 0 12px 32px rgba(15, 15, 15, 0.08)",
 
   // toolbar divider (soft tinted shadow instead of a hard border line)
   "--tiptap-toolbar-shadow":
-    "0 1px 3px rgba(15, 15, 15, 0.06), 0 4px 12px rgba(99, 102, 241, 0.06)",
+    "0 1px 3px rgba(15, 15, 15, 0.06), 0 4px 12px color-mix(in srgb, var(--tiptap-accent-blue) 6%, transparent)",
 
   // dialog (modal mask; dialog panel follows popover tokens)
   "--tiptap-dialog-mask": "rgba(30, 27, 45, 0.35)",

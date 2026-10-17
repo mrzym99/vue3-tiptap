@@ -37,7 +37,6 @@ function onInput(event: Event) {
   padding: var(--tiptap-input-padding);
   transition:
     border-color 200ms ease-in-out,
-    background-color 200ms ease-in-out,
     box-shadow 200ms ease-in-out;
   width: 100%;
 
