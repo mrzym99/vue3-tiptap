@@ -30,12 +30,14 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onBeforeUnmount, inject, watch, useTemplateRef } from "vue";
+import { computed, nextTick, onBeforeUnmount, inject, watch, useTemplateRef } from "vue";
 import XIcon from "~icons/lucide/x";
+import { applyTheme } from "@/theme";
 import { themeSyncKey } from "@/components/ui-common/theme-provider/context";
 import type { DialogProps } from "./props";
 
 const props = withDefaults(defineProps<DialogProps>(), {
+  t: undefined,
   show: false,
   title: undefined,
   width: "400px",
@@ -43,13 +45,20 @@ const props = withDefaults(defineProps<DialogProps>(), {
   closeOnClickModal: false,
 });
 
+/** Standalone use (no editor root): fall back to identity — raw keys shown */
+const t = computed(() => props.t ?? ((key: string) => key));
+
 const emit = defineEmits<{ "update:show": [value: boolean] }>();
 
 const panelEl = useTemplateRef<HTMLElement>("panelEl");
 const overlayEl = useTemplateRef<HTMLElement>("overlayEl");
 
-// Teleport leaves the ThemeProvider subtree — re-apply the theme vars
-const syncTheme = inject(themeSyncKey, null);
+// Teleport leaves the ThemeProvider subtree — re-apply the theme vars.
+// Standalone use (no editor root above): apply the light/dark theme ourselves,
+// following the host page's `html.dark` class when present.
+const syncTheme = inject(themeSyncKey, null) ?? ((el: HTMLElement) => {
+  applyTheme(document.documentElement.classList.contains("dark") ? "dark" : "light", el);
+});
 
 function doClose() {
   emit("update:show", false);

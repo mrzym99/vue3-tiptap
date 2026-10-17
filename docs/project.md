@@ -88,6 +88,13 @@ pnpm preview
     │       ├── popover/            # 通用弹层（@floating-ui/dom 定位、外部点击/Esc 关闭）
     │       ├── tooltip/            # 悬停提示
     │       └── theme-provider/     # 主题提供者（CSS 变量作用域化）
+    │
+    │   以下组件均从包根具名导出（`import { Dialog } from "@yumine/vue3-tiptap"`），
+    │   供二开者在编辑器外复用、保持 UI 一致；样式随 style.css 一起分发：
+    │   Dialog、Popover、Tooltip、Button、ActionButton、ActionMenuButton、
+    │   ActionDialogButton、Form、FormItem、Input、Tabs、ThemeProvider。
+    │   注意：Dialog / ActionDialogButton 的 `t`（翻译函数）为可选，独立使用时回退为
+    │   identity（aria-label 等显示原始 key）。
     ├── theme/                  # 主题体系（CSS 变量）
     │   ├── base.ts / light.ts / dark.ts / index.ts / overwirte.ts
     ├── locales/                # 内置轻量 i18n（zh/en 语言包 + context/inject）

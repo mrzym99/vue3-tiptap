@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 // Consume the published-style API
-import { TipTapEditor, StarterKit } from "@yumine/vue3-tiptap";
+import { TipTapEditor, StarterKit, Dialog } from "@yumine/vue3-tiptap";
 import type { LocaleTranslations, ThemeName, Toolbar } from "@yumine/vue3-tiptap";
 import "@yumine/vue3-tiptap/style.css";
 
@@ -184,24 +184,9 @@ const highlightedSource = computed(() => {
     </div>
 
     <Teleport to="body">
-      <div v-if="showOutput" class="output-mask" @click.self="showOutput = false">
-        <div class="output-dialog" role="dialog" aria-label="源码">
-          <div class="output-header">
-            <span class="output-title">源码（HTML）</span>
-            <button
-              type="button"
-              class="app-icon-btn"
-              aria-label="关闭"
-              @click="showOutput = false"
-            >
-              ✕
-            </button>
-          </div>
-          <div class="output-body">
-            <pre class="output-html language-html"><code v-html="highlightedSource" /></pre>
-          </div>
-        </div>
-      </div>
+      <Dialog v-model:show="showOutput" title="源码（HTML）" width="760px">
+        <pre class="output-html language-html"><code v-html="highlightedSource" /></pre>
+      </Dialog>
     </Teleport>
   </div>
 </template>

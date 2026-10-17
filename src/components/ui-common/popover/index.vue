@@ -27,6 +27,7 @@
 <script lang="ts" setup>
 import { watch, nextTick, inject, onMounted, onBeforeUnmount, useTemplateRef } from "vue";
 import { useFloating } from "@/composables/useFloating";
+import { applyTheme } from "@/theme";
 import { themeSyncKey } from "@/components/ui-common/theme-provider/context";
 import type { PopoverProps } from "./props";
 
@@ -52,8 +53,12 @@ const {
   offset: props.offset,
 });
 
-// Teleport leaves the ThemeProvider subtree — re-apply the theme vars
-const syncTheme = inject(themeSyncKey, null);
+// Teleport leaves the ThemeProvider subtree — re-apply the theme vars.
+// Standalone use (no editor root above): apply the light/dark theme ourselves,
+// following the host page's `html.dark` class when present.
+const syncTheme = inject(themeSyncKey, null) ?? ((el: HTMLElement) => {
+  applyTheme(document.documentElement.classList.contains("dark") ? "dark" : "light", el);
+});
 
 watch(show, async (v) => {
   if (!v) {

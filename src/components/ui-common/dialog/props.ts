@@ -1,8 +1,9 @@
 import type { TranslateFn } from "@/types";
 
 export type DialogProps = {
-  /** Translation fn handed down from the editor root */
-  t: TranslateFn;
+  /** Translation fn handed down from the editor root; optional for standalone use
+   *  (falls back to identity — raw keys are shown) */
+  t?: TranslateFn;
   /** Controlled visibility (v-model:show) */
   show?: boolean;
   /** Title shown in the panel header */

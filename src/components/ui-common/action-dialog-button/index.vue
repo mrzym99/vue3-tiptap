@@ -24,7 +24,8 @@ defineProps<{
   isActive?: ActionButtonProps["isActive"];
   /** Dialog title (header text) */
   title?: string;
-  t: TranslateFn;
+  /** Optional for standalone use; passed through to Dialog */
+  t?: TranslateFn;
 }>();
 
 const emit = defineEmits<{ closed: []; opened: [] }>();
