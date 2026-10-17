@@ -34,7 +34,7 @@ const extensions = [
       items: mentionUsers,
     },
     // Drag handle disabled: StarterKit filters out extensions set to `false`.
-    dragHandle: true,
+    dragHandle: false,
   }),
 ];
 
