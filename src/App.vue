@@ -186,10 +186,7 @@ const extensions = [
   background: var(--app-color-btn-bg);
   outline: none;
   border: 1px solid var(--app-color-border);
-  transition:
-    border-color 0.2s ease-in-out,
-    color 0.2s ease-in-out,
-    box-shadow 0.2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out;
 
   &:hover {
     border-color: var(--app-color-blue);
@@ -212,10 +209,7 @@ const extensions = [
   height: 30px;
   justify-content: center;
   outline: none;
-  transition:
-    border-color 0.2s ease-in-out,
-    color 0.2s ease-in-out,
-    box-shadow 0.2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out;
   width: 34px;
 
   &:hover {
@@ -238,7 +232,6 @@ const extensions = [
   box-shadow: var(--app-box-shadow);
   border-radius: 16px;
   overflow: hidden;
-  transition: box-shadow 0.2s ease-in-out;
 }
 
 .app-github {
@@ -247,9 +240,7 @@ const extensions = [
   padding: 4px;
   border-radius: 8px;
   color: var(--app-color-text);
-  transition:
-    opacity 0.2s ease-in-out,
-    color 0.2s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
 
   &:hover {
     opacity: 0.7;

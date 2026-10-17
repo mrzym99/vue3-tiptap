@@ -41,7 +41,6 @@
   justify-content: space-between;
   gap: 8px;
   box-sizing: border-box;
-  transition: background-color 0.2s ease-in-out;
 }
 
 .app-brand {
@@ -91,11 +90,7 @@
   outline: none;
   border: 1px solid var(--app-color-border);
   font-size: 13px;
-  transition:
-    background-color 0.2s ease-in-out,
-    border-color 0.2s ease-in-out,
-    color 0.2s ease-in-out,
-    box-shadow 0.2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
 .app-select:hover {
@@ -123,11 +118,7 @@
   height: 30px;
   justify-content: center;
   outline: none;
-  transition:
-    background-color 0.2s ease-in-out,
-    border-color 0.2s ease-in-out,
-    color 0.2s ease-in-out,
-    box-shadow 0.2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out;
   width: 34px;
 }
 
@@ -146,9 +137,7 @@
   padding: 4px;
   border-radius: 8px;
   color: var(--app-color-text);
-  transition:
-    opacity 0.2s ease-in-out,
-    color 0.2s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
 }
 
 .app-github:hover {

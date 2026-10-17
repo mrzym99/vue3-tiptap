@@ -211,10 +211,6 @@ body {
   background-color: var(--app-color-background);
   height: 100vh;
   overflow: hidden;
-  transition:
-    color 0.2s ease-in-out,
-    background-color 0.2s ease-in-out,
-    border-color 0.2s ease-in-out;
 }
 
 .container {
@@ -237,6 +233,5 @@ body {
   box-shadow: var(--app-box-shadow);
   border-radius: 16px;
   overflow: hidden;
-  transition: box-shadow 0.2s ease-in-out;
 }
 </style>
