@@ -41,17 +41,7 @@ export interface TipTapEditorProps {
 /** Toolbar config: a TinyMCE-style string, an ordered key list, or `{ include?, exclude? }` filters. */
 export type Toolbar = string | string[] | { include?: string[]; exclude?: string[] };
 
-/** Default toolbar layout, TinyMCE-style; keys are Tiptap extension names. */
-export const defaultToolbar =
-  "undo redo |" +
-  "heading bulletList codeBlock | " +
-  "bold italic strike code underline highlight link | " +
-  "superscript subscript | " +
-  "textAlign | " +
-  "image | " +
-  "horizontalRule blockquote details video audio | " +
-  "color fontFamily fontSize | " +
-  "table | findAndReplace | clearFormatting";
+export type { Extensions } from "@tiptap/core";
 
 /** Translation function compatible with the basic vue-i18n `t` signature. */
 export type TranslateFn = (key: string, named?: Record<string, unknown> | number, plural?: number) => string;

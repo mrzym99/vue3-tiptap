@@ -2,7 +2,7 @@
   <ActionDialogButton
     :t="t"
     ref="dialog"
-    :icon="RiImageLine"
+    :icon="RiImagePlus"
     :tooltip="t('image')"
     :title="t('image')"
     @closed="props.editor.commands.focus()"
@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useTemplateRef } from "vue";
-import RiImageLine from "~icons/lucide/image";
+import RiImagePlus from "~icons/lucide/image-plus";
 import ActionDialogButton from "@/components/ui-common/action-dialog-button/index.vue";
 import Form from "@/components/ui-common/form/index.vue";
 import FormItem from "@/components/ui-common/form-item/index.vue";

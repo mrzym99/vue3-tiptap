@@ -1,3 +1,6 @@
+packages:
+  - examples/host
+
 allowBuilds:
   # sass 的可选原生 watcher：不需要，保持禁用
   "@parcel/watcher": false

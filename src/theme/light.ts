@@ -78,7 +78,7 @@ export const lightTheme: Theme = {
   // content elements
   "--tiptap-mark-bg": "#FDE68A",
   "--tiptap-link-color": "var(--tiptap-accent-blue)",
-  "--tiptap-code-bg": "var(--tiptap-color-bg-subtle)",
+  "--tiptap-code-bg": "#F0F1F4",
   "--tiptap-code-text": "var(--tiptap-color-text)",
 
   // --- fixed tooltip colors (black bg + white text, same value in both themes) ---

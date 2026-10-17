@@ -1,6 +1,7 @@
 # Deploys examples/host (the published-style demo page) to GitHub Pages.
-# The page consumes the freshly built library from dist/ via file:../..,
-# so it doubles as a smoke test that the package actually installs & builds.
+# pnpm workspace: root package + examples/host share one lockfile; the host
+# links @yumine/vue3-tiptap directly to the repo root and consumes dist/,
+# so it doubles as a smoke test that the package actually builds.
 name: Deploy demo (examples/host)
 
 on:
@@ -32,15 +33,12 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      - name: Build library (dist/ — the host app consumes it)
+      - name: Install workspace + build library (dist/ — the host app consumes it)
         run: pnpm install --frozen-lockfile && pnpm build:lib
 
       - name: Build host demo
-        run: |
-          cd examples/host
-          pnpm install --frozen-lockfile
-          # Project pages are served from /vue3-tiptap/ — assets need that base
-          pnpm build --base=/vue3-tiptap/
+        # Workspace root install already covers examples/host
+        run: pnpm --filter host-demo exec vite build --base=/vue3-tiptap/
 
       - uses: actions/upload-pages-artifact@v3
         with:

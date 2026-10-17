@@ -1,4 +1,5 @@
-import { defaultToolbar, type Toolbar } from "@/types";
+import { defaultToolbar } from "@/constants";
+import type { Toolbar } from "@/types";
 
 /** Resolve a Toolbar config to ordered keys + separator positions; unknown keys are ignored. */
 export type ToolbarLayout = {

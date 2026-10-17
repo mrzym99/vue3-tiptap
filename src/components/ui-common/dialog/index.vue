@@ -154,6 +154,9 @@ onBeforeUnmount(() => {
   box-shadow: var(--tiptap-popover-shadow);
   color: var(--tiptap-popover-text);
   max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 48px);
+  display: flex;
+  flex-direction: column;
   outline: none;
   transform-origin: center;
   animation: tiptap-dialog-in 140ms ease-out;
@@ -195,6 +198,9 @@ onBeforeUnmount(() => {
 
 .tiptap-dialog-body {
   padding: var(--tiptap-padding-lg);
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
 }
 
 .tiptap-dialog-footer {

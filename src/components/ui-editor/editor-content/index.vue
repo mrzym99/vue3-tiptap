@@ -387,11 +387,12 @@ const props = defineProps<{ editor: Editor }>();
     }
 
     blockquote {
-      border-left: 3px solid var(--tiptap-color-border);
+      background-color: var(--tiptap-color-bg-subtle);
+      border-left: 3px solid var(--tiptap-accent-blue);
       border-radius: 0 var(--tiptap-border-radius-sm) var(--tiptap-border-radius-sm) 0;
       color: var(--tiptap-color-text-muted);
       margin: 1.5rem 0;
-      padding: 0.1rem 1rem;
+      padding: 0.6rem 1rem;
     }
 
     // Mention node (@mention): inline pill style, follows theme variables
