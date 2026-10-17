@@ -1,0 +1,57 @@
+# Deploys examples/host (the published-style demo page) to GitHub Pages.
+# The page consumes the freshly built library from dist/ via file:../..,
+# so it doubles as a smoke test that the package actually installs & builds.
+name: Deploy demo (examples/host)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Build library (dist/ — the host app consumes it)
+        run: pnpm install --frozen-lockfile && pnpm build:lib
+
+      - name: Build host demo
+        run: |
+          cd examples/host
+          pnpm install --frozen-lockfile
+          # Project pages are served from /vue3-tiptap/ — assets need that base
+          pnpm build --base=/vue3-tiptap/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: examples/host/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
