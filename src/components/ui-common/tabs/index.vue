@@ -66,7 +66,7 @@ const emit = defineEmits<{ "update:modelValue": [name: string] }>();
   }
 
   &.active {
-    border-bottom-color: var(--tiptap-accent-blue);
+    border-bottom-color: var(--tiptap-accent-primary);
     color: var(--tiptap-color-text);
   }
 }

@@ -105,8 +105,8 @@ defineExpose({ onKeyDown });
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background-color: var(--tiptap-accent-blue-bg);
-  color: var(--tiptap-accent-blue);
+  background-color: var(--tiptap-accent-primary-bg);
+  color: var(--tiptap-accent-primary);
   font-size: 12px;
   font-weight: 600;
 }

@@ -112,10 +112,10 @@ pnpm preview
 | ------------- | ------------------- | ----------- | -------------------------- |
 | `v-model`     | `string`            | 必填        | 编辑器 HTML 内容，双向绑定 |
 | `limit`  | `number`            | `0`（不限） | 最大字数提示；超出时计数变红并 emit `truncated`，**不修改内容**（数据保真，由宿主处理） |
-| `disabled`    | `boolean`           | `false`     | 是否禁用编辑（只读）       |
+| `readonly`    | `boolean`           | `false`     | 是否禁用编辑（只读）       |
 | `theme`       | `'light' \| 'dark'` | `'light'`   | 主题模式                   |
 | `primaryColor` | `string`            | `-`         | 主色（任意 CSS 颜色）；工具栏激活态、主按钮、选区、链接等派生色在浅/暗两种模式下自动跟随（见 5.4） |
-| `themeOverrides` | `Record<'--tiptap-*', string>` | `-` | 自定义 CSS 变量，优先级高于 theme/primaryColor（逃生舱） |
+| `themeOverrides` | - | - | 已从组件 props 移除；需要细粒度覆盖时用独立导出的 `ThemeProvider` 的同名 prop，或 `applyTheme(name, target?, overrides?)` |
 | `placeholder` | `string`            | `-`         | 空文档时显示的占位文本     |
 | `autofocus`   | `boolean`           | `false`     | 挂载后是否自动聚焦         |
 | `toolbarWrap` | `boolean`           | `false`     | 工具栏按钮多行换行（false 时单行横向滚动） |
@@ -128,7 +128,7 @@ pnpm preview
 - `onCreate` 中：若编辑器创建前 `v-model` 已变化则先 `setContent` 同步；初始内容超限时仅 emit `truncated`，**不修改内容**（2026-10-16 决策：数据保真）；
 - `onUpdate` 中 `editor.getHTML()` 写回 `v-model` 采用 **150ms 防抖**（避免大文档每键 O(n) 序列化；组件卸载时 flush 未写回的内容）；
 - 监听 `v-model` 外部变化（与编辑器当前 HTML 不一致时）通过 `setContent` 同步，编辑器未就绪时暂存、`onCreate` 后应用；
-- 监听 `disabled` 变化调用 `setEditable` 切换只读；
+- 监听 `readonly` 变化调用 `setEditable` 切换只读；
 - 底部展示实时字数统计 `当前字数 / 最大字数`（基于 `CharacterCount` 扩展，增量计算）。
 
 ### 5.2 扩展即按钮的工具栏机制（核心设计）
@@ -166,8 +166,8 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 - `theme/index.ts`：`applyTheme()` 将主题 CSS 变量写入 `document.documentElement` 的 style 上；
 - `theme/index.ts`：`applyTheme()` 将主题 CSS 变量写入目标元素（默认 `document.documentElement`，组件内传根节点实现**作用域化**——多实例不同主题互不干扰）；
 - `theme-provider`：根据 `theme` prop 应用变量（支持 `'light' | 'dark'`）；
-- **主色派生（primaryColor）**：主色只需配置 `--tiptap-accent-blue` 一个色相，所有主色派生 token（accent-bg、主按钮、focus-ring、selection、主按钮阴影、popover/toolbar 阴影色染）均为它的 `color-mix()` 表达式，浅/暗模式按各自混合白/黑/transparent 自动派生；组件提供 `primaryColor` prop（内部合入 themeOverrides）即可整体换肤，无需逐个覆盖变量；
-- **自定义变量叠加**：`themeOverrides` prop（`Theme` 类型，键为 `--tiptap-*` 变量名）叠加在内置主题之上，优先级最高，可覆盖颜色或尺寸变量，如 `{ "--tiptap-color-bg": "#FAFAFA" }`；`applyTheme(name, target?, overrides?)` 第三个参数同效；
+- **主色派生（primaryColor）**：主色只需配置 `--tiptap-accent-primary` 一个色相，所有主色派生 token（accent-bg、主按钮、focus-ring、selection、主按钮阴影、popover/toolbar 阴影色染）均为它的 `color-mix()` 表达式，浅/暗模式按各自混合白/黑/transparent 自动派生；组件提供 `primaryColor` prop 即可整体换肤，无需逐个覆盖变量；
+- **自定义变量叠加**：组件 props 不再提供 `themeOverrides`；需要细粒度覆盖时用独立导出的 `ThemeProvider` 的 `themeOverrides` prop（`Theme` 类型，键为 `--tiptap-*` 变量名，优先级最高），或 `applyTheme(name, target?, overrides?)` 第三参数同效；
 - **主题切换过渡**：库级 0.2s 主题过渡规则覆盖编辑器主体（`.tiptap-box`）及所有 teleport 到 body 的弹层（菜单/Popover/Tooltip/Dialog），切换主题时整体同步淡入；宿主页面自身的过渡由宿主自行处理；
 - 独立使用的导出组件（Dialog/Popover 等）在未传入主题上下文时回退到默认 indigo 主色；
 

@@ -11,13 +11,11 @@ export interface TipTapEditorProps {
   /** Max characters, 0 = unlimited. Read once at editor creation. */
   limit?: number;
   /** Whether editing is disabled (read-only) */
-  disabled?: boolean;
+  readonly?: boolean;
   /** Theme mode */
   theme?: ThemeName;
   /** Primary accent color (any CSS color); all accent-derived UI follows it in both modes */
   primaryColor?: string;
-  /** Custom CSS variables (`--tiptap-*`) layered on top of `theme` */
-  themeOverrides?: Theme;
   /** Placeholder text shown when the document is empty; falls back to the locale pack's `placeholder` key */
   placeholder?: string;
   /** UI language ("zh" | "en", or a custom id provided via `translations`) */

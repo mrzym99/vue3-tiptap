@@ -62,7 +62,7 @@ const PRESET_COLORS = [
   "#E5E7EB",
   "#F3F4F6",
   "#FFFFFF",
-  // red → orange (anchored on --tiptap-accent-red #EB5757)
+  // red → orange (anchored on --tiptap-accent-danger #EB5757)
   "#7E2827",
   "#B23C3B",
   "#EB5757",
@@ -73,7 +73,7 @@ const PRESET_COLORS = [
   "#F76B15",
   "#FBA26A",
   "#FFDCC2",
-  // yellow → green (anchored on --tiptap-accent-yellow #DFAB01 / green #0F7B6C)
+  // yellow → green (anchored on --tiptap-accent-warning #DFAB01 / green #0F7B6C)
   "#8A6408",
   "#B88A0A",
   "#DFAB01",
@@ -183,7 +183,7 @@ function clearColor() {
   }
 
   &.active {
-    box-shadow: 0 0 0 2px var(--tiptap-accent-blue);
+    box-shadow: 0 0 0 2px var(--tiptap-accent-primary);
   }
 }
 

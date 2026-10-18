@@ -34,10 +34,9 @@ import { useEditorModel } from "@/composables/useEditorModel";
 
 const props = withDefaults(defineProps<TipTapEditorProps>(), {
   limit: 0,
-  disabled: false,
+  readonly: false,
   theme: "light",
   primaryColor: undefined,
-  themeOverrides: undefined,
   placeholder: undefined,
   autofocus: false,
   locale: undefined,
@@ -52,12 +51,11 @@ const props = withDefaults(defineProps<TipTapEditorProps>(), {
 
 const { t } = useEditorLocale(toRef(props, "locale"), toRef(props, "translations"));
 
-// primaryColor layers over theme/themeOverrides by re-pointing the accent hue;
+// primaryColor layers over the theme by re-pointing the accent hue;
 // every accent-derived token in the theme files is a color-mix() of it.
-const mergedThemeOverrides = computed<Theme | undefined>(() => {
-  if (!props.primaryColor) return props.themeOverrides;
-  return { "--tiptap-accent-blue": props.primaryColor, ...props.themeOverrides };
-});
+const mergedThemeOverrides = computed<Theme | undefined>(() =>
+  props.primaryColor ? { "--tiptap-accent-primary": props.primaryColor } : undefined,
+);
 
 const emit = defineEmits<{
   focus: [payload: { editor: Editor; event: FocusEvent; transaction: Transaction }];
@@ -103,7 +101,7 @@ const mergedExtensions = [
 const editor = useEditor({
   content: modelValue.value,
   extensions: mergedExtensions,
-  editable: !props.disabled,
+  editable: !props.readonly,
   autofocus: props.autofocus,
   onCreate: ({ editor: created }) => {
     // The extension may be disabled by the host — guard before dispatching
@@ -131,7 +129,7 @@ const model = useEditorModel({
 model.watchModel();
 
 watch(
-  () => props.disabled,
+  () => props.readonly,
   (newValue) => {
     if (!editor.value) return;
     editor.value.setEditable(!newValue);

@@ -99,12 +99,12 @@ function onDrop(event: DragEvent) {
   &:hover,
   &:focus-visible,
   &.is-dragover {
-    border-color: var(--tiptap-accent-blue);
+    border-color: var(--tiptap-accent-primary);
     color: var(--tiptap-color-text);
   }
 
   &.is-dragover {
-    background-color: var(--tiptap-accent-blue-bg);
+    background-color: var(--tiptap-accent-primary-bg);
   }
 
   &.is-uploading {
@@ -144,7 +144,7 @@ function onDrop(event: DragEvent) {
 }
 
 .image-upload-error {
-  color: var(--tiptap-accent-red);
+  color: var(--tiptap-accent-danger);
   font-size: var(--tiptap-font-size-sm);
   line-height: 1.3;
 }

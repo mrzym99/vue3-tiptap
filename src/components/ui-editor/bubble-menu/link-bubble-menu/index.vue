@@ -106,7 +106,7 @@ function removeLink() {
 }
 
 .link-bubble-url {
-  color: var(--tiptap-accent-blue);
+  color: var(--tiptap-accent-primary);
   font-size: var(--tiptap-font-size-sm);
   max-width: var(--tiptap-min-width);
   overflow: hidden;

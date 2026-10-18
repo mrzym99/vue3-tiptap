@@ -19,24 +19,24 @@ export const darkTheme: Theme = {
   "--tiptap-color-border-strong": "#44454C",
 
   // --- accents (primary accent hue; everything derived follows it via color-mix) ---
-  "--tiptap-accent-blue": "#818CF8", // indigo-400
-  "--tiptap-accent-red": "#EB5757",
-  "--tiptap-accent-green": "#2E8B7E",
-  "--tiptap-accent-yellow": "#DFAB01",
-  "--tiptap-accent-blue-bg": "color-mix(in srgb, var(--tiptap-accent-blue) 25%, transparent)",
-  "--tiptap-accent-red-bg": "rgba(235, 87, 87, 0.14)",
-  "--tiptap-accent-green-bg": "rgba(15, 123, 108, 0.18)",
-  "--tiptap-accent-yellow-bg": "rgba(223, 171, 1, 0.14)",
+  "--tiptap-accent-primary": "#818CF8", // indigo-400
+  "--tiptap-accent-danger": "#EB5757",
+  "--tiptap-accent-success": "#2E8B7E",
+  "--tiptap-accent-warning": "#DFAB01",
+  "--tiptap-accent-primary-bg": "color-mix(in srgb, var(--tiptap-accent-primary) 25%, transparent)",
+  "--tiptap-accent-danger-bg": "rgba(235, 87, 87, 0.14)",
+  "--tiptap-accent-success-bg": "rgba(15, 123, 108, 0.18)",
+  "--tiptap-accent-warning-bg": "rgba(223, 171, 1, 0.14)",
 
   // --- buttons (transparent default, hover/active only deepen bg) ---
   "--tiptap-btn-bg": "transparent",
   "--tiptap-btn-bg-hover": "#2A2B30",
   "--tiptap-btn-bg-active": "#34353B",
-  "--tiptap-btn-primary-bg": "color-mix(in srgb, var(--tiptap-accent-blue) 88%, black)",
-  "--tiptap-btn-primary-bg-hover": "var(--tiptap-accent-blue)",
+  "--tiptap-btn-primary-bg": "color-mix(in srgb, var(--tiptap-accent-primary) 88%, black)",
+  "--tiptap-btn-primary-bg-hover": "var(--tiptap-accent-primary)",
   "--tiptap-btn-primary-text": "#FFFFFF",
-  "--tiptap-btn-primary-shadow": "0 4px 14px rgba(0, 0, 0, 0.35), 0 4px 14px color-mix(in srgb, var(--tiptap-accent-blue) 25%, transparent)",
-  "--tiptap-btn-primary-shadow-hover": "0 8px 20px rgba(0, 0, 0, 0.4), 0 8px 20px color-mix(in srgb, var(--tiptap-accent-blue) 32%, transparent)",
+  "--tiptap-btn-primary-shadow": "0 4px 14px rgba(0, 0, 0, 0.35), 0 4px 14px color-mix(in srgb, var(--tiptap-accent-primary) 25%, transparent)",
+  "--tiptap-btn-primary-shadow-hover": "0 8px 20px rgba(0, 0, 0, 0.4), 0 8px 20px color-mix(in srgb, var(--tiptap-accent-primary) 32%, transparent)",
   "--tiptap-btn-danger-bg": "#EB5757",
   "--tiptap-btn-danger-bg-hover": "#F26D6D",
   "--tiptap-btn-danger-text": "#FFFFFF",
@@ -46,8 +46,8 @@ export const darkTheme: Theme = {
   "--tiptap-btn-secondary-text": "#CFCFCF",
 
   // --- interaction feedback (Halo Focus: soft large-radius ring) ---
-  "--tiptap-focus-ring": "color-mix(in srgb, var(--tiptap-accent-blue) 30%, transparent)",
-  "--tiptap-selection-bg": "color-mix(in srgb, var(--tiptap-accent-blue) 38%, transparent)",
+  "--tiptap-focus-ring": "color-mix(in srgb, var(--tiptap-accent-primary) 30%, transparent)",
+  "--tiptap-selection-bg": "color-mix(in srgb, var(--tiptap-accent-primary) 38%, transparent)",
   "--tiptap-drag-handle": "rgba(230, 230, 230, 0.35)",
 
   // popover / menu (follow the theme; shadows carry color tint, never hard)
@@ -70,13 +70,13 @@ export const darkTheme: Theme = {
   // input (Soft UI: borderless, tinted field bg, focus ring carries feedback)
   "--tiptap-input-bg": "#26272B",
   "--tiptap-input-border": "transparent",
-  "--tiptap-input-border-hover": "var(--tiptap-accent-blue)",
+  "--tiptap-input-border-hover": "var(--tiptap-accent-primary)",
   "--tiptap-input-text": "var(--tiptap-color-text)",
   "--tiptap-input-placeholder": "var(--tiptap-color-text-muted)",
 
   // content elements
   "--tiptap-mark-bg": "rgba(250, 204, 21, 0.25)",
-  "--tiptap-link-color": "var(--tiptap-accent-blue)",
+  "--tiptap-link-color": "var(--tiptap-accent-primary)",
   "--tiptap-code-bg": "var(--tiptap-color-bg-subtle)",
   "--tiptap-code-text": "var(--tiptap-color-text)",
 

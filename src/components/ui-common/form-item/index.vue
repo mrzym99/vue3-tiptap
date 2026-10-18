@@ -52,7 +52,7 @@ onBeforeUnmount(() => {
 }
 
 .form-item-error {
-  color: var(--tiptap-accent-red);
+  color: var(--tiptap-accent-danger);
   font-size: var(--tiptap-font-size-sm);
   line-height: 1.3;
 }

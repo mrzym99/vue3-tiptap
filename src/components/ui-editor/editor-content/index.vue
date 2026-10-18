@@ -117,7 +117,7 @@ const props = defineProps<{ editor: Editor }>();
     }
 
     ul[data-type="taskList"] input[type="checkbox"] {
-      accent-color: var(--tiptap-accent-blue);
+      accent-color: var(--tiptap-accent-primary);
       cursor: pointer;
       margin: 0;
     }
@@ -225,7 +225,7 @@ const props = defineProps<{ editor: Editor }>();
       box-sizing: border-box;
       width: 12px;
       height: 12px;
-      background: var(--tiptap-accent-blue);
+      background: var(--tiptap-accent-primary);
       border: 2px solid var(--tiptap-color-bg);
       border-radius: 4px;
       opacity: 0;
@@ -361,7 +361,7 @@ const props = defineProps<{ editor: Editor }>();
       }
 
       .column-resize-handle {
-        background-color: var(--tiptap-accent-blue);
+        background-color: var(--tiptap-accent-primary);
         bottom: -2px;
         pointer-events: none;
         position: absolute;
@@ -384,7 +384,7 @@ const props = defineProps<{ editor: Editor }>();
 
     blockquote {
       background-color: var(--tiptap-color-bg-subtle);
-      border-left: 3px solid var(--tiptap-accent-blue);
+      border-left: 3px solid var(--tiptap-accent-primary);
       border-radius: 0 var(--tiptap-border-radius-sm) var(--tiptap-border-radius-sm) 0;
       color: var(--tiptap-color-text-muted);
       margin: 1.5rem 0;
@@ -393,9 +393,9 @@ const props = defineProps<{ editor: Editor }>();
 
     // Mention node (@mention): inline pill style, follows theme variables
     span[data-type="mention"] {
-      background-color: var(--tiptap-accent-blue-bg);
+      background-color: var(--tiptap-accent-primary-bg);
       border-radius: var(--tiptap-border-radius-sm);
-      color: var(--tiptap-accent-blue);
+      color: var(--tiptap-accent-primary);
       padding: 0.1em 0.35em;
       font-weight: 500;
     }

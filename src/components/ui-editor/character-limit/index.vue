@@ -38,7 +38,7 @@ onBeforeUnmount(() => {
   padding: var(--tiptap-padding-sm);
 
   &.is-over {
-    color: var(--tiptap-accent-red);
+    color: var(--tiptap-accent-danger);
   }
 }
 </style>
