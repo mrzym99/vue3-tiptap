@@ -4,7 +4,6 @@ import type { Theme } from "@/types";
 export const lightTheme: Theme = {
   // --- surfaces (slate-tinted, soft) ---
   "--tiptap-color-bg": "#FFFFFF",
-  "--tiptap-color-bg-canvas": "#F8FAFC", // slate-50
   "--tiptap-color-bg-hover": "#F1F5F9", // slate-100
   "--tiptap-color-bg-active": "#E2E8F0", // slate-200
   "--tiptap-color-bg-subtle": "#F6F7F9",
@@ -24,9 +23,6 @@ export const lightTheme: Theme = {
   "--tiptap-accent-success": "#0F7B6C",
   "--tiptap-accent-warning": "#DFAB01",
   "--tiptap-accent-primary-bg": "color-mix(in srgb, var(--tiptap-accent-primary) 10%, white)",
-  "--tiptap-accent-danger-bg": "#FEF2F2", // red-50
-  "--tiptap-accent-success-bg": "#F0FDF4", // green-50
-  "--tiptap-accent-warning-bg": "#FEFCE8", // yellow-50
 
   // --- buttons (transparent default, hover/active only deepen bg) ---
   "--tiptap-btn-bg": "transparent",
@@ -37,18 +33,15 @@ export const lightTheme: Theme = {
   "--tiptap-btn-primary-text": "#FFFFFF",
   "--tiptap-btn-primary-shadow": "0 4px 14px color-mix(in srgb, var(--tiptap-accent-primary) 28%, transparent)",
   "--tiptap-btn-primary-shadow-hover": "0 8px 20px color-mix(in srgb, var(--tiptap-accent-primary) 35%, transparent)",
-  "--tiptap-btn-danger-bg": "#EB5757",
+  "--tiptap-btn-danger-bg": "var(--tiptap-accent-danger)",
   "--tiptap-btn-danger-bg-hover": "#D64545",
   "--tiptap-btn-danger-text": "#FFFFFF",
   "--tiptap-btn-danger-shadow": "0 4px 14px rgba(235, 87, 87, 0.25)",
   "--tiptap-btn-danger-shadow-hover": "0 8px 20px rgba(235, 87, 87, 0.32)",
-  "--tiptap-btn-secondary-bg": "#F5F5F5", // gray-100
-  "--tiptap-btn-secondary-text": "#404040", // gray-700
 
   // --- interaction feedback (Halo Focus: soft large-radius ring) ---
   "--tiptap-focus-ring": "color-mix(in srgb, var(--tiptap-accent-primary) 25%, transparent)",
   "--tiptap-selection-bg": "color-mix(in srgb, var(--tiptap-accent-primary) 26%, transparent)",
-  "--tiptap-drag-handle": "rgba(31, 41, 55, 0.35)",
 
   // popover / menu (follow the theme; shadows carry color tint, never hard)
   "--tiptap-popover-bg": "var(--tiptap-color-bg)",
@@ -69,7 +62,7 @@ export const lightTheme: Theme = {
   "--tiptap-menu-item-active": "var(--tiptap-color-bg-active)",
 
   // input (Soft UI: borderless, tinted field bg, focus ring carries feedback)
-  "--tiptap-input-bg": "#F6F7F9",
+  "--tiptap-input-bg": "var(--tiptap-color-bg-subtle)",
   "--tiptap-input-border": "transparent",
   "--tiptap-input-border-hover": "var(--tiptap-accent-primary)",
   "--tiptap-input-text": "var(--tiptap-color-text)",
@@ -86,8 +79,7 @@ export const lightTheme: Theme = {
   "--tiptap-tooltip-text": "#FFFFFF",
 
   // --- backward-compatible aliases (used by existing components) ---
-  "--tiptap-color-text-3": "var(--tiptap-color-text-muted)",
-  "--tiptap-btn--bg-hover": "var(--tiptap-color-bg-hover)",
-  "--tiptap-btn--bg-active": "var(--tiptap-color-bg-active)",
+  "--tiptap-btn--bg-hover": "var(--tiptap-btn-bg-hover)",
+  "--tiptap-btn--bg-active": "var(--tiptap-btn-bg-active)",
   "--tiptap-btn--bg-active-hover": "#D3DAE3",
 };

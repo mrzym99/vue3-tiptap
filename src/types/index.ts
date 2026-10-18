@@ -1,6 +1,6 @@
 import type { Component } from "vue";
 import type { Editor } from "@tiptap/core";
-import type { Theme, ThemeName } from "./theme";
+import type { ThemeName } from "./theme";
 import type { LocaleName, LocaleTranslations } from "@/locales";
 
 export * from "./theme";
