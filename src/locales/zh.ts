@@ -31,6 +31,7 @@ export default {
   imageUploadHint: "点击或拖拽图片到此处上传",
   imageUploading: "上传中…",
   imageUploadFailed: "上传失败，请重试",
+  imageUploadUnavailable: "未配置上传功能",
   imageTabUrl: "链接",
   imageTabUpload: "上传",
   video: "视频",
