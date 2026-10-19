@@ -31,7 +31,6 @@ export default {
   imageUploadHint: "Click or drag an image here to upload",
   imageUploading: "Uploading…",
   imageUploadFailed: "Upload failed, please try again",
-  imageUploadUnavailable: "Upload is not configured",
   imageTabUrl: "URL",
   imageTabUpload: "Upload",
   video: "Video",

@@ -32,7 +32,6 @@ export default {
   imageUploadHint: "點擊或拖曳圖片至此上傳",
   imageUploading: "上傳中…",
   imageUploadFailed: "上傳失敗，請重試",
-  imageUploadUnavailable: "未設定上傳功能",
   imageTabUrl: "連結",
   imageTabUpload: "上傳",
   video: "影片",

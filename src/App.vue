@@ -7,7 +7,7 @@ import { useDemoConfig } from "../demo/useDemoConfig";
 import SunIcon from "~icons/lucide/sun";
 import MoonIcon from "~icons/lucide/moon";
 
-const content = ref("1234567891011");
+const content = ref("");
 
 // Theme / locale with localStorage persistence (see useDemoConfig)
 const { theme, locale } = useDemoConfig();
@@ -35,10 +35,10 @@ const mentionUsers = [
 const extensions = [
   StarterKit.configure({
     image: {
-      upload: async (_file: File) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        return "https://api.mtyqx.cn/api/random.php";
-      },
+      // upload: async (_file: File) => {
+      //   await new Promise((resolve) => setTimeout(resolve, 1000));
+      //   return "https://api.mtyqx.cn/api/random.php";
+      // },
     },
     mention: {
       items: mentionUsers,
@@ -118,7 +118,7 @@ const extensions = [
         :translations="translations"
         :limit="limit"
         :extensions="extensions"
-        bubble-menu="bold italic | highlight link"
+        bubble-menu="bold italic highlight link"
         autofocus="end"
       />
     </div>

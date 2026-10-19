@@ -10,7 +10,7 @@
     <Form ref="form" :model="model" @submit="onSubmit">
       <FormItem name="src" :rules="rules">
         <template #default="{ id }">
-          <Tabs v-model="activeTab" :tabs="tabs">
+          <Tabs v-if="hasUpload" v-model="activeTab" :tabs="tabs">
             <template #url>
               <TiptapInput
                 :id="id"
@@ -21,12 +21,17 @@
               />
             </template>
             <template #upload>
-              <ImageUpload v-if="hasUpload" :editor="editor" :t="t" @success="(url) => (src = url)" />
-              <span v-else class="image-dialog-upload-disabled">
-                {{ t("imageUploadUnavailable") }}
-              </span>
+              <ImageUpload :editor="editor" :t="t" @success="(url) => (src = url)" />
             </template>
           </Tabs>
+          <TiptapInput
+            v-else
+            :id="id"
+            :model-value="src"
+            :placeholder="t('imagePlaceholder')"
+            @update:model-value="src = $event"
+            @keydown.enter.prevent="submit"
+          />
         </template>
       </FormItem>
       <template #actions>
@@ -73,16 +78,18 @@ const hasUpload = computed(() => {
 });
 
 const activeTab = ref("url");
-const tabs: TabItem[] = [
-  { name: "url", label: t("imageTabUrl") },
-  { name: "upload", label: t("imageTabUpload") },
-];
+// Upload tab only exists when the `image` extension has an `upload` callback —
+// without it the dialog is plain URL input.
+const tabs = computed<TabItem[]>(() =>
+  hasUpload.value
+    ? [
+        { name: "url", label: t("imageTabUrl") },
+        { name: "upload", label: t("imageTabUpload") },
+      ]
+    : [{ name: "url", label: t("imageTabUrl") }],
+);
 </script>
 
 <style lang="scss" scoped>
-.image-dialog-upload-disabled {
-  color: var(--tiptap-color-text-muted);
-  font-size: var(--tiptap-font-size-sm);
-  line-height: 1.4;
-}
+/* intentionally empty */
 </style>
