@@ -1,4 +1,4 @@
-# @yumine/vue3-tiptap
+# @yumine9/vue3-tiptap
 
 English | [简体中文](./README.md)
 
@@ -7,7 +7,7 @@ A rich-text editor for Vue 3, built on [@tiptap/vue-3](https://tiptap.dev): auto
 ## Install
 
 ```bash
-pnpm add @yumine/vue3-tiptap
+pnpm add @yumine9/vue3-tiptap
 ```
 
 ## Import the stylesheet (required)
@@ -15,7 +15,7 @@ pnpm add @yumine/vue3-tiptap
 The build extracts all component styles into a standalone `dist/style.css` that the JS never auto-loads — **import it once on the consumer side** (once for the whole library). Skipping it keeps features working but breaks the visuals (unstyled toolbar, misplaced popups, missing placeholder):
 
 ```ts
-import "@yumine/vue3-tiptap/style.css";
+import "@yumine9/vue3-tiptap/style.css";
 ```
 
 Shipping it separately is intentional: `index.cjs` must work under Node/SSR `require` (importing `.css` there throws), and it keeps consumers in control of overriding styles or running their own CSS pipeline.
@@ -25,8 +25,8 @@ Shipping it separately is intentional: `index.cjs` must work under Node/SSR `req
 ```vue
 <script setup lang="ts">
 import { ref } from "vue";
-import { TipTapEditor } from "@yumine/vue3-tiptap";
-import "@yumine/vue3-tiptap/style.css";
+import { TipTapEditor } from "@yumine9/vue3-tiptap";
+import "@yumine9/vue3-tiptap/style.css";
 
 const content = ref("<p>hello</p>");
 </script>
@@ -39,7 +39,7 @@ const content = ref("<p>hello</p>");
 Or register it globally and use `<TipTapEditor />` directly:
 
 ```ts
-import TipTapEditorPlugin from "@yumine/vue3-tiptap";
+import TipTapEditorPlugin from "@yumine9/vue3-tiptap";
 app.use(TipTapEditorPlugin);
 ```
 
@@ -49,12 +49,12 @@ app.use(TipTapEditorPlugin);
 
 ```ts
 // Option A: all-in with StarterKit
-import { StarterKit } from "@yumine/vue3-tiptap";
+import { StarterKit } from "@yumine9/vue3-tiptap";
 
 const extensions = [StarterKit.configure({})];
 
 // Option B: à la carte (Document/Paragraph/Text come built into the component)
-import { Bold, Image, Video } from "@yumine/vue3-tiptap";
+import { Bold, Image, Video } from "@yumine9/vue3-tiptap";
 
 const extensions = [Bold, Image, Video];
 ```
@@ -88,7 +88,7 @@ const extensions = [
 ];
 
 // Option B: import and configure standalone
-import { Mention } from "@yumine/vue3-tiptap";
+import { Mention } from "@yumine9/vue3-tiptap";
 const extensions = [
   Mention.configure({ items: mentionUsers }),
 ];
@@ -99,7 +99,7 @@ const extensions = [
 Configure an `upload` function on the `Image` extension to enable the upload tab in the image dialog: it receives a `File` and returns the stored URL; preview and insertion are handled by the editor. With `StarterKit`, pass it via `configure`:
 
 ```ts
-import { StarterKit } from "@yumine/vue3-tiptap";
+import { StarterKit } from "@yumine9/vue3-tiptap";
 
 const extensions = [
   StarterKit.configure({

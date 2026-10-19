@@ -69,7 +69,7 @@ const extensions = [
             </g>
           </svg>
         </span>
-        <span class="app-brand-name">@yumine/vue3-tiptap</span>
+        <span class="app-brand-name">@yumine9/vue3-tiptap</span>
       </div>
 
       <div class="app-actions">

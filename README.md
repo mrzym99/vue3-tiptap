@@ -1,4 +1,4 @@
-# @yumine/vue3-tiptap
+# @yumine9/vue3-tiptap
 
 [English](./README.en.md) | 简体中文
 
@@ -7,7 +7,7 @@ Vue 3 富文本编辑器，基于 [@tiptap/vue-3](https://tiptap.dev) 封装：�
 ## 安装
 
 ```bash
-pnpm add @yumine/vue3-tiptap
+pnpm add @yumine9/vue3-tiptap
 ```
 
 ## 引入样式（必须）
@@ -15,7 +15,7 @@ pnpm add @yumine/vue3-tiptap
 库的构建产物把全部组件样式抽成了独立的 `dist/style.css`，JS 不会自动加载它——**需要在使用方引一次**（整个库只需一次），否则功能正常但视觉是坏的（工具栏无布局、弹层错位、placeholder 不显示）：
 
 ```ts
-import "@yumine/vue3-tiptap/style.css";
+import "@yumine9/vue3-tiptap/style.css";
 ```
 
 单独导出这个文件是刻意的：`index.cjs` 要在 Node/SSR 场景下 `require`（引入 `.css` 会报错），同时消费方保留覆盖样式、自建 CSS 管线的控制权。
@@ -25,8 +25,8 @@ import "@yumine/vue3-tiptap/style.css";
 ```vue
 <script setup lang="ts">
 import { ref } from "vue";
-import { TipTapEditor } from "@yumine/vue3-tiptap";
-import "@yumine/vue3-tiptap/style.css";
+import { TipTapEditor } from "@yumine9/vue3-tiptap";
+import "@yumine9/vue3-tiptap/style.css";
 
 const content = ref("<p>hello</p>");
 </script>
@@ -39,7 +39,7 @@ const content = ref("<p>hello</p>");
 或注册为全局组件后直接用 `<TipTapEditor />`：
 
 ```ts
-import TipTapEditorPlugin from "@yumine/vue3-tiptap";
+import TipTapEditorPlugin from "@yumine9/vue3-tiptap";
 app.use(TipTapEditorPlugin);
 ```
 
@@ -49,12 +49,12 @@ app.use(TipTapEditorPlugin);
 
 ```ts
 // 方式一：StarterKit 一把梭
-import { StarterKit } from "@yumine/vue3-tiptap";
+import { StarterKit } from "@yumine9/vue3-tiptap";
 
 const extensions = [StarterKit.configure({})];
 
 // 方式二：按需导入（Document/Paragraph/Text 由组件内置提供，无需自己加）
-import { Bold, Image, Video } from "@yumine/vue3-tiptap";
+import { Bold, Image, Video } from "@yumine9/vue3-tiptap";
 
 const extensions = [Bold, Image, Video];
 ```
@@ -88,7 +88,7 @@ const extensions = [
 ];
 
 // 方式二：单独导入并配置
-import { Mention } from "@yumine/vue3-tiptap";
+import { Mention } from "@yumine9/vue3-tiptap";
 const extensions = [
   Mention.configure({ items: mentionUsers }),
 ];
@@ -99,7 +99,7 @@ const extensions = [
 给 `Image` 扩展配置 `upload` 函数即可启用图片弹窗里的“上传”选项卡：函数收到 `File`，返回存储后的 URL，其余（预览、插入）由编辑器完成。使用 `StarterKit` 时通过 `configure` 传入：
 
 ```ts
-import { StarterKit } from "@yumine/vue3-tiptap";
+import { StarterKit } from "@yumine9/vue3-tiptap";
 
 const extensions = [
   StarterKit.configure({

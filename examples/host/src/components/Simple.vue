@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { TipTapEditor } from "@yumine/vue3-tiptap";
-import type { Extensions, LocaleTranslations, ThemeName, Toolbar } from "@yumine/vue3-tiptap";
+import { TipTapEditor } from "@yumine9/vue3-tiptap";
+import type { Extensions, LocaleTranslations, ThemeName, Toolbar } from "@yumine9/vue3-tiptap";
 
 // 精简版：只保留较全但去掉弹窗类的常用工具
 const SIMPLE_TOOLBAR: Toolbar =

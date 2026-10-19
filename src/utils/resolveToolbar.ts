@@ -21,7 +21,7 @@ export function resolveToolbar(toolbar: Toolbar | undefined, allKeys: string[]):
       .filter((key) => key && !known(key));
     if (dropped.length && typeof console !== "undefined") {
       console.warn(
-        `[@yumine/vue3-tiptap] defaultToolbar references extension(s) not loaded, their buttons will be missing: ${dropped.join(", ")}`,
+        `[@yumine9/vue3-tiptap] defaultToolbar references extension(s) not loaded, their buttons will be missing: ${dropped.join(", ")}`,
       );
     }
   }

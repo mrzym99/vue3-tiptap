@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
 // Consume the published-style API
-import { StarterKit, Dialog, Button } from "@yumine/vue3-tiptap";
+import { StarterKit, Dialog, Button } from "@yumine9/vue3-tiptap";
 import Header from "./components/Header.vue";
 import Full from "./components/Full.vue";
 import Simple from "./components/Simple.vue";
 import { useDemoConfig } from "./composables/useDemoConfig";
-import type { LocaleTranslations } from "@yumine/vue3-tiptap";
-import "@yumine/vue3-tiptap/style.css";
+import type { LocaleTranslations } from "@yumine9/vue3-tiptap";
+import "@yumine9/vue3-tiptap/style.css";
 import { DEFAULT_CONTENT } from "./constants";
 
 const content = ref(DEFAULT_CONTENT);

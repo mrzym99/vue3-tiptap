@@ -50,7 +50,7 @@ export function createLocaleContext(
     if (table && key in table) return table[key];
     if (import.meta.env.DEV && !warnedMissingKeys.has(key)) {
       warnedMissingKeys.add(key);
-      console.warn(`[@yumine/vue3-tiptap] missing translation key "${key}" for locale "${locale.value}"`);
+      console.warn(`[@yumine9/vue3-tiptap] missing translation key "${key}" for locale "${locale.value}"`);
     }
     return key;
   };

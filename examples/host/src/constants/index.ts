@@ -1,5 +1,5 @@
 export const DEFAULT_CONTENT: string = `<h1>Getting started</h1>
-<p>欢迎使用 <code>@yumine/vue3-tiptap </code>—— 一个基于 <a target="_blank" rel="noopener noreferrer nofollow" href="https://tiptap.dev">Tiptap</a> 的 Vue 3 富文本编辑器组件库，内置常用格式化与排版工具，开箱即用。</p>
+<p>欢迎使用 <code>@yumine9/vue3-tiptap </code>—— 一个基于 <a target="_blank" rel="noopener noreferrer nofollow" href="https://tiptap.dev">Tiptap</a> 的 Vue 3 富文本编辑器组件库，内置常用格式化与排版工具，开箱即用。</p>
 <p>试试这些基础标记：<strong>加粗</strong>、<em>斜体</em>、<s>删除线</s>、<u>下划线</u>、<code>行内代码</code> 和 <mark>高亮</mark>，也可以用快捷键 ⌘+B / ⌘+I 完成大部分操作。🪄</p>
 <h2>功能一览</h2>
 <ul>

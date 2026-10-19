@@ -1,8 +1,8 @@
-# @yumine/vue3-tiptap 项目文档
+# @yumine9/vue3-tiptap 项目文档
 
 ## 1. 项目简介
 
-`@yumine/vue3-tiptap` 是一个基于 **TipTap**（`@tiptap/vue-3`）与 **Vue 3** 构建的富文本编辑器组件，内置可扩展的工具栏 UI。项目采用「扩展即配置」的设计理念：每一个编辑能力（加粗、斜体、下划线、引用、文本对齐等）都是一个 TipTap 扩展，同时通过扩展的 `button` 选项声明自己的工具栏按钮，工具栏会自动收集并渲染这些按钮，实现**功能与 UI 的自动绑定**。
+`@yumine9/vue3-tiptap` 是一个基于 **TipTap**（`@tiptap/vue-3`）与 **Vue 3** 构建的富文本编辑器组件，内置可扩展的工具栏 UI。项目采用「扩展即配置」的设计理念：每一个编辑能力（加粗、斜体、下划线、引用、文本对齐等）都是一个 TipTap 扩展，同时通过扩展的 `button` 选项声明自己的工具栏按钮，工具栏会自动收集并渲染这些按钮，实现**功能与 UI 的自动绑定**。
 
 当前项目形态为一个可运行、可演进的 Demo / 组件原型，`App.vue` 中演示了组件的 `v-model` 双向绑定、`limit` 字数限制、主题切换与中英文切换等能力。
 
@@ -41,7 +41,7 @@ pnpm preview
 ## 4. 目录结构
 
 ```
-@yumine/vue3-tiptap/
+@yumine9/vue3-tiptap/
 ├── index.html                  # 入口 HTML（演示页）
 ├── package.json                # 依赖与脚本（含 build:lib 库构建）
 ├── vite.config.ts              # 应用构建配置（别名 @ -> src、自动导入、dedupe）
@@ -89,7 +89,7 @@ pnpm preview
     │       ├── tooltip/            # 悬停提示
     │       └── theme-provider/     # 主题提供者（CSS 变量作用域化）
     │
-    │   以下组件均从包根具名导出（`import { Dialog } from "@yumine/vue3-tiptap"`），
+    │   以下组件均从包根具名导出（`import { Dialog } from "@yumine9/vue3-tiptap"`），
     │   供二开者在编辑器外复用、保持 UI 一致；样式随 style.css 一起分发：
     │   Dialog、Popover、Tooltip、Button、ActionButton、ActionMenuButton、
     │   ActionDialogButton、Form、FormItem、Input、Tabs、ThemeProvider。

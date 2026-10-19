@@ -1,5 +1,5 @@
 import { ref, watch } from "vue";
-import type { ThemeName } from "@yumine/vue3-tiptap";
+import type { ThemeName } from "@yumine9/vue3-tiptap";
 import { readStorage, writeStorage } from "../utils/storage";
 
 // All demo storage keys share this prefix so they are easy to spot/clear together
