@@ -38,6 +38,12 @@ export { default as Input } from "./components/ui-common/input/index.vue";
 export { default as Tabs } from "./components/ui-common/tabs/index.vue";
 export { default as ThemeProvider } from "./components/ui-common/theme-provider/index.vue";
 
+// AI tool kit: headless toolkit + OpenAI-compatible agent + chat panel
+export { createAiToolkit } from "./ai/toolkit";
+export { createEditorAgent } from "./ai/agent";
+export { buildSystemPrompt } from "./ai/prompt";
+export { default as AiPanel } from "./ai/components/ai-panel/index.vue";
+
 /** Vue plugin: `app.use(TipTapEditorPlugin)` registers the `<TipTapEditor>` component. */
 const TipTapEditorPlugin: Plugin = {
   install(app: App) {

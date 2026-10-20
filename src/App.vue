@@ -6,6 +6,7 @@ import zhTW from "../demo/zh-TW";
 import { useDemoConfig } from "../demo/useDemoConfig";
 import SunIcon from "~icons/lucide/sun";
 import MoonIcon from "~icons/lucide/moon";
+import AiPanel from "./ai/components/ai-panel/index.vue";
 
 const content = ref("");
 
@@ -18,7 +19,9 @@ const toggleTheme = () => {
 const translations: LocaleTranslations = { "zh-TW": zhTW };
 // `limit` is read once at editor creation (runtime changes are not applied) —
 // edit this constant to try the character limit instead of binding a control.
-const limit = ref(10);
+// NOTE: any value > 0 ENFORCES the cap (transactions over it are dropped),
+// which also blocks AI inserts — keep 0 when testing the AI panel.
+const limit = ref(0);
 const editorRef = useTemplateRef<InstanceType<typeof TipTapEditor>>("editorRef");
 
 // Configure the image extension with a custom uploader (demo: fake upload).
@@ -47,6 +50,12 @@ const extensions = [
     dragHandle: false,
   }),
 ];
+
+const aiConfig = {
+  baseURL: import.meta.env.VITE_AI_BASE_URL,
+  apiKey: import.meta.env.VITE_AI_API_KEY,
+  model: import.meta.env.VITE_AI_MODEL,
+};
 </script>
 
 <template>
@@ -122,6 +131,7 @@ const extensions = [
         autofocus="end"
       />
     </div>
+    <!-- <AiPanel v-if="editorRef?.editor" :editor="editorRef?.editor" :config="aiConfig" /> -->
   </div>
 </template>
 

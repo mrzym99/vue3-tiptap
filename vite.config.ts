@@ -38,6 +38,18 @@ export default defineConfig({
       "@tiptap/core",
     ],
   },
+  // LLM APIs don't send CORS headers (Authorization isn't in their
+  // Access-Control-Allow-Headers), so browsers can't call them directly —
+  // the demo proxies through the dev server instead.
+  server: {
+    proxy: {
+      "/ai-proxy": {
+        target: "https://ark.cn-beijing.volces.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/ai-proxy/, "/api/coding/v3"),
+      },
+    },
+  },
   build: {
     // Demo output only — the lib build owns `dist/` (see package.json files/exports
     // and vite.lib.config.ts, which wipes it). Sharing one dir meant each build

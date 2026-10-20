@@ -45,7 +45,7 @@ interface AiToolkitOptions {
 createEditorAgent(editor: Editor, config: AgentConfig): EditorAgent
 
 interface AgentConfig {
-  baseURL: string;        // OpenAI 兼容端点，如 https://api.openai.com/v1
+  baseURL: string;        // OpenAI 兼容端点，如 https://api.openai.com/v1；注意 CORS（见下）
   apiKey: string;
   model: string;
   systemPrompt?: string;  // 追加到内置系统提示词之后
@@ -135,6 +135,7 @@ src/ai/
   4. readonly 编辑器拒绝写操作。
   5. Agent 循环：mock fetch 返回 tool_calls 序列，断言 execute 被调、tool 结果回传、终止条件正确。
 - **手动验收（dev 页）**：dev playground 挂一个面板 + 测试 baseURL，输入"写一篇 Vue3 介绍，含一个对比表格和一个任务清单"，观察工具调用与最终文档、Ctrl+Z 撤销行为、danger 确认弹窗。
+- **CORS**：多数 LLM API（OpenAI、火山 Ark 等）不开放浏览器跨域（`Authorization` 不在 `Access-Control-Allow-Headers` 里），**生产环境应由宿主后端代理转发**，`baseURL` 指向自家代理路径；demo 里用 Vite dev server 的 `server.proxy`（`/ai-proxy` → Ark）解决。API key 也因此应放在代理侧，不要打进前端包。
 - `pnpm build`（vue-tsc + vite）通过，类型完整导出。
 
 ## 假设与默认值（低风险，未另行询问）
