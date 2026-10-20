@@ -177,7 +177,7 @@ importers:
 
   examples/host:
     dependencies:
-      '@yumine/vue3-tiptap':
+      '@yumine9/vue3-tiptap':
         specifier: link:../..
         version: link:../..
       vue:

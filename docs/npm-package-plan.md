@@ -1,6 +1,6 @@
 # 组件库化（npm 包）方案
 
-> 目标：将 `@yumine/vue3-tiptap` 从「应用」改造为「Vue3 组件库」，`npm install` 后 `import { TipTapEditor } from "@yumine/vue3-tiptap"` 即可使用。
+> 目标：将 `@yumine9/vue3-tiptap` 从「应用」改造为「Vue3 组件库」，`npm install` 后 `import { TipTapEditor } from "@yumine9/vue3-tiptap"` 即可使用。
 
 ## ✅ 执行状态
 
@@ -59,7 +59,7 @@ export * from "./types";
 
 ```json
 {
-  "name": "@yumine/vue3-tiptap",
+  "name": "@yumine9/vue3-tiptap",
   "version": "1.0.0",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -114,13 +114,13 @@ build: {
 ## 5. 使用方式（宿主项目）
 
 ```bash
-npm i @yumine/vue3-tiptap naive-ui vue
+npm i @yumine9/vue3-tiptap naive-ui vue
 ```
 
 ```vue
 <script setup lang="ts">
-import { TipTapEditor } from "@yumine/vue3-tiptap";
-import "@yumine/vue3-tiptap/style.css"; // 若构建未自动注入 CSS
+import { TipTapEditor } from "@yumine9/vue3-tiptap";
+import "@yumine9/vue3-tiptap/style.css"; // 若构建未自动注入 CSS
 import { ref } from "vue";
 const content = ref("<p>hello</p>");
 </script>
@@ -142,7 +142,7 @@ const content = ref("<p>hello</p>");
 pnpm build:lib
 npm publish            # 公开 npm
 # 或私有：npm publish --registry https://your-registry
-# 或本地验证：在宿主项目 "@yumine/vue3-tiptap": "file:../@yumine/vue3-tiptap"
+# 或本地验证：在宿主项目 "@yumine9/vue3-tiptap": "file:../@yumine9/vue3-tiptap"
 ```
 
 ## 7. 风险与注意
@@ -157,7 +157,7 @@ npm publish            # 公开 npm
 
 ## 8. 可选增强（后续）
 
-- 按需引入：`import { TipTapEditor, Bold, Heading } from "@yumine/vue3-tiptap"` + `:extensions="[Bold, Heading]"`
+- 按需引入：`import { TipTapEditor, Bold, Heading } from "@yumine9/vue3-tiptap"` + `:extensions="[Bold, Heading]"`
 - vitest 单元测试
 - Storybook / playground 文档站
 - 主题 scope 支持（多实例异主题）
