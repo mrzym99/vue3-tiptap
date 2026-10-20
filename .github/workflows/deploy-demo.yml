@@ -1,12 +1,8 @@
-# Deploys examples/host (the published-style demo page) to GitHub Pages.
-# pnpm workspace: root package + examples/host share one lockfile; the host
-# links @yumine/vue3-tiptap directly to the repo root and consumes dist/,
-# so it doubles as a smoke test that the package actually builds.
 name: Deploy demo (examples/host)
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   workflow_dispatch:
 
 permissions:
@@ -20,15 +16,15 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
-          version: 11
+          version: 9
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: pnpm
@@ -37,7 +33,6 @@ jobs:
         run: pnpm install --frozen-lockfile && pnpm build:lib
 
       - name: Build host demo
-        # Workspace root install already covers examples/host
         run: pnpm --filter host-demo exec vite build --base=/vue3-tiptap/
 
       - uses: actions/upload-pages-artifact@v3
@@ -46,7 +41,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
