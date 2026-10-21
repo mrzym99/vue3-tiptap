@@ -98,4 +98,10 @@ export interface EditorAgent {
   send(userText: string): Promise<void>;
   abort(): void;
   history: ChatMessage[];
+  /**
+   * Subscribe to the agent event stream (multiple listeners allowed); returns an
+   * unsubscribe fn. Custom agent implementations must implement this so UI
+   * consumers (e.g. AiPanel) can observe events alongside the host's own.
+   */
+  on(listener: (event: AgentEvent) => void): () => void;
 }

@@ -6,6 +6,7 @@
       <BubbleMenuBar :editor="editor" :toolbar="props.bubbleMenu" :t="t" />
       <FloatingMenuBar :editor="editor" :toolbar="props.floatingMenu" :t="t" />
       <ExtensionBubbleMenus :editor="editor" :t="t" />
+      <ExtensionPanels :editor="editor" :t="t" />
       <CharacterLimit :editor="editor" :limit="props.limit" />
     </section>
   </ThemeProvider>
@@ -17,6 +18,7 @@ import ToolBar from "@/components/ui-editor/toolbar/index.vue";
 import EditorContent from "@/components/ui-editor/editor-content/index.vue";
 import BubbleMenuBar from "@/components/ui-editor/bubble-menu/index.vue";
 import ExtensionBubbleMenus from "@/components/ui-editor/bubble-menu/extension-bubble-menus/index.vue";
+import ExtensionPanels from "@/components/ui-editor/extension-panels/index.vue";
 import FloatingMenuBar from "@/components/ui-editor/bubble-menu/floating-menu/index.vue";
 import CharacterLimit from "@/components/ui-editor/character-limit/index.vue";
 import { computed, toRef } from "vue";

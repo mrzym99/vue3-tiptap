@@ -9,7 +9,24 @@
 
 用户只需在面板里描述（"写一篇关于 X 的介绍，带表格"），AI 自动调用工具操作文档。
 
-## 公共 API（新增导出，均从 `src/index.ts` 导出）
+## 公共 API
+
+推荐用法是把 AI 作为一个普通扩展接入（从包根导入，与 StarterKit 平级；它**不在** StarterKit 内置列表里，需显式配置）：
+
+```ts
+import { StarterKit, Ai } from "@yumine9/vue3-tiptap";
+
+const extensions = [
+  StarterKit.configure({}),
+  Ai.configure({ baseURL, apiKey, model, confirmDangerous }), // 聊天悬浮按钮/面板自动挂载，不进 toolbar
+];
+```
+
+headless 工具层与 agent 仍从 `@yumine9/vue3-tiptap/ai` 子路径导出，供自组 UI 的宿主使用：
+
+```ts
+import { AiPanel, createAiToolkit, createEditorAgent } from "@yumine9/vue3-tiptap/ai";
+```
 
 ```ts
 // 工具层
@@ -49,16 +66,19 @@ interface AgentConfig {
   apiKey: string;
   model: string;
   systemPrompt?: string;  // 追加到内置系统提示词之后
-  confirmDangerous?: AiToolkitOptions["confirmDangerous"];
-  onEvent?: (e: AgentEvent) => void;  // 工具调用/文本流事件，面板订阅
+  confirmDangerous?: AiToolkitOptions["confirmDangerous"];  // 面板不提供，宿主在创建 agent 时接线
+  onEvent?: (e: AgentEvent) => void;  // 自动注册为首个监听者（兼容保留）
 }
 
 interface EditorAgent {
   send(userText: string): Promise<void>;  // 完整一轮：LLM → tool calls → 结果回传 → LLM …
   abort(): void;
   history: ChatMessage[];                 // 面板渲染用
+  on(listener: (e: AgentEvent) => void): () => void;  // 订阅事件流（多监听者），返回退订函数；自定 agent 实现必须实现
 }
 ```
+
+`AiPanel` 只管 UI：宿主自己创建 agent 并作为 prop 传入（`<AiPanel :editor="editor" :agent="agent" />`），可替换为任意实现 `EditorAgent` 接口的 agent。
 
 ## 工具清单（约 20 个，映射到库内已有 extension）
 
@@ -93,7 +113,7 @@ interface EditorAgent {
 ## 执行与安全模型
 
 - 所有写操作走编辑器正常事务 → 自动进 UndoRedo 历史，用户可 **Ctrl+Z 逐步撤销**（无需额外快照机制）。
-- `danger` 工具（`set_document`）执行前必须过 `confirmDangerous`；未配置该回调时工具层直接返回失败，Agent 层默认提供一个 `window.confirm` 兜底，聊天面板默认提供确认 UI。
+- `danger` 工具（`set_document`）执行前必须过 `confirmDangerous`；未配置该回调时工具层直接返回失败（fail-safe）。宿主创建 agent 时自行接线（如 `confirmDangerous: (tool) => window.confirm(...)`）。
 - `onlyAvailable`（默认开）：宿主禁用了 Table extension 时，表格工具不出现在 `tools` 里，LLM 不会误调。
 
 ## Agent 循环（`src/ai/agent.ts`）
@@ -117,7 +137,7 @@ src/ai/
   components/ai-panel/
 ```
 
-`src/index.ts` 增加：`createAiToolkit`、`createEditorAgent`、`AiPanel` 组件及全部类型导出。peerDependencies 不变。
+`@yumine9/vue3-tiptap/ai` 子入口（`src/ai/index.ts`）导出：`createAiToolkit`、`createEditorAgent`、`buildSystemPrompt`、`AiPanel` 组件及全部 AI 类型。主入口无 AI 导出。peerDependencies 不变。
 
 ## 边界与失败模式
 

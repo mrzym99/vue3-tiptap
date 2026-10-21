@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import TipTapEditor from "./components/index.vue";
-import { StarterKit } from "./components/extensions";
+import { StarterKit, Ai } from "./components/extensions";
 import type { LocaleTranslations } from "./locales";
 import zhTW from "../demo/zh-TW";
 import { useDemoConfig } from "../demo/useDemoConfig";
 import SunIcon from "~icons/lucide/sun";
 import MoonIcon from "~icons/lucide/moon";
-import AiPanel from "./ai/components/ai-panel/index.vue";
 
 const content = ref("");
 
@@ -49,13 +48,16 @@ const extensions = [
     // Drag handle disabled: StarterKit filters out extensions set to `false`.
     dragHandle: false,
   }),
+  // AI assistant is just another extension: it self-mounts the chat FAB/drawer
+  // (no toolbar entry). baseURL "/ai-proxy" = dev proxy in vite.config.ts.
+  Ai.configure({
+    baseURL: import.meta.env.VITE_AI_BASE_URL,
+    apiKey: import.meta.env.VITE_AI_API_KEY,
+    model: import.meta.env.VITE_AI_MODEL,
+    // no confirm callback => danger tools (e.g. set_document) are refused fail-safe
+    confirmDangerous: (tool) => Promise.resolve(window.confirm(`AI 要执行 ${tool.name}，允许吗？`)),
+  }),
 ];
-
-const aiConfig = {
-  baseURL: import.meta.env.VITE_AI_BASE_URL,
-  apiKey: import.meta.env.VITE_AI_API_KEY,
-  model: import.meta.env.VITE_AI_MODEL,
-};
 </script>
 
 <template>
@@ -131,7 +133,6 @@ const aiConfig = {
         autofocus="end"
       />
     </div>
-    <!-- <AiPanel v-if="editorRef?.editor" :editor="editorRef?.editor" :config="aiConfig" /> -->
   </div>
 </template>
 

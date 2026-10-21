@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
 // Consume the published-style API
-import { StarterKit, Dialog, Button } from "@yumine9/vue3-tiptap";
+import { StarterKit, Dialog, Button, Ai } from "@yumine9/vue3-tiptap";
 import Header from "./components/Header.vue";
 import Full from "./components/Full.vue";
 import Simple from "./components/Simple.vue";
@@ -35,6 +35,15 @@ const extensions = [
     },
     // Drag handle disabled: StarterKit filters out extensions set to `false`.
     dragHandle: false,
+  }),
+  // AI assistant is just another extension: it self-mounts the chat FAB/drawer
+  // (no toolbar entry). Config from .env.local; /ai-proxy = dev proxy in vite.config.ts.
+  Ai.configure({
+    baseURL: import.meta.env.VITE_AI_BASE_URL,
+    apiKey: import.meta.env.VITE_AI_API_KEY,
+    model: import.meta.env.VITE_AI_MODEL,
+    // no confirm callback => danger tools (e.g. set_document) are refused fail-safe
+    confirmDangerous: (tool) => Promise.resolve(window.confirm(`AI 要执行 ${tool.name}，允许吗？`)),
   }),
 ];
 

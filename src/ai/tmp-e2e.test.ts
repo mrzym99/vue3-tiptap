@@ -1,4 +1,3 @@
-import { writeFileSync } from "node:fs";
 import { describe, it } from "vitest";
 import { Editor } from "@tiptap/core";
 import Document from "@tiptap/extension-document";
@@ -33,6 +32,8 @@ describe("agent e2e: reproduce schema rejection", () => {
     }, 180_000);
   }
   it("writes log", () => {
-    writeFileSync("/tmp/probe-doc.txt", log.join("\n"));
+    // was writeFileSync("/tmp/probe-doc.txt", …) — node:fs breaks vue-tsc
+    // (tsconfig types are vite/client only); console output is enough for a probe.
+    console.log(log.join("\n"));
   });
 });

@@ -13,6 +13,11 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
+    "./ai": {
+      "types": "./dist/ai/index.d.ts",
+      "import": "./dist/ai.js",
+      "require": "./dist/ai.cjs"
+    },
     "./style.css": "./dist/style.css"
   },
   "files": [

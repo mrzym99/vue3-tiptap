@@ -25,7 +25,11 @@
               <summary>{{ t("aiThinking") }}</summary>
               <p>{{ item.text }}</p>
             </details>
-            <div v-else-if="item.role === 'tool'" class="tiptap-ai-drawer__tool" :class="{ done: item.done, failed: item.failed }">
+            <div
+              v-else-if="item.role === 'tool'"
+              class="tiptap-ai-drawer__tool"
+              :class="{ done: item.done, failed: item.failed }"
+            >
               <span>{{ !item.done ? t("aiToolRunning") : item.failed ? t("aiToolFailed") : t("aiToolDone") }}</span>
               <code>{{ item.text }}</code>
             </div>
@@ -61,26 +65,33 @@ import TiptapButton from "@/components/ui-common/button/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import { useEditorLocale } from "@/composables/useEditorLocale";
 import type { LocaleTranslations } from "@/locales";
+import type { TranslateFn } from "@/types";
 import { applyTheme } from "@/theme";
 import { themeSyncKey } from "@/components/ui-common/theme-provider/context";
-import { createEditorAgent } from "../../agent";
-import type { AgentConfig, EditorAgent } from "../../types";
+import type { AgentEvent, EditorAgent } from "../../types";
 
 /**
  * Soft-UI AI assistant: a floating FAB (fixed bottom-right, out of layout flow)
- * toggling a right-side chat drawer that drives `createEditorAgent`. The host
- * provides the agent config (endpoint/key) — API keys never pass through the toolkit.
+ * toggling a right-side chat drawer that renders an externally supplied
+ * `EditorAgent`'s event stream. The host creates the agent (endpoint/key,
+ * `confirmDangerous`) — the panel is pure UI.
  */
 const props = defineProps<{
   editor: Editor;
   locale?: "zh" | "en" | (string & {});
   translations?: LocaleTranslations;
-  config: Omit<AgentConfig, "onEvent">;
+  agent?: EditorAgent;
+  /** Pre-resolved translate from the editor shell (extension mount); wins over `locale`. */
+  translate?: TranslateFn;
 }>();
 
 const open = defineModel<boolean>("open", { default: false });
 
-const { t } = useEditorLocale(toRef(() => props.locale), toRef(() => props.translations));
+const { t: localeT } = useEditorLocale(
+  toRef(() => props.locale),
+  toRef(() => props.translations),
+);
+const t: TranslateFn = (key, named, plural) => (props.translate ?? localeT)(key, named, plural);
 
 interface PanelItem {
   role: "user" | "assistant" | "error" | "tool" | "thinking";
@@ -94,13 +105,15 @@ const draft = ref("");
 const busy = ref(false);
 const listEl = useTemplateRef<HTMLElement>("listEl");
 const drawerEl = useTemplateRef<HTMLElement>("drawerEl");
-let agent: EditorAgent | undefined;
+const agent = toRef(() => props.agent);
 
 // Teleport leaves the ThemeProvider subtree — re-apply the theme vars.
 // Standalone use (no editor root above): follow the host page's `html.dark`.
-const syncTheme = inject(themeSyncKey, null) ?? ((el: HTMLElement) => {
-  applyTheme(document.documentElement.classList.contains("dark") ? "dark" : "light", el);
-});
+const syncTheme =
+  inject(themeSyncKey, null) ??
+  ((el: HTMLElement) => {
+    applyTheme(document.documentElement.classList.contains("dark") ? "dark" : "light", el);
+  });
 
 watch(open, async (visible) => {
   if (!visible) return;
@@ -109,72 +122,71 @@ watch(open, async (visible) => {
   scrollToEnd();
 });
 
-function confirmDangerous(tool: { name: string }): boolean {
-  return window.confirm(t("aiConfirmDanger").replace("{name}", tool.name));
-}
-
-function scrollToEnd() {
-  nextTick(() => listEl.value?.scrollTo({ top: listEl.value.scrollHeight }));
-}
-
+// Subscribe to the agent's event stream for as long as this agent prop is set.
+// The Ai extension creates the agent asynchronously (editor `create` event), so
+// the first run can see `undefined` — returning without onCleanup() keeps Vue
+// from warning about a non-function cleanup.
 watch(
-  () => props.config,
-  (config) => {
-    agent = createEditorAgent(props.editor, {
-      ...config,
-      confirmDangerous,
-      onEvent(event) {
-        if (event.type === "reasoning_delta") {
-          // append into the current round's thinking block
-          const last = messages.value.at(-1);
-          if (last?.role === "thinking") last.text += event.text;
-          else messages.value.push({ role: "thinking", text: event.text });
-        } else if (event.type === "content_delta") {
-          const last = messages.value.at(-1);
-          if (last?.role === "assistant") last.text += event.text;
-          else messages.value.push({ role: "assistant", text: event.text });
-        } else if (event.type === "tool_call") {
-          messages.value.push({ role: "tool", text: event.name });
-        } else if (event.type === "tool_result") {
-          const pending = [...messages.value].reverse().find((item) => item.role === "tool" && !item.done);
-          if (pending) {
-            pending.done = true;
-            pending.failed = !event.result.ok;
-          }
-        } else if (event.type === "assistant_text") {
-          // content already streamed in via content_delta — skip/replace duplicates
-          const last = messages.value.at(-1);
-          if (last?.role === "assistant") {
-            if (last.text !== event.text) last.text = event.text;
-          } else if (event.text) {
-            messages.value.push({ role: "assistant", text: event.text });
-          }
-        } else {
-          messages.value.push({ role: "error", text: event.message });
-        }
-        scrollToEnd();
-      },
-    });
+  agent,
+  (agent, _prev, onCleanup) => {
+    if (!agent) return;
+    onCleanup(agent.on(handleEvent));
   },
-  { immediate: true, deep: true },
+  { immediate: true },
 );
+
+function handleEvent(event: AgentEvent) {
+  if (event.type === "reasoning_delta") {
+    // append into the current round's thinking block
+    const last = messages.value.at(-1);
+    if (last?.role === "thinking") last.text += event.text;
+    else messages.value.push({ role: "thinking", text: event.text });
+  } else if (event.type === "content_delta") {
+    const last = messages.value.at(-1);
+    if (last?.role === "assistant") last.text += event.text;
+    else messages.value.push({ role: "assistant", text: event.text });
+  } else if (event.type === "tool_call") {
+    messages.value.push({ role: "tool", text: event.name });
+  } else if (event.type === "tool_result") {
+    const pending = [...messages.value].reverse().find((item) => item.role === "tool" && !item.done);
+    if (pending) {
+      pending.done = true;
+      pending.failed = !event.result.ok;
+    }
+  } else if (event.type === "assistant_text") {
+    // content already streamed in via content_delta — skip/replace duplicates
+    const last = messages.value.at(-1);
+    if (last?.role === "assistant") {
+      if (last.text !== event.text) last.text = event.text;
+    } else if (event.text) {
+      messages.value.push({ role: "assistant", text: event.text });
+    }
+  } else {
+    messages.value.push({ role: "error", text: event.message });
+  }
+  scrollToEnd();
+}
 
 async function send() {
   const text = draft.value.trim();
-  if (!text || busy.value || !agent) return;
+  if (!text || busy.value || !agent.value) return;
   draft.value = "";
   messages.value.push({ role: "user", text });
   busy.value = true;
   scrollToEnd();
   try {
-    await agent.send(text);
+    await agent.value.send(text);
   } finally {
     busy.value = false;
     scrollToEnd();
   }
 }
 
-onBeforeUnmount(() => agent?.abort());
+function scrollToEnd() {
+  nextTick(() => listEl.value?.scrollTo({ top: listEl.value.scrollHeight }));
+}
+
+onBeforeUnmount(() => agent.value?.abort());
 </script>
 
 <style lang="scss" scoped>

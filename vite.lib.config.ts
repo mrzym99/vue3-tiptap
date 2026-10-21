@@ -5,27 +5,32 @@ import Icons from "unplugin-icons/vite";
 import dts from "unplugin-dts/vite";
 import { resolve } from "node:path";
 
-// Library build: produces dist/index.js (ESM), dist/index.cjs (CJS),
-// dist/index.d.ts (types, bundled into one file by vite-plugin-dts)
-// and dist/style.css.
+// Library build: two entries — dist/index.js|.cjs (editor core) and
+// dist/ai.js|.cjs (AI add-on, also published as the `./ai` subpath).
 export default defineConfig({
   plugins: [
     vue(),
     AutoImport({ imports: ["vue"], dts: false }),
     Icons({ compiler: "vue3" }),
-    // dts: bundleTypes uses @microsoft/api-extractor to emit ONE dist/index.d.ts
-    // instead of per-file declarations (the v3/v4 option was `rollupTypes`).
-    dts({ tsconfigPath: "./tsconfig.lib.json", bundleTypes: true, outDir: "dist" }),
+    // Per-file declarations (NOT api-extractor rollup: that only supports one entry).
+    dts({ tsconfigPath: "./tsconfig.lib.json", bundleTypes: false, outDirs: "dist" }),
   ],
+xx
+  resolve: {
+    alias: { "@": resolve(__dirname, "src") },
+  },
   build: {
     lib: {
-      entry: resolve(__dirname, "src/index.ts"),
+      entry: {
+        index: resolve(__dirname, "src/index.ts"),
+        ai: resolve(__dirname, "src/ai/index.ts"),
+      },
       formats: ["es", "cjs"],
-      fileName: (format) => (format === "es" ? "index.js" : "index.cjs"),
+      fileName: (format, entryName) => (format === "es" ? `${entryName}.js` : `${entryName}.cjs`),
     },
     copyPublicDir: false, // keep favicon.svg (demo asset) out of dist
     cssCodeSplit: false,
-    emptyOutDir: false, // types (dist/index.d.ts) are emitted by vite-plugin-dts
+    emptyOutDir: false, // types (dist/index.d.ts) are emitted by unplugin-dts
     rollupOptions: {
       external: ["vue", /^@tiptap\//],
       output: {

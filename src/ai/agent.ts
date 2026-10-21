@@ -1,10 +1,4 @@
-import type {
-  AgentConfig,
-  AgentEvent,
-  ChatCompletionTool,
-  ChatMessage,
-  EditorAgent,
-} from "./types";
+import type { AgentConfig, AgentEvent, ChatCompletionTool, ChatMessage, EditorAgent } from "./types";
 import type { Editor } from "@tiptap/core";
 
 import { createAiToolkit } from "./toolkit";
@@ -32,12 +26,16 @@ export function createEditorAgent(editor: Editor, config: AgentConfig): EditorAg
     confirmDangerous: config.confirmDangerous,
   });
 
-  const history: ChatMessage[] = [
-    { role: "system", content: buildSystemPrompt(toolkit.tools, config.systemPrompt) },
-  ];
+  const history: ChatMessage[] = [{ role: "system", content: buildSystemPrompt(toolkit.tools, config.systemPrompt) }];
   let controller: AbortController | undefined;
 
-  const emit = (event: AgentEvent) => config.onEvent?.(event);
+  // Multi-listener event stream: `config.onEvent` auto-registers (back-compat),
+  // UI consumers like AiPanel subscribe via `on()`.
+  const listeners: ((event: AgentEvent) => void)[] = [];
+  if (config.onEvent) listeners.push(config.onEvent);
+  const emit = (event: AgentEvent) => {
+    for (const listener of [...listeners]) listener(event);
+  };
 
   const chatCompletions = async (): Promise<ChatMessage> => {
     const response = await fetch(`${config.baseURL.replace(/\/$/, "")}/chat/completions`, {
@@ -46,16 +44,14 @@ export function createEditorAgent(editor: Editor, config: AgentConfig): EditorAg
       body: JSON.stringify({
         model: config.model,
         messages: history,
-        tools: toolkit.tools.map(
-          (tool): ChatCompletionTool => ({
-            type: "function",
-            function: {
-              name: tool.name,
-              description: tool.description,
-              parameters: tool.parameters,
-            },
-          }),
-        ),
+        tools: toolkit.tools.map((tool): ChatCompletionTool => ({
+          type: "function",
+          function: {
+            name: tool.name,
+            description: tool.description,
+            parameters: tool.parameters,
+          },
+        })),
         tool_choice: "auto",
         // stream so the host can show the model's live thinking/content
         stream: true,
@@ -143,5 +139,12 @@ export function createEditorAgent(editor: Editor, config: AgentConfig): EditorAg
     send,
     abort: () => controller?.abort(),
     history,
+    on(listener) {
+      listeners.push(listener);
+      return () => {
+        const index = listeners.indexOf(listener);
+        if (index !== -1) listeners.splice(index, 1);
+      };
+    },
   };
 }

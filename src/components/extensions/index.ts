@@ -43,6 +43,7 @@ import { Extension, type Extensions } from "@tiptap/core";
 
 // Re-export every built-in extension (with its options type) for hand-picking
 // via the `extensions` prop
+export * from "./Ai"; // opt-in only — deliberately NOT in builtinExtensions/StarterKit
 export * from "./Audio";
 export * from "./Blockquote";
 export * from "./Bold";

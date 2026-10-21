@@ -113,7 +113,9 @@ describe("createEditorAgent", () => {
       [{ choices: [{ delta: { content: "Done." } }] }],
     ];
     const sse = (deltas: object[]) =>
-      new Response(deltas.map((delta) => `data: ${JSON.stringify(delta)}\n\n`).join("") + "data: [DONE]\n\n", { status: 200 });
+      new Response(deltas.map((delta) => `data: ${JSON.stringify(delta)}\n\n`).join("") + "data: [DONE]\n\n", {
+        status: 200,
+      });
     const fetchMock = vi.fn(async () => sse(responses[fetchMock.mock.calls.length - 1]));
     vi.stubGlobal("fetch", fetchMock);
 
@@ -124,7 +126,9 @@ describe("createEditorAgent", () => {
     expect(url).toBe("https://llm.test/v1/chat/completions");
     const body = JSON.parse(init.body as string);
     expect(body.model).toBe("test-model");
-    expect(body.tools.some((tool: { function: { name: string } }) => tool.function.name === "append_content")).toBe(true);
+    expect(body.tools.some((tool: { function: { name: string } }) => tool.function.name === "append_content")).toBe(
+      true,
+    );
 
     // tool round-trip
     expect(editor.setContent).not.toHaveBeenCalled(); // append, not set
@@ -144,6 +148,42 @@ describe("createEditorAgent", () => {
     const toolMessage = agent.history.find((message) => message.role === "tool");
     expect(toolMessage).toMatchObject({ tool_call_id: "call_1" });
     expect(agent.history.at(-1)?.content).toBe("Done.");
+
+    vi.unstubAllGlobals();
+  });
+
+  it("supports multi-listener on() with unsubscribe, and onEvent stays registered", async () => {
+    const viaOnEvent: AgentEvent[] = [];
+    const agent = createEditorAgent(fakeEditor(), {
+      baseURL: "https://llm.test/v1",
+      apiKey: "sk-test",
+      model: "test-model",
+      onEvent: (event) => viaOnEvent.push(event),
+    });
+    const a: AgentEvent[] = [];
+    const b: AgentEvent[] = [];
+    const offA = agent.on((event) => a.push(event));
+    agent.on((event) => b.push(event));
+
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(
+        async () =>
+          new Response(`data: ${JSON.stringify({ choices: [{ delta: { content: "hi" } }] })}\n\ndata: [DONE]\n\n`, {
+            status: 200,
+          }),
+      ),
+    );
+    await agent.send("hello");
+    const base = viaOnEvent.length; // 2 events per send: content_delta + assistant_text
+    expect(base).toBeGreaterThan(0);
+    expect(a.length).toBe(base);
+    expect(b.length).toBe(base);
+
+    offA();
+    await agent.send("again");
+    expect(a.length).toBe(base); // unsubscribed: unchanged
+    expect(b.length).toBe(viaOnEvent.length); // still subscribed, grew with second send
 
     vi.unstubAllGlobals();
   });
