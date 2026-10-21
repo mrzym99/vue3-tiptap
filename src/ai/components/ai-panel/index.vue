@@ -2,19 +2,19 @@
   <Teleport to="body">
     <!-- Soft UI FAB: floats at bottom-right, never affects host layout -->
     <button v-if="!open" type="button" class="tiptap-ai-fab" @click="open = true">
-      <SparklesIcon />
+      <BotIcon />
     </button>
 
     <Transition name="tiptap-ai-drawer">
       <aside v-if="open" ref="drawerEl" class="tiptap-ai-drawer">
         <div class="tiptap-ai-drawer__header">
-          <span class="tiptap-ai-drawer__title"><SparklesIcon /> {{ t("aiTitle") }}</span>
+          <span class="tiptap-ai-drawer__title"><BotIcon /> {{ t("aiTitle") }}</span>
           <button type="button" class="tiptap-ai-drawer__close" @click="open = false">
             <XIcon />
           </button>
         </div>
 
-        <div ref="listEl" class="tiptap-ai-drawer__list">
+        <div ref="listEl" class="tiptap-ai-drawer__list" @scroll="onListScroll">
           <p v-if="!messages.length" class="tiptap-ai-drawer__empty">{{ t("aiEmpty") }}</p>
           <template v-for="(item, index) in messages" :key="index">
             <details
@@ -22,7 +22,7 @@
               class="tiptap-ai-drawer__thinking"
               :open="busy && index === messages.length - 1"
             >
-              <summary>{{ t("aiThinking") }}</summary>
+              <summary><BrainIcon /> {{ t("aiThinking") }}</summary>
               <p>{{ item.text }}</p>
             </details>
             <div
@@ -30,8 +30,8 @@
               class="tiptap-ai-drawer__tool"
               :class="{ done: item.done, failed: item.failed }"
             >
-              <span>{{ !item.done ? t("aiToolRunning") : item.failed ? t("aiToolFailed") : t("aiToolDone") }}</span>
-              <code>{{ item.text }}</code>
+              <span>{{ toolName(item.text) }}</span>
+              <span v-if="item.failed">{{ t("aiToolFailed") }}</span>
             </div>
             <p v-else class="tiptap-ai-drawer__msg" :class="`tiptap-ai-drawer__msg--${item.role}`">{{ item.text }}</p>
           </template>
@@ -39,16 +39,26 @@
         </div>
 
         <div class="tiptap-ai-drawer__input">
-          <TiptapInput
+          <textarea
             v-model="draft"
+            class="tiptap-ai-drawer__textarea"
+            rows="2"
             :placeholder="t('aiPlaceholder')"
             :disabled="busy"
-            @keydown.enter.prevent="send"
+            @keydown="onKeydown"
           />
-          <TiptapButton v-if="busy" variant="primary" @click="agent?.abort()">{{ t("aiStop") }}</TiptapButton>
-          <TiptapButton v-else variant="primary" :disabled="!draft.trim()" @click="send">
-            {{ t("aiSend") }}
-          </TiptapButton>
+          <button
+            type="button"
+            class="tiptap-ai-drawer__send"
+            :class="{ 'tiptap-ai-drawer__send--stop': busy }"
+            :disabled="!busy && !draft.trim()"
+            :aria-label="busy ? t('aiStop') : t('aiSend')"
+            :title="busy ? t('aiStop') : t('aiSend')"
+            @click="busy ? agent?.abort() : send()"
+          >
+            <SquareIcon v-if="busy" />
+            <ArrowUpIcon v-else />
+          </button>
         </div>
       </aside>
     </Transition>
@@ -58,11 +68,12 @@
 <script setup lang="ts">
 import { inject, nextTick, onBeforeUnmount, ref, toRef, useTemplateRef, watch } from "vue";
 import type { Editor } from "@tiptap/core";
-import SparklesIcon from "~icons/lucide/sparkles";
+import ArrowUpIcon from "~icons/lucide/arrow-up";
+import BotIcon from "~icons/lucide/bot";
+import BrainIcon from "~icons/lucide/brain";
+import SquareIcon from "~icons/lucide/square";
 import XIcon from "~icons/lucide/x";
 
-import TiptapButton from "@/components/ui-common/button/index.vue";
-import TiptapInput from "@/components/ui-common/input/index.vue";
 import { useEditorLocale } from "@/composables/useEditorLocale";
 import type { LocaleTranslations } from "@/locales";
 import type { TranslateFn } from "@/types";
@@ -119,6 +130,7 @@ watch(open, async (visible) => {
   if (!visible) return;
   await nextTick();
   if (drawerEl.value) syncTheme(drawerEl.value);
+  stickToBottom.value = true;
   scrollToEnd();
 });
 
@@ -173,6 +185,7 @@ async function send() {
   draft.value = "";
   messages.value.push({ role: "user", text });
   busy.value = true;
+  stickToBottom.value = true;
   scrollToEnd();
   try {
     await agent.value.send(text);
@@ -182,7 +195,38 @@ async function send() {
   }
 }
 
+/** Tool names are locale keys (`tool.insert_table`); unknown tools fall back to the raw name. */
+function toolName(name: string) {
+  const key = `tool.${name}`;
+  const label = t(key);
+  return label === key ? name : label;
+}
+
+// Stick to the bottom while an answer streams, but stop following once the user
+// scrolls up. A new question (send) or (re)opening the drawer pins it again.
+const stickToBottom = ref(true);
+
+function onListScroll() {
+  const el = listEl.value;
+  if (!el) return;
+  stickToBottom.value = el.scrollHeight - el.scrollTop - el.clientHeight < 24;
+}
+
+/** Enter sends, Ctrl/Cmd+Enter inserts a newline (IME commits must not send). */
+function onKeydown(event: KeyboardEvent) {
+  if (event.isComposing || event.key !== "Enter") return;
+  event.preventDefault();
+  if (!event.ctrlKey && !event.metaKey) {
+    send();
+    return;
+  }
+  const el = event.target as HTMLTextAreaElement;
+  el.setRangeText("\n", el.selectionStart, el.selectionEnd, "end");
+  draft.value = el.value;
+}
+
 function scrollToEnd() {
+  if (!stickToBottom.value) return;
   nextTick(() => listEl.value?.scrollTo({ top: listEl.value.scrollHeight }));
 }
 
@@ -305,21 +349,19 @@ onBeforeUnmount(() => agent.value?.abort());
     line-height: 1.6;
     white-space: pre-wrap;
     word-break: break-word;
-    transition: background-color 300ms ease-in-out;
 
     // icon-chip feel: soft tinted chip, no hard border
     &--user {
       align-self: flex-end;
       background: var(--tiptap-accent-primary-bg);
       color: var(--tiptap-color-text);
-      border-bottom-right-radius: 4px;
     }
 
+    // Assistant replies sit on the panel surface: no chip, no tint.
     &--assistant {
       align-self: flex-start;
-      background: var(--tiptap-color-bg-subtle);
       color: var(--tiptap-color-text);
-      border-bottom-left-radius: 4px;
+      padding-inline: 0;
     }
 
     &--error {
@@ -341,6 +383,10 @@ onBeforeUnmount(() => agent.value?.abort());
     summary {
       cursor: pointer;
       user-select: none;
+
+      svg {
+        vertical-align: -0.15em; // keep the disclosure triangle, nudge the inline icon onto the baseline
+      }
     }
 
     p {
@@ -370,18 +416,106 @@ onBeforeUnmount(() => agent.value?.abort());
       color: var(--tiptap-accent-danger);
     }
 
-    code {
-      font-size: var(--tiptap-font-size-sm);
+    &::before {
+      content: "\25CB"; // ○ running
+      font-size: 0.75em;
+      line-height: 1;
+    }
+
+    &.done::before {
+      content: "\25CF"; // ● done
+    }
+
+    &.failed::before {
+      content: "\25B2"; // ▲ failed
     }
   }
 
   &__input {
-    display: flex;
-    gap: var(--tiptap-gap-sm);
+    position: relative;
     padding: var(--tiptap-padding-lg) var(--tiptap-content-padding) var(--tiptap-content-padding);
+  }
 
-    > :first-child {
-      flex: 1;
+  // Mirrors ui-common/input styling — that component only renders a single-line <input>.
+  &__textarea {
+    background-color: var(--tiptap-input-bg);
+    border: 1px solid var(--tiptap-input-border);
+    border-radius: var(--tiptap-input-radius);
+    box-sizing: border-box;
+    color: var(--tiptap-input-text);
+    font-family: inherit;
+    font-size: var(--tiptap-font-size);
+    outline: none;
+    padding: var(--tiptap-input-padding);
+    padding-bottom: 44px; // room for the round send button in the corner
+    resize: none;
+    transition:
+      border-color 200ms ease-in-out,
+      box-shadow 200ms ease-in-out;
+    width: 100%;
+
+    &::placeholder {
+      color: var(--tiptap-input-placeholder);
+    }
+
+    &:focus {
+      border-color: var(--tiptap-input-border-hover);
+      background-color: var(--tiptap-color-bg);
+      box-shadow: 0 0 0 3px var(--tiptap-focus-ring);
+    }
+  }
+
+  // Round icon button pinned to the textarea's bottom-right corner.
+  &__send {
+    position: absolute;
+    right: calc(var(--tiptap-content-padding) + var(--tiptap-padding-md));
+    bottom: calc(var(--tiptap-content-padding) + var(--tiptap-padding-md));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: var(--tiptap-btn-primary-bg);
+    color: var(--tiptap-btn-primary-text);
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: var(--tiptap-btn-primary-shadow);
+    transition:
+      transform 200ms ease-in-out,
+      box-shadow 200ms ease-in-out,
+      background-color 200ms ease-in-out;
+
+    &:hover:not(:disabled) {
+      background: var(--tiptap-btn-primary-bg-hover);
+      box-shadow: var(--tiptap-btn-primary-shadow-hover);
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.95);
+    }
+
+    // Stop state reads as destructive: the abort kills the running answer.
+    &--stop {
+      background: var(--tiptap-btn-danger-bg);
+      color: var(--tiptap-btn-danger-text);
+      box-shadow: var(--tiptap-btn-danger-shadow);
+
+      svg {
+        font-size: 14px; // lucide/square's rect is 18/24 of its viewBox: this makes its ink ~14px, same as the arrow's
+      }
+
+      &:hover:not(:disabled) {
+        background: var(--tiptap-btn-danger-bg-hover);
+        box-shadow: var(--tiptap-btn-danger-shadow-hover);
+      }
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
     }
   }
 }

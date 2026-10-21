@@ -15,7 +15,6 @@ export default defineConfig({
     // Per-file declarations (NOT api-extractor rollup: that only supports one entry).
     dts({ tsconfigPath: "./tsconfig.lib.json", bundleTypes: false, outDirs: "dist" }),
   ],
-xx
   resolve: {
     alias: { "@": resolve(__dirname, "src") },
   },
