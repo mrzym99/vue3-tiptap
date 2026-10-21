@@ -40,7 +40,7 @@ export const Ai = Extension.create<AiOptions>({
       model: "",
       panel: ({ editor, t }) => ({
         component: AiPanel,
-        componentProps: { editor, agent: editor.storage.ai.agent.value, translate: t },
+        componentProps: { editor, agent: editor.storage.ai.agent.value, t },
       }),
     };
   },

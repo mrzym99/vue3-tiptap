@@ -26,12 +26,9 @@
 <script setup lang="ts">
 import ArrowUpIcon from "~icons/lucide/arrow-up";
 import SquareIcon from "~icons/lucide/square";
-import type { TranslateFn } from "@/types";
+import type { AiInputProps } from "./props";
 
-defineProps<{
-  busy: boolean;
-  t: TranslateFn;
-}>();
+defineProps<AiInputProps>();
 
 const emit = defineEmits<{
   send: [];

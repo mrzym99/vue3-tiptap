@@ -37,7 +37,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "build:lib": "rm -rf dist && vite build --config vite.lib.config.ts",
+    "build:lib": "vite build --config vite.lib.config.ts",
     "prepublishOnly": "pnpm build:lib",
     "preview": "vite preview",
     "test": "vitest run",

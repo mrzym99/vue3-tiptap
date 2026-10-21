@@ -27,14 +27,9 @@
 <script setup lang="ts">
 import { nextTick, ref, useTemplateRef, watch } from "vue";
 import BrainIcon from "~icons/lucide/brain";
-import type { TranslateFn } from "@/types";
-import type { PanelItem } from "./use-ai-panel";
+import type { AiMessageProps } from "./props";
 
-const props = defineProps<{
-  messages: PanelItem[];
-  busy: boolean;
-  t: TranslateFn;
-}>();
+const props = defineProps<AiMessageProps>();
 
 const listEl = useTemplateRef<HTMLElement>("listEl");
 

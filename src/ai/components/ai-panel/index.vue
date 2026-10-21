@@ -24,19 +24,15 @@
 
 <script setup lang="ts">
 import { inject, nextTick, toRef, useTemplateRef, watch } from "vue";
-import type { Editor } from "@tiptap/core";
 import BotIcon from "~icons/lucide/bot";
 import XIcon from "~icons/lucide/x";
 
-import { useEditorLocale } from "@/composables/useEditorLocale";
-import type { LocaleTranslations } from "@/locales";
-import type { TranslateFn } from "@/types";
 import { applyTheme } from "@/theme";
 import { themeSyncKey } from "@/components/ui-common/theme-provider/context";
-import type { EditorAgent } from "../../types";
+import type { AiPanelProps } from "./props";
 import { useAiPanel } from "./use-ai-panel";
-import AiMessages from "./AiMessages.vue";
-import AiInput from "./AiInput.vue";
+import AiMessages from "../ai-message/index.vue";
+import AiInput from "../ai-input/index.vue";
 
 /**
  * Soft-UI AI assistant: a floating FAB (fixed bottom-right, out of layout flow)
@@ -45,25 +41,11 @@ import AiInput from "./AiInput.vue";
  * `confirmDangerous`) — the panel is pure UI.
  *
  * Shell only (FAB, drawer chrome, theme sync); chat state lives in
- * `use-ai-panel.ts`, the message list in `AiMessages.vue`, the input bar in
- * `AiInput.vue`.
+ * `use-ai-panel.ts`, the message list in `../ai-message`, the input bar in `../ai-input`.
  */
-const props = defineProps<{
-  editor: Editor;
-  locale?: "zh" | "en" | (string & {});
-  translations?: LocaleTranslations;
-  agent?: EditorAgent;
-  /** Pre-resolved translate from the editor shell (extension mount); wins over `locale`. */
-  translate?: TranslateFn;
-}>();
+const props = defineProps<AiPanelProps>();
 
 const open = defineModel<boolean>("open", { default: false });
-
-const { t: localeT } = useEditorLocale(
-  toRef(() => props.locale),
-  toRef(() => props.translations),
-);
-const t: TranslateFn = (key, named, plural) => (props.translate ?? localeT)(key, named, plural);
 
 const drawerEl = useTemplateRef<HTMLElement>("drawerEl");
 const listRef = useTemplateRef<InstanceType<typeof AiMessages>>("listRef");
