@@ -8,9 +8,9 @@ export default defineConfig({
   server: {
     proxy: {
       "/ai-proxy": {
-        target: "https://ark.cn-beijing.volces.com",
+        target: "https://api.chatanywhere.tech",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/ai-proxy/, "/api/coding/v3"),
+        rewrite: (path) => path.replace(/^\/ai-proxy/, ""),
       },
     },
   },
