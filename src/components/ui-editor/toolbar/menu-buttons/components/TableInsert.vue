@@ -65,7 +65,6 @@ function insertTable(rows: number, cols: number) {
   grid-template-rows: repeat(10, 16px);
   border-left: 1px solid var(--tiptap-color-border);
   border-top: 1px solid var(--tiptap-color-border);
-  padding: var(--tiptap-padding-sm);
 }
 
 .tiptap-table-cell {
