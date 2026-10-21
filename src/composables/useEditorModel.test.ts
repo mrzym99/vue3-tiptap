@@ -5,6 +5,7 @@ import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import { CharacterCount } from "@tiptap/extensions";
+import Heading from "@tiptap/extension-heading";
 import { Markdown } from "@tiptap/markdown";
 import { useEditorModel } from "./useEditorModel";
 import type { Transaction } from "@tiptap/pm/state";
@@ -159,7 +160,8 @@ describe("useEditorModel with contentType: markdown", () => {
     const editor = new Editor({
       content: "# hello",
       contentType: "markdown",
-      extensions: [Document, Paragraph, Text, Markdown],
+      // Heading must be in the schema or `# hello` parses to a node that gets dropped
+      extensions: [Document, Paragraph, Text, Heading, Markdown],
       element: document.createElement("div"),
     });
     const editorRef = shallowRef(editor);
@@ -179,10 +181,10 @@ describe("useEditorModel with contentType: markdown", () => {
     editor.destroy();
   });
 
-  it("parses an externally set model value as markdown", () => {
+  it("parses an externally set model value as markdown", async () => {
     const editor = new Editor({
       content: "",
-      extensions: [Document, Paragraph, Text, Markdown],
+      extensions: [Document, Paragraph, Text, Heading, Markdown],
       element: document.createElement("div"),
     });
     const editorRef = shallowRef(editor);
@@ -197,8 +199,11 @@ describe("useEditorModel with contentType: markdown", () => {
     model.watchModel();
 
     modelValue.value = "# Title";
+    // let the pre-flush watcher push the value into the editor
+    await nextTick();
     expect(editor.getMarkdown()).toBe("# Title");
-    expect(editor.getHTML()).not.toContain("Title"); // sanity: not parsed as HTML text
+    // sanity: parsed as markdown (h1), not inserted as literal text
+    expect(editor.getHTML()).toContain("<h1>");
     editor.destroy();
   });
 });
