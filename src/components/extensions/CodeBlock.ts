@@ -15,4 +15,16 @@ export const CodeBlock = /* @__PURE__ */ TiptapCodeBlock.extend<CodeBlockOptions
       button: withButton(CodeBlockButton),
     };
   },
+
+  // also render the language as `data-language` on the <pre> so CSS can display
+  // it via a ::before + attr() pseudo-element
+  addAttributes() {
+    return {
+      language: {
+        ...this.parent?.(),
+        rendered: true,
+        renderHTML: (attributes) => (attributes.language ? { "data-language": attributes.language } : {}),
+      },
+    };
+  },
 });

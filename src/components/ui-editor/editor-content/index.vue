@@ -140,6 +140,23 @@ const props = defineProps<{ editor: Editor }>();
       padding: 0;
     }
 
+    /* display the code block language via data-language + attr() */
+    pre[data-language] {
+      padding-top: calc(var(--tiptap-padding-lg) + 1em);
+      position: relative;
+
+      &::before {
+        color: var(--tiptap-color-text-muted);
+        content: attr(data-language);
+        font-family: inherit;
+        font-size: 0.85em;
+        left: var(--tiptap-padding-lg);
+        line-height: 1.4;
+        position: absolute;
+        top: 0.2em;
+      }
+    }
+
     div[data-type="details"] {
       border: 1px solid var(--tiptap-color-border);
       border-radius: var(--tiptap-border-radius-sm);
