@@ -2,12 +2,14 @@ import { onUnmounted, watch, type Ref } from "vue";
 import type { Editor } from "@tiptap/core";
 import type { Transaction } from "@tiptap/pm/state";
 
-/** v-model binding: debounced HTML write-back + over-`limit` warning on create. */
+/** v-model binding: debounced write-back in the configured format + over-`limit` warning on create. */
 export interface UseEditorModelOptions {
   /** Must be a SHALLOW ref — a deep ref breaks ProseMirror's transaction checks */
   editor: Ref<Editor | undefined>;
   /** The v-model binding. */
   modelValue: Ref<string>;
+  /** v-model content format: `"html"` (default) or `"markdown"` */
+  contentType?: () => "html" | "markdown";
   /** Current `limit` (0 = unlimited). */
   limit: () => number;
   /** Called on every content-changing transaction. */
@@ -25,11 +27,14 @@ export function useEditorModel(options: UseEditorModelOptions) {
   // A value that changed before useEditor created the editor (mount race)
   let pendingContent: string | undefined;
 
+  const format = options.contentType ?? (() => "html" as const);
+  const getModelValue = () => (format() === "markdown" ? editor.value!.getMarkdown() : editor.value!.getHTML());
+
   const flushModelValue = () => {
     if (!modelSyncTimer) return;
     clearTimeout(modelSyncTimer);
     modelSyncTimer = undefined;
-    if (editor.value) modelValue.value = editor.value.getHTML();
+    if (editor.value) modelValue.value = getModelValue();
   };
   onUnmounted(flushModelValue);
 
@@ -40,8 +45,8 @@ export function useEditorModel(options: UseEditorModelOptions) {
 
   /** onCreate: apply a pre-create value, warn when initial content exceeds `limit`. */
   const handleCreate = (created: Editor) => {
-    if (pendingContent !== undefined && pendingContent !== created.getHTML()) {
-      created.commands.setContent(pendingContent, { emitUpdate: false });
+    if (pendingContent !== undefined && pendingContent !== getModelValue()) {
+      created.commands.setContent(pendingContent, { emitUpdate: false, contentType: format() });
     }
     // Over-limit initial content is NOT trimmed: the library never rewrites
     // host content on its own — the host listens for the event and decides.
@@ -64,8 +69,8 @@ export function useEditorModel(options: UseEditorModelOptions) {
         pendingContent = newValue;
         return;
       }
-      if (newValue === editor.value.getHTML()) return;
-      editor.value.commands.setContent(newValue);
+      if (newValue === getModelValue()) return;
+      editor.value.commands.setContent(newValue, { contentType: format() });
     });
 
   return { handleCreate, handleUpdate, watchModel, flush: flushModelValue };

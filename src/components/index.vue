@@ -48,6 +48,7 @@ const props = withDefaults(defineProps<TipTapEditorProps>(), {
   bubbleMenu: undefined,
   floatingMenu: undefined,
   showInvisibleCharacters: false,
+  contentType: "html",
   extensions: () => [],
 });
 
@@ -102,6 +103,7 @@ const mergedExtensions = [
 
 const editor = useEditor({
   content: modelValue.value,
+  contentType: props.contentType,
   extensions: mergedExtensions,
   editable: !props.readonly,
   autofocus: props.autofocus,
@@ -124,6 +126,7 @@ const editor = useEditor({
 const model = useEditorModel({
   editor,
   modelValue,
+  contentType: () => props.contentType ?? "html",
   limit: () => props.limit,
   onUpdate: (ed, tr) => emit("update", { editor: ed, transaction: tr }),
   onTruncated: (max) => emit("truncated", { limit: max }),

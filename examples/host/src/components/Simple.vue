@@ -4,7 +4,7 @@ import type { Extensions, LocaleTranslations, ThemeName, Toolbar } from "@yumine
 
 // 精简版：只保留较全但去掉弹窗类的常用工具
 const SIMPLE_TOOLBAR: Toolbar =
-  "undo redo | heading bulletList blockquote codeBlock | bold italic strike code underline highlight link| superscript subscript | textAlign | image";
+  "undo redo | heading bulletList blockquote codeBlock | bold italic strike code underline highlight link| superscript subscript | textAlign | table | image";
 
 defineProps<{
   modelValue: string;

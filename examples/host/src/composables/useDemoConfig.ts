@@ -16,7 +16,7 @@ const MODE_STORAGE_KEY = `${STORAGE_PREFIX}mode`;
 export function useDemoConfig() {
   const theme = ref<ThemeName>(readStorage<ThemeName>(THEME_STORAGE_KEY, "light"));
   const locale = ref(readStorage(LOCALE_STORAGE_KEY, "zh"));
-  const mode = ref<"simple" | "full">(readStorage<"simple" | "full">(MODE_STORAGE_KEY, "simple"));
+  const mode = ref<"simple" | "full" | "markdown">(readStorage<"simple" | "full" | "markdown">(MODE_STORAGE_KEY, "simple"));
 
   const syncThemeClass = (name: ThemeName) => {
     document.documentElement.classList.toggle("dark", name === "dark");

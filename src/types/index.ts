@@ -34,6 +34,8 @@ export interface TipTapEditorProps {
   floatingMenu?: Toolbar | false;
   /** Show invisible characters (spaces, hard breaks, paragraph marks); default hidden */
   showInvisibleCharacters?: boolean;
+  /** v-model content format: `"html"` (default) or `"markdown"` (initial parse + write-back); requires the bundled `markdown` extension to stay enabled */
+  contentType?: "html" | "markdown";
   /** Extensions to load — nothing included automatically; later entries win on name conflicts */
   extensions?: import("@tiptap/core").Extensions;
 }

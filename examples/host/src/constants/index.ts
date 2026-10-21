@@ -68,3 +68,22 @@ export const DEFAULT_CONTENT: string = `<h1>Getting started</h1>
 <h3>Make it your own</h3>
 <p style="text-align: center;">浅色 / 深色主题一键切换，用 CSS 变量把编辑器的外观调整成你产品的样子。</p>
 <p style="text-align: center;"><strong>现在就试试上面的工具栏吧 →</strong></p>`;
+
+export const DEFAULT_MARKDOWN_CONTENT: string = `# Getting started
+
+欢迎使用 **@yumine9/vue3-tiptap** —— 一个基于 Tiptap 的 Vue 3 富文本编辑器组件库。
+
+这个 demo 的 v-model 进出都是 \`markdown\`（\`content-type="markdown"\`），下方可展开查看实时值。
+
+## 功能一览
+
+- 加粗、*斜体*、~~删除线~~、\`行内代码\`
+- 列表、任务列表、可折叠区块
+- 图片、视频、音频与文件上传
+
+\`\`\`ts
+const editor = useEditor({ contentType: "markdown" });
+\`\`\`
+
+> 保存时调用 \`editor.getMarkdown()\`，也可以直接把 v-model 值存库。
+`;

@@ -1,5 +1,6 @@
 import { CharacterCount, Dropcursor, Gapcursor, TrailingNode } from "@tiptap/extensions";
 import { ListItem, TaskItem, ListKeymap } from "@tiptap/extension-list";
+import { Markdown } from "@tiptap/markdown";
 import { Audio } from "./Audio";
 import { Blockquote } from "./Blockquote";
 import { Bold } from "./Bold";
@@ -66,6 +67,7 @@ export * from "./Image";
 export * from "./InvisibleCharacters";
 export * from "./Italic";
 export * from "./Link";
+export { Markdown } from "@tiptap/markdown";
 export * from "./Mention";
 export * from "./NodeRange";
 export * from "./OrderedList";
@@ -146,6 +148,7 @@ const builtinExtensions: Extensions = [
   // Mention @ (typing @ triggers it; data source injected by the host via items)
   Mention,
   // Behavior-only (no buttons)
+  Markdown,
   Gapcursor,
   Dropcursor,
   TrailingNode,

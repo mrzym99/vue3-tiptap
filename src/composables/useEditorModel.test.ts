@@ -5,6 +5,7 @@ import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import { CharacterCount } from "@tiptap/extensions";
+import { Markdown } from "@tiptap/markdown";
 import { useEditorModel } from "./useEditorModel";
 import type { Transaction } from "@tiptap/pm/state";
 
@@ -149,5 +150,55 @@ describe("useEditorModel", () => {
     model.handleCreate(editor);
     expect(truncated).toBe(1);
     expect(editor.getText()).toBe("hello world");
+  });
+});
+
+describe("useEditorModel with contentType: markdown", () => {
+  it("writes back markdown instead of HTML", async () => {
+    vi.useFakeTimers();
+    const editor = new Editor({
+      content: "# hello",
+      contentType: "markdown",
+      extensions: [Document, Paragraph, Text, Markdown],
+      element: document.createElement("div"),
+    });
+    const editorRef = shallowRef(editor);
+    const modelValue = ref("");
+    const model = useEditorModel({
+      editor: editorRef,
+      modelValue,
+      limit: () => 0,
+      contentType: () => "markdown",
+    });
+    model.handleCreate(editor);
+    model.watchModel();
+
+    model.handleUpdate(editor, noopTxn);
+    await vi.advanceTimersByTimeAsync(150);
+    expect(modelValue.value).toBe("# hello");
+    editor.destroy();
+  });
+
+  it("parses an externally set model value as markdown", () => {
+    const editor = new Editor({
+      content: "",
+      extensions: [Document, Paragraph, Text, Markdown],
+      element: document.createElement("div"),
+    });
+    const editorRef = shallowRef(editor);
+    const modelValue = ref("a **b**");
+    const model = useEditorModel({
+      editor: editorRef,
+      modelValue,
+      limit: () => 0,
+      contentType: () => "markdown",
+    });
+    model.handleCreate(editor);
+    model.watchModel();
+
+    modelValue.value = "# Title";
+    expect(editor.getMarkdown()).toBe("# Title");
+    expect(editor.getHTML()).not.toContain("Title"); // sanity: not parsed as HTML text
+    editor.destroy();
   });
 });

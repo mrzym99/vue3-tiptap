@@ -5,12 +5,15 @@ import { StarterKit, Dialog, Button, Ai } from "@yumine9/vue3-tiptap";
 import Header from "./components/Header.vue";
 import Full from "./components/Full.vue";
 import Simple from "./components/Simple.vue";
+import Markdown from "./components/Markdown.vue";
 import { useDemoConfig } from "./composables/useDemoConfig";
 import type { LocaleTranslations } from "@yumine9/vue3-tiptap";
 import "@yumine9/vue3-tiptap/style.css";
-import { DEFAULT_CONTENT } from "./constants";
+import { DEFAULT_CONTENT, DEFAULT_MARKDOWN_CONTENT } from "./constants";
 
 const content = ref(DEFAULT_CONTENT);
+// markdown 版有独立的 v-model：内容格式不同，不能和 HTML 模式共用
+const markdownContent = ref(DEFAULT_MARKDOWN_CONTENT);
 
 const mentionUsers = [
   { id: "1", label: "张三" },
@@ -66,10 +69,14 @@ import prismDark from "prismjs/themes/prism-okaidia.min.css?inline";
 import "prismjs/plugins/line-numbers/prism-line-numbers.css";
 import "prismjs/plugins/line-numbers/prism-line-numbers";
 
-// 源码 dialog: show the raw HTML the editor produces
+// 源码 dialog: show the raw HTML the editor produces (markdown 模式直接展示 markdown)
 const showOutput = ref(false);
 const codeEl = useTemplateRef<HTMLElement>("codeEl");
-const formattedSource = computed(() => beautify.html(content.value, { indent_size: 2 }));
+const isMarkdownMode = computed(() => mode.value === "markdown");
+const formattedSource = computed(() =>
+  isMarkdownMode.value ? markdownContent.value : beautify.html(content.value, { indent_size: 2 }),
+);
+const dialogTitle = computed(() => (isMarkdownMode.value ? "源码（Markdown）" : "源码（HTML）"));
 
 // Re-highlight on open/content change; the line-numbers plugin reads the DOM,
 // so we go through highlightElement instead of Prism.highlight
@@ -98,6 +105,9 @@ async function copySource() {
       </button>
       <button type="button" class="app-select" :class="{ 'is-active': mode === 'full' }" @click="mode = 'full'">
         完整版
+      </button>
+      <button type="button" class="app-select" :class="{ 'is-active': mode === 'markdown' }" @click="mode = 'markdown'">
+        Markdown 版
       </button>
 
       <button type="button" class="app-select" @click="showOutput = true">查看源码</button>
@@ -172,8 +182,16 @@ async function copySource() {
         :extensions="extensions"
       />
       <Full
-        v-else
+        v-else-if="mode === 'full'"
         v-model="content"
+        :theme="theme"
+        :locale="locale"
+        :translations="translations"
+        :extensions="extensions"
+      />
+      <Markdown
+        v-else
+        v-model="markdownContent"
         :theme="theme"
         :locale="locale"
         :translations="translations"
@@ -181,7 +199,7 @@ async function copySource() {
       />
     </div>
 
-    <Dialog v-model:show="showOutput" closeOnClickModal title="源码（HTML）" width="760px">
+    <Dialog v-model:show="showOutput" closeOnClickModal :title="dialogTitle" width="760px">
       <pre class="language-html line-numbers"><code ref="codeEl">{{ formattedSource }}</code></pre>
       <template #footer>
         <Button variant="primary" @click="copySource">{{ copied ? "已复制 ✓" : "复制" }}</Button>
@@ -235,7 +253,7 @@ body {
 
 .editor-container {
   flex: 1;
-  max-width: 880px;
+  width: 880px;
   min-height: 0;
   margin: 16px 0 24px;
   box-sizing: border-box;
