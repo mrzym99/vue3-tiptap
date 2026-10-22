@@ -1,6 +1,6 @@
 {
   "name": "@yumine9/vue3-tiptap",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "type": "module",
   "description": "Ready-made UI for TipTap in Vue 3 — themeable rich text editor with an auto-collected toolbar, bubble menus and i18n.",
   "license": "MIT",
