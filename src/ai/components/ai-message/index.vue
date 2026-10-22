@@ -18,7 +18,8 @@
         <span>{{ toolName(item.text) }}</span>
         <span v-if="item.failed">{{ t("aiToolFailed") }}</span>
       </div>
-      <p v-else class="tiptap-ai-drawer__msg" :class="`tiptap-ai-drawer__msg--${item.role}`">{{ item.text }}</p>
+      <!-- whitespace-only replies render as a blank bubble — hide them -->
+      <p v-else-if="item.text.trim()" class="tiptap-ai-drawer__msg" :class="`tiptap-ai-drawer__msg--${item.role}`">{{ item.text }}</p>
     </template>
     <p v-if="busy" class="tiptap-ai-drawer__msg tiptap-ai-drawer__msg--assistant">{{ t("aiThinking") }}</p>
   </div>

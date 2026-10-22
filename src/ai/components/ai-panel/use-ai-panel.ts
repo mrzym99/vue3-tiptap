@@ -40,7 +40,9 @@ export function useAiPanel(agent: Ref<EditorAgent | undefined>) {
     } else if (event.type === "content_delta") {
       const last = messages.value.at(-1);
       if (last?.role === "assistant") last.text += event.text;
-      else messages.value.push({ role: "assistant", text: event.text });
+      // Models often emit leading blank lines before a tool call; don't build a
+      // blank bubble out of them.
+      else messages.value.push({ role: "assistant", text: event.text.replace(/^\s+/, "") });
     } else if (event.type === "tool_call") {
       messages.value.push({ role: "tool", text: event.name });
     } else if (event.type === "tool_result") {
