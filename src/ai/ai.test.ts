@@ -6,7 +6,7 @@ import type { Editor } from "@tiptap/core";
 import type { AgentEvent } from "./types";
 
 /** Minimal editor stub: only what the toolkit touches. */
-function fakeEditor(options: { extensions?: string[]; editable?: boolean } = {}) {
+function fakeEditor(options: { extensions?: string[]; editable?: boolean; selectionEmpty?: boolean } = {}) {
   // mutable doc HTML — verifiedWrite compares getHTML() before/after a write
   let docHtml = "<p>doc</p>";
   const setContent = vi.fn((html: string) => {
@@ -17,8 +17,8 @@ function fakeEditor(options: { extensions?: string[]; editable?: boolean } = {})
       get(_target, prop) {
         if (prop === "run") return () => true;
         if (prop === "insertContent") {
-          return (content: string) => {
-            docHtml += content;
+          return (content: string | object) => {
+            docHtml += typeof content === "string" ? content : JSON.stringify(content);
             return stub;
           };
         }
@@ -33,7 +33,7 @@ function fakeEditor(options: { extensions?: string[]; editable?: boolean } = {})
     commands: { setContent },
     chain,
     getHTML: vi.fn(() => docHtml),
-    state: { doc: { descendants: () => undefined } },
+    state: { doc: { descendants: () => undefined }, selection: { empty: options.selectionEmpty ?? false } },
     extensionManager: {
       extensions: (options.extensions ?? []).map((name) => ({ name })),
     },
@@ -147,6 +147,28 @@ describe("createAiToolkit", () => {
     await expect(toolkit.execute("delete_node", { position: 3 })).resolves.toMatchObject({ ok: false });
     await expect(toolkit.execute("delete_node", { position: 0 })).resolves.toMatchObject({ ok: true });
     expect(deleted).toEqual({ from: 0, to: 7 });
+  });
+
+  it("insert_code_block escapes HTML inside the code", async () => {
+    const editor = fakeEditor({ extensions: ["codeBlock"] });
+    const toolkit = createAiToolkit(editor);
+
+    const res = await toolkit.execute("insert_code_block", { code: '<div>hi</div>' });
+    expect(res.ok).toBe(true);
+    // raw <div> would be parsed as a real element and shred the block
+    expect(editor.getHTML()).toContain("&lt;div&gt;hi&lt;/div&gt;");
+    expect(editor.getHTML()).not.toContain("<div>");
+  });
+
+  it("insert_link on an empty selection inserts a pre-marked text node", async () => {
+    const editor = fakeEditor({ extensions: ["link"], selectionEmpty: true });
+    const toolkit = createAiToolkit(editor);
+
+    const res = await toolkit.execute("insert_link", { href: "https://example.com", text: "example" });
+    expect(res.ok).toBe(true);
+    // setLink alone would only write a stored mark and never reach the inserted text
+    expect(editor.getHTML()).toContain('"type":"text"');
+    expect(editor.getHTML()).toContain('"href":"https://example.com"');
   });
 });
 

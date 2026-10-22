@@ -65,7 +65,7 @@ export const structureTools: AiTool[] = [
     },
     run(args, { editor }) {
       const cls = args.language ? ` class="language-${args.language}"` : "";
-      return verifiedWrite(editor, () => editor.chain().focus().insertContent(`<pre><code${cls}>${args.code}</code></pre>`).run(), "Code block inserted.");
+      return verifiedWrite(editor, () => editor.chain().focus().insertContent(`<pre><code${cls}>${escHtml(args.code)}</code></pre>`).run(), "Code block inserted.");
     },
   },
   {
@@ -123,10 +123,15 @@ export const structureTools: AiTool[] = [
       required: ["href"],
     },
     run(args, { editor }) {
-      const chain = editor.chain().focus();
-      if (editor.state.selection.empty && args.text) chain.insertContent(args.text);
-      chain.setLink({ href: args.href }).run();
-      return { ok: true, message: "Link inserted." };
+      const { selection } = editor.state;
+      if (selection.empty && args.text) {
+        return verifiedWrite(
+          editor,
+          () => editor.chain().focus().insertContent({ type: "text", text: args.text, marks: [{ type: "link", attrs: { href: args.href } }] }).run(),
+          "Link inserted.",
+        );
+      }
+      return verifiedWrite(editor, () => editor.chain().focus().setLink({ href: args.href }).run(), "Link inserted.");
     },
   },
   {
