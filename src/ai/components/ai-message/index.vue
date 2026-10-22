@@ -7,7 +7,7 @@
         class="tiptap-ai-drawer__thinking"
         :open="busy && index === messages.length - 1"
       >
-        <summary><BrainIcon /> {{ t("aiThinking") }}</summary>
+        <summary><SparklesIcon /> {{ t("aiThinking") }} <ChevronLeftIcon class="chevron" /></summary>
         <p>{{ item.text }}</p>
       </details>
       <div
@@ -21,13 +21,14 @@
       <!-- whitespace-only replies render as a blank bubble — hide them -->
       <p v-else-if="item.text.trim()" class="tiptap-ai-drawer__msg" :class="`tiptap-ai-drawer__msg--${item.role}`">{{ item.text }}</p>
     </template>
-    <p v-if="busy" class="tiptap-ai-drawer__msg tiptap-ai-drawer__msg--assistant">{{ t("aiThinking") }}</p>
+    <p v-if="busy" class="tiptap-ai-drawer__thinking-hint"><SparklesIcon /> {{ t("aiThinking") }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
 import { nextTick, ref, useTemplateRef, watch } from "vue";
-import BrainIcon from "~icons/lucide/brain";
+import SparklesIcon from "~icons/lucide/sparkles";
+import ChevronLeftIcon from "~icons/lucide/chevron-left";
 import type { AiMessageProps } from "./props";
 
 const props = defineProps<AiMessageProps>();
@@ -121,6 +122,15 @@ defineExpose({ pinToBottom });
   }
 }
 
+.tiptap-ai-drawer__thinking-hint {
+  margin: 0;
+  color: var(--tiptap-color-text-muted);
+  font-size: var(--tiptap-font-size-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--tiptap-gap-sm);
+}
+
 .tiptap-ai-drawer__thinking {
   align-self: stretch;
   margin: 0;
@@ -129,14 +139,33 @@ defineExpose({ pinToBottom });
   background: var(--tiptap-color-bg-subtle);
   font-size: var(--tiptap-font-size-sm);
   color: var(--tiptap-color-text-muted);
+  list-style: none; // drop the native disclosure triangle — custom chevron below
+
+  &::-webkit-details-marker {
+    display: none;
+  }
 
   summary {
     cursor: pointer;
     user-select: none;
+    list-style: none; // hide the native triangle entirely — custom chevron after the text
+    &::-webkit-details-marker {
+      display: none;
+    }
+    color: var(--tiptap-color-text-muted);
 
     svg {
-      vertical-align: -0.15em; // keep the disclosure triangle, nudge the inline icon onto the baseline
+      vertical-align: -0.15em; // nudge the inline icon onto the baseline
     }
+
+    .chevron {
+      margin-left: var(--tiptap-gap-sm);
+      transition: transform 0.3s var(--tiptap-ease, ease-in-out);
+    }
+  }
+
+  &[open] summary .chevron {
+    transform: rotate(-90deg); // "<" folds, points down while expanded
   }
 
   p {
