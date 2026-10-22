@@ -7,7 +7,11 @@
         class="tiptap-ai-drawer__thinking"
         :open="busy && index === messages.length - 1"
       >
-        <summary><SparklesIcon /> {{ t("aiThinking") }} <ChevronLeftIcon class="chevron" /></summary>
+        <summary>
+          <SparklesIcon />
+          {{ item.duration != null ? `${t("aiThought")} · ${item.duration}s` : t("aiThinking") }}
+          <ChevronLeftIcon class="chevron" />
+        </summary>
         <p>{{ item.text }}</p>
       </details>
       <div
@@ -134,9 +138,7 @@ defineExpose({ pinToBottom });
 .tiptap-ai-drawer__thinking {
   align-self: stretch;
   margin: 0;
-  padding: var(--tiptap-padding-sm) var(--tiptap-padding-lg);
-  border-radius: var(--tiptap-border-radius-md);
-  background: var(--tiptap-color-bg-subtle);
+  padding: var(--tiptap-padding-sm) 0;
   font-size: var(--tiptap-font-size-sm);
   color: var(--tiptap-color-text-muted);
   list-style: none; // drop the native disclosure triangle — custom chevron below
@@ -181,9 +183,7 @@ defineExpose({ pinToBottom });
   display: flex;
   align-items: center;
   gap: var(--tiptap-gap-sm);
-  padding: var(--tiptap-padding-sm) var(--tiptap-padding-lg);
-  border-radius: 999px;
-  background: var(--tiptap-color-bg-subtle);
+  padding: var(--tiptap-padding-sm) 0;
   color: var(--tiptap-color-text-muted);
   font-size: var(--tiptap-font-size-sm);
 

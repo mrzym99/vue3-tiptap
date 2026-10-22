@@ -6,6 +6,9 @@ export interface PanelItem {
   text: string;
   done?: boolean;
   failed?: boolean;
+  // thinking blocks only: when reasoning started / how long it took (seconds)
+  startedAt?: number;
+  duration?: number;
 }
 
 /**
@@ -32,11 +35,13 @@ export function useAiPanel(agent: Ref<EditorAgent | undefined>) {
   );
 
   function handleEvent(event: AgentEvent) {
+    // Any non-reasoning event ends the current thinking block — stamp its duration.
+    if (event.type !== "reasoning_delta") closeThinking();
     if (event.type === "reasoning_delta") {
       // append into the current round's thinking block
       const last = messages.value.at(-1);
       if (last?.role === "thinking") last.text += event.text;
-      else messages.value.push({ role: "thinking", text: event.text });
+      else messages.value.push({ role: "thinking", text: event.text, startedAt: Date.now() });
     } else if (event.type === "content_delta") {
       const last = messages.value.at(-1);
       if (last?.role === "assistant") last.text += event.text;
@@ -64,6 +69,14 @@ export function useAiPanel(agent: Ref<EditorAgent | undefined>) {
     }
   }
 
+  /** Freeze the open thinking block's timer (next event, run end or abort). */
+  function closeThinking() {
+    const last = messages.value.at(-1);
+    if (last?.role === "thinking" && last.duration == null && last.startedAt != null) {
+      last.duration = Math.max(1, Math.round((Date.now() - last.startedAt) / 1000));
+    }
+  }
+
   async function send() {
     const text = draft.value.trim();
     if (!text || busy.value || !agent.value) return;
@@ -73,6 +86,7 @@ export function useAiPanel(agent: Ref<EditorAgent | undefined>) {
     try {
       await agent.value.send(text);
     } finally {
+      closeThinking(); // abort/errors mid-reasoning: freeze the timer at stop time
       busy.value = false;
     }
   }

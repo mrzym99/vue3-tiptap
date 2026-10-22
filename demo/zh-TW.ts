@@ -90,6 +90,7 @@ export default {
   aiSend: "傳送",
   aiStop: "停止",
   aiThinking: "思考中…",
+  aiThought: "已思考",
   aiToolFailed: "失敗",
   "tool.set_document": "重寫全文",
   "tool.insert_content": "插入內容",

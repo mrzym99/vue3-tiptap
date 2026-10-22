@@ -89,6 +89,7 @@ export default {
   aiSend: "发送",
   aiStop: "停止",
   aiThinking: "思考中…",
+  aiThought: "已思考",
   aiToolFailed: "失败",
   // AI tool chips, keyed by tool name (`tool.<name>`); unknown names fall back to the raw name.
   "tool.set_document": "重写全文",

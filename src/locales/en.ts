@@ -89,6 +89,7 @@ export default {
   aiSend: "Send",
   aiStop: "Stop",
   aiThinking: "Thinking…",
+  aiThought: "Thought",
   aiToolFailed: "Failed",
   // AI tool chips, keyed by tool name (`tool.<name>`); unknown names fall back to the raw name.
   "tool.set_document": "Rewrite document",
