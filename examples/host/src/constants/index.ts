@@ -1,6 +1,6 @@
 export const DEFAULT_CONTENT: string = `<h1>Getting started</h1>
 <p>欢迎使用 <code>@yumine9/vue3-tiptap </code>—— 一个基于 <a target="_blank" rel="noopener noreferrer nofollow" href="https://tiptap.dev">Tiptap</a> 的 Vue 3 富文本编辑器组件库，内置常用格式化与排版工具，开箱即用。</p>
-<p>试试这些基础标记：<strong>加粗</strong>、<em>斜体</em>、<s>删除线</s>、<u>下划线</u>、<code>行内代码</code> 和 <mark>高亮</mark>，也可以用快捷键 ⌘+B / ⌘+I 完成大部分操作。🪄</p>
+<p>试试这些基础标记：<strong>加粗</strong>、<em>斜体</em>、<s>删除线</s>、<u>下划线</u>、<code>行内代码</code> 和 <mark>高亮</mark>，也可以用快捷键 ⌘/Ctrl+B / ⌘/Ctrl+I 完成大部分操作。🪄</p>
 <h2>功能一览</h2>
 <ul>
   <li>
@@ -73,7 +73,7 @@ export const DEFAULT_MARKDOWN_CONTENT: string = `# Getting started
 
 欢迎使用 **@yumine9/vue3-tiptap** —— 一个基于 Tiptap 的 Vue 3 富文本编辑器组件库。
 
-这个 demo 的 v-model 进出都是 \`markdown\`（\`content-type="markdown"\`），下方可展开查看实时值。
+这个 demo 的 v-model 进出都是 \`markdown\`（\`content-type="markdown"\`）。
 
 ## 功能一览
 
@@ -87,3 +87,23 @@ const editor = useEditor({ contentType: "markdown" });
 
 > 保存时调用 \`editor.getMarkdown()\`，也可以直接把 v-model 值存库。
 `;
+
+export const DEFAULT_SIMPLE_CONTENT: string = `<h1>Getting started</h1>
+<p>欢迎使用 <code>@yumine9/vue3-tiptap</code> —— 一个基于 <a href="https://tiptap.dev" target="_blank" rel="noopener noreferrer">Tiptap</a> 的 Vue 3 富文本编辑器组件库，内置常用格式化与排版工具，开箱即用。</p>
+<p>试试这些基础标记：<strong>加粗</strong>、<em>斜体</em>、<s>删除线</s>、<u>下划线</u>、<code>行内代码</code>、<mark>高亮</mark>，还有上标（x<sup>2</sup>）与下标（H<sub>2</sub>O）；快捷键 ⌘/Ctrl+B / ⌘/Ctrl+I 完成大部分操作。🪄</p>
+<h2>排版能力</h2>
+<ol>
+  <li><p>标题（H1–H6）、有序 / 无序列表、任务列表</p></li>
+  <li><p>引用与分隔线，让文档层次更清晰</p></li>
+  <li><p>对齐方式随心切换：居中、居右都支持</p></li>
+</ol>
+<blockquote>
+  <p>简单版保留了常用文本工具；表格与多媒体上传在<strong>完整版</strong>里体验。</p>
+</blockquote>
+<h2>代码块</h2>
+<pre><code class="language-ts">const editor = useEditor({
+  extensions: [StarterKit.configure({ ... })],
+});</code></pre>
+<h3>Make it your own</h3>
+<p style="text-align: center;">浅色 / 深色主题一键切换，用 CSS 变量把编辑器的外观调整成你产品的样子。</p>
+<p style="text-align: center;"><strong>现在就试试上面的工具栏吧 →</strong></p>`;

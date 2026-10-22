@@ -22,7 +22,6 @@ defineEmits<{ "update:modelValue": [value: string] }>();
     :locale="locale"
     :translations="translations"
     toolbarWrap
-    placeholder="请输入…"
     :extensions="extensions"
     @update:model-value="$emit('update:modelValue', $event)"
   />

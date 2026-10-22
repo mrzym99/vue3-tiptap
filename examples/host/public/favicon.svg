@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Letter T mark: indigo rounded square with a white serif-less T -->
+  <rect width="48" height="48" rx="10" fill="#6366f1"/>
+  <path d="M11 12h26v7h-9.5v17h-7V19H11z" fill="#ffffff"/>
+</svg>

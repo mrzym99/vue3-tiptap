@@ -9,10 +9,11 @@ import Markdown from "./components/Markdown.vue";
 import { useDemoConfig } from "./composables/useDemoConfig";
 import type { LocaleTranslations } from "@yumine9/vue3-tiptap";
 import "@yumine9/vue3-tiptap/style.css";
-import { DEFAULT_CONTENT, DEFAULT_MARKDOWN_CONTENT } from "./constants";
+import { DEFAULT_CONTENT, DEFAULT_MARKDOWN_CONTENT, DEFAULT_SIMPLE_CONTENT } from "./constants";
 
-const content = ref(DEFAULT_CONTENT);
-// markdown 版有独立的 v-model：内容格式不同，不能和 HTML 模式共用
+// 三个版本各自独立的 v-model：内容格式/富度不同，互不影响
+const fullContent = ref(DEFAULT_CONTENT);
+const simpleContent = ref(DEFAULT_SIMPLE_CONTENT);
 const markdownContent = ref(DEFAULT_MARKDOWN_CONTENT);
 
 const mentionUsers = [
@@ -73,9 +74,11 @@ import "prismjs/plugins/line-numbers/prism-line-numbers";
 const showOutput = ref(false);
 const codeEl = useTemplateRef<HTMLElement>("codeEl");
 const isMarkdownMode = computed(() => mode.value === "markdown");
-const formattedSource = computed(() =>
-  isMarkdownMode.value ? markdownContent.value : beautify.html(content.value, { indent_size: 2 }),
-);
+const formattedSource = computed(() => {
+  if (mode.value === "markdown") return markdownContent.value;
+  const html = mode.value === "full" ? fullContent.value : simpleContent.value;
+  return beautify.html(html, { indent_size: 2 });
+});
 const dialogTitle = computed(() => (isMarkdownMode.value ? "源码（Markdown）" : "源码（HTML）"));
 
 // Re-highlight on open/content change; the line-numbers plugin reads the DOM,
@@ -90,6 +93,19 @@ async function copySource() {
   copied.value = true;
   setTimeout(() => (copied.value = false), 1500);
 }
+
+const currentMode = computed(() => {
+  switch (mode.value) {
+    case "simple":
+      return "简单版";
+    case "full":
+      return "完整版";
+    case "markdown":
+      return "Markdown 版";
+    default:
+      return "";
+  }
+});
 </script>
 
 <template>
@@ -97,7 +113,7 @@ async function copySource() {
   <div class="container">
     <Header>
       <template #badge>
-        <span class="app-mode-badge">{{ mode === "simple" ? "简单版" : "完整版" }}</span>
+        <span class="app-mode-badge">{{ currentMode }}</span>
       </template>
 
       <button type="button" class="app-select" :class="{ 'is-active': mode === 'simple' }" @click="mode = 'simple'">
@@ -175,7 +191,7 @@ async function copySource() {
     <div class="editor-container">
       <Simple
         v-if="mode === 'simple'"
-        v-model="content"
+        v-model="simpleContent"
         :theme="theme"
         :locale="locale"
         :translations="translations"
@@ -183,7 +199,7 @@ async function copySource() {
       />
       <Full
         v-else-if="mode === 'full'"
-        v-model="content"
+        v-model="fullContent"
         :theme="theme"
         :locale="locale"
         :translations="translations"
