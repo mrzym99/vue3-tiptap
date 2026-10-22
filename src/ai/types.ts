@@ -28,11 +28,15 @@ export interface AiTool {
   run(args: any, ctx: AiToolContext): Promise<AiToolResult> | AiToolResult;
 }
 
-/** Heading entry returned by `getOutline`. */
+/** Top-level block entry returned by `getOutline` (headings, paragraphs, lists, tables…). */
 export interface OutlineItem {
-  level: number;
+  /** Block node type name, e.g. "heading", "paragraph", "table". */
+  type: string;
+  /** Node text content, truncated to a preview. */
   text: string;
-  /** Document position, usable as an insertion anchor. */
+  /** Heading level — only present for "heading" nodes. */
+  level?: number;
+  /** Document position, usable with replace_node / delete_node. */
   pos: number;
 }
 

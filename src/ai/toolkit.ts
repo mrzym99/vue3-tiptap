@@ -1,7 +1,7 @@
-import type { AiToolkitOptions, AiTool, AiToolResult, AiToolkit, OutlineItem } from "./types";
+import type { AiToolkitOptions, AiTool, AiToolResult, AiToolkit } from "./types";
 import type { Editor } from "@tiptap/core";
 
-import { queryTools } from "./tools/query";
+import { queryTools, collectOutline } from "./tools/query";
 import { contentTools } from "./tools/content";
 import { formatTools } from "./tools/format";
 import { structureTools } from "./tools/structure";
@@ -59,14 +59,6 @@ export function createAiToolkit(editor: Editor, options: AiToolkitOptions = {}):
     tools,
     execute,
     getContent: () => editor.getHTML(),
-    getOutline(): OutlineItem[] {
-      const outline: OutlineItem[] = [];
-      editor.state.doc.descendants((node, pos) => {
-        if (node.type.name === "heading") {
-          outline.push({ level: node.attrs.level as number, text: node.textContent, pos });
-        }
-      });
-      return outline;
-    },
+    getOutline: () => collectOutline(editor),
   };
 }

@@ -76,6 +76,78 @@ describe("createAiToolkit", () => {
     const all = createAiToolkit(editor, { onlyAvailable: false });
     expect(all.tools.map((tool) => tool.name)).toContain("insert_table");
   });
+
+  it("replace_node rewrites the node at the given position", async () => {
+    let docHtml = "<p>old</p>";
+    let inserted: unknown;
+    const editor = {
+      isEditable: true,
+      chain: () => {
+        const stub: Record<string, unknown> = new Proxy({} as Record<string, unknown>, {
+          get(_target, prop) {
+            if (prop === "run") return () => {
+              docHtml = "<p>new</p>";
+              return true;
+            };
+            if (prop === "insertContentAt") {
+              return (range: unknown, html: string) => {
+                inserted = [range, html];
+                return stub;
+              };
+            }
+            return () => stub;
+          },
+        });
+        return stub;
+      },
+      getHTML: () => docHtml,
+      state: { doc: { nodeAt: (pos: number) => (pos === 0 ? { nodeSize: 7 } : null) } },
+      commands: {},
+      extensionManager: { extensions: [{ name: "document" }, { name: "paragraph" }, { name: "text" }] },
+    } as unknown as Editor;
+    const toolkit = createAiToolkit(editor);
+
+    // position with no node start → guided error, no write
+    await expect(toolkit.execute("replace_node", { position: 3, html: "<p>x</p>" })).resolves.toMatchObject({
+      ok: false,
+    });
+
+    await expect(toolkit.execute("replace_node", { position: 0, html: "<p>new</p>" })).resolves.toMatchObject({
+      ok: true,
+    });
+    expect(inserted).toEqual([{ from: 0, to: 7 }, "<p>new</p>"]);
+  });
+
+  it("delete_node removes the node at the given position", async () => {
+    let deleted: unknown;
+    const editor = {
+      isEditable: true,
+      chain: () => {
+        const stub: Record<string, unknown> = new Proxy({} as Record<string, unknown>, {
+          get(_target, prop) {
+            if (prop === "run") return () => true;
+            if (prop === "deleteRange") {
+              return (range: unknown) => {
+                deleted = range;
+                return stub;
+              };
+            }
+            return () => stub;
+          },
+        });
+        return stub;
+      },
+      getHTML: () => "<p>doc</p>",
+      state: { doc: { nodeAt: (pos: number) => (pos === 0 ? { nodeSize: 7 } : null) } },
+      commands: {},
+      extensionManager: { extensions: [{ name: "document" }, { name: "paragraph" }, { name: "text" }] },
+    } as unknown as Editor;
+    const toolkit = createAiToolkit(editor);
+
+    await expect(toolkit.execute("delete_node", { position: 3 })).resolves.toMatchObject({ ok: false });
+    await expect(toolkit.execute("delete_node", { position: 0 })).resolves.toMatchObject({ ok: true });
+    expect(deleted).toEqual({ from: 0, to: 7 });
+  });
 });
 
 describe("createEditorAgent", () => {

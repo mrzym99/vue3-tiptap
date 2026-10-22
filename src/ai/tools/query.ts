@@ -1,6 +1,25 @@
 import { getHTMLFromFragment } from "@tiptap/core";
 
-import type { AiTool } from "../types";
+import type { Editor } from "@tiptap/core";
+import type { AiTool, OutlineItem } from "../types";
+
+/**
+ * Top-level blocks of the document with their positions — the shared locator
+ * behind `get_outline` and `toolkit.getOutline()`, consumed by replace_node / delete_node.
+ */
+export function collectOutline(editor: Editor): OutlineItem[] {
+  const outline: OutlineItem[] = [];
+  editor.state.doc.forEach((node, offset) => {
+    const text = node.textContent;
+    outline.push({
+      type: node.type.name,
+      text: text.length > 80 ? `${text.slice(0, 77)}...` : text,
+      ...(node.type.name === "heading" ? { level: node.attrs.level as number } : {}),
+      pos: offset,
+    });
+  });
+  return outline;
+}
 
 /** Read-only tools — never gated by readonly/confirmDangerous. */
 export const queryTools: AiTool[] = [
@@ -30,16 +49,11 @@ export const queryTools: AiTool[] = [
   },
   {
     name: "get_outline",
-    description: "Get the heading outline (level, text, document position) of the document.",
+    description:
+      "Get the document outline: EVERY top-level block (heading, paragraph, list, table…) with its type, a text preview and its document position (pos). Use pos with replace_node / delete_node to target a block.",
     parameters: { type: "object", properties: {} },
     run(_args, { editor }) {
-      const outline: { level: number; text: string; pos: number }[] = [];
-      editor.state.doc.descendants((node, pos) => {
-        if (node.type.name === "heading") {
-          outline.push({ level: node.attrs.level as number, text: node.textContent, pos });
-        }
-      });
-      return { ok: true, message: JSON.stringify(outline) };
+      return { ok: true, message: JSON.stringify(collectOutline(editor)) };
     },
   },
 ];

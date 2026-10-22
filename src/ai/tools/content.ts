@@ -53,4 +53,62 @@ export const contentTools: AiTool[] = [
       return verifiedWrite(editor, () => editor.chain().focus("end").insertContent(args.html).run(), "Content appended.");
     },
   },
+  {
+    name: "replace_node",
+    description:
+      "Rewrite ONE block node (paragraph, heading, list, table…) in place, identified by its document position from get_outline. The node is fully replaced; the rest of the document is untouched.",
+    parameters: {
+      type: "object",
+      properties: {
+        position: {
+          type: "number",
+          description: "Position where the node starts (the `pos` value from get_outline).",
+        },
+        html: html("New content for that node as HTML fragment(s)."),
+      },
+      required: ["position", "html"],
+    },
+    run(args, { editor }) {
+      const node = editor.state.doc.nodeAt(args.position);
+      if (!node) {
+        return {
+          ok: false,
+          message: `No node starts at position ${args.position} — call get_outline and pass one of its pos values.`,
+        };
+      }
+      const to = args.position + node.nodeSize;
+      return verifiedWrite(
+        editor,
+        () => editor.chain().focus().insertContentAt({ from: args.position, to }, args.html).run(),
+        `Node at position ${args.position} replaced.`,
+      );
+    },
+  },
+  {
+    name: "delete_node",
+    description:
+      "Delete ONE block node (paragraph, heading, list, table…) identified by its document position from get_outline. The rest of the document is untouched.",
+    parameters: {
+      type: "object",
+      properties: {
+        position: {
+          type: "number",
+          description: "Position where the node starts (the `pos` value from get_outline).",
+        },
+      },
+      required: ["position"],
+    },
+    run(args, { editor }) {
+      const node = editor.state.doc.nodeAt(args.position);
+      if (!node) {
+        return {
+          ok: false,
+          message: `No node starts at position ${args.position} — call get_outline and pass one of its pos values.`,
+        };
+      }
+      const to = args.position + node.nodeSize;
+      editor.chain().focus().deleteRange({ from: args.position, to }).run();
+      return { ok: true, message: `Node at position ${args.position} deleted.` };
+    },
+  },
 ];

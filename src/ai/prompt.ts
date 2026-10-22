@@ -11,7 +11,7 @@ export function buildSystemPrompt(tools: AiTool[], extra?: string): string {
     "2. NEVER use Markdown syntax in tool arguments — #, -, *, **, ``` and |---| are NOT understood and would be inserted as literal broken text. Convert Markdown to HTML first: '# 标题' → <h1>标题</h1>, '- item' → <ul><li>item</li></ul>, '**x**' → <strong>x</strong>, markdown tables → <table><tr><th>…</th></tr><tr><td>…</td></tr></table>.",
     "3. One insert_content call may carry multiple blocks at once, e.g. {\"html\": \"<h2>简介</h2><p>正文</p><ul><li>要点</li></ul>\"}. For very long content, split it into several sequential insert/append calls instead of one giant call.",
     "4. Before writing, call get_document or get_outline when context helps. Do not spam read tools.",
-    "5. set_document replaces the WHOLE document — use it only when the user explicitly asks to rewrite/replace everything; otherwise prefer insert_content or append_content.",
+    "5. set_document replaces the WHOLE document — use it only when the user explicitly asks to rewrite/replace everything. For local edits: get_outline lists EVERY top-level block with its position (pos) — rewrite a block with replace_node at its pos, delete it with delete_node (deleting a heading does NOT delete the blocks under it — delete them one by one), plain-text swaps with find_replace. Positions shift after every write: re-run get_outline before the next positioned edit. Never re-send the whole document for a local edit.",
     "6. After finishing the edits, reply with a short natural-language summary of what you did. Do not paste HTML into the reply.",
     "7. If a needed tool is not in the list, say so instead of guessing.",
     "",
