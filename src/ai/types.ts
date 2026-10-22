@@ -92,8 +92,10 @@ export interface AgentConfig {
   /** Appended after the built-in system prompt. */
   systemPrompt?: string;
   confirmDangerous?: AiToolkitOptions["confirmDangerous"];
-  /** Max tool-call round trips per `send()` (runaway guard). Default 10. */
+  /** Max tool-call round trips per `send()` (runaway guard). Default 25 — big per-node rewrite tasks legitimately need many rounds. */
   maxRounds?: number;
+  /** Hard cap on kept messages: older complete rounds are dropped (never mid tool_call pair). Default 60. */
+  maxHistoryMessages?: number;
   onEvent?: (event: AgentEvent) => void;
 }
 

@@ -107,8 +107,7 @@ export const contentTools: AiTool[] = [
         };
       }
       const to = args.position + node.nodeSize;
-      editor.chain().focus().deleteRange({ from: args.position, to }).run();
-      return { ok: true, message: `Node at position ${args.position} deleted.` };
+      return verifiedWrite(editor, () => editor.chain().focus().deleteRange({ from: args.position, to }).run(), `Node at position ${args.position} deleted.`);
     },
   },
 ];

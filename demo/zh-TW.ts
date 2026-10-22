@@ -115,5 +115,7 @@ export default {
   "tool.insert_table": "插入表格",
   "tool.insert_link": "插入連結",
   "tool.insert_details": "插入摺疊區塊",
+  "tool.replace_node": "替換節點",
+  "tool.delete_node": "刪除節點",
   aiConfirmDanger: "AI 請求透過 '{name}' 取代整份文件，是否允許？",
 };

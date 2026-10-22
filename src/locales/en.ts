@@ -115,5 +115,7 @@ export default {
   "tool.insert_table": "Insert table",
   "tool.insert_link": "Insert link",
   "tool.insert_details": "Insert details block",
+  "tool.replace_node": "Replace node",
+  "tool.delete_node": "Delete node",
   aiConfirmDanger: "AI wants to replace the whole document via '{name}'. Allow?",
 };

@@ -120,6 +120,7 @@ describe("createAiToolkit", () => {
 
   it("delete_node removes the node at the given position", async () => {
     let deleted: unknown;
+    let docHtml = "<p>doc</p>";
     const editor = {
       isEditable: true,
       chain: () => {
@@ -129,6 +130,7 @@ describe("createAiToolkit", () => {
             if (prop === "deleteRange") {
               return (range: unknown) => {
                 deleted = range;
+                docHtml = ""; // verifiedWrite compares HTML before/after
                 return stub;
               };
             }
@@ -137,7 +139,7 @@ describe("createAiToolkit", () => {
         });
         return stub;
       },
-      getHTML: () => "<p>doc</p>",
+      getHTML: () => docHtml,
       state: { doc: { nodeAt: (pos: number) => (pos === 0 ? { nodeSize: 7 } : null) } },
       commands: {},
       extensionManager: { extensions: [{ name: "document" }, { name: "paragraph" }, { name: "text" }] },

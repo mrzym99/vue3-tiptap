@@ -115,5 +115,7 @@ export default {
   "tool.insert_table": "插入表格",
   "tool.insert_link": "插入链接",
   "tool.insert_details": "插入折叠块",
+  "tool.replace_node": "替换节点",
+  "tool.delete_node": "删除节点",
   aiConfirmDanger: "AI 请求通过 '{name}' 替换整个文档，是否允许？",
 };

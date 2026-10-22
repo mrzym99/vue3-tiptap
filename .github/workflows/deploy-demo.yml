@@ -32,6 +32,10 @@ jobs:
       - name: Install workspace + build library (dist/ — the host app consumes it)
         run: pnpm install --frozen-lockfile && pnpm build:lib
 
+      # Gate the public demo on tests + types; a broken master must not deploy
+      - name: Typecheck + test
+        run: pnpm exec vue-tsc -p tsconfig.lib.json && pnpm test
+
       - name: Build host demo
         run: pnpm --filter host-demo exec vite build --base=/vue3-tiptap/
         # Vite inlines VITE_* vars at build time — the deployed demo gets the
