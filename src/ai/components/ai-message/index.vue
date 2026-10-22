@@ -160,6 +160,8 @@ defineExpose({ pinToBottom });
   }
 
   summary {
+    display: flex; // icon/text/chevron share one baseline-free row — inline svg alignment
+    align-items: center; // varies across consumer CSS resets, flex centering is robust
     cursor: pointer;
     user-select: none;
     list-style: none; // hide the native triangle entirely — custom chevron after the text
@@ -167,10 +169,6 @@ defineExpose({ pinToBottom });
       display: none;
     }
     color: var(--tiptap-color-text-muted);
-
-    svg {
-      vertical-align: -0.15em; // nudge the inline icon onto the baseline
-    }
 
     .chevron {
       margin-left: var(--tiptap-gap-sm);
