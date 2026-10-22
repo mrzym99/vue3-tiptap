@@ -1,3 +1,4 @@
+import type { Schema } from "@tiptap/pm/model";
 import type { TranslateFn } from "@/types";
 import type { PanelItem } from "../ai-panel/use-ai-panel";
 
@@ -8,4 +9,6 @@ export type AiMessageProps = {
   busy: boolean;
   /** Translation fn handed down from the editor shell (via the `Ai` extension) */
   t: TranslateFn;
+  /** Editor schema — assistant markdown is sanitized through it before v-html; without it replies render as plain text. */
+  schema?: Schema;
 };

@@ -29,7 +29,6 @@ export default defineConfig({
     },
     copyPublicDir: false, // keep favicon.svg (demo asset) out of dist
     cssCodeSplit: false,
-    emptyOutDir: false, // types (dist/index.d.ts) are emitted by unplugin-dts
     rollupOptions: {
       external: ["vue", /^@tiptap\//],
       output: {

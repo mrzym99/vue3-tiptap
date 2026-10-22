@@ -23,7 +23,18 @@
         <span v-if="item.failed">{{ t("aiToolFailed") }}</span>
       </div>
       <!-- whitespace-only replies render as a blank bubble — hide them -->
-      <p v-else-if="item.text.trim()" class="tiptap-ai-drawer__msg" :class="`tiptap-ai-drawer__msg--${item.role}`">{{ item.text }}</p>
+      <div
+        v-else-if="item.text.trim()"
+        class="tiptap-ai-drawer__msg"
+        :class="`tiptap-ai-drawer__msg--${item.role}`"
+      >
+        <AiMarkdown
+          v-if="item.role === 'assistant' && props.schema"
+          :text="item.text"
+          :schema="props.schema"
+        />
+        <template v-else>{{ item.text }}</template>
+      </div>
     </template>
     <p v-if="busy" class="tiptap-ai-drawer__thinking-hint"><SparklesIcon /> {{ t("aiThinking") }}</p>
   </div>
@@ -33,6 +44,7 @@
 import { nextTick, ref, useTemplateRef, watch } from "vue";
 import SparklesIcon from "~icons/lucide/sparkles";
 import ChevronLeftIcon from "~icons/lucide/chevron-left";
+import AiMarkdown from "../ai-markdown/index.vue";
 import type { AiMessageProps } from "./props";
 
 const props = defineProps<AiMessageProps>();

@@ -14,7 +14,7 @@
           </button>
         </div>
 
-        <AiMessages ref="listRef" :messages="messages" :busy="busy" :t="t" />
+        <AiMessages ref="listRef" :messages="messages" :busy="busy" :t="t" :schema="editor?.schema" />
 
         <AiInput v-model:draft="draft" :busy="busy" :t="t" @send="onSend" @stop="stop" />
       </aside>
