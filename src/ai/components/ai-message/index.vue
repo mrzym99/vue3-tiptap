@@ -98,8 +98,8 @@ defineExpose({ pinToBottom });
 .tiptap-ai-drawer__msg {
   margin: 0;
   max-width: 90%;
-  padding: var(--tiptap-padding-lg) var(--tiptap-content-padding);
-  border-radius: var(--tiptap-border-radius-lg);
+  padding: var(--tiptap-padding-lg);
+  border-radius: var(--tiptap-border-radius-md);
   font-size: var(--tiptap-font-size-sm);
   line-height: 1.6;
   white-space: pre-wrap;
