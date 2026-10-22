@@ -34,6 +34,12 @@ jobs:
 
       - name: Build host demo
         run: pnpm --filter host-demo exec vite build --base=/vue3-tiptap/
+        # Vite inlines VITE_* vars at build time — the deployed demo gets the
+        # AI config from repository secrets (Settings → Secrets and variables → Actions).
+        env:
+          VITE_AI_BASE_URL: ${{ secrets.VITE_AI_BASE_URL }}
+          VITE_AI_API_KEY: ${{ secrets.VITE_AI_API_KEY }}
+          VITE_AI_MODEL: ${{ secrets.VITE_AI_MODEL }}
 
       - uses: actions/upload-pages-artifact@v3
         with:
