@@ -32,7 +32,7 @@ const content = ref("<p>hello</p>");
 </script>
 
 <template>
-  <TipTapEditor v-model="content" :limit="500" theme="light" locale="zh" />
+  <TipTapEditor v-model="content" theme="light" locale="zh" />
 </template>
 ```
 
@@ -118,11 +118,58 @@ const extensions = [
 
 按需导入时同理：`Image.configure({ upload })`。未配置 `upload` 时，弹窗仅支持粘贴图片 URL。
 
+## Markdown 支持
+
+内置官方 `@tiptap/markdown` 扩展（StarterKit 默认包含；`StarterKit.configure({ markdown: false })` 可禁用），提供 markdown 的导入与导出：
+
+```ts
+// 通过 `ready` 事件或模板 ref 的 `editor` 拿到实例后
+editor.commands.setContent("# 标题\n\n**加粗**", { contentType: "markdown" });
+editor.getMarkdown(); // 导出 markdown 字符串
+```
+
+- `insertContent` / `insertContentAt` 同样支持 `{ contentType: "markdown" }`
+- 注意：**粘贴** markdown 纯文本不会被自动解析（只处理显式 `contentType` 的输入与导出）
+
+### v-model 直接用 markdown
+
+想让 v-model 进出都是 markdown（当作 markdown 编辑器用）：
+
+```vue
+<TipTapEditor v-model="markdown" content-type="markdown" />
+```
+
+此时初始内容按 markdown 解析、编辑后写回 markdown 字符串；默认 `"html"`，行为与旧版本完全一致。
+
+## AI 助手
+
+`Ai` 是一个 opt-in 扩展（**不在 StarterKit 内**，需要 API key）：配置后聊天悬浮按钮与抽屉面板自动挂载，不占用工具栏。AI 通过内置工具集直接操作文档（20+ 工具：`set_document`、`insert_content`、`insert_table`、`insert_code_block`、`format_text`、`set_heading`、`find_replace`、`get_outline` 等，按当前已启用的扩展自动裁剪）：
+
+```ts
+import { StarterKit, Ai } from "@yumine9/vue3-tiptap";
+
+const extensions = [
+  StarterKit.configure({}),
+  Ai.configure({
+    baseURL: "https://api.openai.com/v1", // 任意 OpenAI 兼容接口
+    apiKey: "sk-...",
+    model: "gpt-xxx-xxx",
+    // 破坏性工具（如 set_document）的确认门；不提供则 fail-safe 拒绝
+    confirmDangerous: (tool) => Promise.resolve(window.confirm(`AI 要执行 ${tool.name}，允许吗？`)),
+  }),
+];
+```
+
+- agent 循环内置（OpenAI 兼容 chat completions + tool calling，原生 fetch 零额外依赖），自动管理会话历史与中断
+- 其他选项：`systemPrompt`（追加系统提示）、`maxRounds`（单次发送的工具调用轮数上限，默认 25）、`maxHistoryMessages`（保留消息条数上限，默认 60）
+- 想自建 UI：headless 层从 `@yumine9/vue3-tiptap/ai` 子路径导出 `createAiToolkit(editor)`、`createEditorAgent()` 与 `AiPanel` 组件，可接任意 LLM
+
 ## 常用 props
 
 | prop                          | 说明                                                                                                |
 | ----------------------------- | --------------------------------------------------------------------------------------------------- |
-| `v-model`                     | HTML 字符串（写入有 150ms 防抖，卸载/flush 时保证同步）                                             |
+| `v-model`                     | 内容字符串，格式由 `contentType` 决定（写入有 150ms 防抖，卸载/flush 时保证同步）                   |
+| `contentType`                 | `v-model` 内容格式：`"html"`（默认）或 `"markdown"`（初始解析 + 写回都用 markdown，需保留内置 markdown 扩展） |
 | `limit`                       | 字数上限，0 = 不限；超限时**不改动内容**，计数标红并触发 `truncated` 事件                           |
 | `readonly`                    | 只读（支持运行时切换）                                                                              |
 | `theme`                       | `"light" \| "dark"`                                                                                 |

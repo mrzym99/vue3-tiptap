@@ -32,7 +32,7 @@ const content = ref("<p>hello</p>");
 </script>
 
 <template>
-  <TipTapEditor v-model="content" :limit="500" theme="light" locale="en" />
+  <TipTapEditor v-model="content" theme="light" locale="en" />
 </template>
 ```
 
@@ -118,11 +118,58 @@ const extensions = [
 
 Same when importing à la carte: `Image.configure({ upload })`. Without `upload`, the dialog only supports pasting an image URL.
 
+## Markdown support
+
+The official `@tiptap/markdown` extension is bundled (included in StarterKit; disable via `StarterKit.configure({ markdown: false })`). It provides markdown import and export:
+
+```ts
+// Grab the instance via the `ready` event or the template ref's `editor`
+editor.commands.setContent("# Title\n\n**bold**", { contentType: "markdown" });
+editor.getMarkdown(); // export a markdown string
+```
+
+- `insertContent` / `insertContentAt` also accept `{ contentType: "markdown" }`
+- Note: **pasting** plain markdown text is NOT parsed automatically (only explicit `contentType` input and export are handled)
+
+### v-model in markdown
+
+To use the editor as a markdown editor (v-model carries markdown in both directions):
+
+```vue
+<TipTapEditor v-model="markdown" content-type="markdown" />
+```
+
+The initial content is parsed as markdown and edits are written back as a markdown string; the default `"html"` keeps the old behavior unchanged.
+
+## AI assistant
+
+`Ai` is an opt-in extension (**not part of StarterKit**, needs an API key): once configured, the chat FAB and drawer panel mount themselves and never show up in the toolbar. The AI operates on the document through a built-in tool set (20+ tools: `set_document`, `insert_content`, `insert_table`, `insert_code_block`, `format_text`, `set_heading`, `find_replace`, `get_outline`, … automatically pruned to the extensions you actually enabled):
+
+```ts
+import { StarterKit, Ai } from "@yumine9/vue3-tiptap";
+
+const extensions = [
+  StarterKit.configure({}),
+  Ai.configure({
+    baseURL: "https://api.openai.com/v1", // any OpenAI-compatible endpoint
+    apiKey: "sk-...",
+    model: "gpt-xxx-xxx",
+    // Confirmation gate for dangerous tools (e.g. set_document); not provided → rejected fail-safe
+    confirmDangerous: (tool) => Promise.resolve(window.confirm(`AI wants to run ${tool.name}, allow?`)),
+  }),
+];
+```
+
+- The agent loop is built in (OpenAI-compatible chat completions + tool calling over native fetch, zero extra dependencies), with history management and abort handled for you
+- Other options: `systemPrompt` (appended to the built-in system prompt), `maxRounds` (tool-call rounds per send, default 25), `maxHistoryMessages` (kept-message cap, default 60)
+- Building your own UI: the headless layer is exported from the `@yumine9/vue3-tiptap/ai` subpath — `createAiToolkit(editor)`, `createEditorAgent()` and the `AiPanel` component, ready to wire to any LLM
+
 ## Common props
 
 | prop                          | description                                                                                 |
 | ----------------------------- | ------------------------------------------------------------------------------------------- |
-| `v-model`                     | HTML string (150ms debounced writes; guaranteed sync on unmount/flush)                       |
+| `v-model`                     | Content string, format decided by `contentType` (150ms debounced writes; guaranteed sync on unmount/flush) |
+| `contentType`                 | `v-model` content format: `"html"` (default) or `"markdown"` (initial parse + write-back both markdown; requires the bundled markdown extension) |
 | `limit`                       | Character limit, 0 = unlimited; over-limit content is **never modified** — the counter turns red and `truncated` fires |
 | `readonly`                    | Read-only (switchable at runtime)                                                            |
 | `theme`                       | `"light" \| "dark"`                                                                          |
