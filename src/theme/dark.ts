@@ -2,6 +2,9 @@ import type { Theme } from "@/types";
 
 /** Dark theme — Soft UI dark palette mirroring the light theme's token structure. */
 export const darkTheme: Theme = {
+  // native widgets (scrollbars, form controls) follow the theme
+  "--tiptap-color-scheme": "dark",
+
   // --- surfaces (slate-tinted, soft) ---
   "--tiptap-color-bg": "#1F1F1F",
   "--tiptap-color-bg-hover": "#2A2B30",

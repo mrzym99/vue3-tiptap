@@ -2,6 +2,9 @@ import type { Theme } from "@/types";
 
 /** Light theme — Soft UI (docs/style/soft-ui-hard-prompt.md); old token names stay as aliases. */
 export const lightTheme: Theme = {
+  // native widgets (scrollbars, form controls) follow the theme
+  "--tiptap-color-scheme": "light",
+
   // --- surfaces (slate-tinted, soft) ---
   "--tiptap-color-bg": "#FFFFFF",
   "--tiptap-color-bg-hover": "#F1F5F9", // slate-100

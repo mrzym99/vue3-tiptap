@@ -38,6 +38,7 @@ watch(() => [props.theme, props.themeOverrides] as const, syncTheme, { deep: tru
 
 <style lang="scss" scoped>
 .tiptap-theme-root {
+  color-scheme: var(--tiptap-color-scheme, light); // native scrollbars/form controls follow the theme
   height: 100%;
   scrollbar-width: thin;
 }

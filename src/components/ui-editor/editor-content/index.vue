@@ -132,6 +132,7 @@ const props = defineProps<{ editor: Editor }>();
       margin: 0.9rem 0;
       overflow-x: auto;
       padding: var(--tiptap-padding-lg);
+      padding-top: 1.4em;
     }
 
     pre code {
@@ -140,20 +141,69 @@ const props = defineProps<{ editor: Editor }>();
       padding: 0;
     }
 
-    /* display the code block language via data-language + attr() */
-    pre[data-language] {
-      padding-top: calc(var(--tiptap-padding-lg) + 1em);
+    /* code block node view: language header + code area */
+    .tiptap-code-block {
+      margin: 0.9rem 0;
       position: relative;
 
-      &::before {
-        color: var(--tiptap-color-text-muted);
-        content: attr(data-language);
-        font-family: inherit;
-        font-size: 0.85em;
-        left: var(--tiptap-padding-lg);
-        line-height: 1.4;
-        position: absolute;
-        top: 0.2em;
+      pre {
+        margin: 0; // the wrapper owns the outer spacing
+      }
+    }
+
+    .tiptap-code-block__lang {
+      appearance: none;
+      background: none;
+      border: none;
+      color: var(--tiptap-color-text-muted);
+      font-family: inherit;
+      font-size: 0.85em;
+      left: var(--tiptap-padding-lg);
+      line-height: 1.4;
+      max-width: calc(100% - 2 * var(--tiptap-padding-lg));
+      outline: none;
+      padding: 0;
+      position: absolute;
+      top: 0.2em;
+      width: 10em;
+
+      &:focus {
+        color: var(--tiptap-color-text);
+      }
+    }
+
+    /* room for the language header above the code */
+    pre[data-language] {
+      padding-top: calc(var(--tiptap-padding-lg) + 1em);
+    }
+
+    /* custom language dropdown (replaces the native datalist popup) */
+    .tiptap-code-block__menu {
+      background: var(--tiptap-popover-bg);
+      border: 1px solid var(--tiptap-color-border);
+      border-radius: var(--tiptap-border-radius-sm);
+      box-shadow: var(--tiptap-popover-shadow);
+      left: var(--tiptap-padding-lg);
+      max-height: 16em;
+      min-width: 10em;
+      overflow-y: auto;
+      padding: var(--tiptap-padding-xs);
+      position: absolute;
+      top: 1.6em;
+      z-index: var(--tiptap-z-popover);
+    }
+
+    .tiptap-code-block__menu-item {
+      border-radius: var(--tiptap-border-radius-sm);
+      color: var(--tiptap-color-text);
+      cursor: pointer;
+      font-size: 0.85em;
+      line-height: 1.4;
+      padding: calc(var(--tiptap-padding-xs) + 1px) var(--tiptap-padding-sm);
+
+      &.is-active,
+      &:hover {
+        background: var(--tiptap-menu-item-hover);
       }
     }
 
