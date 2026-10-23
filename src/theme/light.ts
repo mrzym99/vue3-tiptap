@@ -5,10 +5,10 @@ export const lightTheme: Theme = {
   // native widgets (scrollbars, form controls) follow the theme
   "--tiptap-color-scheme": "light",
 
-  // --- surfaces (slate-tinted, soft) ---
+  // --- surfaces (hover/active are interaction feedback: accent-tinted via color-mix) ---
   "--tiptap-color-bg": "#FFFFFF",
-  "--tiptap-color-bg-hover": "#F1F5F9", // slate-100
-  "--tiptap-color-bg-active": "#E2E8F0", // slate-200
+  "--tiptap-color-bg-hover": "color-mix(in srgb, var(--tiptap-accent-primary) 8%, white)",
+  "--tiptap-color-bg-active": "color-mix(in srgb, var(--tiptap-accent-primary) 15%, white)",
   "--tiptap-color-bg-subtle": "#F6F7F9",
 
   // --- text ---
@@ -27,10 +27,10 @@ export const lightTheme: Theme = {
   "--tiptap-accent-warning": "#DFAB01",
   "--tiptap-accent-primary-bg": "color-mix(in srgb, var(--tiptap-accent-primary) 10%, white)",
 
-  // --- buttons (transparent default, hover/active only deepen bg) ---
+  // --- buttons (transparent default; hover/active follow the accent-derived surfaces) ---
   "--tiptap-btn-bg": "transparent",
-  "--tiptap-btn-bg-hover": "#EFEDEA",
-  "--tiptap-btn-bg-active": "#E3E1DB",
+  "--tiptap-btn-bg-hover": "var(--tiptap-color-bg-hover)",
+  "--tiptap-btn-bg-active": "var(--tiptap-color-bg-active)",
   "--tiptap-btn-primary-bg": "color-mix(in srgb, var(--tiptap-accent-primary) 90%, black)",
   "--tiptap-btn-primary-bg-hover": "color-mix(in srgb, var(--tiptap-accent-primary) 78%, black)",
   "--tiptap-btn-primary-text": "#FFFFFF",
@@ -84,5 +84,5 @@ export const lightTheme: Theme = {
   // --- backward-compatible aliases (used by existing components) ---
   "--tiptap-btn--bg-hover": "var(--tiptap-btn-bg-hover)",
   "--tiptap-btn--bg-active": "var(--tiptap-btn-bg-active)",
-  "--tiptap-btn--bg-active-hover": "#D3DAE3",
+  "--tiptap-btn--bg-active-hover": "color-mix(in srgb, var(--tiptap-accent-primary) 20%, white)",
 };

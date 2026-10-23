@@ -5,10 +5,10 @@ export const darkTheme: Theme = {
   // native widgets (scrollbars, form controls) follow the theme
   "--tiptap-color-scheme": "dark",
 
-  // --- surfaces (slate-tinted, soft) ---
+  // --- surfaces (hover/active are interaction feedback: accent-tinted via color-mix) ---
   "--tiptap-color-bg": "#1F1F1F",
-  "--tiptap-color-bg-hover": "#2A2B30",
-  "--tiptap-color-bg-active": "#34353B",
+  "--tiptap-color-bg-hover": "color-mix(in srgb, var(--tiptap-accent-primary) 10%, #1F1F1F)",
+  "--tiptap-color-bg-active": "color-mix(in srgb, var(--tiptap-accent-primary) 16%, #1F1F1F)",
   "--tiptap-color-bg-subtle": "#26272B",
 
   // --- text ---
@@ -83,5 +83,5 @@ export const darkTheme: Theme = {
   // --- backward-compatible aliases (used by existing components) ---
   "--tiptap-btn--bg-hover": "var(--tiptap-btn-bg-hover)",
   "--tiptap-btn--bg-active": "var(--tiptap-btn-bg-active)",
-  "--tiptap-btn--bg-active-hover": "#3C3D44",
+  "--tiptap-btn--bg-active-hover": "color-mix(in srgb, var(--tiptap-accent-primary) 22%, #1F1F1F)",
 };
