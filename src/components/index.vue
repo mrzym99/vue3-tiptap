@@ -41,7 +41,7 @@ const props = withDefaults(defineProps<TipTapEditorProps>(), {
   primaryColor: undefined,
   placeholder: undefined,
   autofocus: false,
-  locale: undefined,
+  lang: undefined,
   translations: undefined,
   toolbar: undefined,
   toolbarWrap: false,
@@ -52,7 +52,7 @@ const props = withDefaults(defineProps<TipTapEditorProps>(), {
   extensions: () => [],
 });
 
-const { t } = useEditorLocale(toRef(props, "locale"), toRef(props, "translations"));
+const { t } = useEditorLocale(toRef(props, "lang"), toRef(props, "translations"));
 
 // primaryColor layers over the theme by re-pointing the accent hue;
 // every accent-derived token in the theme files is a color-mix() of it.

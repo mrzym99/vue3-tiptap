@@ -6,7 +6,7 @@ import type { Extensions, LocaleTranslations, ThemeName } from "@yumine9/vue3-ti
 defineProps<{
   modelValue: string;
   theme: ThemeName;
-  locale: string;
+  lang: string;
   translations: LocaleTranslations;
   extensions: Extensions;
 }>();
@@ -19,7 +19,7 @@ defineEmits<{ "update:modelValue": [value: string] }>();
     :model-value="modelValue"
     style="height: 100%"
     :theme="theme"
-    :locale="locale"
+    :lang="lang"
     :translations="translations"
     toolbarWrap
     :extensions="extensions"

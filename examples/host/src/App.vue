@@ -51,8 +51,8 @@ const extensions = [
   }),
 ];
 
-// theme / locale / mode with localStorage persistence (see useDemoConfig)
-const { theme, locale, mode } = useDemoConfig();
+// theme / lang / mode with localStorage persistence (see useDemoConfig)
+const { theme, lang, mode } = useDemoConfig();
 
 // Swap Prism theme with the page theme (light: prism, dark: okaidia)
 const prismStyle = computed(() => (theme.value === "dark" ? prismDark : prismLight));
@@ -128,7 +128,7 @@ const currentMode = computed(() => {
 
       <button type="button" class="app-select" @click="showOutput = true">查看源码</button>
 
-      <select v-model="locale" class="app-select" aria-label="语言">
+      <select v-model="lang" class="app-select" aria-label="语言">
         <option value="zh">简体中文</option>
         <option value="en">English</option>
         <option value="zh-TW">繁體中文(扩展)</option>
@@ -193,7 +193,7 @@ const currentMode = computed(() => {
         v-if="mode === 'simple'"
         v-model="simpleContent"
         :theme="theme"
-        :locale="locale"
+        :lang="lang"
         :translations="translations"
         :extensions="extensions"
       />
@@ -201,7 +201,7 @@ const currentMode = computed(() => {
         v-else-if="mode === 'full'"
         v-model="fullContent"
         :theme="theme"
-        :locale="locale"
+        :lang="lang"
         :translations="translations"
         :extensions="extensions"
       />
@@ -209,7 +209,7 @@ const currentMode = computed(() => {
         v-else
         v-model="markdownContent"
         :theme="theme"
-        :locale="locale"
+        :lang="lang"
         :translations="translations"
         :extensions="extensions"
       />

@@ -19,7 +19,7 @@ export interface TipTapEditorProps {
   /** Placeholder text shown when the document is empty; falls back to the locale pack's `placeholder` key */
   placeholder?: string;
   /** UI language ("zh" | "en", or a custom id provided via `translations`) */
-  locale?: LocaleName | (string & {});
+  lang?: LocaleId;
   /** Host translations, shallow-merged over the built-in packs */
   translations?: LocaleTranslations;
   /** Focus on mount; `"start"` / `"end"` / a position pass through to tiptap */
@@ -42,6 +42,9 @@ export interface TipTapEditorProps {
 
 /** Toolbar config: a TinyMCE-style string, an ordered key list, or `{ include?, exclude? }` filters. */
 export type Toolbar = string | string[] | { include?: string[]; exclude?: string[] };
+
+/** UI language id: a built-in `"zh"` / `"en"`, or any custom id added via `translations` (the `string & {}` keeps literal completion in editors). */
+export type LocaleId = LocaleName | (string & {});
 
 export type { Extensions } from "@tiptap/core";
 

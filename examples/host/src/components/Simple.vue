@@ -9,7 +9,7 @@ const SIMPLE_TOOLBAR: Toolbar =
 defineProps<{
   modelValue: string;
   theme: ThemeName;
-  locale: string;
+  lang: string;
   translations: LocaleTranslations;
   extensions: Extensions;
 }>();
@@ -22,7 +22,7 @@ defineEmits<{ "update:modelValue": [value: string] }>();
     :model-value="modelValue"
     style="height: 100%"
     :theme="theme"
-    :locale="locale"
+    :lang="lang"
     :translations="translations"
     :extensions="extensions"
     :toolbar="SIMPLE_TOOLBAR"

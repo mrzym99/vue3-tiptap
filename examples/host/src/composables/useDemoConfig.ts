@@ -5,17 +5,17 @@ import { readStorage, writeStorage } from "../utils/storage";
 // All demo storage keys share this prefix so they are easy to spot/clear together
 const STORAGE_PREFIX = "vue3-tiptap-host:";
 const THEME_STORAGE_KEY = `${STORAGE_PREFIX}theme`;
-const LOCALE_STORAGE_KEY = `${STORAGE_PREFIX}locale`;
+const LANG_STORAGE_KEY = `${STORAGE_PREFIX}lang`;
 const MODE_STORAGE_KEY = `${STORAGE_PREFIX}mode`;
 
 /**
- * Demo app config: theme / locale / toolbar preset, persisted to localStorage
+ * Demo app config: theme / lang / toolbar preset, persisted to localStorage
  * and restored on load. Owns the `dark` class on `<html>` so the editor's
  * first paint already matches the cached theme.
  */
 export function useDemoConfig() {
   const theme = ref<ThemeName>(readStorage<ThemeName>(THEME_STORAGE_KEY, "light"));
-  const locale = ref(readStorage(LOCALE_STORAGE_KEY, "zh"));
+  const lang = ref(readStorage(LANG_STORAGE_KEY, "zh"));
   const mode = ref<"simple" | "full" | "markdown">(readStorage<"simple" | "full" | "markdown">(MODE_STORAGE_KEY, "simple"));
 
   const syncThemeClass = (name: ThemeName) => {
@@ -29,8 +29,8 @@ export function useDemoConfig() {
     syncThemeClass(value);
     writeStorage(THEME_STORAGE_KEY, value);
   });
-  watch(locale, (value) => writeStorage(LOCALE_STORAGE_KEY, value));
+  watch(lang, (value) => writeStorage(LANG_STORAGE_KEY, value));
   watch(mode, (value) => writeStorage(MODE_STORAGE_KEY, value));
 
-  return { theme, locale, mode };
+  return { theme, lang, mode };
 }

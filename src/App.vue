@@ -9,8 +9,8 @@ import MoonIcon from "~icons/lucide/moon";
 
 const content = ref("");
 
-// Theme / locale with localStorage persistence (see useDemoConfig)
-const { theme, locale } = useDemoConfig();
+// Theme / lang with localStorage persistence (see useDemoConfig)
+const { theme, lang } = useDemoConfig();
 const toggleTheme = () => {
   theme.value = theme.value === "dark" ? "light" : "dark";
 };
@@ -86,7 +86,7 @@ const extensions = [
       <div class="app-actions">
         <button class="app-select" @click="editorRef?.focus()">Focus</button>
 
-        <select class="app-select" v-model="locale" aria-label="语言">
+        <select class="app-select" v-model="lang" aria-label="语言">
           <option value="zh">简体中文</option>
           <option value="en">English</option>
           <option value="zh-TW">繁體中文(扩展)</option>
@@ -125,7 +125,7 @@ const extensions = [
         v-model="content"
         style="height: 100%"
         :theme="theme"
-        :locale="locale"
+        :lang="lang"
         :translations="translations"
         :limit="limit"
         :extensions="extensions"

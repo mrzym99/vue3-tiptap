@@ -38,7 +38,7 @@ const extensions = [StarterKit.configure({})];
 </script>
 
 <template>
-  <TipTapEditor v-model="content" :extensions="extensions" theme="light" locale="en" />
+  <TipTapEditor v-model="content" :extensions="extensions" theme="light" lang="en" />
 </template>
 ```
 
@@ -180,7 +180,7 @@ const extensions = [
 | `readonly`                    | Read-only (switchable at runtime)                                                            |
 | `theme`                       | `"light" \| "dark"`                                                                          |
 | `primaryColor`                | Accent color (any CSS color); toolbar active states, primary buttons, selection etc. follow it |
-| `locale` / `translations`     | `"zh" \| "en"` or a shallow-merged custom locale pack                                        |
+| `lang` / `translations`     | `"zh" \| "en"` or a shallow-merged custom locale pack                                        |
 | `toolbar`                     | Toolbar layout, TinyMCE-style string such as `"bold italic \| underline"`; undefined = default |
 | `toolbarWrap`                 | Wrap toolbar buttons onto multiple lines (true) instead of horizontal scroll (false)         |
 | `bubbleMenu` / `floatingMenu` | Selection / empty-line menus, off by default — pass a key to enable, `false` toggles off; configured like `toolbar` with the same key set |

@@ -38,7 +38,7 @@ const extensions = [StarterKit.configure({})];
 </script>
 
 <template>
-  <TipTapEditor v-model="content" :extensions="extensions" theme="light" locale="zh" />
+  <TipTapEditor v-model="content" :extensions="extensions" theme="light" lang="zh" />
 </template>
 ```
 
@@ -180,7 +180,7 @@ const extensions = [
 | `readonly`                    | 只读（支持运行时切换）                                                                              |
 | `theme`                       | `"light" \| "dark"`                                                                                 |
 | `primaryColor`                | 主色（任意 CSS 颜色）；工具栏激活态、主按钮、选区等派生色自动跟随                                   |
-| `locale` / `translations`     | `"zh" \| "en"` 或自定义语言包浅合并                                                                 |
+| `lang` / `translations`     | `"zh" \| "en"` 或自定义语言包浅合并                                                                 |
 | `toolbar`                     | 工具栏布局，TinyMCE 风格字符串如 `"bold italic \| underline"`，undefined = 默认                     |
 | `toolbarWrap`                 | 工具栏按钮多行换行（true）而非单行横向滚动（false）                                                 |
 | `bubbleMenu` / `floatingMenu` | 选中文字/空行菜单，默认关闭，传 key 才开启，`false` 可动态关；配置项与 `toolbar` 一致，用同一套 key |
