@@ -13,7 +13,7 @@
         <Popover
           v-model:show="insertTablePopoverShow"
           ref="insertTablePopoverRef"
-          placement="right"
+          placement="left"
           trigger="hover"
           :hide-on-click="false"
         >

@@ -28,6 +28,7 @@ defineEmits<{ "update:modelValue": [value: string] }>();
       :translations="translations"
       :extensions="extensions"
       :toolbar="SIMPLE_TOOLBAR"
+      primaryColor="green"
       @update:model-value="$emit('update:modelValue', $event)"
     />
   </div>
