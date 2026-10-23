@@ -2,12 +2,15 @@
 
 [English](./README.en.md) | 简体中文
 
-Vue 3 富文本编辑器，基于 [@tiptap/vue-3](https://tiptap.dev) 封装：内置自动收集的工具栏、气泡/浮动菜单、主题系统与 i18n。
+Vue 3 富文本编辑器，基于 [@tiptap/vue-3](https://tiptap.dev) 封装：内置自动收集的工具栏、气泡/浮动菜单、主题系统与 i18n；可选的 AI 面板支持对话式改写/扩写、插入表格图片等富文本操作（自带 Agent，接任意 OpenAI 兼容接口即可）。
 
 ## 安装
 
 ```bash
+# pnpm
 pnpm add @yumine9/vue3-tiptap
+# npm
+npm install @yumine9/vue3-tiptap
 ```
 
 ## 引入样式（必须）
@@ -22,17 +25,20 @@ import "@yumine9/vue3-tiptap/style.css";
 
 ## 基本用法
 
+传入 `StarterKit`（全部内置扩展：工具栏、气泡菜单、表格、图片……）；不传 `extensions` 时只有一个裸输入框：
+
 ```vue
 <script setup lang="ts">
 import { ref } from "vue";
-import { TipTapEditor } from "@yumine9/vue3-tiptap";
+import { TipTapEditor, StarterKit } from "@yumine9/vue3-tiptap";
 import "@yumine9/vue3-tiptap/style.css";
 
 const content = ref("<p>hello</p>");
+const extensions = [StarterKit.configure({})];
 </script>
 
 <template>
-  <TipTapEditor v-model="content" theme="light" locale="zh" />
+  <TipTapEditor v-model="content" :extensions="extensions" theme="light" locale="zh" />
 </template>
 ```
 

@@ -91,86 +91,91 @@ const TextAlignExtension = TextAlign.configure({
   types: ["heading", "paragraph"],
 });
 
-const builtinExtensions: Extensions = [
+/**
+ * Keyed by each extension's own name.
+ */
+export const builtinExtensionMap = {
   // Editing experience (UndoRedo provides the history plugin; undo / redo provide buttons)
-  UndoRedo,
-  Undo,
-  Redo,
-  ClearFormatting,
+  undoRedo: UndoRedo,
+  undo: Undo,
+  redo: Redo,
+  clearFormatting: ClearFormatting,
   // Text styles
-  Bold,
-  Italic,
-  Strike,
-  Underline,
-  Code,
-  Highlight,
-  Subscript,
-  Superscript,
-  HeadingExtension,
-  HorizontalRule,
-  Blockquote,
-  TextAlignExtension,
+  bold: Bold,
+  italic: Italic,
+  strike: Strike,
+  underline: Underline,
+  code: Code,
+  highlight: Highlight,
+  subscript: Subscript,
+  superscript: Superscript,
+  heading: HeadingExtension,
+  horizontalRule: HorizontalRule,
+  blockquote: Blockquote,
+  textAlign: TextAlignExtension,
   // Lists
-  ListItem,
-  BulletList,
-  OrderedList,
-  TaskItem,
-  TaskList,
-  ListKeymap,
+  listItem: ListItem,
+  bulletList: BulletList,
+  orderedList: OrderedList,
+  taskItem: TaskItem,
+  taskList: TaskList,
+  listKeymap: ListKeymap,
   // Link / code block / collapsible blocks
-  Link,
-  CodeBlock,
-  DetailsSummary,
-  DetailsContent,
-  Details,
+  link: Link,
+  codeBlock: CodeBlock,
+  detailsSummary: DetailsSummary,
+  detailsContent: DetailsContent,
+  details: Details,
   // Media
-  Image,
-  Video,
-  Audio,
-  FileHandler,
+  image: Image,
+  video: Video,
+  audio: Audio,
+  fileHandler: FileHandler,
   // Styles (text-style base)
-  TextStyle,
-  Color,
-  FontFamily,
-  FontSize,
-  Typography,
+  textStyle: TextStyle,
+  color: Color,
+  fontFamily: FontFamily,
+  fontSize: FontSize,
+  typography: Typography,
   // Tables
-  Table,
-  TableRow,
-  TableHeader,
-  TableCell,
+  table: Table,
+  tableRow: TableRow,
+  tableHeader: TableHeader,
+  tableCell: TableCell,
   // Editing experience
-  FindAndReplace,
-  InvisibleCharacters,
-  NodeRange,
-  DragHandle,
-  HardBreak,
+  findAndReplace: FindAndReplace,
+  invisibleCharacters: InvisibleCharacters,
+  nodeRange: NodeRange,
+  dragHandle: DragHandle,
+  hardBreak: HardBreak,
   // Mention @ (typing @ triggers it; data source injected by the host via items)
-  Mention,
+  mention: Mention,
   // Behavior-only (no buttons)
-  Markdown,
-  Gapcursor,
-  Dropcursor,
-  TrailingNode,
-  CharacterCount,
-];
+  markdown: Markdown,
+  gapCursor: Gapcursor,
+  dropCursor: Dropcursor,
+  trailingNode: TrailingNode,
+  characterCount: CharacterCount,
+};
 
-export default builtinExtensions;
-
-/** The full built-in set — `StarterKit` bundles all of these (the structural core Document/Paragraph/Text/Placeholder is provided by the component). */
-export { builtinExtensions };
+const builtinExtensions: Extensions = Object.values(builtinExtensionMap) as Extensions;
 
 /** Per-extension entry: `false` disables it, an object configures it. */
-export type StarterKitOption = Record<string, unknown> | false;
-export type StarterKitOptions = Record<string, StarterKitOption | undefined>;
+type StarterKitOption = Record<string, unknown> | false;
+
+/** Literal keys derived from `builtinExtensionMap` — editors autocomplete and typo-check `StarterKit.configure({...})`. */
+type StarterKitName = keyof typeof builtinExtensionMap;
+type StarterKitOptions = Partial<Record<StarterKitName, StarterKitOption>>;
 
 /** All built-in extensions; `false` disables, an object configures. */
 export const StarterKit = Extension.create<StarterKitOptions>({
   name: "starterKit",
   addExtensions() {
+    // extension.name is typed `string`, so the lookup needs the widened signature
+    const options = this.options as Record<string, StarterKitOption | undefined>;
     return builtinExtensions
       .map((extension) => {
-        const option = this.options[extension.name];
+        const option = options[extension.name]; 
         if (option === false) return null;
         return option ? extension.configure(option) : extension;
       })

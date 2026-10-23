@@ -3,7 +3,7 @@ import { Editor } from "@tiptap/core";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
-import { StarterKit } from "./index";
+import { builtinExtensionMap, StarterKit } from "./index";
 import { Link } from "./Link";
 import { Table } from "./Table";
 import type { ButtonView, GeneralOptions } from "@/types";
@@ -69,5 +69,16 @@ describe("StarterKit", () => {
     const image = editor.extensionManager.extensions.find((e) => e.name === "image");
     expect((image!.options as { width?: number }).width).toBe(123);
     editor.destroy();
+  });
+
+  it("builtinExtensionMap keys match the extensions' real names (the keys drive StarterKit's key type)", () => {
+    for (const [key, extension] of Object.entries(builtinExtensionMap)) {
+      expect(extension.name, key).toBe(key);
+    }
+  });
+
+  it("unknown keys are rejected by the compiler", () => {
+    StarterKit.configure({ boldx: false });
+    expect(true).toBe(true);
   });
 });

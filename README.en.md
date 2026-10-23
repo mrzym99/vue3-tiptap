@@ -2,12 +2,15 @@
 
 English | [简体中文](./README.md)
 
-A rich-text editor for Vue 3, built on [@tiptap/vue-3](https://tiptap.dev): auto-collected toolbar, bubble/floating menus, a theming system, and i18n out of the box.
+A rich-text editor for Vue 3, built on [@tiptap/vue-3](https://tiptap.dev): auto-collected toolbar, bubble/floating menus, a theming system, and i18n out of the box. An optional AI panel adds conversational editing (rewrite/expand, insert tables and images, …) — it ships its own agent and works with any OpenAI-compatible endpoint.
 
 ## Install
 
 ```bash
+# pnpm
 pnpm add @yumine9/vue3-tiptap
+# npm
+npm install @yumine9/vue3-tiptap
 ```
 
 ## Import the stylesheet (required)
@@ -22,17 +25,20 @@ Shipping it separately is intentional: `index.cjs` must work under Node/SSR `req
 
 ## Basic usage
 
+Pass `StarterKit` (all built-in extensions: toolbar, bubble menus, tables, images…); without `extensions` you only get a bare input box:
+
 ```vue
 <script setup lang="ts">
 import { ref } from "vue";
-import { TipTapEditor } from "@yumine9/vue3-tiptap";
+import { TipTapEditor, StarterKit } from "@yumine9/vue3-tiptap";
 import "@yumine9/vue3-tiptap/style.css";
 
 const content = ref("<p>hello</p>");
+const extensions = [StarterKit.configure({})];
 </script>
 
 <template>
-  <TipTapEditor v-model="content" theme="light" locale="en" />
+  <TipTapEditor v-model="content" :extensions="extensions" theme="light" locale="en" />
 </template>
 ```
 
