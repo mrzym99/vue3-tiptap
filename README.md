@@ -42,9 +42,10 @@ const extensions = [StarterKit.configure({})];
 </template>
 ```
 
-或注册为全局组件后直接用 `<TipTapEditor />`：
+或注册为全局组件后直接用 `<TipTapEditor />`（样式引一次即可，按需二选一）：
 
 ```ts
+import "@yumine9/vue3-tiptap/style.css";
 import TipTapEditorPlugin from "@yumine9/vue3-tiptap";
 app.use(TipTapEditorPlugin);
 ```
@@ -180,10 +181,12 @@ const extensions = [
 | `readonly`                    | 只读（支持运行时切换）                                                                              |
 | `theme`                       | `"light" \| "dark"`                                                                                 |
 | `primaryColor`                | 主色（任意 CSS 颜色）；工具栏激活态、主按钮、选区等派生色自动跟随                                   |
-| `lang` / `translations`     | `"zh" \| "en"` 或自定义语言包浅合并                                                                 |
+| `lang`                        | UI 语言：`"zh" \| "en"`；不传时自动检测（浏览器语言含 `zh` 用中文，否则英文）                     |
+| `translations`                | 自定义语言包，浅合并到内置语言包之上；用非内置 `lang` id 时需在这里提供对应词条，支持运行时更新       |
 | `toolbar`                     | 工具栏布局，TinyMCE 风格字符串如 `"bold italic \| underline"`，undefined = 默认                     |
 | `toolbarWrap`                 | 工具栏按钮多行换行（true）而非单行横向滚动（false）                                                 |
-| `bubbleMenu` / `floatingMenu` | 选中文字/空行菜单，默认关闭，传 key 才开启，`false` 可动态关；配置项与 `toolbar` 一致，用同一套 key |
+| `bubbleMenu`                  | 选中文字时的气泡菜单；默认关闭，传 key 开启，`false` 可动态关；**可用 key：`bold` `italic` `strike` `highlight` `link`** |
+| `floatingMenu`                | 空行时出现的浮动菜单；默认关闭，传 key 开启，`false` 可动态关；**可用 key：`heading` `horizontalRule` `bulletList`** |
 | `showInvisibleCharacters`     | 显示隐藏字符（空格、段落标记），默认隐藏                                                            |
 | `placeholder`                 | 占位文本，不传时回落到语言包的 `placeholder`                                                        |
 | `extensions`                  | 附加扩展数组                                                                                        |

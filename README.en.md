@@ -42,9 +42,10 @@ const extensions = [StarterKit.configure({})];
 </template>
 ```
 
-Or register it globally and use `<TipTapEditor />` directly:
+Or register it globally and use `<TipTapEditor />` directly (import the styles once; either usage works):
 
 ```ts
+import "@yumine9/vue3-tiptap/style.css";
 import TipTapEditorPlugin from "@yumine9/vue3-tiptap";
 app.use(TipTapEditorPlugin);
 ```
@@ -180,10 +181,12 @@ const extensions = [
 | `readonly`                    | Read-only (switchable at runtime)                                                            |
 | `theme`                       | `"light" \| "dark"`                                                                          |
 | `primaryColor`                | Accent color (any CSS color); toolbar active states, primary buttons, selection etc. follow it |
-| `lang` / `translations`     | `"zh" \| "en"` or a shallow-merged custom locale pack                                        |
+| `lang`                        | UI language: `"zh" \| "en"`; when omitted it is auto-detected (Chinese if the browser language contains `zh`, otherwise English) |
+| `translations`                | Custom locale pack, shallow-merged over the built-in packs; required when `lang` is a non-builtin id, reactive at runtime |
 | `toolbar`                     | Toolbar layout, TinyMCE-style string such as `"bold italic \| underline"`; undefined = default |
 | `toolbarWrap`                 | Wrap toolbar buttons onto multiple lines (true) instead of horizontal scroll (false)         |
-| `bubbleMenu` / `floatingMenu` | Selection / empty-line menus, off by default — pass a key to enable, `false` toggles off; configured like `toolbar` with the same key set |
+| `bubbleMenu`                  | Bubble menu shown on text selection; off by default — pass a key to enable, `false` toggles off; **available keys: `bold` `italic` `strike` `highlight` `link`** |
+| `floatingMenu`                | Floating menu shown on empty lines; off by default — pass a key to enable, `false` toggles off; **available keys: `heading` `horizontalRule` `bulletList`** |
 | `showInvisibleCharacters`     | Show hidden characters (spaces, paragraph marks); hidden by default                          |
 | `placeholder`                 | Placeholder text; falls back to the locale pack's `placeholder` key                          |
 | `extensions`                  | Additional extension array                                                                   |
@@ -235,7 +238,7 @@ const extensions = [
 | `findAndReplace` | `FindAndReplace` | Find & replace panel |
 | `clearFormatting` | `ClearFormatting` | Clear formatting |
 
-Notes: keys whose extension is not loaded are silently ignored (a `console.warn` fires only for the `undefined` default layout); `bubbleMenu` / `floatingMenu` share the same keys.
+Notes: keys whose extension is not loaded are silently ignored (a `console.warn` fires only for the `undefined` default layout); `bubbleMenu` / `floatingMenu` accept only the subset of keys listed in the props table above.
 
 ## Docs
 
