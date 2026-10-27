@@ -49,7 +49,9 @@ export const createResizableMediaView = ({
         element.style.height = `${height}px`;
       },
       onCommit: (width, height) => {
-        editor.chain().focus().updateAttributes(nodeName, { width, height }).run();
+        const pos = getPos();
+        if (typeof pos !== "number") return;
+        editor.chain().setNodeSelection(pos).updateAttributes(nodeName, { width, height }).run();
       },
       onUpdate: () => true,
       options: {
@@ -65,36 +67,23 @@ export const createResizableMediaView = ({
       },
     });
 
-    // The base class coerces width/height attrs to `${value}px` in its
-    // (private) applyInitialSize, corrupting percentage defaults such as the
-    // video's "100%" width into 100px. Re-apply percentage attrs verbatim;
-    // the aspect ratio is re-measured from the element on drag start, so no
-    // internal state needs fixing up. The first drag commits concrete px.
+    const contentWidth = () => {
+      const dom = editor.view.dom;
+      const padding = getComputedStyle(dom);
+      return dom.clientWidth - parseFloat(padding.paddingLeft) - parseFloat(padding.paddingRight);
+    };
     const isPercent = (value: unknown) => typeof value === "string" && value.trim().endsWith("%");
     if (isPercent(node.attrs.width)) {
-      element.style.width = node.attrs.width;
-      // The container is a flex row, so the wrapper shrink-wraps its content
-      // and a percentage width collapses to the media's fallback (~300px).
-      // Stretch the wrapper so the percentage resolves against the full row.
-      resizable.wrapper.style.width = "100%";
+      element.style.width = `${contentWidth()}px`;
     }
     if (isPercent(node.attrs.height)) {
       element.style.height = node.attrs.height;
     }
 
     // Cap the drag at the editor's live content width — without it the media
-    // element keeps growing past the visible edge (clipped by overflow) while
-    // the stored width attribute still increases. maxSize is consulted on
-    // every pointer move, so expose it as a getter that re-measures (the
-    // editor width can change with the window).
+    // keeps growing past the visible edge
     Object.defineProperty(resizable, "maxSize", {
-      get: () => {
-        const dom = editor.view.dom;
-        const padding = getComputedStyle(dom);
-        return {
-          width: dom.clientWidth - parseFloat(padding.paddingLeft) - parseFloat(padding.paddingRight),
-        };
-      },
+      get: () => ({ width: contentWidth() }),
     });
 
     return resizable;
