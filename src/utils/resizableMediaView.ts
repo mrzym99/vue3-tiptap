@@ -81,9 +81,13 @@ export const createResizableMediaView = ({
     }
 
     // Cap the drag at the editor's live content width — without it the media
-    // keeps growing past the visible edge
+    // keeps growing past the visible edge. A no-op `set` swallows any upstream
+    // self-assignment (`this.maxSize = ...` would throw in strict mode with a
+    // getter-only accessor); `configurable` lets a future upgrade replace it.
     Object.defineProperty(resizable, "maxSize", {
+      configurable: true,
       get: () => ({ width: contentWidth() }),
+      set: () => {},
     });
 
     return resizable;
