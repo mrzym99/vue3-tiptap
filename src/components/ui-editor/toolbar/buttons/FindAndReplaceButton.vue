@@ -43,39 +43,12 @@ import ActionDialogButton from "@/components/ui-common/action-dialog-button/inde
 import TiptapButton from "@/components/ui-common/button/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
+import { useFindAndReplace } from "@/composables/useFindAndReplace";
 
 const props = defineProps<EXTActionButtonProps>();
 
-const searchTerm = ref("");
-const replaceTerm = ref("");
-
-const results = computed(
-  () => (props.editor.storage.findAndReplace as { results: unknown[] } | undefined)?.results ?? [],
-);
-const totalResults = computed(() => results.value.length);
-const hasResults = computed(() => totalResults.value > 0);
-
-function goNext() {
-  props.editor.chain().focus().setSearchTerm(searchTerm.value).goToNextResult().run();
-}
-
-function goPrev() {
-  props.editor.chain().focus().setSearchTerm(searchTerm.value).goToPreviousResult().run();
-}
-
-function replaceOne() {
-  props.editor.chain().focus().setSearchTerm(searchTerm.value).setReplaceTerm(replaceTerm.value).replace().run();
-}
-
-function replaceAll() {
-  props.editor.chain().focus().setSearchTerm(searchTerm.value).setReplaceTerm(replaceTerm.value).replaceAll().run();
-}
-
-function clear() {
-  props.editor.chain().focus().clearSearch().run();
-  searchTerm.value = "";
-  replaceTerm.value = "";
-}
+const { searchTerm, replaceTerm, totalResults, hasResults, goNext, goPrev, replaceOne, replaceAll, clear } =
+  useFindAndReplace(props.editor);
 </script>
 
 <style lang="scss" scoped>
