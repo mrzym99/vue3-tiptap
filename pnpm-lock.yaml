@@ -136,8 +136,8 @@ importers:
         version: 17.0.6
     devDependencies:
       '@iconify-json/lucide':
-        specifier: ^1.2.124
-        version: 1.2.124
+        specifier: ^1.2.149
+        version: 1.2.149
       '@iconify-json/tabler':
         specifier: ^1.2.38
         version: 1.2.38
@@ -255,8 +255,8 @@ packages:
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
 
-  '@iconify-json/lucide@1.2.124':
-    resolution: {integrity: sha512-mO6JyBVNER7uXEkW2bXiN9Rrm6w91IXxwnNmIMbu2KZX0ZPcVZH1xDUTw94pryxESUIpBhinkOUIZIav+TA9ng==}
+  '@iconify-json/lucide@1.2.149':
+    resolution: {integrity: sha512-5NG9YdbtRS03hG1A+EIE6nLhhdAYsf0mKu1ZRi6kLMlCG8DxmDsRM6DAhwlNMLiSiQKFbHpKTJ2VddZdwUkUyw==}
 
   '@iconify-json/tabler@1.2.38':
     resolution: {integrity: sha512-9v6ooRU/bKOK/Whv4w2aiK5gBnfCV9Ei+uD1iDDeLu2b+EnF3G3ZKkRKWEOOLG8bJyfKn6XEia6gUQ9oO7cF+Q==}
@@ -1731,7 +1731,7 @@ snapshots:
 
   '@floating-ui/utils@0.2.11': {}
 
-  '@iconify-json/lucide@1.2.124':
+  '@iconify-json/lucide@1.2.149':
     dependencies:
       '@iconify/types': 2.0.0
 

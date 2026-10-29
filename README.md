@@ -222,7 +222,7 @@ const extensions = [
 | `heading`                                                         | `Heading`                                                         | 标题下拉，H1–H6，触发按钮随当前层级换图标            |
 | `bulletList`                                                      | `BulletList`（+ `OrderedList` / `TaskList`）                      | 列表下拉：无序 / 有序 / 任务三合一，后两者无独立 key |
 | `codeBlock`                                                       | `CodeBlock`                                                       | 代码块                                               |
-| `bold` / `italic` / `strike` / `code` / `underline` / `highlight` | `Bold` / `Italic` / `Strike` / `Code` / `Underline` / `Highlight` | 行内样式：加粗、斜体、删除线、行内代码、下划线、高亮 |
+| `bold` / `italic` / `strike` / `code` / `underline` | `Bold` / `Italic` / `Strike` / `Code` / `Underline` | 行内样式：加粗、斜体、删除线、行内代码、下划线（高亮已并入 `color` 菜单）|
 | `link`                                                            | `Link`                                                            | 链接，弹窗输入 URL                                   |
 | `superscript` / `subscript`                                       | `Superscript` / `Subscript`                                       | 上标 / 下标                                          |
 | `textAlign`                                                       | `TextAlign`                                                       | 对齐按钮组（作用于 heading/paragraph）               |
@@ -232,7 +232,7 @@ const extensions = [
 | `horizontalRule`                                                  | `HorizontalRule`                                                  | 分隔线                                               |
 | `blockquote`                                                      | `Blockquote`                                                      | 引用块（再次点击取消）                               |
 | `details`                                                         | `Details`（+ `DetailsSummary` / `DetailsContent`）                | 可折叠内容块                                         |
-| `color`                                                           | `Color`（+ `TextStyle`）                                          | 文字颜色菜单                                         |
+| `color`                                                           | `Color`（+ `TextStyle` / `Highlight`）                            | 颜色菜单：文字色 + 高亮色 + 最近使用（localStorage）；每段首项为“默认”=清除 |
 | `fontFamily` / `fontSize`                                         | `FontFamily` / `FontSize`                                         | 字体 / 字号菜单，触发按钮带当前值，再点一次取消      |
 | `table`                                                           | `Table`（+ `TableRow` / `TableHeader` / `TableCell`）             | 表格菜单（插入 + 行列操作）                          |
 | `findAndReplace`                                                  | `FindAndReplace`                                                  | 查找替换面板                                         |

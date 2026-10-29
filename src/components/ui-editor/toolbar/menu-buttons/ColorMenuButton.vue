@@ -1,224 +1,193 @@
 <template>
-  <Popover v-model:show="colorMenuOpen" trigger="click" placement="bottom-start">
+  <Popover v-model:show="panelOpen" trigger="click" placement="bottom-start">
     <template #trigger>
-      <button
-        type="button"
-        class="color-button"
-        :class="{ 'is-active': isColorActive }"
-        :aria-label="t('color')"
-        :aria-expanded="colorMenuOpen"
-      >
-        <RiFontColor />
-      </button>
+      <ActionButton :icon="glyphIcon" :is-active="() => hasAnyColor" :tooltip="t('color')" :aria-expanded="panelOpen">
+        <template #suffix>
+          <RiChevronDown />
+        </template>
+      </ActionButton>
     </template>
-    <div class="color-popover">
-      <div class="color-swatches">
-        <button
-          v-for="c in PRESET_COLORS"
-          :key="c"
-          type="button"
-          class="color-swatch"
-          :class="{ active: currentColor === c }"
-          :style="{ backgroundColor: c }"
-          :title="c"
-          @click="onPick(c)"
-        />
-      </div>
-      <label class="color-custom" data-popover-keep-open>
-        <input
-          type="color"
-          :value="currentColor ?? '#000000'"
-          @input="onPick(($event.target as HTMLInputElement).value)"
-          @change="onCustomChange(($event.target as HTMLInputElement).value)"
-        />
-        <span>{{ t("colorCustom") }}</span>
-      </label>
-      <TiptapButton v-if="currentColor" @click="clearColor">
-        {{ t("colorClear") }}
-      </TiptapButton>
+    <div class="color-panel">
+      <ColorSection v-if="recentItems.length" :title="t('recentlyUsed')" :items="recentItems" @pick="onPick" />
+      <ColorSection :title="t('textColor')" :items="textItems" @pick="onPick" />
+      <ColorSection :title="t('highlightColor')" :items="highlightItems" @pick="onPick" />
     </div>
   </Popover>
 </template>
 
 <script lang="ts" setup>
-import RiFontColor from "~icons/lucide/palette";
+import RiChevronDown from "~icons/lucide/chevron-down";
+import RiCircleLetterA from "~icons/lucide/circle-letter-a";
+import ActionButton from "@/components/ui-common/action-button/index.vue";
+import ColorSection from "./components/ColorSection.vue";
 import Popover from "@/components/ui-common/popover/index.vue";
-import TiptapButton from "@/components/ui-common/button/index.vue";
+import { useRecentColors, clearPendingColors } from "@/composables/useRecentColors";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
 const props = defineProps<EXTActionButtonProps>();
 
-const colorMenuOpen = ref(false);
+const panelOpen = ref(false);
+const { recent, pushColor } = useRecentColors();
 
-const PRESET_COLORS = [
-  // neutrals — mirrors the theme's gray/text tokens (#1F2937/#4B5563/#9CA3AF…)
-  "#000000",
-  "#1F2937",
-  "#374151",
-  "#4B5563",
-  "#6B7280",
-  "#9CA3AF",
-  "#D1D5DB",
-  "#E5E7EB",
-  "#F3F4F6",
-  "#FFFFFF",
-  // red → orange (anchored on --tiptap-accent-danger #EB5757)
-  "#7E2827",
-  "#B23C3B",
-  "#EB5757",
-  "#F49E9D",
-  "#FFD9D8",
-  "#8A3A12",
-  "#C25017",
-  "#F76B15",
-  "#FBA26A",
-  "#FFDCC2",
-  // yellow → green (anchored on --tiptap-accent-warning #DFAB01 / green #0F7B6C)
-  "#8A6408",
-  "#B88A0A",
+// Color only applies to a text selection, or as a pending mark while typing
+// in the paragraph it was picked in (Enter ends it — see useColorEnterClear).
+// Closing the panel without either situation painted anything drops the
+// pending color, so the "A" switch can't stay stuck on.
+watch(panelOpen, (open) => {
+  if (open) return;
+  // let the dialog/trigger's @closed focus handler run first — .focus() is
+  // async, and clearing storedMarks only when the caret lands on plain text
+  // needs to see the final selection
+  setTimeout(() => clearPendingColors(props.editor), 0);
+});
+
+// The first entry of each palette is "Default": it clears the mark instead of
+// storing a near-invisible color (this is also the only clear affordance).
+const TEXT_DEFAULT = "#37352F";
+const HIGHLIGHT_DEFAULT = "#FFFFFF";
+
+// Notion-style palettes
+const TEXT_COLORS = [
+  TEXT_DEFAULT,
+  "#9B9A97",
+  "#AD6030",
+  "#D9730D",
   "#DFAB01",
-  "#F0CB4E",
-  "#FBEBA8",
-  "#0A5A50",
   "#0F7B6C",
-  "#45A696",
-  "#8FCBC0",
-  "#CDEAE4",
-  // teal → blue
-  "#134E4A",
-  "#0F766E",
-  "#14B8A6",
-  "#5EEAD4",
-  "#CCFBF1",
-  "#1E40AF",
-  "#2563EB",
-  "#3B82F6",
-  "#93C5FD",
-  "#DBEAFE",
-  // indigo → purple → pink (anchored on theme primary #4F46E5 / accent #6366F1)
-  "#312E81",
-  "#4F46E5",
-  "#6366F1",
-  "#818CF8",
-  "#A5B4FC",
-  "#6B21A8",
-  "#9333EA",
-  "#C084FC",
-  "#F9A8D4",
-  "#FCE7F3",
+  "#0B6E99",
+  "#6940A5",
+  "#AD1A72",
+  "#E03E3E",
+];
+const HIGHLIGHT_COLORS = [
+  HIGHLIGHT_DEFAULT,
+  "#EBEDED",
+  "#F5EDEA",
+  "#FBECDC",
+  "#FBF3DB",
+  "#DDEDEA",
+  "#DBECF8",
+  "#EEE0F4",
+  "#F8E4F1",
+  "#FADEDE",
 ];
 
-const currentColor = computed(() => props.editor.getAttributes("textStyle").color as string | undefined);
-const isColorActive = computed(() => !!currentColor.value);
+// editor.getAttributes/isActive read plain ProseMirror state — bump on
+// transactions so the active rings follow the selection.
+const version = ref(0);
+const onTx = () => version.value++;
+props.editor.on("transaction", onTx);
+onScopeDispose(() => props.editor.off("transaction", onTx));
 
-function onPick(color: string) {
-  if (!color) return;
-  props.editor.chain().focus().setColor(color).run();
+const textColor = computed(() => {
+  version.value;
+  return props.editor.getAttributes("textStyle").color as string | undefined;
+});
+const highlightColor = computed(() => {
+  version.value;
+  return props.editor.getAttributes("highlight").color as string | undefined;
+});
+const hasAnyColor = computed(() => !!textColor.value || props.editor.isActive("highlight"));
+
+// trigger glyph, two-tone: the stroke (circle + "A") follows the text colour,
+// the circle's fill follows the highlight colour. The icon renders inside
+// ActionButton, so this component's scoped styles can't reach its <g> — pass
+// the fill through a CSS variable picked up by the :global rule below
+// (inline style on the svg root never applies: the icon's own <g fill="none">
+// presentation attribute wins for its children).
+const glyphIcon = computed(
+  () => () =>
+    h(
+      "span",
+      {
+        class: "color-glyph",
+        style: {
+          height: "1.2em",
+          color: textColor.value ?? "inherit",
+          background: highlightColor.value ?? "inherit",
+          borderRadius: "50%",
+        },
+      },
+      [h(RiCircleLetterA)],
+    ),
+);
+
+function isTextActive(c: string) {
+  return c === TEXT_DEFAULT ? !textColor.value : textColor.value === c;
 }
 
-// `input` live-previews while the OS picker is open; `change` fires on commit
-function onCustomChange(color: string) {
-  onPick(color);
-  colorMenuOpen.value = false;
+function isHighlightActive(c: string) {
+  if (c === HIGHLIGHT_DEFAULT) return props.editor.isActive("highlight") && !highlightColor.value;
+  return highlightColor.value === c;
 }
 
-function clearColor() {
-  props.editor.chain().focus().unsetColor().run();
+const recentItems = computed(() =>
+  recent.value.map((r) => ({
+    color: r.color,
+    highlight: !!r.highlight,
+    active: r.highlight ? isHighlightActive(r.color) : isTextActive(r.color),
+  })),
+);
+const textItems = computed(() => TEXT_COLORS.map((c) => ({ color: c, highlight: false, active: isTextActive(c) })));
+const highlightItems = computed(() =>
+  HIGHLIGHT_COLORS.map((c) => ({ color: c, highlight: true, active: isHighlightActive(c) })),
+);
+
+function onPick(item: { color: string; highlight: boolean }) {
+  if (item.highlight) pickHighlight(item.color);
+  else pickText(item.color);
+}
+
+// true when picking a color would have somewhere to land: a text selection,
+// or a caret that already sits in colored text / carries a pending color.
+function canPaint(): boolean {
+  const { selection } = props.editor.state;
+  if (!selection.empty) return true;
+  return (
+    props.editor.isActive("textStyle") ||
+    props.editor.isActive("highlight") ||
+    !!props.editor.state.storedMarks?.some((m) => m.attrs.color)
+  );
+}
+
+function pickColor(color: string, highlight: boolean) {
+  if (!canPaint()) {
+    pushColor(color, highlight);
+    // the panel unmounts under this click and focus dies with it — put the
+    // caret back so the user can keep typing
+    props.editor.commands.focus();
+    return;
+  }
+  const chain = props.editor.chain().focus();
+  if (highlight) chain.setHighlight({ color });
+  else chain.setColor(color);
+  chain.run();
+  pushColor(color, highlight);
+}
+
+function pickText(c: string) {
+  // clicking the already-selected color (or the Default swatch) clears it
+  if (c === TEXT_DEFAULT || textColor.value === c) {
+    props.editor.chain().focus().unsetColor().run();
+    return;
+  }
+  pickColor(c, false);
+}
+
+function pickHighlight(c: string) {
+  if (c === HIGHLIGHT_DEFAULT || highlightColor.value === c) {
+    props.editor.chain().focus().unsetHighlight().run();
+    return;
+  }
+  pickColor(c, true);
 }
 </script>
 
 <style lang="scss" scoped>
-.color-button {
-  align-items: center;
-  background: none;
-  color: var(--tiptap-color-text);
-  border: none;
-  border-radius: var(--tiptap-border-radius-md);
-  cursor: pointer;
-  display: inline-flex;
-  height: var(--tiptap-btn-size);
-  justify-content: center;
-  min-width: var(--tiptap-btn-size);
-  outline: none;
-  padding: var(--tiptap-padding-sm);
-
-  &:hover:not(:disabled) {
-    background-color: var(--tiptap-btn-bg-hover);
-  }
-
-  &.is-active {
-    background-color: var(--tiptap-btn-bg-active);
-  }
-}
-
-.color-popover {
+.color-panel {
   display: flex;
   flex-direction: column;
   gap: var(--tiptap-gap);
-}
-
-.color-swatches {
-  display: grid;
-  gap: var(--tiptap-gap-xs);
-  grid-template-columns: repeat(10, 24px);
-}
-
-.color-swatch {
-  /* sm (8px), not md — md (12px) on a 24px square is exactly half the edge
-     and renders as a circle */
-  border: 1px solid var(--tiptap-color-border);
-  border-radius: var(--tiptap-border-radius-sm);
-  cursor: pointer;
-  height: 24px;
-  padding: 0;
-  transition:
-    filter 150ms ease,
-    border-color 0.2s ease-in-out,
-    color 0.2s ease-in-out;
-  width: 24px;
-
-  /* hover feedback is background-only */
-  &:hover {
-    filter: brightness(1.1);
-  }
-
-  &.active {
-    box-shadow: 0 0 0 2px var(--tiptap-accent-primary);
-  }
-}
-
-.color-custom {
-  align-items: center;
-  display: flex;
-  font-size: var(--tiptap-font-size);
-  gap: var(--tiptap-gap);
-}
-
-/* Same rounded-square as the preset swatches */
-.color-custom input[type="color"] {
-  border: 1px solid var(--tiptap-color-border);
-  border-radius: var(--tiptap-border-radius-sm);
-  cursor: pointer;
-  height: 24px;
-  padding: 0;
-  transition:
-    filter 150ms ease,
-    border-color 0.2s ease-in-out,
-    color 0.2s ease-in-out;
-  width: 24px;
-
-  &:hover {
-    filter: brightness(1.1);
-  }
-
-  /* Chrome paints its own padded inner swatch — strip it so the color fills
-     the rounded square edge to edge */
-  &::-webkit-color-swatch-wrapper {
-    padding: 0;
-  }
-  &::-webkit-color-swatch {
-    border: none;
-    border-radius: calc(var(--tiptap-border-radius-sm) - 1px);
-  }
+  width: 188px;
 }
 </style>

@@ -53,8 +53,8 @@ export type TranslateFn = (key: string, named?: Record<string, unknown> | number
 
 /** General options shared by every bundled extension. */
 export interface GeneralOptions {
-  /** Toolbar button view */
-  button: ButtonView;
+  /** Toolbar button view; extensions without one (e.g. highlight) leave it undefined */
+  button?: ButtonView;
   /** Extension-owned floating toolbar while the caret is inside its content; `false` disables */
   bubbleMenu?: ButtonView | false;
   /** Stricter URL check for this extension's insert dialog, e.g. `Video.configure({ validate: isVideoUrl })`; default check is http(s)-only */

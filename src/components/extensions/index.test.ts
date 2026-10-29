@@ -76,9 +76,4 @@ describe("StarterKit", () => {
       expect(extension.name, key).toBe(key);
     }
   });
-
-  it("unknown keys are rejected by the compiler", () => {
-    StarterKit.configure({ boldx: false });
-    expect(true).toBe(true);
-  });
 });

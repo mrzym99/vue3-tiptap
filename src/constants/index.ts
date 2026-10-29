@@ -2,7 +2,7 @@
 export const defaultToolbar =
   "undo redo |" +
   "heading bulletList codeBlock | " +
-  "bold italic strike code underline highlight link | " +
+  "bold italic strike code underline link | " +
   "superscript subscript | " +
   "textAlign | " +
   "image | " +

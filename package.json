@@ -93,7 +93,7 @@
     "marked": "^17.0.6"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.124",
+    "@iconify-json/lucide": "^1.2.149",
     "@iconify-json/tabler": "^1.2.38",
     "@microsoft/api-extractor": "^7.59.4",
     "@types/node": "^24.12.3",
