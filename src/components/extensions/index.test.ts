@@ -63,11 +63,11 @@ describe("StarterKit", () => {
   });
 
   it("`false` removes an extension, an object configures it", () => {
-    const editor = createKitEditor({ audio: false, image: { width: 123 } });
+    const editor = createKitEditor({ audio: false, image: { upload: async () => "https://cdn/x.png" } });
     const names = editor.extensionManager.extensions.map((e) => e.name);
     expect(names).not.toContain("audio");
     const image = editor.extensionManager.extensions.find((e) => e.name === "image");
-    expect((image!.options as { width?: number }).width).toBe(123);
+    expect(typeof (image!.options as { upload?: unknown }).upload).toBe("function");
     editor.destroy();
   });
 

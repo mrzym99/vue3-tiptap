@@ -3,7 +3,7 @@
     <Form ref="formRef" :model="model" @submit="applyLink">
       <FormItem name="href" :rules="rules">
         <template #default="{ id }">
-          <TiptapInput :id="id" v-model="href" :placeholder="t('linkPlaceholder')" @keydown.enter.prevent="submit" />
+          <TiptapInput :id="id" v-model="href" :placeholder="t('urlPlaceholder')" @keydown.enter.prevent="submit" />
         </template>
       </FormItem>
       <template #actions>
@@ -22,9 +22,9 @@ import Form from "@/components/ui-common/form/index.vue";
 import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import TiptapButton from "@/components/ui-common/button/index.vue";
+import { normalizeUrl, urlRules } from "../../../../composables/useMediaForm";
 import type { Editor } from "@tiptap/core";
 import type { TranslateFn } from "@/types";
-import type { FormRule } from "@/components/ui-common/form/types";
 
 const props = defineProps<{
   show: boolean;
@@ -52,12 +52,7 @@ watch(
 
 const model = { href: () => href.value };
 
-const rules: FormRule[] = [
-  {
-    validator: (value) => typeof value === "string" && value.trim().length > 0,
-    message: props.t("mediaUrlRequired"),
-  },
-];
+const rules = urlRules(props.editor, props.t, "link");
 
 const submit = () => formRef.value?.formEl?.requestSubmit();
 
@@ -70,7 +65,7 @@ function onShowChange(value: boolean) {
 }
 
 function applyLink(values: Record<string, unknown>) {
-  const value = String(values.href ?? "").trim();
+  const value = normalizeUrl(String(values.href ?? "").trim());
   props.editor.chain().focus().extendMarkRange("link").setLink({ href: value }).run();
   close();
 }

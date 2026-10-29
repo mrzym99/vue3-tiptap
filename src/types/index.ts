@@ -57,6 +57,10 @@ export interface GeneralOptions {
   button: ButtonView;
   /** Extension-owned floating toolbar while the caret is inside its content; `false` disables */
   bubbleMenu?: ButtonView | false;
+  /** Stricter URL check for this extension's insert dialog, e.g. `Video.configure({ validate: isVideoUrl })`; default check is http(s)-only */
+  validate?: (url: string) => boolean;
+  /** Error shown when `validate` rejects the URL; set it next to `validate` so users learn the actual rule instead of the generic invalid-URL text */
+  validateMessage?: string;
 }
 
 /** Button view function */

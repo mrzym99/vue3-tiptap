@@ -160,22 +160,25 @@ export const builtinExtensionMap = {
 
 const builtinExtensions: Extensions = Object.values(builtinExtensionMap) as Extensions;
 
-/** Per-extension entry: `false` disables it, an object configures it. */
-type StarterKitOption = Record<string, unknown> | false;
-
 /** Literal keys derived from `builtinExtensionMap` — editors autocomplete and typo-check `StarterKit.configure({...})`. */
 type StarterKitName = keyof typeof builtinExtensionMap;
-type StarterKitOptions = Partial<Record<StarterKitName, StarterKitOption>>;
+
+/** Per-extension entry: `false` disables it, an object configures it with that extension's own option type. */
+type StarterKitOption<N extends StarterKitName> = (typeof builtinExtensionMap)[N] extends { options: infer O }
+  ? Partial<O>
+  : Record<string, unknown>;
+
+type StarterKitOptions = { [N in StarterKitName]?: StarterKitOption<N> | false };
 
 /** All built-in extensions; `false` disables, an object configures. */
 export const StarterKit = Extension.create<StarterKitOptions>({
   name: "starterKit",
   addExtensions() {
     // extension.name is typed `string`, so the lookup needs the widened signature
-    const options = this.options as Record<string, StarterKitOption | undefined>;
+    const options = this.options as Record<string, Record<string, unknown> | false | undefined>;
     return builtinExtensions
       .map((extension) => {
-        const option = options[extension.name]; 
+        const option = options[extension.name];
         if (option === false) return null;
         return option ? extension.configure(option) : extension;
       })

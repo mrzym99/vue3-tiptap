@@ -13,7 +13,7 @@
           <TiptapInput
             :id="id"
             :model-value="src"
-            :placeholder="t('audioPlaceholder')"
+            :placeholder="t('urlPlaceholder')"
             @update:model-value="src = $event"
             @keydown.enter.prevent="submit"
           />
@@ -35,7 +35,7 @@ import Form from "@/components/ui-common/form/index.vue";
 import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import TiptapButton from "@/components/ui-common/button/index.vue";
-import { isHttpUrl, useMediaForm } from "../../../../composables/useMediaForm";
+import { useMediaForm } from "../../../../composables/useMediaForm";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
 /** Audio insert dialog: plain URL. */
@@ -47,6 +47,6 @@ const { src, model, rules, submit, onSubmit } = useMediaForm(
   (payload) => props.editor.chain().focus().setAudio({ src: payload.src }).run(),
   dialogRef,
   formEl,
-  isHttpUrl,
+  "audio",
 );
 </script>

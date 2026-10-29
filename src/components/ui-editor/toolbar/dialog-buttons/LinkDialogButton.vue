@@ -16,7 +16,7 @@
           <TiptapInput
             :id="id"
             :model-value="href"
-            :placeholder="t('linkPlaceholder')"
+            :placeholder="t('urlPlaceholder')"
             @update:model-value="href = $event"
             @keydown.enter.prevent="submit"
           />
@@ -48,8 +48,8 @@ import Form from "@/components/ui-common/form/index.vue";
 import FormItem from "@/components/ui-common/form-item/index.vue";
 import TiptapInput from "@/components/ui-common/input/index.vue";
 import TiptapButton from "@/components/ui-common/button/index.vue";
+import { normalizeUrl, urlRules } from "../../../../composables/useMediaForm.ts";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
-import type { FormRule } from "@/components/ui-common/form/types";
 
 /** Link insert/edit button rendered as a centered modal dialog. */
 const props = defineProps<EXTActionButtonProps>();
@@ -73,12 +73,7 @@ const model = {
   label: () => label.value,
 };
 
-const rules: FormRule[] = [
-  {
-    validator: (value) => typeof value === "string" && value.trim().length > 0,
-    message: t("mediaUrlRequired"),
-  },
-];
+const rules = urlRules(props.editor, t, "link");
 
 const submit = () => formEl.value?.formEl?.requestSubmit();
 
@@ -91,7 +86,7 @@ function onOpened() {
 }
 
 function applyLink(values: Record<string, unknown>) {
-  const value = String(values.href ?? "").trim();
+  const value = normalizeUrl(String(values.href ?? "").trim());
 
   if (editModeAtOpen.value) {
     props.editor.chain().focus().extendMarkRange("link").setLink({ href: value }).run();

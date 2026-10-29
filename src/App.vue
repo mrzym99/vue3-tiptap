@@ -42,6 +42,12 @@ const extensions = [
       //   return "https://api.mtyqx.cn/api/random.php";
       // },
     },
+    // Demo: custom link validation. Floor = http(s):// or bare `www.`
+    link: {
+      protocols: ["mailto", "tel"],
+      validate: (url) => /^(https:\/\/(www\.)?(github\.com|bilibili\.com)(\/|$)|mailto:|tel:)/i.test(url),
+      validateMessage: "支持 GitHub / Bilibili 链接（mailto:/tel: 也可以）",
+    },
     mention: {
       items: mentionUsers,
     },

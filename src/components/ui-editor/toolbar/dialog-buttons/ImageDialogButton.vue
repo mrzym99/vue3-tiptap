@@ -15,7 +15,7 @@
               <TiptapInput
                 :id="id"
                 :model-value="src"
-                :placeholder="t('imagePlaceholder')"
+                :placeholder="t('urlPlaceholder')"
                 @update:model-value="src = $event"
                 @keydown.enter.prevent="submit"
               />
@@ -48,7 +48,7 @@ import TiptapInput from "@/components/ui-common/input/index.vue";
 import TiptapButton from "@/components/ui-common/button/index.vue";
 import Tabs, { type TabItem } from "@/components/ui-common/tabs/index.vue";
 import ImageUpload from "./components/ImageUpload.vue";
-import { isHttpUrl, useMediaForm } from "../../../../composables/useMediaForm.ts";
+import { useMediaForm } from "../../../../composables/useMediaForm.ts";
 import type { ImageOptions } from "@/components/extensions/Image";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
@@ -63,7 +63,7 @@ const { src, model, rules, submit, onSubmit } = useMediaForm(
   (payload) => props.editor.chain().focus().setImage(payload).run(),
   dialogRef,
   formEl,
-  (url) => isHttpUrl(url) || /^data:image\//i.test(url),
+  "image",
 );
 
 /** Whether the `image` extension is configured with an upload callback. */

@@ -7,7 +7,10 @@ import LinkDialogButton from "@/components/ui-editor/toolbar/dialog-buttons/Link
 import LinkBubbleMenu from "@/components/ui-editor/bubble-menu/link-bubble-menu/index.vue";
 import { withButton } from "@/utils/button";
 
-export interface LinkOptions extends TiptapLinkOptions, GeneralOptions {}
+export interface LinkOptions extends TiptapLinkOptions, GeneralOptions {
+  /** URL check for the insert dialog — upstream `validate` option, kept required-identical to satisfy both parents. */
+  validate: (url: string) => boolean;
+}
 
 export const Link = /* @__PURE__ */ TiptapLink.extend<LinkOptions>({
   addOptions() {
