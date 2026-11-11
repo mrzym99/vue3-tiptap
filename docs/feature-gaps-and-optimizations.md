@@ -12,9 +12,7 @@
 
 **已移除**：`UniqueId`（2026-10-16：未配置 `types` 从不生效，且按数据保真原则不自动写入节点属性；需要时宿主自行引入 `@tiptap/extension-unique-id`）。
 
-**已安装但未启用**：`@tiptap/extension-focus`（**默认不启用，决策见文档开头**）、`@tiptap/starter-kit`（作为依赖但未使用）。
-
-**未安装 / 未集成**：`extension-undo-redo`、`extension-character-count`、`extension-drag-handle`、`extension-markdown`、`extension-autolink`（`link` 扩展已支持粘贴时自动识别，但无独立 autolink 配置）、`extension-emoji`、`extension-mention` + `@tiptap/suggestion`、`extension-mathematics`、`extension-table-of-contents`、`extension-ruby-text`、`extension-collaboration` 系列、`extension-text-style` 之上的 `font-size`（非官方，需自研）等。
+**未安装 / 未集成**：`extension-emoji`、`extension-mathematics`（需 katex）、`extension-table-of-contents`、`extension-ruby-text`、`extension-collaboration` 系列（Yjs peer 已随 drag-handle 装入，但未启用）等。
 
 ---
 
@@ -30,7 +28,7 @@
 | ----------- | -------- | ---- | ---- |
 | **Undo / Redo** | 图标按钮 ×2 | `@tiptap/extension-undo-redo`（历史插件）+ 自定义 `Undo` / `Redo` 按钮（带 `canUndo()/canRedo()` 禁用态） | ✅ 已完成 |
 | **清除格式（Clear Formatting）** | 图标按钮 | 一键移除选区上的所有 **mark**（bold/italic/code/highlight/color/fontFamily 等）+ 重置 heading。 | ✅ 已完成 |
-| **块级拖拽手柄（Drag Handle）** | 无按钮 | ✅ 已完成（2026-09）：基于官方 `@tiptap/extension-drag-handle` v3.31.3（MIT）源码精简（剥离全部 Yjs/协作分支），落位 `src/components/extensions/DragHandle/`（rules / drop-restore / plugin / index 四模块），零新依赖；支持 `nested` 嵌套拖拽、NodeRangeSelection 拖放还原、`ariaLabel`。**表格行为（2026-09-17 更新）**：`nested: true` 时单元格内段落可拖（拖入其他单元格/拖出表格，源单元格自动补空段落保持结构合法）；表格行/单元格本身仍不可作为拖拽目标（官方同款 `tableStructure` 规则排除）；整表拖动保留，抓手势 = 悬停单元格左侧留白（边缘检测提升为表格，同"悬停引用留白抓整块"）。**与官方的 4 处行为偏离**（源码头部有勿回同步标注）：① 滚动跟随（官方无，wrapper 不随内层滚动容器移动）；② left/right 边缘检测仅在块外侧槽位触发（官方 12px 块内区域与手柄热区重叠，嵌套块手柄永远抓不到）；③ 默认边缘移除 top（与手柄 left-start 热区重叠）；④ 嵌套模式下文档变化后不把目标提升为顶层块。 | ✅ 已完成 |
+| **块级拖拽手柄（Drag Handle）** | 无按钮 | ✅ 已完成：官方 `@tiptap/extension-drag-handle`（3.32+）的薄封装，落位 `src/components/extensions/DragHandle.ts`，仅重写 `render()` 补回抓手图标；nested 规则 / drop-restore / 边缘检测全部由官方包提供。已知上游缺口：无滚动跟随（官方未实现）、无 `ariaLabel` 选项（wrapper 以 `aria-label="Drag to move"` 兜底）。 | ✅ 已完成 |
 | **字数 / 字符统计（CharacterCount）** | 无按钮（复用底部统计） | 已用 `@tiptap/extensions` 的 `CharacterCount` 取代手写 `getEditorTextLength`（增量计算），配合 v-model 写回防抖。 | ✅ 已完成 |
 | **Markdown 导入/导出** | 弹窗或面板 | `@tiptap/markdown`（`turndown + markdown-it`）来回转换 HTML。适合需要「复制为 Markdown / 粘贴 Markdown」的场景；若暂不需要，可归到 P1。 | ⬜ 未做 |
 
@@ -43,7 +41,7 @@
 | **Emoji** | 按钮 + 面板 | `@tiptap/extension-emoji` 自带 `emojibase-data` 数据与建议列表；需面板 UI（可复用 Popover + 现有搜索框）。 |
 | **提及 @（Mention + Suggestion）** ✅ 已完成（2026-09-07） | 无按钮 | `@tiptap/extension-mention` + `@tiptap/suggestion`，输入 `@` 出建议弹层；数据源由宿主注入：`Mention.configure({ items })`（静态列表自动按 query 过滤，或传 `({ query, editor }) => items` 同步/异步解析函数，模式同 `Image.configure({ upload })`）。弹层由 `@tiptap/suggestion` 的 managed mount 定位（fixed 策略 + floating-ui autoUpdate），并 reparent 进主题根节点以继承 `--tiptap-*` 变量。 |
 | **目录（Table of Contents）** | 无按钮 | `@tiptap/extension-table-of-contents`，依赖 Heading；用于长文导航，纯只读节点。 |
-| **基础 PM 兜底扩展** | 无按钮 | `DropCursor` / `GapCursor` / `TrailingNode`（trailing 保证文档末尾始终可插入）；这些都在 `starter-kit` 内，启用 StarterKit 即一并获得（见 §4）。 |
+| **基础 PM 兜底扩展** | 无按钮 | `DropCursor` / `GapCursor` / `TrailingNode`（trailing 保证文档末尾始终可插入）；均由 `@tiptap/extensions` 直接导入并注册，与 `@tiptap/starter-kit` 无关。 |
 
 ### 2.3 P2 — 重 / 按需（接入前单独评估）
 
@@ -61,7 +59,7 @@
 | 项目 | 现状 | 建议 |
 | ---- | ---- | ---- |
 | **Focus（聚焦高亮）** | 已移除（2026-10-16） | 需要时宿主自行引入 `@tiptap/extension-focus` 并配置 `className: "has-focus"`（样式需自带）。 |
-| **StarterKit** | 依赖已装但未使用 | 用 StarterKit 替代「逐节点手写注册」，可集中获得 DropCursor / GapCursor / History / TrailingNode / undo-redo 命令等；但与「扩展即按钮 + 逐文件命名」的架构会叠加，**需权衡在 index.ts 中整合的方式**（StarterKit 不进工具栏，仅提供行为基座）。 |
+| **StarterKit** | 已启用（项目自建工厂，非 `@tiptap/starter-kit`） | `StarterKit.configure({...})` 遍历内置扩展表（`false` 禁用 / 对象即 configure）；DropCursor / GapCursor / History / TrailingNode 由 `@tiptap/extensions` 直接注册。 |
 | **Link 自动识别** | Link 已配置 | 确认 `autolink` / `HTMLAttributes` 按需开启，补齐「粘贴 / 输入时自动转链接」的体验。 |
 
 ---

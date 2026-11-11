@@ -1,5 +1,7 @@
 # 组件库化（npm 包）方案
 
+> **历史文档（已过时，勿按此实施）**：本文写于组件库化初期，其中的 `naive-ui` peer 依赖、`@remixicon/vue`、`@tiptap/* ^3.30.1` 与 d.ts 生成方式均已被后续决策替换。当前依赖与构建配置以 `package.json` / `vite.lib.config.ts` 为准（UI 自研见 `docs/ui-theme-plan.md`，TipTap 统一 3.32）。
+
 > 目标：将 `@yumine9/vue3-tiptap` 从「应用」改造为「Vue3 组件库」，`npm install` 后 `import { TipTapEditor } from "@yumine9/vue3-tiptap"` 即可使用。
 
 ## ✅ 执行状态

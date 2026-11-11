@@ -11,11 +11,11 @@
 | 分类        | 技术                                          | 说明                                      |
 | ----------- | --------------------------------------------- | ----------------------------------------- |
 | 框架        | Vue 3.5（`<script setup>` + Composition API） | 应用与组件框架                            |
-| 编辑器内核  | TipTap 3.30（`@tiptap/vue-3` / `@tiptap/pm`） | 基于 ProseMirror 的编辑器                 |
+| 编辑器内核  | TipTap 3.32（`@tiptap/vue-3` / `@tiptap/pm`） | 基于 ProseMirror 的编辑器                 |
 | 构建工具    | Vite 8                                        | 开发服务器与打包                          |
-| 语言        | TypeScript ~6.0                               | 全量类型约束                              |
+| 语言        | TypeScript ~5.9                               | 全量类型约束                              |
 | UI 基础组件 | 自研（@floating-ui/dom 定位）                 | Popover/Tooltip/菜单/色板，零 UI 框架依赖 |
-| 图标        | @remixicon/vue                                | 工具栏图标                                |
+| 图标        | unplugin-icons（@iconify-json/lucide）         | 工具栏图标（`~icons/...` 编译期内联）     |
 | 国际化      | 内置轻量 i18n（zh/en + provide/inject）       | 不依赖 vue-i18n，宿主零要求               |
 | 样式        | SCSS（sass） + CSS 变量主题体系               | 浅色 / 深色 / 自定义主题，变量作用域化    |
 | 包管理      | pnpm                                          | 依赖管理                                  |
@@ -34,7 +34,12 @@ pnpm build
 
 # 预览构建产物
 pnpm preview
+
+# 库构建（ESM + CJS + 逐文件 d.ts + 单个 style.css）
+pnpm build:lib
 ```
+
+> 库的类型声明由 `unplugin-dts` 按文件产出（`bundleTypes: false`，两个入口 `dist/index.d.ts` / `dist/ai/*.d.ts`），因此**不使用** `@microsoft/api-extractor`（它的 rollup 模式只支持单入口，2026-11 已从 devDependencies 移除）。
 
 > 项目根目录存在 `pnpm-workspace.yaml`（目前仅允许 esbuild 构建），以 pnpm 为首选包管理器。
 
@@ -59,8 +64,6 @@ pnpm preview
     ├── style.scss / reset.scss # 全局样式与重置（SCSS，仅演示页）
     ├── components/
     │   ├── index.vue           # ★ 核心导出组件 TipTapEditor
-    │   ├── composables/        # useEditorModel（v-model 绑定 / 超限警告）等
-    │   ├── utils/              # 工具函数（button / video-url / storage 等）
     │   ├── extensions/         # 自定义 TipTap 扩展（每个扩展自带工具栏按钮）
     │   │   ├── index.ts        # 扩展集合入口
     │   │   ├── Bold / Italic / Strike / Underline / Code / Highlight
@@ -100,7 +103,8 @@ pnpm preview
     ├── locales/                # 内置轻量 i18n（zh/en 语言包 + context/inject）
     │   ├── index.ts / zh.ts / en.ts
     ├── types/                  # 全局类型定义（扩展选项、按钮视图、主题等）
-    └── utils/
+    ├── composables/            # useEditorModel（v-model 绑定 / 超限警告）等
+    └── utils/                  # 工具函数（button / video-url / storage）与 resizableMediaView
         └── resizableMediaView.ts  # 媒体四角拖拽改尺寸的公共 NodeView（复用 ResizableNodeView，Image/Video 共用）
 ```
 
@@ -257,12 +261,12 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 
 - **最新评审见 `docs/feature-gaps-and-optimizations.md`**：汇编了「编辑器还缺什么插件」与「性能 / 响应式 / 无障碍 / 文档漂移」的整体优化清单。P0（Undo/Redo、清除格式、字符统计）、v-model 写回防抖与 Mention 提及已完成；剩余 P1：字体大小、Emoji、Markdown、目录、块级拖拽等。
 - 可继续接入（对应扩展文件已就绪或可按需新增）：列表（有序/无序/任务）、链接 Link、图片 Image、表格 Table、代码块、气泡菜单、查找替换、Emoji、@提及、数学公式等；集成清单与分阶段计划见 `docs/tiptap-extensions-integration-plan.md`；
-- `StarterKit` 已作为依赖引入但暂未启用，可按需替换当前的逐节点注册方式；
+- `StarterKit` 是项目自建的扩展工厂（`src/components/extensions/index.ts`），**不依赖** `@tiptap/starter-kit`：`StarterKit.configure({...})` 遍历内置扩展表，`false` 禁用、对象即 configure；
 - 可抽取为独立 npm 包 / Vue 组件库，暴露统一的扩展注册 API；`src/index.ts` 已命名导出全部内置扩展（`Mention` / `Image` 等）与 `StarterKit`；
 - **显式引入扩展**（2026-09-12 决策，对齐 tiptap 模式）：组件**不再自动包含内置扩展**，由宿主通过 `extensions` prop 选择——一键全量用 `StarterKit.configure({...})`（`false` 禁用某项，对象配置某项，如 `{ audio: false, image: { upload } }`），或手动逐个 `import`（如 `[Bold, Mention.configure({ items })]`）；同名冲突后者胜出；Document / Paragraph / Text / Placeholder 结构核心始终由组件提供；
 - `Focus`（聚焦高亮）已于 2026-10-16 移除（低价值、纯死代码）：需要时宿主自行引入 `@tiptap/extension-focus`；
 - `Youtube` / `Twitch` 扩展已于 2026-10-16 移除：YouTube 链接由 `Video` 的 URL 转嵌入覆盖（`src/utils/video-url.ts` → `toEmbedUrl`），Twitch 国内不可用；存量文档若含 `youtube`/`twitch` 节点将无法解析，宿主需自行引入对应官方扩展；
-- `DragHandle`（`src/components/extensions/DragHandle/`，约 1200 行）是从 `@tiptap/extension-drag-handle` v3.31.3 vendor 并剥离 Yjs 协作支持的自维护副本——因为官方包 peerDependencies 强制要求 `@tiptap/y-tiptap` + `extension-collaboration`。升级方式：对比上游同版本 diff 手动移植，勿直接覆盖；
+- `DragHandle`（`src/components/extensions/DragHandle.ts`）是官方 `@tiptap/extension-drag-handle`（3.32+）的薄封装（2026-10 起替换掉 v3.31.3 的 vendor 副本）：只重写 `render()` 补回抓手图标，规则 / drop-restore / 嵌套打分全部交给官方包。官方 peer 会带入 `@tiptap/extension-collaboration` + `@tiptap/y-tiptap`（协作能力未启用）；已知上游缺口：无滚动跟随、无 `ariaLabel` 选项；
 - 可补充 TableKit（可调整列宽）等高级能力的完整 UI。
 
 ## 9. 已知事项

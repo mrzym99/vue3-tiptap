@@ -7,15 +7,15 @@
 
 | 阶段                              | 状态      | 说明                                                                                                                            |
 | --------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| 阶段 0（版本统一 3.30.1）         | ✅ 已完成  | core/pm/vue-3/extensions/starter-kit 及全部现有扩展统一至 3.30.1，peer 冲突 0，build 通过                                       |
+| 阶段 0（版本统一 3.32.0）         | ✅ 已完成  | core/pm/vue-3/extensions 及全部现有扩展统一至 3.32.0，peer 冲突 0，build 通过                                                    |
 | 阶段 1（基础文本样式）            | ✅ 已完成  | strike/code/highlight/subscript/superscript/heading/hr/hard-break 已集成，工具栏自动收集，i18n/样式齐备                         |
 | 阶段 2（列表/链接/代码块/折叠块） | ✅ 已完成  | extension-list（bullet/ordered/task）、link（弹窗）、code-block、details 已集成；修复了 Details 需显式注册子节点的问题          |
 | 阶段 3（媒体与嵌入）              | ✅ 已完成  | image/youtube/audio/twitch（URL 弹窗按钮，共用 ui-common/url-popover-button）、file-handler（拖拽/粘贴图片）                    |
 | 阶段 4（样式丰富与表格）          | ✅ 已完成  | text-style 基座 + color（NColorPicker 菜单）+ font-family（下拉菜单）+ typography（无按钮）；表格 TableKit 全操作菜单           |
-| 阶段 5（编辑体验）                | ✅ 已完成* | bubble-menu / floating-menu（@tiptap/vue-3 组件）、find-and-replace（面板）、focus、invisible-characters、unique-id、node-range |
+| 阶段 5（编辑体验）                | ✅ 已完成* | bubble-menu / floating-menu（@tiptap/vue-3 组件）、find-and-replace（面板）、invisible-characters、node-range（focus / unique-id 已于 2026-10-16 移除） |
 | 阶段 6                            | ⏳ 待执行  | 按需继续                                                                                                                        |
 
-> *阶段 5 中 `extension-drag-handle` **暂缓**：其 peer 强制依赖 `@tiptap/extension-collaboration` + `@tiptap/y-tiptap`（Yjs 协作栈），对纯本地编辑器引入大量无用途依赖，且拖拽 UI 需另装 `drag-handle-vue-3`。前置的 `extension-node-range` 已集成，未来接入协作时可平滑补上。
+> *阶段 5 中 `extension-drag-handle` 已于 2026-10 接入：官方包 3.32+ 已内置 nested 规则与 drop-restore，项目侧只保留薄封装（`src/components/extensions/DragHandle.ts`，仅重写 `render()` 补抓手图标）。其 peer `@tiptap/extension-collaboration` + `@tiptap/y-tiptap` 由 pnpm 随依赖装入（`autoInstallPeers`），但协作能力未启用。
 
 ## 1. 盘点
 
@@ -24,24 +24,24 @@
 | 归类                   | 包                                                                                                                                                                                                                                                                                           | 处置                                                                   |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | ❌ React 相关（排除）   | `react`（@tiptap/react）、`extension-drag-handle-react`                                                                                                                                                                                                                                      | 不集成                                                                 |
-| ✅ 已集成（当前项目）   | `core`、`pm`、`vue-3`、`extensions`、`starter-kit`、`extension-document`、`extension-paragraph`、`extension-text`、`extension-bold`、`extension-italic`、`extension-underline`、`extension-blockquote`、`extension-text-align`、`extension-table`（依赖已装未启用）、`extension-placeholder` | —                                                                      |
+| ✅ 已集成（当前项目）   | `core`、`pm`、`vue-3`、`extensions`、`extension-document`、`extension-paragraph`、`extension-text`、`extension-bold`、`extension-italic`、`extension-underline`、`extension-blockquote`、`extension-text-align`、`extension-table`、`extension-placeholder` | — |
 | 框架绑定（Vue 侧）     | `vue-2`、`vue-3`、`extension-drag-handle-vue-2`、`extension-drag-handle-vue-3`                                                                                                                                                                                                               | `vue-3` 在用；`drag-handle-vue-3` 作为拖拽手柄的 UI 壳（可选，阶段 5） |
 | 工程包（非工具栏扩展） | `html`、`markdown`、`static-renderer`、`ai-toolkit`、`suggestion`                                                                                                                                                                                                                            | 视需要引入（序列化/SSR/建议弹层引擎）                                  |
 | ⏳ 待集成扩展           | 见 §3                                                                                                                                                                                                                                                                                        | 分阶段集成                                                             |
 
 ### 1.2 已查证的版本事实（2026-08 快照）
 
-- 所有 `@tiptap/extension-*` 最新版统一为 **3.30.1**；
-- 3.30.1 的 peer 依赖全部要求 `@tiptap/core@3.30.1` / `@tiptap/pm@3.30.1`；
-- 当前项目 core/pm 为 **3.27.1**，且已在混用 3.27/3.28/3.29 → **集成前必须先统一版本**。
+- 所有 `@tiptap/extension-*` 统一为 **3.32.0**（`package.json` 中均为 `^3.32.0`）；
+- 3.32.0 的 peer 依赖要求同版本 `@tiptap/core@3.32.0` / `@tiptap/pm@3.32.0`；
+- 新增官方包（lowlight / emoji / mathematics / table-of-contents / ruby-text）最早发布版本为 3.32.1，**新增时需把全家一起升到同一 patch**，不要单独装高版本（否则 peer 漂移）。
 
 ## 2. 阶段 0：前置（必做）
 
-**统一 TipTap 全家版本至 3.30.1**（core、pm、vue-3、extensions、starter-kit、extension-*、新装包全部一致）
+**TipTap 全家保持同一版本**（core、pm、vue-3、extensions、starter-kit（若引入官方包）、extension-* 全部一致）
 
-- 操作：`pnpm add @tiptap/core@^3.30.1 @tiptap/pm@^3.30.1 @tiptap/vue-3@^3.30.1 ...`（逐个升级现有包）
+- 操作：`pnpm add @tiptap/core@^3.32.0 @tiptap/pm@^3.32.0 @tiptap/vue-3@^3.32.0 ...`（逐个升级现有包）
 - 验证：`pnpm build` + demo 页回归（加粗/斜体/对齐/引用/字数限制/主题/中英文）
-- 风险：3.27 → 3.30 属 minor 升级，TipTap 3.x 内 API 兼容，风险低
+- 风险：3.x 内 minor 升级 API 兼容，但需回归 DragHandle / Markdown / Mention（这三处依赖内部 API 较多）
 - 工作量：约 0.5 小时
 
 ## 3. 分阶段扩展清单
@@ -106,7 +106,7 @@
 | `extension-find-and-replace` 查找替换                 | 按钮 + 搜索面板 | UI 较复杂                                 |
 | `extension-focus` 聚焦高亮                            | 无按钮          | 聚焦时淡化非活动节点                      |
 | `extension-invisible-characters` 隐藏字符             | 切换按钮        | 显示空格/换行符等                         |
-| `extension-unique-id`                                 | 无按钮          | 节点唯一 ID                               |
+| `extension-unique-id`                                 | 无按钮          | **已移除**（2026-10-16）；需要时宿主自行引入 |
 | `extension-node-range` + `extension-drag-handle` 拖拽 | 无按钮          | 块级拖拽重排；UI 可配 `drag-handle-vue-3` |
 
 小计 7~8 个包，约 6~8 小时（drag-handle / find-and-replace 较耗时）。
@@ -126,7 +126,7 @@
 
 ## 4. 集成模式（每个扩展统一走法）
 
-1. `pnpm add @tiptap/extension-xxx@^3.30.1`（阶段 0 完成后版本自动对齐）；
+1. `pnpm add @tiptap/extension-xxx@^3.32.0`（版本与现有包对齐）；
 2. 新建 `src/components/extensions/Xxx.ts`：`TiptapXxx.extend({ addOptions() { return { ...this.parent(), button: ({ editor, t }) => ({ component: XxxButton, componentProps: { editor, t } }) } } })`；
 3. 新建按钮组件 `src/components/ui-editor/buttons/XxxButton.vue`（图标按钮）或 `menu-buttons/XxxMenu.vue`（下拉/颜色/弹窗）；
 4. 补充 `src/locales/zh.ts` / `en.ts` 词条（`t()` 透传到按钮）；
@@ -134,7 +134,7 @@
 6. 在 `src/components/extensions/index.ts` 注册 → **工具栏自动收集，无需改 toolbar**；
 7. `pnpm build` 类型检查 + demo 页手测（含主题/中英文/字数限制回归）。
 
-图标统一使用 `@remixicon/vue`（项目已有）。
+图标统一使用 `unplugin-icons`（`~icons/lucide/...`，数据来自 devDependencies 的 `@iconify-json/lucide` / `@iconify-json/tabler`；编译期内联，无运行时依赖）。
 
 ## 5. 建议执行顺序
 
