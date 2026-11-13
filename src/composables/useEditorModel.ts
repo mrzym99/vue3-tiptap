@@ -28,7 +28,19 @@ export function useEditorModel(options: UseEditorModelOptions) {
   let pendingContent: string | undefined;
 
   const format = options.contentType ?? (() => "html" as const);
-  const getModelValue = () => (format() === "markdown" ? editor.value!.getMarkdown() : editor.value!.getHTML());
+  // getHTML serializes the whole doc every call; docs are immutable, so memoize
+  // per doc node (markdown has its own cost — skip there)
+  let lastDoc: unknown;
+  let lastHtml = "";
+  const getModelValue = () => {
+    if (format() === "markdown") return editor.value!.getMarkdown();
+    const doc = editor.value!.state.doc;
+    if (doc !== lastDoc) {
+      lastDoc = doc;
+      lastHtml = editor.value!.getHTML();
+    }
+    return lastHtml;
+  };
 
   const flushModelValue = () => {
     if (!modelSyncTimer) return;

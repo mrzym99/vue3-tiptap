@@ -3,6 +3,7 @@ import type { GeneralOptions, ImageUploader } from "@/types";
 
 import { Image as TiptapImage } from "@tiptap/extension-image";
 import ImageDialogButton from "@/components/ui-editor/toolbar/dialog-buttons/ImageDialogButton.vue";
+import { resizableDirections } from "@/constants";
 import { createResizableMediaView } from "@/utils/resizableMediaView";
 import { withButton } from "@/utils/button";
 
@@ -25,7 +26,7 @@ export const Image = /* @__PURE__ */ TiptapImage.extend<ImageOptions>({
   addNodeView() {
     return createResizableMediaView({
       nodeName: "image",
-      directions: ["top-left", "top-right", "bottom-left", "bottom-right", "left", "right", "top", "bottom"],
+      directions: resizableDirections,
       preserveAspectRatio: false,
       createElement: (node) => {
         const img = document.createElement("img");

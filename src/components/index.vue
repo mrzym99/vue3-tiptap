@@ -3,6 +3,7 @@
     <section class="tiptap-box" v-if="editor">
       <ToolBar :editor="editor" :toolbar="props.toolbar" :wrap="props.toolbarWrap" :t="t" />
       <EditorContent :editor="editor" />
+      <Outline v-if="hasToc" :editor="editor" />
       <BubbleMenuBar :editor="editor" :toolbar="props.bubbleMenu" :t="t" />
       <FloatingMenuBar :editor="editor" :toolbar="props.floatingMenu" :t="t" />
       <ExtensionBubbleMenus :editor="editor" :t="t" />
@@ -21,6 +22,7 @@ import ExtensionBubbleMenus from "@/components/ui-editor/bubble-menu/extension-b
 import ExtensionPanels from "@/components/ui-editor/extension-panels/index.vue";
 import FloatingMenuBar from "@/components/ui-editor/bubble-menu/floating-menu/index.vue";
 import CharacterLimit from "@/components/ui-editor/character-limit/index.vue";
+import Outline from "@/components/ui-editor/outline/index.vue";
 import { computed, toRef } from "vue";
 import { useEditor } from "@tiptap/vue-3";
 import type { Editor } from "@tiptap/core";
@@ -85,6 +87,9 @@ const STRUCTURAL_NAMES = new Set(["doc", "paragraph", "text", "placeholder"]);
 
 // Read once at creation: over-limit content is left untouched and only
 // reported via the `truncated` event (see useEditorModel)
+// the outline rail is part of the ToC extension, not the toolbar: load it and it shows up
+const hasToc = computed(() => !!editor.value?.extensionManager.extensions.some((e) => e.name === "tableOfContents"));
+
 const needsLimit = props.limit > 0;
 const structuralNames = needsLimit ? new Set([...STRUCTURAL_NAMES, "characterCount"]) : STRUCTURAL_NAMES;
 const userExtensions = [...new Map(props.extensions.map((e) => [e.name, e])).values()].filter(

@@ -4,7 +4,7 @@
       <slot name="suffix" />
     </template>
   </ActionButton>
-  <Dialog v-model:show="show" :title="title" :t="t" @update:show="emitClosed">
+  <Dialog v-model:show="show" :title="title" :t="t" :width="width" @update:show="emitClosed">
     <slot :close="close" />
   </Dialog>
 </template>
@@ -24,6 +24,8 @@ defineProps<{
   isActive?: ActionButtonProps["isActive"];
   /** Dialog title (header text) */
   title?: string;
+  /** Dialog width, defaults to the Dialog's 400px */
+  width?: string;
   /** Optional for standalone use; passed through to Dialog */
   t?: TranslateFn;
 }>();

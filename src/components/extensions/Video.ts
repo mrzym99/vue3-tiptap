@@ -1,6 +1,7 @@
 import { mergeAttributes, Node, nodePasteRule } from "@tiptap/core";
 import type { GeneralOptions } from "@/types";
 import VideoDialogButton from "@/components/ui-editor/toolbar/dialog-buttons/VideoDialogButton.vue";
+import { resizableDirections } from "@/constants";
 import { withButton } from "@/utils/button";
 import { createResizableMediaView } from "@/utils/resizableMediaView";
 import { toEmbedUrl, VIDEO_URL_REGEX } from "@/utils/video-url";
@@ -96,7 +97,7 @@ export const Video = /* @__PURE__ */ Node.create<VideoOptions>({
   addNodeView() {
     return createResizableMediaView({
       nodeName: "video",
-      directions: ["top-left", "top-right", "bottom-left", "bottom-right", "left", "right", "top", "bottom"],
+      directions: resizableDirections,
       preserveAspectRatio: false,
       createElement: (node) => {
         const frame = document.createElement("iframe");

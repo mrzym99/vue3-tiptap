@@ -237,6 +237,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 3. **可插拔扩展集**：`src/components/extensions/index.ts` 是扩展的唯一入口，新增能力在此注册即可；
 4. **统一主题变量**：所有 UI 颜色、尺寸均通过 `--tiptap-*` CSS 变量驱动（基础 token + 语义 token），主题可作用域到组件根节点；
 5. **完整的类型约束**：扩展选项、按钮视图等均有对应 TS 类型（`src/types/`），开发时享受类型提示。
+6. **下拉菜单不设「默认」项**：多选类菜单（`ActionMenuButton` 的 `items`）只列可选值，点已激活的项即取消该属性（`unsetXxx`）；无激活项时触发按钮只留图标，tooltip 回落到菜单名。新增菜单请照此实现，不要再加 `default` / 「清除」行。
 
 ### 7.1 数据写入行为说明（重要）
 

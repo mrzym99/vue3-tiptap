@@ -234,9 +234,30 @@ const extensions = [
 | `details`                                                         | `Details`（+ `DetailsSummary` / `DetailsContent`）                | 可折叠内容块                                         |
 | `color`                                                           | `Color`（+ `TextStyle` / `Highlight`）                            | 颜色菜单：文字色 + 高亮色 + 最近使用（localStorage）；每段首项为“默认”=清除 |
 | `fontFamily` / `fontSize`                                         | `FontFamily` / `FontSize`                                         | 字体 / 字号菜单，触发按钮带当前值，再点一次取消      |
+| `lineHeight`                                                      | `LineHeight`                                                      | 行高菜单（默认 1.15 / 1.5 / 1.75 / 2，`LineHeight.configure({ lineHeights: [...] })` 可换档位），触发按钮带当前值，再点一次取消；块级 `style="line-height"`（段落/标题），光标落在段内即可生效 |
 | `table`                                                           | `Table`（+ `TableRow` / `TableHeader` / `TableCell`）             | 表格菜单（插入 + 行列操作）                          |
 | `findAndReplace`                                                  | `FindAndReplace`                                                  | 查找替换面板                                         |
 | `clearFormatting`                                                 | `ClearFormatting`                                                 | 清除格式                                             |
+
+菜单交互约定（下拉 / 多选类菜单）：
+
+- 菜单里**不设「默认 / Default」项**：选项只列可选值本身（行高 1 / 1.15 / 1.5…、字号 12px / 14px…）。
+- **点击已激活的项 = 取消**（`unsetXxx`），不需要额外的「清除」入口，也不再需要「默认」来复位。
+- 没有激活项时，触发按钮不显示空标签（`showLabel` 的菜单只剩图标 + 下拉箭头），tooltip 回落到菜单名。
+- 例外：颜色面板是等宽色块网格，首个色块兼作「清除」语义（点击当前色同样取消），因此没有文案项。
+
+预设可配置（默认值集中在 `src/constants/index.ts`）：
+
+| 菜单 | 选项 |
+| --- | --- |
+| 标题 | `Heading.configure({ levels: [1, 2, 3] })` |
+| 字号 | `FontSize.configure({ fontSizes: [13, 16, 20] })`（px） |
+| 行高 | `LineHeight.configure({ lineHeights: ["1.4", "1.8"] })`（亦可 `types` 指定作用块级节点） |
+| 颜色 | `Color.configure({ textColors: [...], highlightColors: [...] })`（各色板首项兼作「清除」） |
+| 代码块语言 | `CodeBlock.configure({ languages: [...] })`（仅下拉建议，输入框仍可自由填） |
+| 公式模板 | `Mathematics.configure({ templates: ["\\frac{a}{b}"] })`（弹窗里的 KaTeX 预览按钮，点一下填入输入框再改） |
+
+目录（大纲）**不在工具栏**：加载 `TableOfContents` 扩展后，编辑器右缘出现一条折叠的刻度导轨（当前标题高亮），hover 展开标题列表、点击平滑滚动定位；没有标题或触屏（`hover: none`）时不渲染。
 
 补充规则：未加载的扩展的 key 会被静默忽略（`undefined` 默认布局时才 console.warn）；`bubbleMenu` / `floatingMenu` 用同一套 key。
 

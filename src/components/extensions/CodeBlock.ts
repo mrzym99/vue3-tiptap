@@ -4,43 +4,19 @@ import type { GeneralOptions } from "@/types";
 import { CodeBlock as TiptapCodeBlock } from "@tiptap/extension-code-block";
 
 import CodeBlockButton from "@/components/ui-editor/toolbar/buttons/CodeBlockButton.vue";
+import { defaultCodeBlockLanguages } from "@/constants";
 import { withButton } from "@/utils/button";
 
-export interface CodeBlockOptions extends TiptapCodeBlockOptions, GeneralOptions {}
-
-/** Suggestions for the language input (free typing is always allowed). */
-const SUGGESTED_LANGUAGES = [
-  "bash",
-  "c",
-  "cpp",
-  "csharp",
-  "css",
-  "diff",
-  "go",
-  "graphql",
-  "html",
-  "java",
-  "javascript",
-  "json",
-  "kotlin",
-  "lua",
-  "markdown",
-  "php",
-  "python",
-  "ruby",
-  "rust",
-  "shell",
-  "sql",
-  "swift",
-  "typescript",
-  "xml",
-  "yaml",
-];
+export interface CodeBlockOptions extends TiptapCodeBlockOptions, GeneralOptions {
+  /** Language suggestions for the header input (free typing is always allowed). */
+  languages: string[];
+}
 
 export const CodeBlock = /* @__PURE__ */ TiptapCodeBlock.extend<CodeBlockOptions>({
   addOptions() {
     return {
       ...(this.parent?.() as TiptapCodeBlockOptions),
+      languages: defaultCodeBlockLanguages,
       button: withButton(CodeBlockButton),
     };
   },
@@ -68,6 +44,7 @@ export const CodeBlock = /* @__PURE__ */ TiptapCodeBlock.extend<CodeBlockOptions
   // no Vue runtime inside the NodeView, styled through the shared
   // editor-content stylesheet.
   addNodeView() {
+    const languages = this.options.languages;
     return ({ node, editor, getPos }) => {
       const wrapper = document.createElement("div");
       wrapper.classList.add("tiptap-code-block");
@@ -115,7 +92,7 @@ export const CodeBlock = /* @__PURE__ */ TiptapCodeBlock.extend<CodeBlockOptions
       };
       const renderMenu = () => {
         const query = input.value.trim().toLowerCase();
-        items = SUGGESTED_LANGUAGES.filter((lang) => lang.includes(query) && lang !== query);
+        items = languages.filter((lang) => lang.includes(query) && lang !== query);
         if (!items.length) {
           closeMenu();
           return;

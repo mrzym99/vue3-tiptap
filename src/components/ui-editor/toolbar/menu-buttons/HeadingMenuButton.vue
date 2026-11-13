@@ -16,6 +16,8 @@ import RiH4 from "~icons/lucide/heading-4";
 import RiH5 from "~icons/lucide/heading-5";
 import RiH6 from "~icons/lucide/heading-6";
 import ActionMenuButton from "@/components/ui-common/action-menu-button/index.vue";
+import { extensionOptions } from "@/utils/extensionOptions";
+import type { HeadingOptions } from "@/components/extensions/Heading";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 import type { ActionMenuButtonItem } from "@/components/ui-common/action-menu-button/type";
 
@@ -43,7 +45,9 @@ function createOption(level: number): ActionMenuButtonItem {
 
 const t = props.t;
 
-const options = computed<ActionMenuButtonItem[]>(() => [1, 2, 3, 4, 5, 6].map((level) => createOption(level)));
+const levels = computed(() => extensionOptions<HeadingOptions>(props.editor, "heading")!.levels);
+
+const options = computed<ActionMenuButtonItem[]>(() => levels.value.map((level) => createOption(level)));
 
 const disabled = computed(() => options.value.every((item) => item.disabled));
 const isActive = computed(() => options.value.some((item) => item.isActive()));

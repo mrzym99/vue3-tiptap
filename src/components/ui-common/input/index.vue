@@ -1,5 +1,13 @@
 <template>
-  <input class="tiptap-input" :value="modelValue" :placeholder="placeholder" v-bind="$attrs" @input="onInput" />
+  <textarea
+    v-if="multiline"
+    class="tiptap-input tiptap-input--multiline"
+    :value="modelValue"
+    :placeholder="placeholder"
+    v-bind="$attrs"
+    @input="onInput"
+  />
+  <input v-else class="tiptap-input" :value="modelValue" :placeholder="placeholder" v-bind="$attrs" @input="onInput" />
 </template>
 
 <script setup lang="ts">
@@ -10,10 +18,13 @@ withDefaults(
   defineProps<{
     modelValue?: string;
     placeholder?: string;
+    /** Render a multi-line <textarea> instead of an <input> (pass `rows` via attrs) */
+    multiline?: boolean;
   }>(),
   {
     modelValue: "",
     placeholder: undefined,
+    multiline: false,
   },
 );
 
@@ -42,6 +53,13 @@ function onInput(event: Event) {
 
   &::placeholder {
     color: var(--tiptap-input-placeholder);
+  }
+
+  &--multiline {
+    display: block;
+    min-height: 76px;
+    line-height: 1.6;
+    resize: vertical;
   }
 
   /* Halo Focus: soft large-radius ring, no hard border */

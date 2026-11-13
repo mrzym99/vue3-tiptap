@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TipTapEditor from "./components/index.vue";
-import { StarterKit, Ai } from "./components/extensions";
+import { StarterKit, Ai, Mathematics } from "./components/extensions";
 import type { LocaleTranslations } from "./locales";
 import zhTW from "../demo/zh-TW";
 import { useDemoConfig } from "../demo/useDemoConfig";
@@ -53,6 +53,12 @@ const extensions = [
     },
     // Drag handle disabled: StarterKit filters out extensions set to `false`.
     dragHandle: false,
+    lineHeight: {
+      lineHeights: ["1.5", "1.7", "2", "2.4", "3"],
+    },
+    codeBlock: {
+      languages: ["javascript", "typescript"],
+    },
   }),
   // AI assistant is just another extension: it self-mounts the chat FAB/drawer
   // (no toolbar entry). baseURL "/ai-proxy" = dev proxy in vite.config.ts.
@@ -63,6 +69,8 @@ const extensions = [
     // no confirm callback => danger tools (e.g. set_document) are refused fail-safe
     confirmDangerous: (tool) => Promise.resolve(window.confirm(`AI 要执行 ${tool.name}，允许吗？`)),
   }),
+  // Mathematics is opt-in (KaTeX is heavy) — the demo pulls it in to try it
+  Mathematics,
 ];
 </script>
 

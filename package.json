@@ -60,6 +60,7 @@
     "@tiptap/extension-details": "^3.32.0",
     "@tiptap/extension-document": "^3.32.0",
     "@tiptap/extension-drag-handle": "^3.32.0",
+    "@tiptap/extension-emoji": "^3.32.0",
     "@tiptap/extension-file-handler": "^3.32.0",
     "@tiptap/extension-find-and-replace": "^3.32.0",
     "@tiptap/extension-hard-break": "^3.32.0",
@@ -71,6 +72,7 @@
     "@tiptap/extension-italic": "^3.32.0",
     "@tiptap/extension-link": "^3.32.0",
     "@tiptap/extension-list": "^3.32.0",
+    "@tiptap/extension-mathematics": "^3.32.0",
     "@tiptap/extension-mention": "^3.32.0",
     "@tiptap/extension-node-range": "^3.32.0",
     "@tiptap/extension-paragraph": "^3.32.0",
@@ -79,6 +81,7 @@
     "@tiptap/extension-subscript": "^3.32.0",
     "@tiptap/extension-superscript": "^3.32.0",
     "@tiptap/extension-table": "^3.32.0",
+    "@tiptap/extension-table-of-contents": "^3.32.0",
     "@tiptap/extension-text": "^3.32.0",
     "@tiptap/extension-text-align": "^3.32.0",
     "@tiptap/extension-text-style": "^3.32.0",
@@ -90,6 +93,7 @@
     "@tiptap/suggestion": "^3.32.0",
     "@tiptap/vue-3": "^3.32.0",
     "@tiptap/y-tiptap": "^3.0.10",
+    "katex": "^0.18.11",
     "marked": "^17.0.6"
   },
   "devDependencies": {

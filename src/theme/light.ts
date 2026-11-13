@@ -14,7 +14,7 @@ export const lightTheme: Theme = {
   // --- text ---
   "--tiptap-color-text": "#1F2937", // gray-800
   "--tiptap-color-text-secondary": "#4B5563", // gray-600
-  "--tiptap-color-text-muted": "#9CA3AF", // gray-400
+  "--tiptap-color-text-muted": "#6B7280", // gray-500 (gray-400 failed 4.5:1 on white for hint text)
 
   // --- borders (kept hairline-soft; shadows carry the layering) ---
   "--tiptap-color-border": "#E8EAEE",

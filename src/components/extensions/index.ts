@@ -11,10 +11,12 @@ import { ClearFormatting } from "./ClearFormatting";
 import { Color } from "./Color";
 import { Details, DetailsSummary, DetailsContent } from "./Details";
 import { DragHandle } from "./DragHandle";
+import { Emoji } from "./Emoji";
 import { FileHandler } from "./FileHandler";
 import { FindAndReplace } from "./FindAndReplace";
 import { FontFamily } from "./FontFamily";
 import { FontSize } from "./FontSize";
+import { FirstLineIndent } from "./FirstLineIndent";
 import { HardBreak } from "./HardBreak";
 import { Heading } from "./Heading";
 import { Highlight } from "./Highlight";
@@ -22,6 +24,7 @@ import { HorizontalRule } from "./HorizontalRule";
 import { Image } from "./Image";
 import { InvisibleCharacters } from "./InvisibleCharacters";
 import { Italic } from "./Italic";
+import { LineHeight } from "./LineHeight";
 import { Link } from "./Link";
 import { Mention } from "./Mention";
 import { NodeRange } from "./NodeRange";
@@ -31,6 +34,7 @@ import { Strike } from "./Strike";
 import { Subscript } from "./Subscript";
 import { Superscript } from "./Superscript";
 import { Table, TableRow, TableHeader, TableCell } from "./Table";
+import { TableOfContents } from "./TableOfContents";
 import { TaskList } from "./TaskList";
 import { TextAlign } from "./TextAlign";
 import { TextStyle } from "./TextStyle";
@@ -55,10 +59,12 @@ export * from "./ClearFormatting";
 export * from "./Color";
 export * from "./Details";
 export * from "./DragHandle";
+export * from "./Emoji";
 export * from "./FileHandler";
 export * from "./FindAndReplace";
 export * from "./FontFamily";
 export * from "./FontSize";
+export * from "./FirstLineIndent";
 export * from "./HardBreak";
 export * from "./Heading";
 export * from "./Highlight";
@@ -66,8 +72,10 @@ export * from "./HorizontalRule";
 export * from "./Image";
 export * from "./InvisibleCharacters";
 export * from "./Italic";
+export * from "./LineHeight";
 export * from "./Link";
 export { Markdown } from "@tiptap/markdown";
+export * from "./Mathematics";
 export * from "./Mention";
 export * from "./NodeRange";
 export * from "./OrderedList";
@@ -76,6 +84,7 @@ export * from "./Strike";
 export * from "./Subscript";
 export * from "./Superscript";
 export * from "./Table";
+export * from "./TableOfContents";
 export * from "./TaskList";
 export * from "./TextAlign";
 export * from "./TextStyle";
@@ -84,8 +93,6 @@ export * from "./Underline";
 export * from "./Undo";
 export * from "./UndoRedo";
 export * from "./Video";
-
-const HeadingExtension = Heading.configure({ levels: [1, 2, 3, 4, 5, 6] });
 
 const TextAlignExtension = TextAlign.configure({
   types: ["heading", "paragraph"],
@@ -109,10 +116,13 @@ export const builtinExtensionMap = {
   highlight: Highlight,
   subscript: Subscript,
   superscript: Superscript,
-  heading: HeadingExtension,
+  heading: Heading,
+  tableOfContents: TableOfContents,
   horizontalRule: HorizontalRule,
   blockquote: Blockquote,
   textAlign: TextAlignExtension,
+  firstLineIndent: FirstLineIndent,
+  lineHeight: LineHeight,
   // Lists
   listItem: ListItem,
   bulletList: BulletList,
@@ -150,6 +160,7 @@ export const builtinExtensionMap = {
   hardBreak: HardBreak,
   // Mention @ (typing @ triggers it; data source injected by the host via items)
   mention: Mention,
+  emoji: Emoji,
   // Behavior-only (no buttons)
   markdown: Markdown,
   gapCursor: Gapcursor,

@@ -4,14 +4,19 @@ import type { GeneralOptions } from "@/types";
 import { FontSize as TiptapFontSize } from "@tiptap/extension-text-style/font-size";
 
 import FontSizeMenuButton from "@/components/ui-editor/toolbar/menu-buttons/FontSizeMenuButton.vue";
+import { defaultFontSizes } from "@/constants";
 import { withButton } from "@/utils/button";
 
-export interface FontSizeOptions extends TiptapFontSizeOptions, GeneralOptions {}
+export interface FontSizeOptions extends TiptapFontSizeOptions, GeneralOptions {
+  /** Font sizes offered by the toolbar menu, in px — override with `FontSize.configure({ fontSizes })`. */
+  fontSizes: number[];
+}
 
 export const FontSize = /* @__PURE__ */ TiptapFontSize.extend<FontSizeOptions>({
   addOptions() {
     return {
       ...(this.parent?.() as TiptapFontSizeOptions),
+      fontSizes: defaultFontSizes,
       button: withButton(FontSizeMenuButton),
     };
   },

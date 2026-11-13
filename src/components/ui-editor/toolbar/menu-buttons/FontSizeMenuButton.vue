@@ -17,12 +17,12 @@
 import RiFontSize from "~icons/lucide/a-large-small";
 import RiArrowDropDownLine from "~icons/lucide/chevron-down";
 import ActionMenuButton from "@/components/ui-common/action-menu-button/index.vue";
+import { extensionOptions } from "@/utils/extensionOptions";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
+import type { FontSizeOptions } from "@/components/extensions/FontSize";
 import type { ActionMenuButtonItem } from "@/components/ui-common/action-menu-button/type";
 
 const props = defineProps<EXTActionButtonProps>();
-
-const SIZES = [12, 14, 16, 20, 24, 32];
 
 function createOption(label: string, sizePx: string): ActionMenuButtonItem {
   return {
@@ -41,7 +41,9 @@ function createOption(label: string, sizePx: string): ActionMenuButtonItem {
 
 const t = props.t;
 
-const options = computed<ActionMenuButtonItem[]>(() => SIZES.map((size) => createOption(`${size} px`, `${size}px`)));
+const sizes = computed(() => extensionOptions<FontSizeOptions>(props.editor, "fontSize")!.fontSizes);
+
+const options = computed<ActionMenuButtonItem[]>(() => sizes.value.map((size) => createOption(`${size} px`, `${size}px`)));
 
 const disabled = computed(() => options.value.every((item) => item.disabled));
 const isActive = computed(() => options.value.some((item) => item.isActive()));

@@ -21,6 +21,8 @@ import RiCircleLetterA from "~icons/lucide/circle-letter-a";
 import ActionButton from "@/components/ui-common/action-button/index.vue";
 import ColorSection from "./components/ColorSection.vue";
 import Popover from "@/components/ui-common/popover/index.vue";
+import { extensionOptions } from "@/utils/extensionOptions";
+import type { ColorOptions } from "@/components/extensions/Color";
 import { useRecentColors, clearPendingColors } from "@/composables/useRecentColors";
 import type { EXTActionButtonProps } from "@/components/ui-common/action-button/props";
 
@@ -43,34 +45,13 @@ watch(panelOpen, (open) => {
 
 // The first entry of each palette is "Default": it clears the mark instead of
 // storing a near-invisible color (this is also the only clear affordance).
-const TEXT_DEFAULT = "#37352F";
-const HIGHLIGHT_DEFAULT = "#FFFFFF";
-
-// Notion-style palettes
-const TEXT_COLORS = [
-  TEXT_DEFAULT,
-  "#9B9A97",
-  "#AD6030",
-  "#D9730D",
-  "#DFAB01",
-  "#0F7B6C",
-  "#0B6E99",
-  "#6940A5",
-  "#AD1A72",
-  "#E03E3E",
-];
-const HIGHLIGHT_COLORS = [
-  HIGHLIGHT_DEFAULT,
-  "#EBEDED",
-  "#F5EDEA",
-  "#FBECDC",
-  "#FBF3DB",
-  "#DDEDEA",
-  "#DBECF8",
-  "#EEE0F4",
-  "#F8E4F1",
-  "#FADEDE",
-];
+// palettes come from the Color extension, so a host can swap them; the first
+// entry of each one is the "clear" swatch
+const palettes = computed(() => {
+  // the extension owns the defaults, so a missing extension means a broken button
+  const options = extensionOptions<ColorOptions>(props.editor, "color")!;
+  return { text: options.textColors, highlight: options.highlightColors };
+});
 
 // editor.getAttributes/isActive read plain ProseMirror state — bump on
 // transactions so the active rings follow the selection.
@@ -113,11 +94,11 @@ const glyphIcon = computed(
 );
 
 function isTextActive(c: string) {
-  return c === TEXT_DEFAULT ? !textColor.value : textColor.value === c;
+  return c === palettes.value.text[0] ? !textColor.value : textColor.value === c;
 }
 
 function isHighlightActive(c: string) {
-  if (c === HIGHLIGHT_DEFAULT) return props.editor.isActive("highlight") && !highlightColor.value;
+  if (c === palettes.value.highlight[0]) return props.editor.isActive("highlight") && !highlightColor.value;
   return highlightColor.value === c;
 }
 
@@ -128,9 +109,9 @@ const recentItems = computed(() =>
     active: r.highlight ? isHighlightActive(r.color) : isTextActive(r.color),
   })),
 );
-const textItems = computed(() => TEXT_COLORS.map((c) => ({ color: c, highlight: false, active: isTextActive(c) })));
+const textItems = computed(() => palettes.value.text.map((c) => ({ color: c, highlight: false, active: isTextActive(c) })));
 const highlightItems = computed(() =>
-  HIGHLIGHT_COLORS.map((c) => ({ color: c, highlight: true, active: isHighlightActive(c) })),
+  palettes.value.highlight.map((c) => ({ color: c, highlight: true, active: isHighlightActive(c) })),
 );
 
 function onPick(item: { color: string; highlight: boolean }) {
@@ -167,7 +148,7 @@ function pickColor(color: string, highlight: boolean) {
 
 function pickText(c: string) {
   // clicking the already-selected color (or the Default swatch) clears it
-  if (c === TEXT_DEFAULT || textColor.value === c) {
+  if (c === palettes.value.text[0] || textColor.value === c) {
     props.editor.chain().focus().unsetColor().run();
     return;
   }
@@ -175,7 +156,7 @@ function pickText(c: string) {
 }
 
 function pickHighlight(c: string) {
-  if (c === HIGHLIGHT_DEFAULT || highlightColor.value === c) {
+  if (c === palettes.value.highlight[0] || highlightColor.value === c) {
     props.editor.chain().focus().unsetHighlight().run();
     return;
   }

@@ -5,7 +5,7 @@
         :is-active="() => isActive"
         :disabled="disabled"
         :icon="active.icon"
-        :tooltip="active.label"
+        :tooltip="active.label || tooltip"
         :aria-expanded="menuOpen"
       >
         <template #suffix>
