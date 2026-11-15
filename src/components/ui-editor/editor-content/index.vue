@@ -16,6 +16,7 @@ const props = defineProps<{ editor: Editor }>();
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
   overflow: hidden;
 }
 </style>
@@ -50,6 +51,7 @@ const props = defineProps<{ editor: Editor }>();
   }
 
   .tiptap {
+    width: 100%;
     flex: 1;
     outline: none;
     color: var(--tiptap-color-text);

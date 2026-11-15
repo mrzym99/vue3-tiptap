@@ -274,7 +274,6 @@ body {
   margin: 16px 0 24px;
   box-sizing: border-box;
   box-shadow: var(--app-box-shadow);
-  border-radius: 16px;
   overflow: hidden;
 }
 </style>
