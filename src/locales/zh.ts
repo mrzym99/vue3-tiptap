@@ -29,7 +29,6 @@ export default {
   imageUploadHint: "点击或拖拽图片到此处上传",
   imageUploading: "上传中…",
   imageUploadFailed: "上传失败，请重试",
-  imageUploadUnavailable: "未配置上传功能",
   imageUploadMaxCount: "最多 {limit} 个文件",
   imageUploadMaxSizeOnce: "最多 {limit} 个文件，每个 {size}",
   video: "视频",

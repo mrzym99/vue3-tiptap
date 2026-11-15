@@ -105,7 +105,7 @@ const extensions = [
 
 `ImageUpload` 是内联上传区（与 Tiptap 官方的 ImageUploadNode 同一套模型）：未选中图片时点工具栏「图片」按钮会插入一个虚线区域，点击或把文件拖进去即开始上传；把图片拖/粘贴到编辑器任意位置也会在落点插入它。上传成功后区域自动替换为 `<img>`。
 
-传入 `upload`（`File` → 存储后的 URL；第二个参数是 0-100 进度，第三个是可中止信号）即可启用，其余为可选配置：
+传入 `upload`（`File` → 存储后的 URL；第二个参数是 0-100 进度，第三个是可中止信号）即可接后端；**不传则把文件读成 base64 内嵌**（`data:` URL，适合纯前端/离线场景，注意体积）。其余为可选配置：
 
 ```ts
 import { StarterKit } from "@yumine9/vue3-tiptap";

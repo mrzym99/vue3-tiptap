@@ -28,12 +28,6 @@ const mentionUsers = [
 // them via `extensions`; YouTube links are handled by Video's URL conversion.
 const extensions = [
   StarterKit.configure({
-    image: {
-      upload: async (_file: File) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        return "https://api.mtyqx.cn/api/random.php";
-      },
-    },
     mention: {
       items: mentionUsers,
     },

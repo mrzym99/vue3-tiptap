@@ -11,7 +11,7 @@ export interface ImageUploadOptions {
   maxSize: number;
   /** Max files per upload zone */
   limit: number;
-  /** Host uploader; without it the zone only tells the user upload is not configured */
+  /** Host uploader; defaults to embedding the file as a data URL so the image still shows */
   upload?: ImageUploader;
   onError?: (error: Error) => void;
   onSuccess?: (url: string) => void;
@@ -19,6 +19,14 @@ export interface ImageUploadOptions {
 
 /** Files queued by FileHandler for a zone created by id; the node view picks them up on mount. */
 export const pendingImageUploads = new Map<string, File[]>();
+
+export const embedAsDataURL: ImageUploader = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error ?? new Error("Failed to read file"));
+    reader.readAsDataURL(file);
+  });
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -44,7 +52,7 @@ export const ImageUpload = /* @__PURE__ */ Node.create<ImageUploadOptions>({
       accept: "image/*",
       maxSize: 0,
       limit: 3,
-      upload: undefined,
+      upload: embedAsDataURL,
       onError: undefined,
       onSuccess: undefined,
     };

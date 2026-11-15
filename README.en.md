@@ -105,7 +105,7 @@ const extensions = [
 
 `ImageUpload` is an inline upload zone (same model as Tiptap's ImageUploadNode): with no image selected, the toolbar "Image" button inserts a dashed zone; click it or drop files into it to upload. Dropping or pasting an image anywhere in the editor also inserts one at that spot. Once uploaded, the zone replaces itself with `<img>` elements.
 
-Provide `upload` (`File` → stored URL; the second argument is 0-100 progress, the third an abort signal). Everything else is optional:
+Provide `upload` (`File` → stored URL; the second argument is 0-100 progress, the third an abort signal) to wire a backend; **without it the file is embedded as a base64 `data:` URL** (fine for offline/pure-front-end use, mind the size). Everything else is optional:
 
 ```ts
 import { StarterKit } from "@yumine9/vue3-tiptap";

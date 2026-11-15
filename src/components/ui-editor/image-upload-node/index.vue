@@ -43,7 +43,7 @@ import { NodeViewWrapper, nodeViewProps } from "@tiptap/vue-3";
 import RiFile from "~icons/lucide/file";
 import RiArrowUp from "~icons/lucide/arrow-up";
 import type { ImageUploadOptions } from "@/components/extensions/ImageUpload";
-import { pendingImageUploads } from "@/components/extensions/ImageUpload";
+import { embedAsDataURL, pendingImageUploads } from "@/components/extensions/ImageUpload";
 import { useTiptapLocale } from "@/locales";
 
 const props = defineProps(nodeViewProps);
@@ -89,11 +89,7 @@ function accepted(file: File): boolean {
 }
 
 async function start(files: File[]) {
-  const upload = options.value.upload;
-  if (!upload) {
-    error.value = t("imageUploadUnavailable");
-    return;
-  }
+  const upload = options.value.upload ?? embedAsDataURL;
   const valid = files.filter(accepted).slice(0, options.value.limit);
   if (!valid.length) {
     if (files.length) error.value = t("imageUploadFailed");
@@ -162,6 +158,7 @@ onBeforeUnmount(() => controller.abort());
   gap: 4px;
   justify-content: center;
   min-height: 180px;
+  margin: 2em 0;
   padding: var(--tiptap-content-padding);
   text-align: center;
   user-select: none;

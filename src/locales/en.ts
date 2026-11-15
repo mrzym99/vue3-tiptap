@@ -29,7 +29,6 @@ export default {
   imageUploadHint: "Click or drag an image here to upload",
   imageUploading: "Uploading…",
   imageUploadFailed: "Upload failed, please try again",
-  imageUploadUnavailable: "Upload is not configured",
   imageUploadMaxCount: "Maximum {limit} files",
   imageUploadMaxSizeOnce: "Maximum {limit} files, {size} each",
   video: "Video",

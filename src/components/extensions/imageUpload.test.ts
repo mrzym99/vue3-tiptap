@@ -4,7 +4,8 @@ import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import { Image } from "./Image";
-import { ImageUpload, pendingImageUploads } from "./ImageUpload";
+import { ImageUpload, embedAsDataURL, pendingImageUploads } from "./ImageUpload";
+import type { ImageUploadOptions } from "./ImageUpload";
 
 function createEditor() {
   return new Editor({
@@ -39,6 +40,17 @@ describe("ImageUpload", () => {
     const node = editor.getJSON().content?.[0];
     expect(node?.type).toBe("imageUpload");
     expect(node?.attrs?.id).toBe("a");
+    editor.destroy();
+  });
+
+  it("falls back to the built-in uploader (inline data URL) when the host configures none", async () => {
+    const editor = createEditor();
+    const upload = (
+      editor.extensionManager.extensions.find((ext) => ext.name === "imageUpload")!.options as ImageUploadOptions
+    ).upload;
+    expect(upload).toBe(embedAsDataURL);
+    const file = new File(["x"], "x.png", { type: "image/png" });
+    await expect(embedAsDataURL(file)).resolves.toMatch(/^data:image\/png;base64,/);
     editor.destroy();
   });
 });
