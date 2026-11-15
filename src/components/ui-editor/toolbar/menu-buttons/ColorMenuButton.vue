@@ -1,5 +1,5 @@
 <template>
-  <Popover v-model:show="panelOpen" trigger="click" placement="bottom-start">
+  <Popover v-model:show="panelOpen" trigger="click" placement="bottom-start" :hide-on-click="false">
     <template #trigger>
       <ActionButton :icon="glyphIcon" :is-active="() => hasAnyColor" :tooltip="t('color')" :aria-expanded="panelOpen">
         <template #suffix>

@@ -53,7 +53,10 @@ const headings = computed<TableOfContentDataItem[]>(() => {
 function updateActive() {
   const container = props.editor.view.dom;
   // the last headings can never reach the top, so at the scroll end they win
-  if (container.scrollHeight > container.clientHeight && container.scrollTop + container.clientHeight >= container.scrollHeight - 1) {
+  if (
+    container.scrollHeight > container.clientHeight &&
+    container.scrollTop + container.clientHeight >= container.scrollHeight - 1
+  ) {
     activeId.value = headings.value.at(-1)?.id ?? null;
     return;
   }
@@ -91,9 +94,7 @@ onScopeDispose(() => {
 
 function jump(item: TableOfContentDataItem) {
   // `item.dom` is a text node (domAtPos(pos + 1).node), so resolve the heading element
-  props.editor.view.dom
-    .querySelector<HTMLElement>(`[data-toc-id="${item.id}"]`)
-    ?.scrollIntoView({ block: "start" });
+  props.editor.view.dom.querySelector<HTMLElement>(`[data-toc-id="${item.id}"]`)?.scrollIntoView({ block: "start" });
 }
 </script>
 
@@ -103,13 +104,13 @@ function jump(item: TableOfContentDataItem) {
 .tiptap-outline {
   position: absolute;
   top: 50%;
-  right: 6px;
+  right: 3px;
   z-index: 5;
   display: flex;
   align-items: stretch;
   gap: 6px;
   max-height: min(60%, 480px);
-  padding: 8px 6px;
+  padding: 8px 3px;
   overflow: hidden;
   border-radius: var(--tiptap-border-radius-md, 8px);
   transform: translateY(-50%);
