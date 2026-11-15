@@ -207,7 +207,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 | OrderedList 有序列表         | 自定义（基于 @tiptap/extension-list）                                 | 图标按钮                              |
 | TaskList 任务列表            | 自定义（基于 @tiptap/extension-list）                                 | 图标按钮                              |
 | Link 链接                    | 自定义（基于 @tiptap/extension-link，自动识别/粘贴链接）              | 弹窗按钮（输入 URL）                  |
-| CodeBlock 代码块             | 自定义（基于 @tiptap/extension-code-block）                           | 图标按钮                              |
+| CodeBlock 代码块             | 自定义（基于 @tiptap/extension-code-block-lowlight，lowlight/highlight.js 语法高亮） | 图标按钮                              |
 | Details 折叠块               | 自定义（基于 @tiptap/extension-details）                              | 图标按钮                              |
 | Image 图片                   | 自定义（基于 @tiptap/extension-image）                                | URL 弹窗按钮（也可拖拽/粘贴图片文件）；四角拖拽改尺寸 |
 | Video 视频                   | 自定义（基于 @tiptap/extension-video，URL 自动转嵌入：YouTube/B站/腾讯/优酷/爱奇艺/西瓜/芒果/抖音/网易） | URL 弹窗按钮；四角拖拽改尺寸          |

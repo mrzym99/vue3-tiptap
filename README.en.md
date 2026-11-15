@@ -234,7 +234,7 @@ The toolbar is a focusable `role="toolbar"` region: once focused with `Tab`, `Ar
 | `undo` / `redo` | `Undo` / `Redo` | Undo / redo (history plugin provided by `UndoRedo`) |
 | `heading` | `Heading` | Heading dropdown, H1–H6; the trigger icon follows the current level |
 | `bulletList` | `BulletList` (+ `OrderedList` / `TaskList`) | List dropdown: bullet / ordered / task in one — the latter two have no standalone key |
-| `codeBlock` | `CodeBlock` | Code block |
+| `codeBlock` | `CodeBlock` | Code block with syntax highlighting (`lowlight`, `createLowlight(common)` by default) |
 | `bold` / `italic` / `strike` / `code` / `underline` / `highlight` | `Bold` / `Italic` / `Strike` / `Code` / `Underline` / `Highlight` | Inline styles: bold, italic, strikethrough, inline code, underline, highlight |
 | `link` | `Link` | Link via URL dialog |
 | `superscript` / `subscript` | `Superscript` / `Subscript` | Superscript / subscript |

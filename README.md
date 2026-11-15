@@ -269,6 +269,7 @@ const extensions = [
 | 行高 | `LineHeight.configure({ lineHeights: ["1.4", "1.8"] })`（亦可 `types` 指定作用块级节点） |
 | 颜色 | `Color.configure({ textColors: [...], highlightColors: [...] })`（各色板首项兼作「清除」） |
 | 代码块语言 | `CodeBlock.configure({ languages: [...] })`（仅下拉建议，输入框仍可自由填） |
+| 代码高亮 | `CodeBlock.configure({ lowlight })`：默认 `createLowlight(common)`（37 种语言，约 190KB gzip）；只想要自己的语言就传 `createLowlight()` 并 `lowlight.register({ ts, js })`，语言属性为空或未注册时退回自动识别 |
 | 公式模板 | `Mathematics.configure({ templates: ["\\frac{a}{b}"] })`（弹窗里的 KaTeX 预览按钮，点一下填入输入框再改） |
 
 目录（大纲）**不在工具栏**：加载 `TableOfContents` 扩展后，编辑器右缘出现一条折叠的刻度导轨（当前标题高亮），hover 展开标题列表、点击平滑滚动定位；没有标题或触屏（`hover: none`）时不渲染。

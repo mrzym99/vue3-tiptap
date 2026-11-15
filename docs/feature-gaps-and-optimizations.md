@@ -8,7 +8,7 @@
 
 ## 1. 现状盘点（2026-08 快照）
 
-**已启用**：Bold / Italic / Underline / Strike / Code / Highlight / Subscript / Superscript / Color / FontFamily / Typography / Heading / HorizontalRule / Blockquote / TextAlign / CodeBlock / Details / Bullet·Ordered·TaskList / Link / Image·Video·Audio + FileHandler（Youtube/Twitch 已于 2026-10-16 移除，YouTube 链接由 Video 的 URL 转嵌入覆盖） / Table（可调列宽）/ FindAndReplace / InvisibleCharacters / NodeRange / HardBreak / **Undo·Redo + ClearFormatting + CharacterCount** / **Gapcursor·Dropcursor·TrailingNode** / BubbleMenu / FloatingMenu。
+**已启用**：Bold / Italic / Underline / Strike / Code / Highlight / Subscript / Superscript / Color / FontFamily / Typography / Heading / HorizontalRule / Blockquote / TextAlign / CodeBlock（lowlight 语法高亮）/ Details / Bullet·Ordered·TaskList / Link / Image·Video·Audio + FileHandler（Youtube/Twitch 已于 2026-10-16 移除，YouTube 链接由 Video 的 URL 转嵌入覆盖） / Table（可调列宽）/ FindAndReplace / InvisibleCharacters / NodeRange / HardBreak / **Undo·Redo + ClearFormatting + CharacterCount** / **Gapcursor·Dropcursor·TrailingNode** / BubbleMenu / FloatingMenu。
 
 **已移除**：`UniqueId`（2026-10-16：未配置 `types` 从不生效，且按数据保真原则不自动写入节点属性；需要时宿主自行引入 `@tiptap/extension-unique-id`）。
 
