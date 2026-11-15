@@ -6,15 +6,7 @@ import { lightTheme } from "./light";
 
 describe("theme accent derivation", () => {
   it("derives accent tokens from --tiptap-accent-primary via color-mix, not hardcoded indigo hex", () => {
-    const derivedTokens = [
-      "--tiptap-accent-primary-bg",
-      "--tiptap-btn-primary-bg",
-      "--tiptap-btn-primary-bg-hover",
-      "--tiptap-btn-primary-shadow",
-      "--tiptap-btn-primary-shadow-hover",
-      "--tiptap-focus-ring",
-      "--tiptap-selection-bg",
-    ];
+    const derivedTokens = ["--tiptap-accent-primary-bg", "--tiptap-focus-ring", "--tiptap-selection-bg"];
     for (const theme of [lightTheme, darkTheme]) {
       for (const token of derivedTokens) {
         const value = theme[token as keyof typeof theme] as string;

@@ -114,7 +114,6 @@ function onKeydown(event: KeyboardEvent) {
   &:hover:not(:disabled) {
     background: var(--tiptap-btn-primary-bg-hover);
     box-shadow: var(--tiptap-btn-primary-shadow-hover);
-    transform: translateY(-1px);
   }
 
   &:active:not(:disabled) {

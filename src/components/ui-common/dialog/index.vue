@@ -150,7 +150,7 @@ onBeforeUnmount(() => {
 .tiptap-dialog {
   background-color: var(--tiptap-popover-bg);
   border: 1px solid var(--tiptap-popover-border);
-  border-radius: var(--tiptap-border-radius-lg);
+  border-radius: var(--tiptap-border-radius-md);
   box-shadow: var(--tiptap-popover-shadow);
   color: var(--tiptap-popover-text);
   max-width: calc(100vw - 32px);

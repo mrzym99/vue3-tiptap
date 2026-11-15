@@ -82,7 +82,7 @@ const active = computed<ActionMenuButtonItem>(() => {
   align-items: center;
   background: none;
   border: none;
-  border-radius: var(--tiptap-border-radius-md);
+  border-radius: var(--tiptap-border-radius-sm);
   color: var(--tiptap-color-text);
   cursor: pointer;
   display: flex;

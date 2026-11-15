@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import ArrowDropDown from "~icons/lucide/chevron-down";
-import icon from "~icons/lucide/list-tree";
+import icon from "~icons/tabler/line-height";
 
 import ActionMenuButton from "@/components/ui-common/action-menu-button/index.vue";
 import { extensionOptions } from "@/utils/extensionOptions";

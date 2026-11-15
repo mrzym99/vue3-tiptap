@@ -29,7 +29,7 @@ function onClick(event: MouseEvent) {
 .tiptap-btn {
   background-color: var(--tiptap-btn-bg, transparent);
   border: none;
-  border-radius: var(--tiptap-border-radius-md);
+  border-radius: var(--tiptap-border-radius-sm);
   color: var(--tiptap-color-text);
   cursor: pointer;
   font-size: var(--tiptap-font-size);
@@ -59,11 +59,9 @@ function onClick(event: MouseEvent) {
   color: var(--tiptap-btn-primary-text);
   box-shadow: var(--tiptap-btn-primary-shadow);
 
-  /* Cloud Float: lift + accent-tinted shadow bloom */
   &:hover:not(:disabled) {
     background-color: var(--tiptap-btn-primary-bg-hover);
     box-shadow: var(--tiptap-btn-primary-shadow-hover);
-    transform: translateY(-1px);
   }
 
   /* Pillow Press: press into the surface */
@@ -82,7 +80,6 @@ function onClick(event: MouseEvent) {
   &:hover:not(:disabled) {
     background-color: var(--tiptap-btn-danger-bg-hover);
     box-shadow: var(--tiptap-btn-danger-shadow-hover);
-    transform: translateY(-1px);
   }
 
   &:active:not(:disabled) {
@@ -102,7 +99,6 @@ function onClick(event: MouseEvent) {
 
   .tiptap-btn--primary,
   .tiptap-btn--danger {
-    &:hover:not(:disabled),
     &:active:not(:disabled) {
       transform: none;
     }

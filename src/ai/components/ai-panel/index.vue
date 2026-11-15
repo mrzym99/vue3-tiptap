@@ -103,9 +103,7 @@ function stop() {
     transform 300ms ease-in-out,
     box-shadow 300ms ease-in-out;
 
-  // Cloud Float
   &:hover {
-    transform: translateY(-2px);
     box-shadow: var(--tiptap-btn-primary-shadow-hover);
   }
 
