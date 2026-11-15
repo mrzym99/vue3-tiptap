@@ -43,7 +43,7 @@ const t = props.t;
 
 const sizes = computed(() => extensionOptions<FontSizeOptions>(props.editor, "fontSize")!.fontSizes);
 
-const options = computed<ActionMenuButtonItem[]>(() => sizes.value.map((size) => createOption(`${size} px`, `${size}px`)));
+const options = computed<ActionMenuButtonItem[]>(() => sizes.value.map((size) => createOption(`${size}`, `${size}px`)));
 
 const disabled = computed(() => options.value.every((item) => item.disabled));
 const isActive = computed(() => options.value.some((item) => item.isActive()));

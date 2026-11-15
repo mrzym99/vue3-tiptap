@@ -68,7 +68,6 @@ const active = computed<ActionMenuButtonItem>(() => {
   display: flex;
   flex-direction: column;
   gap: var(--tiptap-gap-xs);
-  min-width: 100px;
 }
 
 .trigger-label {

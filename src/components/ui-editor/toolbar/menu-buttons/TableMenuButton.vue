@@ -128,7 +128,7 @@ const isActive = computed(() => inTable.value);
   display: flex;
   flex-direction: column;
   gap: var(--tiptap-gap-sm);
-  min-width: 160px;
+  min-width: 120px;
 }
 
 .tiptap-table-divider {
