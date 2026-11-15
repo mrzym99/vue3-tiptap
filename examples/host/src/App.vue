@@ -2,6 +2,7 @@
 import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
 // Consume the published-style API
 import { StarterKit, Dialog, Button, Ai } from "@yumine9/vue3-tiptap";
+import Setting from "./Setting.vue";
 import Header from "./components/Header.vue";
 import Full from "./components/Full.vue";
 import Simple from "./components/Simple.vue";
@@ -55,6 +56,11 @@ const prismStyle = computed(() => (theme.value === "dark" ? prismDark : prismLig
 // Reuse the shared host-translation pack from the repo's demo folder.
 import zhTW from "../../../demo/zh-TW";
 const translations: LocaleTranslations = { "zh-TW": zhTW };
+const settingLangs = [
+  { value: "zh", label: "中文" },
+  { value: "en", label: "English" },
+  { value: "zh-TW", label: "繁體中文" },
+];
 
 import beautify from "js-beautify";
 import Prism from "prismjs";
@@ -181,6 +187,8 @@ const currentMode = computed(() => {
         </svg>
       </a>
     </Header> -->
+
+    <Setting v-model:theme="theme" v-model:lang="lang" :langs="settingLangs" />
 
     <div class="editor-container">
       <!-- <Simple

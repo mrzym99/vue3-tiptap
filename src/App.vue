@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import TipTapEditor from "./components/index.vue";
+import Setting from "./Setting.vue";
 import { StarterKit, Ai, Mathematics } from "./components/extensions";
 import type { LocaleTranslations } from "./locales";
 import zhTW from "../demo/zh-TW";
@@ -80,6 +81,11 @@ const content = ref(DEFAULT_CONTENT);
 
 const { theme, lang } = useDemoConfig();
 const translations: LocaleTranslations = { "zh-TW": zhTW };
+const settingLangs = [
+  { value: "zh", label: "中文" },
+  { value: "zh-TW", label: "繁體中文" },
+  { value: "en", label: "English" },
+];
 const limit = ref(0);
 
 const mentionUsers = [
@@ -134,6 +140,7 @@ const extensions = [
       bubble-menu="bold italic highlight link"
       toolbar-wrap
     />
+    <Setting v-model:theme="theme" v-model:lang="lang" :langs="settingLangs" />
   </div>
 </template>
 
