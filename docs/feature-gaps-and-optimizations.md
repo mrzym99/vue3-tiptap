@@ -1,8 +1,8 @@
 # 功能缺口与优化清单
 
-> 整理时间：2026-08，**2026-09-07 复核更新**。基于对现有扩展集（`src/components/extensions/index.ts`）、工具栏按钮、`package.json` 依赖与核心组件逻辑（`src/components/index.vue`）的评审。
+> 整理时间：2026-08，**2026-09-07 复核更新**，**2026-11-14 复核更新**。基于对现有扩展集（`src/components/extensions/index.ts`）、工具栏按钮、`package.json` 依赖与核心组件逻辑（`src/components/index.vue`）的评审。
 >
-> 结论一句话：**「能编辑的功能」已经相当全（文本/列表/表格/媒体/折叠/链接/查找替换），P0（Undo/Redo、清除格式、字符统计）已完成；剩余缺口集中在「编辑体验（拖拽、缩进）」「富文本常见高级能力（字体大小 / Markdown / 目录 / Emoji / 提及）」「性能与 Reactive 细节」三块。**
+> 结论一句话：**「能编辑的功能」已经相当全（文本/列表/表格/媒体/折叠/链接/查找替换/公式/Emoji/目录/Markdown），P0（Undo/Redo、清除格式、字符统计）已完成；剩余缺口集中在「编辑体验（拖拽、缩进）」「少量高级扩展（注音）」「性能与 Reactive 细节」三块。**
 
 ---
 
@@ -12,7 +12,9 @@
 
 **已移除**：`UniqueId`（2026-10-16：未配置 `types` 从不生效，且按数据保真原则不自动写入节点属性；需要时宿主自行引入 `@tiptap/extension-unique-id`）。
 
-**未安装 / 未集成**：`extension-emoji`、`extension-mathematics`（需 katex）、`extension-table-of-contents`、`extension-ruby-text`、`extension-collaboration` 系列（Yjs peer 已随 drag-handle 装入，但未启用）等。
+**未安装 / 未集成**：`extension-ruby-text`。
+
+**2026-11-14 复核**：`extension-emoji`、`extension-mathematics`（含 katex）、`extension-table-of-contents`、`@tiptap/markdown` 均已安装并接入本库；`@tiptap/extension-collaboration` / `@tiptap/y-tiptap` 不再声明为本包依赖（Yjs 仍作为 `extension-drag-handle` 的 peer 被装进 `node_modules`，本库未启用协作）。
 
 ---
 
@@ -30,7 +32,7 @@
 | **清除格式（Clear Formatting）** | 图标按钮 | 一键移除选区上的所有 **mark**（bold/italic/code/highlight/color/fontFamily 等）+ 重置 heading。 | ✅ 已完成 |
 | **块级拖拽手柄（Drag Handle）** | 无按钮 | ✅ 已完成：官方 `@tiptap/extension-drag-handle`（3.32+）的薄封装，落位 `src/components/extensions/DragHandle.ts`，仅重写 `render()` 补回抓手图标；nested 规则 / drop-restore / 边缘检测全部由官方包提供。已知上游缺口：无滚动跟随（官方未实现）、无 `ariaLabel` 选项（wrapper 以 `aria-label="Drag to move"` 兜底）。 | ✅ 已完成 |
 | **字数 / 字符统计（CharacterCount）** | 无按钮（复用底部统计） | 已用 `@tiptap/extensions` 的 `CharacterCount` 取代手写 `getEditorTextLength`（增量计算），配合 v-model 写回防抖。 | ✅ 已完成 |
-| **Markdown 导入/导出** | 弹窗或面板 | `@tiptap/markdown`（`turndown + markdown-it`）来回转换 HTML。适合需要「复制为 Markdown / 粘贴 Markdown」的场景；若暂不需要，可归到 P1。 | ⬜ 未做 |
+| **Markdown 导入/导出** | 无按钮 | ✅ 已内置（官方 `@tiptap/markdown`，StarterKit 默认包含）：导入导出走 `setContent/insertContent({ contentType: "markdown" })` 与 `editor.getMarkdown()`；纯文本粘贴**不**自动解析（官方扩展只处理显式 `contentType`），导出按钮 / 复制到剪贴板属产品级功能，由宿主实现。 | ✅ 已完成（官方扩展） |
 
 ### 2.2 P1 — 中价值 / 中等成本
 
@@ -49,7 +51,7 @@
 | ----------- | -------- | ---- |
 | **数学公式（Mathematics）** | 按钮 + 弹窗 | ✅ 已完成（2026-11-12）：官方 `@tiptap/extension-mathematics` 薄封装 + `MathMenuButton`（弹窗输入 LaTeX，行内/块级两种插入，选中已有公式时回填编辑）。弹窗内置 KaTeX 预览的公式模板条（默认 10 个，`Mathematics.configure({ templates })` 可换，点击填入后编辑）；KaTeX 静态引入（`shortcut:` 注释见 `Mathematics.ts`）：不 import 该扩展的宿主零成本；如需独立 chunk 可动态 `import()` 本文件。 | ✅ 已完成 |
 | **注音（Ruby Text）** | 图标按钮 | `@tiptap/extension-ruby-text`；东亚文本注音，低风险低频。 |
-| **实时协作（Collab）** | 无按钮 | `extension-collaboration + -caret + @tiptap/y-tiptap + Yjs`，**需配套后端**；建议在 `NodeRange` 之上再评估（UniqueId 已移除，需要节点锚定时一并引入 `extension-unique-id`）。 |
+| **实时协作（Collab）** | 无按钮 | 本库不提供（2026-11-14 移除 `@tiptap/extension-collaboration` / `@tiptap/y-tiptap` 依赖）：需配套后端（Yjs + WebSocket/Provider），由宿主自行引入 `extension-collaboration + -caret + @tiptap/y-tiptap + Yjs`，并注意与 Undo/Redo 历史冲突。 | ⬜ 未做（宿主实现） | |
 | **文字方向 RTL / 行距 / 首行缩进** | 下拉/按钮 | ✅ 已完成（2026-11-12）：行距自研 `LineHeight`（默认 1.15/1.5/1.75/2，档位由 `lineHeights` 选项给，`LineHeightMenuButton` 读选项渲染）——**块级** `style="line-height"` 全局属性（paragraph/heading），因为官方的 `@tiptap/extension-text-style/line-height` 是 `textStyle` mark（`<span style="line-height">`），比块自身 CSS 的 `line-height: 1.75` 小的时候被行盒 strut 吃掉、肉眼毫无变化；首行缩进自研 `FirstLineIndent`（`text-indent` 全局属性，2em 档 toggle，`IndentButton`）；文字方向**已移除**（2026-11-13，中英文产品不需要 RTL；官方 `@tiptap/core` 自带 `textDirection` 扩展 + `setTextDirection/unsetTextDirection` 命令，真有阿语需求直接用官方版）。中文场景首行缩进已覆盖。 | ✅ 已完成 |
 
 ---
@@ -74,7 +76,7 @@
    - ✅ **已完成（2026-11-12）**：`useEditorModel.getModelValue` 按文档节点身份缓存 HTML（doc 不可变，同一文档不重复序列化）。
 2. **关闭不必要的 Vue 重渲染**：~~`useEditor({ shouldRerenderOnTransaction: false })`~~ → **不适用（2026-09-07 核实）**：该选项是 `@tiptap/react` 专属（v3 默认已改为 false，配合 `useEditorState` 精细订阅）；`@tiptap/vue-3` 没有此选项，其内部已用 `useDebouncedRef`（双层 `requestAnimationFrame` 延迟 trigger 的响应式 state/storage）合并同帧事务，模板中读 `editor.can()` / `isActive()` 自动刷新且天然去抖，无需改造。
 3. **字数统计改用 CharacterCount**：✅ **已完成**，底部统计已改用 `editor.storage.characterCount`（见 2.1）；超限不再自动截断（2026-10-16 决策：数据保真，仅警告）。
-4. **重扩展懒加载**：Mathematics(KaTeX)、Markdown(turndown) 等用 `import()` 按需，不进首屏主包（构建已按 group 分包，见 `vite.config.ts`）。
+4. **重扩展懒加载**：✅ **已评估，保留静态引入（2026-11-14）**：Mathematics 的 KaTeX、Markdown 的 marked 都是静态 import（`shortcut:` 注释见 `Mathematics.ts`），因为 `@tiptap/*` 与 katex/marked 已 external、由宿主打包，库内动态 `import()` 只会多一层异步边界；宿主若在意首屏可由自己的打包器做代码分割。
    - **StarterKit 全量打包**：`StarterKit` 急切 `import` 全部内置扩展（含 image/video/audio 等媒体扩展），且本地自定义 wrapper/UI 代码在库构建中被单 chunk 输出（`vite.lib.config.ts` 单入口、无分包），故 `@tiptap/*` 虽已 external，本地代码无法 tree-shake。需更小体积时用命名导出手选扩展（`[Bold, Italic, Image]`）替代全套 kit；按扩展子路径分包属后续工作。
 
 ### 4.2 响应式 / 正确性细节
@@ -112,7 +114,7 @@
 
 1. ~~**先做（半天）**：Undo/Redo 按钮 + 清除格式~~ → ✅ 已完成（Focus 已于 2026-10-16 移除）。
 2. **再做（1 天）**：`shouldRerenderOnTransaction:false` + ~~v-model 写回防抖~~ ✅ + ~~CharacterCount 替换手工计数~~ ✅ + 映射 i18n/aria-label。
-3. **按业务做**：Markdown（含导出）→ 拖拽手柄 / Emoji / 提及 → Table of Contents → 协作。
+3. **按业务做**：~~Markdown（含导出）~~ ✅ → ~~拖拽手柄 / Emoji~~ ✅ → ~~Table of Contents~~ ✅ → 注音（Ruby）/ 协作（宿主实现）。
 4. ~~**随做随改**：`docs/PROJECT.md` 中 Naive UI 与 `--tiptap-*` 前缀的漂移描述~~ → ✅ 已同步（2026-09-07）。
 
 ---

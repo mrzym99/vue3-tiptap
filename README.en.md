@@ -72,8 +72,8 @@ All built-in extensions and their `XxxOptions` types are exported from the packa
 
 Both are entry points for configuring the same extension — pick one:
 
-- `StarterKit.configure({ image: { upload } })`: configures (or disables with `false`) the copy bundled in StarterKit; keys are extension names (`image`, `bold`, …). Do **not** also pass an extension with the same name in `extensions`.
-- `Image.configure({ upload })`: configures a standalone imported instance; when using it, turn off the bundled copy via `StarterKit.configure({ image: false })` to avoid duplicates.
+- `StarterKit.configure({ imageUpload: { upload } })`: configures (or disables with `false`) the copy bundled in StarterKit; keys are extension names (`image`, `bold`, …). Do **not** also pass an extension with the same name in `extensions`.
+- `Image.configure({})` / `ImageUpload.configure({ upload })`: configures a standalone imported instance; when using it, turn off the bundled copy via `StarterKit.configure({ image: false })` / `{ imageUpload: false }` to avoid duplicates.
 
 ```ts
 const mentionUsers = [
@@ -103,18 +103,23 @@ const extensions = [
 
 ## Image upload
 
-Configure an `upload` function on the `Image` extension to enable the upload tab in the image dialog: it receives a `File` and returns the stored URL; preview and insertion are handled by the editor. With `StarterKit`, pass it via `configure`:
+`ImageUpload` is an inline upload zone (same model as Tiptap's ImageUploadNode): with no image selected, the toolbar "Image" button inserts a dashed zone; click it or drop files into it to upload. Dropping or pasting an image anywhere in the editor also inserts one at that spot. Once uploaded, the zone replaces itself with `<img>` elements.
+
+Provide `upload` (`File` → stored URL; the second argument is 0-100 progress, the third an abort signal). Everything else is optional:
 
 ```ts
 import { StarterKit } from "@yumine9/vue3-tiptap";
 
 const extensions = [
   StarterKit.configure({
-    image: {
-      upload: async (file: File) => {
+    imageUpload: {
+      limit: 3, // max files per zone (default 3)
+      maxSize: 5 * 1024 * 1024, // per file, 0 = unlimited (default 0)
+      accept: "image/*", // file picker filter, default image/*
+      upload: async (file: File, onProgress, signal) => {
         const form = new FormData();
         form.append("file", file);
-        const res = await fetch("/api/upload", { method: "POST", body: form });
+        const res = await fetch("/api/upload", { method: "POST", body: form, signal });
         const { url } = await res.json();
         return url; // return the accessible image URL
       },
@@ -123,7 +128,9 @@ const extensions = [
 ];
 ```
 
-Same when importing à la carte: `Image.configure({ upload })`. Without `upload`, the dialog only supports pasting an image URL.
+À la carte use `ImageUpload.configure({ ... })`. The "Image" button does one thing: insert an upload zone (it does nothing if the host did not load `ImageUpload`). Drop/paste only accepts jpg/png/gif/webp (`FileHandler`'s allowlist; SVG is excluded on purpose to avoid stored XSS).
+
+Image nodes still carry an `alt` attribute (`editor.commands.setImage({ src, alt })` writes `<img alt="...">`); the library no longer ships an edit dialog.
 
 ## Markdown support
 
@@ -170,6 +177,12 @@ const extensions = [
 - The agent loop is built in (OpenAI-compatible chat completions + tool calling over native fetch, zero extra dependencies), with history management and abort handled for you
 - Other options: `systemPrompt` (appended to the built-in system prompt), `maxRounds` (tool-call rounds per send, default 25), `maxHistoryMessages` (kept-message cap, default 60)
 - Building your own UI: the headless layer is exported from the `@yumine9/vue3-tiptap/ai` subpath — `createAiToolkit(editor)`, `createEditorAgent()` and the `AiPanel` component, ready to wire to any LLM
+
+## Keyboard shortcuts
+
+Tiptap / ProseMirror defaults apply: `Mod-b` bold, `Mod-i` italic, `Mod-u` underline, `Mod-Shift-x` strike, `Mod-e` inline code, `Mod-Alt-c` code block, `Mod-z` / `Mod-Shift-z` undo / redo.
+
+The toolbar is a focusable `role="toolbar"` region: once focused with `Tab`, `ArrowLeft` / `ArrowRight` move focus between enabled buttons (wrapping), `Home` / `End` jump to the first / last. Every button carries an `aria-label` translated by `locale`.
 
 ## Common props
 
@@ -226,7 +239,8 @@ const extensions = [
 | `link` | `Link` | Link via URL dialog |
 | `superscript` / `subscript` | `Superscript` / `Subscript` | Superscript / subscript |
 | `textAlign` | `TextAlign` | Alignment button group (applies to heading/paragraph) |
-| `image` | `Image` (+ `FileHandler`) | Image; dialog supports local upload (jpg/png/gif/webp only) |
+| `image` | `Image` (+ `FileHandler`) | Image node (URL comes from host `setImage`); the button inserts an upload zone |
+| `imageUpload` | `ImageUpload` | Inline upload zone (click/drop, replaced by the image) |
 | `video` | `Video` | Video; YouTube/Bilibili links auto-convert to embed |
 | `audio` | `Audio` | Audio |
 | `horizontalRule` | `HorizontalRule` | Horizontal rule |

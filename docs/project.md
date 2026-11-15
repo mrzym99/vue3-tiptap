@@ -4,7 +4,7 @@
 
 `@yumine9/vue3-tiptap` 是一个基于 **TipTap**（`@tiptap/vue-3`）与 **Vue 3** 构建的富文本编辑器组件，内置可扩展的工具栏 UI。项目采用「扩展即配置」的设计理念：每一个编辑能力（加粗、斜体、下划线、引用、文本对齐等）都是一个 TipTap 扩展，同时通过扩展的 `button` 选项声明自己的工具栏按钮，工具栏会自动收集并渲染这些按钮，实现**功能与 UI 的自动绑定**。
 
-当前项目形态为一个可运行、可演进的 Demo / 组件原型，`App.vue` 中演示了组件的 `v-model` 双向绑定、`limit` 字数限制、主题切换与中英文切换等能力。
+当前项目形态为**已发布的 npm 组件库**（`@yumine9/vue3-tiptap`）：库本身只提供编辑器组件、扩展与工具栏 UI，仓库内的 `App.vue` / `examples/host` 只是演示与联调用途。产品级能力（全屏、打印 / 导出、自动保存、版本历史、实时协作）不在本库范围内，由宿主自行实现。
 
 ## 2. 技术栈
 
@@ -260,14 +260,14 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 
 ## 8. 扩展建议 / 路线图
 
-- **最新评审见 `docs/feature-gaps-and-optimizations.md`**：汇编了「编辑器还缺什么插件」与「性能 / 响应式 / 无障碍 / 文档漂移」的整体优化清单。P0（Undo/Redo、清除格式、字符统计）、v-model 写回防抖与 Mention 提及已完成；剩余 P1：字体大小、Emoji、Markdown、目录、块级拖拽等。
+- **最新评审见 `docs/feature-gaps-and-optimizations.md`**：汇编了「编辑器还缺什么插件」与「性能 / 响应式 / 无障碍 / 文档漂移」的整体优化清单。P0（Undo/Redo、清除格式、字符统计）、v-model 写回防抖、Mention 提及、字体大小、Emoji、Markdown、目录、块级拖拽均已完成（2026-11-14 复核）；剩余：注音（Ruby）与协作（由宿主实现）。
 - 可继续接入（对应扩展文件已就绪或可按需新增）：列表（有序/无序/任务）、链接 Link、图片 Image、表格 Table、代码块、气泡菜单、查找替换、Emoji、@提及、数学公式等；集成清单与分阶段计划见 `docs/tiptap-extensions-integration-plan.md`；
 - `StarterKit` 是项目自建的扩展工厂（`src/components/extensions/index.ts`），**不依赖** `@tiptap/starter-kit`：`StarterKit.configure({...})` 遍历内置扩展表，`false` 禁用、对象即 configure；
 - 可抽取为独立 npm 包 / Vue 组件库，暴露统一的扩展注册 API；`src/index.ts` 已命名导出全部内置扩展（`Mention` / `Image` 等）与 `StarterKit`；
-- **显式引入扩展**（2026-09-12 决策，对齐 tiptap 模式）：组件**不再自动包含内置扩展**，由宿主通过 `extensions` prop 选择——一键全量用 `StarterKit.configure({...})`（`false` 禁用某项，对象配置某项，如 `{ audio: false, image: { upload } }`），或手动逐个 `import`（如 `[Bold, Mention.configure({ items })]`）；同名冲突后者胜出；Document / Paragraph / Text / Placeholder 结构核心始终由组件提供；
+- **显式引入扩展**（2026-09-12 决策，对齐 tiptap 模式）：组件**不再自动包含内置扩展**，由宿主通过 `extensions` prop 选择——一键全量用 `StarterKit.configure({...})`（`false` 禁用某项，对象配置某项，如 `{ audio: false, imageUpload: { upload } }`），或手动逐个 `import`（如 `[Bold, Mention.configure({ items })]`）；同名冲突后者胜出；Document / Paragraph / Text / Placeholder 结构核心始终由组件提供；
 - `Focus`（聚焦高亮）已于 2026-10-16 移除（低价值、纯死代码）：需要时宿主自行引入 `@tiptap/extension-focus`；
 - `Youtube` / `Twitch` 扩展已于 2026-10-16 移除：YouTube 链接由 `Video` 的 URL 转嵌入覆盖（`src/utils/video-url.ts` → `toEmbedUrl`），Twitch 国内不可用；存量文档若含 `youtube`/`twitch` 节点将无法解析，宿主需自行引入对应官方扩展；
-- `DragHandle`（`src/components/extensions/DragHandle.ts`）是官方 `@tiptap/extension-drag-handle`（3.32+）的薄封装（2026-10 起替换掉 v3.31.3 的 vendor 副本）：只重写 `render()` 补回抓手图标，规则 / drop-restore / 嵌套打分全部交给官方包。官方 peer 会带入 `@tiptap/extension-collaboration` + `@tiptap/y-tiptap`（协作能力未启用）；已知上游缺口：无滚动跟随、无 `ariaLabel` 选项；
+- `DragHandle`（`src/components/extensions/DragHandle.ts`）是官方 `@tiptap/extension-drag-handle`（3.32+）的薄封装（2026-10 起替换掉 v3.31.3 的 vendor 副本）：只重写 `render()` 补回抓手图标，规则 / drop-restore / 嵌套打分全部交给官方包。官方 peer 会带入 `@tiptap/extension-collaboration` + `@tiptap/y-tiptap`（2026-11-14 已从本包 `dependencies` 中移除，协作能力仍未启用）；已知上游缺口：无滚动跟随、无 `ariaLabel` 选项；
 - 可补充 TableKit（可调整列宽）等高级能力的完整 UI。
 
 ## 9. 已知事项

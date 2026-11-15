@@ -72,8 +72,8 @@ const extensions = [Bold, Image, Video];
 
 两者是同一个扩展的两种配置入口，效果一致，选其一即可：
 
-- `StarterKit.configure({ image: { upload } })`：配置（或传 `false` 禁用）StarterKit 内置的那份扩展； key 是扩展名（如 `image`、`bold`），**不要**再在 `extensions` 里重复传入同名扩展；
-- `Image.configure({ upload })`：配置单独导入的扩展实例；用它时从 `StarterKit.configure({ image: false })` 里关掉内置份，避免重复。
+- `StarterKit.configure({ imageUpload: { upload } })`：配置（或传 `false` 禁用）StarterKit 内置的那份扩展； key 是扩展名（如 `image`、`bold`），**不要**再在 `extensions` 里重复传入同名扩展；
+- `Image.configure({})` / `ImageUpload.configure({ upload })`：配置单独导入的扩展实例；用它时从 `StarterKit.configure({ image: false })` / `{ imageUpload: false }` 里关掉内置份，避免重复。
 
 ```ts
 const mentionUsers = [
@@ -103,18 +103,23 @@ const extensions = [
 
 ## 图片上传
 
-给 `Image` 扩展配置 `upload` 函数即可启用图片弹窗里的“上传”选项卡：函数收到 `File`，返回存储后的 URL，其余（预览、插入）由编辑器完成。使用 `StarterKit` 时通过 `configure` 传入：
+`ImageUpload` 是内联上传区（与 Tiptap 官方的 ImageUploadNode 同一套模型）：未选中图片时点工具栏「图片」按钮会插入一个虚线区域，点击或把文件拖进去即开始上传；把图片拖/粘贴到编辑器任意位置也会在落点插入它。上传成功后区域自动替换为 `<img>`。
+
+传入 `upload`（`File` → 存储后的 URL；第二个参数是 0-100 进度，第三个是可中止信号）即可启用，其余为可选配置：
 
 ```ts
 import { StarterKit } from "@yumine9/vue3-tiptap";
 
 const extensions = [
   StarterKit.configure({
-    image: {
-      upload: async (file: File) => {
+    imageUpload: {
+      limit: 3, // 一次最多 3 个文件（默认 3）
+      maxSize: 5 * 1024 * 1024, // 单个 5MB，0 = 不限（默认 0）
+      accept: "image/*", // 文件选择框的过滤，默认 image/*
+      upload: async (file: File, onProgress, signal) => {
         const form = new FormData();
         form.append("file", file);
-        const res = await fetch("/api/upload", { method: "POST", body: form });
+        const res = await fetch("/api/upload", { method: "POST", body: form, signal });
         const { url } = await res.json();
         return url; // 返回可访问的图片地址
       },
@@ -123,7 +128,9 @@ const extensions = [
 ];
 ```
 
-按需导入时同理：`Image.configure({ upload })`。未配置 `upload` 时，弹窗仅支持粘贴图片 URL。
+按需导入时用 `ImageUpload.configure({ ... })`。「图片」按钮只做一件事：插入上传区（宿主若没加载 `ImageUpload`，按钮不做事）。拖/粘贴只接受 jpg/png/gif/webp（`FileHandler` 的白名单，SVG 刻意排除，避免存储型 XSS）。
+
+图片节点仍保留 `alt` 属性（`editor.commands.setImage({ src, alt })` 写入 `<img alt="...">`），库里不再提供编辑弹窗。
 
 ## Markdown 支持
 
@@ -170,6 +177,12 @@ const extensions = [
 - agent 循环内置（OpenAI 兼容 chat completions + tool calling，原生 fetch 零额外依赖），自动管理会话历史与中断
 - 其他选项：`systemPrompt`（追加系统提示）、`maxRounds`（单次发送的工具调用轮数上限，默认 25）、`maxHistoryMessages`（保留消息条数上限，默认 60）
 - 想自建 UI：headless 层从 `@yumine9/vue3-tiptap/ai` 子路径导出 `createAiToolkit(editor)`、`createEditorAgent()` 与 `AiPanel` 组件，可接任意 LLM
+
+## 键盘快捷键
+
+沿用 Tiptap / ProseMirror 的默认键位：`Mod-b` 加粗、`Mod-i` 斜体、`Mod-u` 下划线、`Mod-Shift-x` 删除线、`Mod-e` 行内代码、`Mod-Alt-c` 代码块、`Mod-z` / `Mod-Shift-z` 撤销 / 重做；`Mod-Backspace` 等在空列表项上退出列表。
+
+工具栏是 `role="toolbar"` 的可聚焦区域：`Tab` 进去后可用 `ArrowLeft` / `ArrowRight` 在可用按钮间移动焦点（循环），`Home` / `End` 跳到首 / 尾；每个按钮都带 `aria-label`（随 `locale` 翻译）。
 
 ## 常用 props
 
@@ -226,7 +239,8 @@ const extensions = [
 | `link`                                                            | `Link`                                                            | 链接，弹窗输入 URL                                   |
 | `superscript` / `subscript`                                       | `Superscript` / `Subscript`                                       | 上标 / 下标                                          |
 | `textAlign`                                                       | `TextAlign`                                                       | 对齐按钮组（作用于 heading/paragraph）               |
-| `image`                                                           | `Image`（+ `FileHandler`）                                        | 图片，弹窗支持本地上传（仅 jpg/png/gif/webp）        |
+| `image`                                                           | `Image`（+ `FileHandler`）                                        | 图片节点（URL 由宿主 `setImage` 写入）；按钮插入上传区 |
+| `imageUpload`                                                     | `ImageUpload`                                                     | 内联图片上传区（点击/拖放，上传后替换为图片）        |
 | `video`                                                           | `Video`                                                           | 视频，YouTube/Bilibili 链接自动转 embed              |
 | `audio`                                                           | `Audio`                                                           | 音频                                                 |
 | `horizontalRule`                                                  | `HorizontalRule`                                                  | 分隔线                                               |
