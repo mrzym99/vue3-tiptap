@@ -103,9 +103,9 @@ const currentMode = computed(() => {
 </script>
 
 <template>
-  <component :is="'style'" v-html="prismStyle" />
+  <!-- <component :is="'style'" v-html="prismStyle" /> -->
   <div class="container">
-    <Header>
+    <!-- <Header>
       <template #badge>
         <span class="app-mode-badge">{{ currentMode }}</span>
       </template>
@@ -180,33 +180,26 @@ const currentMode = computed(() => {
           />
         </svg>
       </a>
-    </Header>
+    </Header> -->
 
     <div class="editor-container">
-      <Simple
+      <!-- <Simple
         v-if="mode === 'simple'"
         v-model="simpleContent"
         :theme="theme"
         :lang="lang"
         :translations="translations"
         :extensions="extensions"
-      />
-      <Full
-        v-else-if="mode === 'full'"
-        v-model="fullContent"
-        :theme="theme"
-        :lang="lang"
-        :translations="translations"
-        :extensions="extensions"
-      />
-      <Markdown
+      /> -->
+      <Full v-model="fullContent" :theme="theme" :lang="lang" :translations="translations" :extensions="extensions" />
+      <!-- <Markdown
         v-else
         v-model="markdownContent"
         :theme="theme"
         :lang="lang"
         :translations="translations"
         :extensions="extensions"
-      />
+      /> -->
     </div>
 
     <Dialog v-model:show="showOutput" closeOnClickModal :title="dialogTitle" width="760px">
@@ -262,12 +255,16 @@ body {
 }
 
 .editor-container {
+  width: 100%;
   flex: 1;
-  width: 880px;
   min-height: 0;
-  margin: 16px 0 24px;
   box-sizing: border-box;
   box-shadow: var(--app-box-shadow);
   overflow: hidden;
+}
+
+.tiptap-editor {
+  max-width: 880px;
+  margin: 0 auto;
 }
 </style>
