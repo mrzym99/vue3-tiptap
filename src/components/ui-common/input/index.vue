@@ -108,7 +108,7 @@ function onClear() {
   }
 
   &--clearable {
-    padding-right: 32px;
+    padding-right: 30px;
   }
 
   /* Halo Focus: soft large-radius ring, no hard border */
@@ -127,8 +127,8 @@ function onClear() {
   color: var(--tiptap-color-text-muted);
   cursor: pointer;
   display: flex;
-  font-size: 14px;
-  padding: 2px;
+  font-size: 12px;
+  padding: 1px;
   position: absolute;
   right: 6px;
   top: 50%;

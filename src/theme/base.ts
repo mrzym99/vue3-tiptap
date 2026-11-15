@@ -20,8 +20,8 @@ export const baseTheme: Theme = {
   "--tiptap-tooltip-radius": "10px",
   "--tiptap-z-popover": "1000",
   "--tiptap-z-dialog": "1100",
-  "--tiptap-input-radius": "12px",
-  "--tiptap-input-padding": "6px 10px",
+  "--tiptap-input-radius": "8px",
+  "--tiptap-input-padding": "10px 12px",
 
   "--tiptap-min-width": "220px",
   "--tiptap-max-content-width": "648px",
