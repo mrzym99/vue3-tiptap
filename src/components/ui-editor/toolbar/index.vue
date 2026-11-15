@@ -3,7 +3,11 @@
     v-if="props.editor && menus.keys.length"
     class="tiptap-toolbar"
     :class="{ 'tiptap-toolbar-wrap': props.wrap }"
+    role="toolbar"
+    aria-orientation="horizontal"
+    :aria-label="props.t('toolbar')"
     tabindex="-1"
+    @keydown="(event) => moveToolbarFocus(event)"
   >
     <template v-for="(item, index) in menus.keys" :key="item">
       <div v-if="menus.separators.includes(index)" class="tiptap-toolbar-sep" />
@@ -15,6 +19,7 @@
 <script setup lang="ts">
 import type { Editor } from "@tiptap/core";
 import type { Toolbar, TranslateFn } from "@/types";
+import { moveToolbarFocus } from "@/utils/moveToolbarFocus";
 import { resolveToolbar } from "@/utils/resolveToolbar";
 import RenderItem from "./render-item/index.vue";
 
