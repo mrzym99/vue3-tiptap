@@ -5,10 +5,10 @@
 </template>
 
 <script setup lang="ts">
-/** Shared text button (Notion Style): default variant deepens bg on hover; primary is accent-filled with white text; danger marks destructive actions with the same flat shape. */
+/** Shared text button (Notion Style): default variant deepens bg on hover; primary is accent-filled with white text. */
 const props = withDefaults(
   defineProps<{
-    variant?: "default" | "primary" | "danger";
+    variant?: "default" | "primary";
     disabled?: boolean;
   }>(),
   {
@@ -72,23 +72,6 @@ function onClick(event: MouseEvent) {
   }
 }
 
-.tiptap-btn--danger {
-  background-color: var(--tiptap-btn-danger-bg);
-  color: var(--tiptap-btn-danger-text);
-  box-shadow: var(--tiptap-btn-danger-shadow);
-
-  &:hover:not(:disabled) {
-    background-color: var(--tiptap-btn-danger-bg-hover);
-    box-shadow: var(--tiptap-btn-danger-shadow-hover);
-  }
-
-  &:active:not(:disabled) {
-    background-color: var(--tiptap-btn-danger-bg-hover);
-    box-shadow: var(--tiptap-btn-danger-shadow);
-    transform: scale(0.97);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .tiptap-btn {
     transition:
@@ -97,8 +80,7 @@ function onClick(event: MouseEvent) {
       color 0.2s ease-in-out;
   }
 
-  .tiptap-btn--primary,
-  .tiptap-btn--danger {
+  .tiptap-btn--primary {
     &:active:not(:disabled) {
       transform: none;
     }

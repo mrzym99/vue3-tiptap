@@ -36,11 +36,6 @@ export const lightTheme: Theme = {
   "--tiptap-btn-primary-text": "#FFFFFF",
   "--tiptap-btn-primary-shadow": "none",
   "--tiptap-btn-primary-shadow-hover": "none",
-  "--tiptap-btn-danger-bg": "var(--tiptap-accent-danger)",
-  "--tiptap-btn-danger-bg-hover": "color-mix(in srgb, var(--tiptap-accent-danger) 88%, black)",
-  "--tiptap-btn-danger-text": "#FFFFFF",
-  "--tiptap-btn-danger-shadow": "0 1px 2px rgba(15, 23, 42, 0.18)",
-  "--tiptap-btn-danger-shadow-hover": "0 2px 6px rgba(15, 23, 42, 0.24)",
 
   // --- interaction feedback (Halo Focus: soft large-radius ring) ---
   "--tiptap-focus-ring": "color-mix(in srgb, var(--tiptap-accent-primary) 25%, transparent)",

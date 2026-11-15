@@ -182,7 +182,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 - `theme/index.ts`：`applyTheme()` 将主题 CSS 变量写入 `document.documentElement` 的 style 上；
 - `theme/index.ts`：`applyTheme()` 将主题 CSS 变量写入目标元素（默认 `document.documentElement`，组件内传根节点实现**作用域化**——多实例不同主题互不干扰）；
 - `theme-provider`：根据 `theme` prop 应用变量（支持 `'light' | 'dark'`）；
-- **主色派生（primaryColor）**：主色只需配置 `--tiptap-accent-primary` 一个色相，accent 派生 token（accent-bg、focus-ring、selection、主按钮、popover/toolbar 阴影色染）均为它的 `color-mix()` 表达式，浅/暗模式按各自混合白/黑/transparent 自动派生；组件提供 `primaryColor` prop 即可整体换肤，无需逐个覆盖变量。主按钮是主色填充 + 白字（hover 时明度微调 12%）；危险按钮取 `--tiptap-accent-danger` 派生（同形状平阴影），不跟随主色；
+- **主色派生（primaryColor）**：主色只需配置 `--tiptap-accent-primary` 一个色相，accent 派生 token（accent-bg、focus-ring、selection、主按钮、popover/toolbar 阴影色染）均为它的 `color-mix()` 表达式，浅/暗模式按各自混合白/黑/transparent 自动派生；组件提供 `primaryColor` prop 即可整体换肤，无需逐个覆盖变量。主按钮是主色填充 + 白字（hover 时明度微调 12%）；
 - **自定义变量叠加**：组件 props 不再提供 `themeOverrides`；需要细粒度覆盖时用独立导出的 `ThemeProvider` 的 `themeOverrides` prop（`Theme` 类型，键为 `--tiptap-*` 变量名，优先级最高），或 `applyTheme(name, target?, overrides?)` 第三参数同效；
 - **主题切换过渡**：库级 0.2s 主题过渡规则覆盖编辑器主体（`.tiptap-box`）及所有 teleport 到 body 的弹层（菜单/Popover/Tooltip/Dialog），切换主题时整体同步淡入；宿主页面自身的过渡由宿主自行处理；
 - 独立使用的导出组件（Dialog/Popover 等）在未传入主题上下文时回退到默认 indigo 主色；
