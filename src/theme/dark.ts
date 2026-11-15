@@ -75,6 +75,15 @@ export const darkTheme: Theme = {
   "--tiptap-link-color": "var(--tiptap-accent-primary)",
   "--tiptap-code-bg": "var(--tiptap-color-bg-subtle)",
   "--tiptap-code-text": "var(--tiptap-color-text)",
+  // code block syntax tokens (highlight.js class names, see editor-content)
+  "--tiptap-code-token-comment": "#7F848E",
+  "--tiptap-code-token-keyword": "#C678DD",
+  "--tiptap-code-token-string": "#98C379",
+  "--tiptap-code-token-number": "#D19A66",
+  "--tiptap-code-token-function": "#61AFEF",
+  "--tiptap-code-token-variable": "#E06C75",
+  "--tiptap-code-token-type": "#E5C07B",
+  "--tiptap-code-token-operator": "#ABB2BF",
 
   // --- fixed tooltip colors (black bg + white text, same value in both themes) ---
   "--tiptap-tooltip-bg": "#111111",

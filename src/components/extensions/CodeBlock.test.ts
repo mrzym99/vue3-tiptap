@@ -48,4 +48,16 @@ describe("CodeBlock language header node view", () => {
 
     editor.destroy();
   });
+
+  it("highlights code by the language attribute", () => {
+    const editor = createEditor('<pre data-language="javascript"><code>const a = 1</code></pre>');
+    expect(editor.view.dom.querySelector(".hljs-keyword")?.textContent).toBe("const");
+    expect(editor.view.dom.querySelector(".hljs-number")?.textContent).toBe("1");
+
+    // an unknown language falls back to highlight.js auto-detection (no throw)
+    editor.commands.updateAttributes("codeBlock", { language: "not-a-language" });
+    expect(editor.view.dom.querySelector("code")?.textContent).toBe("const a = 1");
+
+    editor.destroy();
+  });
 });

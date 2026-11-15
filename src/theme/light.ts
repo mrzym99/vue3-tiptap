@@ -76,6 +76,15 @@ export const lightTheme: Theme = {
   "--tiptap-link-color": "var(--tiptap-accent-primary)",
   "--tiptap-code-bg": "#F0F1F4",
   "--tiptap-code-text": "var(--tiptap-color-text)",
+  // code block syntax tokens (highlight.js class names, see editor-content)
+  "--tiptap-code-token-comment": "#8A8F98",
+  "--tiptap-code-token-keyword": "#A626A4",
+  "--tiptap-code-token-string": "#4E8C3E",
+  "--tiptap-code-token-number": "#986801",
+  "--tiptap-code-token-function": "#3A6DD8",
+  "--tiptap-code-token-variable": "#D1495B",
+  "--tiptap-code-token-type": "#9A6A00",
+  "--tiptap-code-token-operator": "#4B5563",
 
   // --- fixed tooltip colors (black bg + white text, same value in both themes) ---
   "--tiptap-tooltip-bg": "#111111",

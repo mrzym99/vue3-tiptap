@@ -143,6 +143,82 @@ const props = defineProps<{ editor: Editor }>();
       padding: 0;
     }
 
+    /* syntax highlight (lowlight/highlight.js classes) */
+    .hljs-comment,
+    .hljs-quote {
+      color: var(--tiptap-code-token-comment);
+      font-style: italic;
+    }
+
+    .hljs-keyword,
+    .hljs-selector-tag,
+    .hljs-literal,
+    .hljs-doctag,
+    .hljs-meta .hljs-keyword {
+      color: var(--tiptap-code-token-keyword);
+    }
+
+    .hljs-string,
+    .hljs-regexp,
+    .hljs-symbol,
+    .hljs-meta .hljs-string,
+    .hljs-template-tag,
+    .hljs-template-variable {
+      color: var(--tiptap-code-token-string);
+    }
+
+    .hljs-number,
+    .hljs-bullet,
+    .hljs-link,
+    .hljs-meta {
+      color: var(--tiptap-code-token-number);
+    }
+
+    .hljs-title,
+    .hljs-title.function_,
+    .hljs-function .hljs-title,
+    .hljs-section {
+      color: var(--tiptap-code-token-function);
+    }
+
+    .hljs-title.class_,
+    .hljs-type,
+    .hljs-built_in,
+    .hljs-selector-class,
+    .hljs-selector-id {
+      color: var(--tiptap-code-token-type);
+    }
+
+    .hljs-variable,
+    .hljs-attr,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-params {
+      color: var(--tiptap-code-token-variable);
+    }
+
+    .hljs-operator,
+    .hljs-punctuation {
+      color: var(--tiptap-code-token-operator);
+    }
+
+    .hljs-addition {
+      color: var(--tiptap-code-token-string);
+    }
+
+    .hljs-deletion {
+      color: var(--tiptap-code-token-variable);
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: 600;
+    }
+
     /* code block node view: language header + code area */
     .tiptap-code-block {
       margin: 0.9rem 0;

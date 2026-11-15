@@ -56,6 +56,7 @@
     "@tiptap/extension-bold": "^3.32.0",
     "@tiptap/extension-code": "^3.32.0",
     "@tiptap/extension-code-block": "^3.32.0",
+    "@tiptap/extension-code-block-lowlight": "3.32.0",
     "@tiptap/extension-details": "^3.32.0",
     "@tiptap/extension-document": "^3.32.0",
     "@tiptap/extension-drag-handle": "^3.32.0",
@@ -92,6 +93,7 @@
     "@tiptap/suggestion": "^3.32.0",
     "@tiptap/vue-3": "^3.32.0",
     "katex": "^0.18.11",
+    "lowlight": "^3.3.0",
     "marked": "^17.0.6"
   },
   "devDependencies": {

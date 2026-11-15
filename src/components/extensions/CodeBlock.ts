@@ -1,22 +1,28 @@
-import type { CodeBlockOptions as TiptapCodeBlockOptions } from "@tiptap/extension-code-block";
+import type { CodeBlockLowlightOptions } from "@tiptap/extension-code-block-lowlight";
 import type { GeneralOptions } from "@/types";
 
-import { CodeBlock as TiptapCodeBlock } from "@tiptap/extension-code-block";
+import { CodeBlockLowlight } from "@tiptap/extension-code-block-lowlight";
+import { common, createLowlight } from "lowlight";
 
 import CodeBlockButton from "@/components/ui-editor/toolbar/buttons/CodeBlockButton.vue";
 import { defaultCodeBlockLanguages } from "@/constants";
 import { withButton } from "@/utils/button";
 
-export interface CodeBlockOptions extends TiptapCodeBlockOptions, GeneralOptions {
+// one shared registry: highlight.js grammars are stateless, and re-creating it
+// per editor instance would re-register every language
+const lowlight = createLowlight(common);
+
+export interface CodeBlockOptions extends CodeBlockLowlightOptions, GeneralOptions {
   /** Language suggestions for the header input (free typing is always allowed). */
   languages: string[];
 }
 
-export const CodeBlock = /* @__PURE__ */ TiptapCodeBlock.extend<CodeBlockOptions>({
+export const CodeBlock = /* @__PURE__ */ CodeBlockLowlight.extend<CodeBlockOptions>({
   addOptions() {
     return {
-      ...(this.parent?.() as TiptapCodeBlockOptions),
+      ...(this.parent?.() as CodeBlockLowlightOptions),
       languages: defaultCodeBlockLanguages,
+      lowlight,
       button: withButton(CodeBlockButton),
     };
   },
