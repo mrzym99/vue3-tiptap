@@ -193,7 +193,7 @@ const extensions = [
 | `limit`                       | 字数上限，0 = 不限；超限时**不改动内容**，计数标红并触发 `truncated` 事件                           |
 | `readonly`                    | 只读（支持运行时切换）                                                                              |
 | `theme`                       | `"light" \| "dark"`                                                                                 |
-| `primaryColor`                | 主色（任意 CSS 颜色）；工具栏激活态、主按钮、选区等派生色自动跟随                                   |
+| `primaryColor`                | 主色（任意 CSS 颜色）；工具栏激活态、focus ring、选区、链接、主按钮等派生色自动跟随（主按钮是主色填充 + 白字） |
 | `lang`                        | UI 语言：`"zh" \| "en"`；不传时自动检测（浏览器语言含 `zh` 用中文，否则英文）                     |
 | `translations`                | 自定义语言包，浅合并到内置语言包之上；用非内置 `lang` id 时需在这里提供对应词条，支持运行时更新       |
 | `toolbar`                     | 工具栏布局，TinyMCE 风格字符串如 `"bold italic \| underline"`，undefined = 默认                     |
@@ -239,8 +239,8 @@ const extensions = [
 | `link`                                                            | `Link`                                                            | 链接，弹窗输入 URL                                   |
 | `superscript` / `subscript`                                       | `Superscript` / `Subscript`                                       | 上标 / 下标                                          |
 | `textAlign`                                                       | `TextAlign`                                                       | 对齐按钮组（作用于 heading/paragraph）               |
+| `firstLineIndent`                                                 | `FirstLineIndent`                                                 | 首行缩进开关（段落级 `text-indent: 2em`） |
 | `image`                                                           | `Image`（+ `FileHandler`）                                        | 图片节点（URL 由宿主 `setImage` 写入）；按钮插入上传区 |
-| `imageUpload`                                                     | `ImageUpload`                                                     | 内联图片上传区（点击/拖放，上传后替换为图片）        |
 | `video`                                                           | `Video`                                                           | 视频，YouTube/Bilibili 链接自动转 embed              |
 | `audio`                                                           | `Audio`                                                           | 音频                                                 |
 | `horizontalRule`                                                  | `HorizontalRule`                                                  | 分隔线                                               |
@@ -250,11 +250,14 @@ const extensions = [
 | `fontFamily` / `fontSize`                                         | `FontFamily` / `FontSize`                                         | 字体 / 字号菜单，触发按钮带当前值，再点一次取消      |
 | `lineHeight`                                                      | `LineHeight`                                                      | 行高菜单（默认 1.15 / 1.5 / 1.75 / 2，`LineHeight.configure({ lineHeights: [...] })` 可换档位），触发按钮带当前值，再点一次取消；块级 `style="line-height"`（段落/标题），光标落在段内即可生效 |
 | `table`                                                           | `Table`（+ `TableRow` / `TableHeader` / `TableCell`）             | 表格菜单（插入 + 行列操作）                          |
+| `emoji`                                                           | `Emoji`                                                           | Emoji 面板（搜索 + 网格插入）                        |
+| `Mathematics`                                                     | `Mathematics`                                                     | 公式，弹窗输入 LaTeX（行内/块级，选中已有公式可回填） |
 | `findAndReplace`                                                  | `FindAndReplace`                                                  | 查找替换面板                                         |
 | `clearFormatting`                                                 | `ClearFormatting`                                                 | 清除格式                                             |
 
-菜单交互约定（下拉 / 多选类菜单）：
+`imageUpload` 没有自己的按钮（上传区由 `image` 按钮插入），它不是 toolbar key。
 
+菜单交互约定（下拉 / 多选类菜单）：
 - 菜单里**不设「默认 / Default」项**：选项只列可选值本身（行高 1 / 1.15 / 1.5…、字号 12px / 14px…）。
 - **点击已激活的项 = 取消**（`unsetXxx`），不需要额外的「清除」入口，也不再需要「默认」来复位。
 - 没有激活项时，触发按钮不显示空标签（`showLabel` 的菜单只剩图标 + 下拉箭头），tooltip 回落到菜单名。

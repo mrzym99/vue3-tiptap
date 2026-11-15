@@ -193,7 +193,7 @@ The toolbar is a focusable `role="toolbar"` region: once focused with `Tab`, `Ar
 | `limit`                       | Character limit, 0 = unlimited; over-limit content is **never modified** — the counter turns red and `truncated` fires |
 | `readonly`                    | Read-only (switchable at runtime)                                                            |
 | `theme`                       | `"light" \| "dark"`                                                                          |
-| `primaryColor`                | Accent color (any CSS color); toolbar active states, primary buttons, selection etc. follow it |
+| `primaryColor`                | Accent color (any CSS color); toolbar active states, focus ring, selection, links and primary buttons (accent fill, white text) follow it |
 | `lang`                        | UI language: `"zh" \| "en"`; when omitted it is auto-detected (Chinese if the browser language contains `zh`, otherwise English) |
 | `translations`                | Custom locale pack, shallow-merged over the built-in packs; required when `lang` is a non-builtin id, reactive at runtime |
 | `toolbar`                     | Toolbar layout, TinyMCE-style string such as `"bold italic \| underline"`; undefined = default |
@@ -235,12 +235,12 @@ The toolbar is a focusable `role="toolbar"` region: once focused with `Tab`, `Ar
 | `heading` | `Heading` | Heading dropdown, H1–H6; the trigger icon follows the current level |
 | `bulletList` | `BulletList` (+ `OrderedList` / `TaskList`) | List dropdown: bullet / ordered / task in one — the latter two have no standalone key |
 | `codeBlock` | `CodeBlock` | Code block with syntax highlighting (`lowlight`, `createLowlight(common)` by default) |
-| `bold` / `italic` / `strike` / `code` / `underline` / `highlight` | `Bold` / `Italic` / `Strike` / `Code` / `Underline` / `Highlight` | Inline styles: bold, italic, strikethrough, inline code, underline, highlight |
+| `bold` / `italic` / `strike` / `code` / `underline` | `Bold` / `Italic` / `Strike` / `Code` / `Underline` | Inline styles: bold, italic, strikethrough, inline code, underline (highlight lives in the `color` menu) |
 | `link` | `Link` | Link via URL dialog |
 | `superscript` / `subscript` | `Superscript` / `Subscript` | Superscript / subscript |
 | `textAlign` | `TextAlign` | Alignment button group (applies to heading/paragraph) |
+| `firstLineIndent` | `FirstLineIndent` | First-line indent toggle (paragraph-level `text-indent: 2em`) |
 | `image` | `Image` (+ `FileHandler`) | Image node (URL comes from host `setImage`); the button inserts an upload zone |
-| `imageUpload` | `ImageUpload` | Inline upload zone (click/drop, replaced by the image) |
 | `video` | `Video` | Video; YouTube/Bilibili links auto-convert to embed |
 | `audio` | `Audio` | Audio |
 | `horizontalRule` | `HorizontalRule` | Horizontal rule |
@@ -248,9 +248,14 @@ The toolbar is a focusable `role="toolbar"` region: once focused with `Tab`, `Ar
 | `details` | `Details` (+ `DetailsSummary` / `DetailsContent`) | Collapsible content block |
 | `color` | `Color` (+ `TextStyle`) | Text color menu |
 | `fontFamily` / `fontSize` | `FontFamily` / `FontSize` | Font family / size menus; the trigger shows the current value, clicking again resets |
+| `lineHeight` | `LineHeight` | Line-height menu (defaults 1.15 / 1.5 / 1.75 / 2, override with `LineHeight.configure({ lineHeights: [...] })`); block-level `style="line-height"` on paragraph/heading |
 | `table` | `Table` (+ `TableRow` / `TableHeader` / `TableCell`) | Table menu (insert + row/column ops) |
+| `emoji` | `Emoji` | Emoji panel (search + grid insert) |
+| `Mathematics` | `Mathematics` | Math via a LaTeX dialog (inline/block; a selected formula is loaded back for editing) |
 | `findAndReplace` | `FindAndReplace` | Find & replace panel |
 | `clearFormatting` | `ClearFormatting` | Clear formatting |
+
+`imageUpload` has no button of its own (the `image` button inserts the zone), so it is not a toolbar key.
 
 Notes: keys whose extension is not loaded are silently ignored (a `console.warn` fires only for the `undefined` default layout); `bubbleMenu` / `floatingMenu` accept only the subset of keys listed in the props table above.
 

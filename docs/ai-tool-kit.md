@@ -80,7 +80,7 @@ interface EditorAgent {
 
 `AiPanel` 只管 UI：宿主自己创建 agent 并作为 prop 传入（`<AiPanel :editor="editor" :agent="agent" />`），可替换为任意实现 `EditorAgent` 接口的 agent。
 
-## 工具清单（约 20 个，映射到库内已有 extension）
+## 工具清单（共 25 个，映射到库内已有 extension）
 
 **查询类（只读，不进确认）**
 - `get_document` — 返回 HTML 与字符数
@@ -118,7 +118,7 @@ interface EditorAgent {
 
 ## Agent 循环（`src/ai/agent.ts`）
 
-原生 `fetch` 调 OpenAI 兼容 `/chat/completions`，`tool_choice: "auto"`；循环：发送历史+工具定义 → 收到 tool_calls → `toolkit.execute()` → 把结果以 `role: "tool"` 追加回传 → 直到返回纯文本（上限 10 轮防失控）。`onEvent` 推送 `tool_call` / `assistant_text` / `error` 事件。`abort()` 用 AbortController。
+原生 `fetch` 调 OpenAI 兼容 `/chat/completions`，`tool_choice: "auto"`；循环：发送历史+工具定义 → 收到 tool_calls → `toolkit.execute()` → 把结果以 `role: "tool"` 追加回传 → 直到返回纯文本（上限 `maxRounds`，默认 25 轮防失控）。`onEvent` 推送 `tool_call` / `assistant_text` / `error` 事件。`abort()` 用 AbortController。
 
 ## UI：聊天面板（可选组件，按需引入）
 

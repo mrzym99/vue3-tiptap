@@ -69,19 +69,23 @@ pnpm build:lib
     │   │   ├── Bold / Italic / Strike / Underline / Code / Highlight
     │   │   ├── Subscript / Superscript / Heading / HorizontalRule
     │   │   ├── BulletList / OrderedList / TaskList / Link / CodeBlock / Details
-    │   │   ├── Image / Video / Audio / FileHandler
-    │   │   ├── TextStyle / Color / FontFamily / Typography / Table
-    │   │   ├── FindAndReplace / InvisibleCharacters / NodeRange
+    │   │   ├── Image / ImageUpload / Video / Audio / FileHandler
+    │   │   ├── TextStyle / Color / FontFamily / FontSize / Typography / Table
+    │   │   ├── LineHeight / FirstLineIndent / Emoji / Mathematics / Markdown / TableOfContents
+    │   │   ├── Mention / DragHandle / FindAndReplace / InvisibleCharacters / NodeRange
     │   │   ├── Undo / Redo / UndoRedo / ClearFormatting
     │   │   ├── Blockquote / TextAlign / HardBreak（每扩展一个文件）
     │   ├── ui-editor/          # 编辑器 UI 层
     │   │   ├── toolbar/        # 工具栏（自动收集扩展按钮）
     │   │   │   ├── buttons/         # 简单功能按钮（加粗/撤销/清除格式等）
     │   │   │   ├── menu-buttons/    # 下拉菜单按钮（标题/对齐/颜色/字体/表格）
-    │   │   │   ├── dialog-buttons/  # 模态对话框插入（图片/视频/音频/链接）
+    │   │   │   ├── dialog-buttons/  # 模态对话框插入（视频/音频/链接）
     │   │   │   └── render-item/     # 按扩展 button 声明动态渲染按钮
     │   │   ├── bubble-menu/    # 气泡菜单（格式条 + 浮动菜单 + extension 声明的气泡工具栏）
     │   │   ├── editor-content/ # 编辑区容器与内容样式
+    │   │   ├── image-upload-node/ # 内联图片上传区节点视图（ImageUpload 的 NodeView）
+    │   │   ├── mention/        # @ 提及建议弹层
+    │   │   ├── outline/        # 目录导轨（TableOfContents 的右缘刻度条）
     │   │   └── character-limit/ # 字数上限计数器（123 / 500，右下角）
     │   └── ui-common/          # 通用 UI 基础组件（自研，零 UI 框架依赖）
     │       ├── action-button/      # 工具栏基础按钮（含 tooltip/active 态）
@@ -104,7 +108,7 @@ pnpm build:lib
     │   ├── index.ts / zh.ts / en.ts
     ├── types/                  # 全局类型定义（扩展选项、按钮视图、主题等）
     ├── composables/            # useEditorModel（v-model 绑定 / 超限警告）等
-    └── utils/                  # 工具函数（button / video-url / storage）与 resizableMediaView
+    └── utils/                  # 工具函数（button / video-url / storage / moveToolbarFocus / resolveToolbar）与 resizableMediaView
         └── resizableMediaView.ts  # 媒体四角拖拽改尺寸的公共 NodeView（复用 ResizableNodeView，Image/Video 共用）
 ```
 
@@ -118,13 +122,21 @@ pnpm build:lib
 | `limit`  | `number`            | `0`（不限） | 最大字数提示；超出时计数变红并 emit `truncated`，**不修改内容**（数据保真，由宿主处理） |
 | `readonly`    | `boolean`           | `false`     | 是否禁用编辑（只读）       |
 | `theme`       | `'light' \| 'dark'` | `'light'`   | 主题模式                   |
-| `primaryColor` | `string`            | `-`         | 主色（任意 CSS 颜色）；工具栏激活态、主按钮、选区、链接等派生色在浅/暗两种模式下自动跟随（见 5.4） |
+| `primaryColor` | `string`            | `-`         | 主色（任意 CSS 颜色）；工具栏激活态、focus ring、选区、链接、主按钮等派生色在浅/暗两种模式下自动跟随（见 5.4）；主按钮是主色填充 + 白字（hover 微调明度） |
 | `themeOverrides` | - | - | 已从组件 props 移除；需要细粒度覆盖时用独立导出的 `ThemeProvider` 的同名 prop，或 `applyTheme(name, target?, overrides?)` |
 | `placeholder` | `string`            | `-`         | 空文档时显示的占位文本     |
-| `autofocus`   | `boolean`           | `false`     | 挂载后是否自动聚焦         |
+| `autofocus`   | `boolean \| 'start' \| 'end' \| number` | `false`   | 挂载后是否自动聚焦；也可传 `'start'` / `'end'` 或具体位置 |
 | `toolbarWrap` | `boolean`           | `false`     | 工具栏按钮多行换行（false 时单行横向滚动） |
+| `lang`        | `string`            | `-`         | UI 语言；不传时按浏览器语言自动检测 |
+| `translations` | `LocaleTranslations` | `-`      | 宿主语言包，浅合并到内置 `zh` / `en` 之上，可新增语言 |
+| `toolbar`     | `Toolbar`           | `-`         | 工具栏布局（字符串 / key 数组 / `{ include, exclude }`），`undefined` = 默认布局 |
+| `bubbleMenu`  | `Toolbar \| false`  | `-`         | 气泡菜单 key 选择；`undefined` / `false` = 关闭（不回退到 `toolbar`） |
+| `floatingMenu` | `Toolbar \| false` | `-`         | 浮动菜单 key 选择；`undefined` / `false` = 关闭 |
+| `showInvisibleCharacters` | `boolean` | `false` | 是否显示隐藏字符（空格、换行、段落标记） |
+| `contentType` | `'html' \| 'markdown'` | `'html'` | `v-model` 内容格式（初始解析 + 写回）；markdown 需保留内置 `markdown` 扩展 |
+| `extensions`  | `Extensions`        | `-`         | 要加载的扩展；不传则只有裸输入框（Document/Paragraph/Text/Placeholder 始终内置），同名后者胜出 |
 
-事件：`focus` / `blur`（payload 为 `{ editor, event }`，类型来自 `EditorEvents`）。
+事件：`focus` / `blur`（payload `{ editor, event }`）、`ready`（`editor`）、`update`（`{ editor, transaction }`，在防抖写回之前触发）、`truncated`（`{ limit }`）。
 
 组件内部逻辑：
 
@@ -155,7 +167,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 
 工具栏（`tool-bar/index.vue`）通过 `editor.extensionManager.extensions.filter(ext => ext.options.button)` **自动收集所有声明了 `button` 的扩展**，再由 `RenderItem.vue` 动态渲染对应按钮组件。因此**新增一个编辑功能只需添加一个扩展文件，无需改动工具栏代码**。
 
-> 类型层面，`src/types/index.ts` 定义了 `GeneralOptions`、`ButtonView`、`ButtonViewReturn` 等类型，为扩展声明 `button` 提供类型约束；`ButtonView` 可返回单个按钮或按钮数组，`RenderItem` 支持两种形态。翻译函数统一使用 `TranslateFn` 类型（兼容 vue-i18n 的 `t` 基本签名）。工具栏按钮布局的唯一事实来源是 `defaultToolbar` 字符串（`src/types/index.ts`），其 key 需与各扩展 `name` 逐一对应。
+> 类型层面，`src/types/index.ts` 定义了 `GeneralOptions`、`ButtonView`、`ButtonViewReturn` 等类型，为扩展声明 `button` 提供类型约束；`ButtonView` 可返回单个按钮或按钮数组，`RenderItem` 支持两种形态。翻译函数统一使用 `TranslateFn` 类型（兼容 vue-i18n 的 `t` 基本签名）。工具栏按钮布局的唯一事实来源是 `src/constants/index.ts` 的 `defaultToolbar` 字符串，其 key 需与各扩展 `name` 逐一对应。
 
 ### 5.3 按钮组件体系
 
@@ -170,7 +182,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 - `theme/index.ts`：`applyTheme()` 将主题 CSS 变量写入 `document.documentElement` 的 style 上；
 - `theme/index.ts`：`applyTheme()` 将主题 CSS 变量写入目标元素（默认 `document.documentElement`，组件内传根节点实现**作用域化**——多实例不同主题互不干扰）；
 - `theme-provider`：根据 `theme` prop 应用变量（支持 `'light' | 'dark'`）；
-- **主色派生（primaryColor）**：主色只需配置 `--tiptap-accent-primary` 一个色相，所有主色派生 token（accent-bg、主按钮、focus-ring、selection、主按钮阴影、popover/toolbar 阴影色染）均为它的 `color-mix()` 表达式，浅/暗模式按各自混合白/黑/transparent 自动派生；组件提供 `primaryColor` prop 即可整体换肤，无需逐个覆盖变量；
+- **主色派生（primaryColor）**：主色只需配置 `--tiptap-accent-primary` 一个色相，accent 派生 token（accent-bg、focus-ring、selection、主按钮、popover/toolbar 阴影色染）均为它的 `color-mix()` 表达式，浅/暗模式按各自混合白/黑/transparent 自动派生；组件提供 `primaryColor` prop 即可整体换肤，无需逐个覆盖变量。主按钮是主色填充 + 白字（hover 时明度微调 12%）；危险按钮取 `--tiptap-accent-danger` 派生（同形状平阴影），不跟随主色；
 - **自定义变量叠加**：组件 props 不再提供 `themeOverrides`；需要细粒度覆盖时用独立导出的 `ThemeProvider` 的 `themeOverrides` prop（`Theme` 类型，键为 `--tiptap-*` 变量名，优先级最高），或 `applyTheme(name, target?, overrides?)` 第三参数同效；
 - **主题切换过渡**：库级 0.2s 主题过渡规则覆盖编辑器主体（`.tiptap-box`）及所有 teleport 到 body 的弹层（菜单/Popover/Tooltip/Dialog），切换主题时整体同步淡入；宿主页面自身的过渡由宿主自行处理；
 - 独立使用的导出组件（Dialog/Popover 等）在未传入主题上下文时回退到默认 indigo 主色；
@@ -180,9 +192,9 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 ### 5.5 国际化（i18n）
 
 - **内置轻量 i18n，不依赖 vue-i18n**：`src/locales/index.ts` 提供自包含的 `LocaleContext`（响应式 `locale` + `t(key)` + `setLocale` + `setTranslations`）；
-- `TipTapEditor` 组件通过 `locale` prop 控制语言（内置 `'zh' | 'en'`，缺省时按浏览器语言自动检测），并用 `provide` 注入子树；
+- `TipTapEditor` 组件通过 `lang` prop 控制语言（内置 `'zh' | 'en'`，缺省时按浏览器语言自动检测），并用 `provide` 注入子树；
 - **宿主可扩展语言包**：`translations` prop（`Record<locale, LocaleMessages>`）浅合并进内置语言包——可覆盖 `'zh'` / `'en'` 的任意文案，也可新增语言（如 `translations: { fr: { bold: "Gras" } }` 配合 `locale: "fr"`），响应式更新；
-- 子组件通过 `useTiptapLocale()` 读取（`RenderItem`、`bubble-menu`、`floating-menu`、`url-popover-button`）；
+- 子组件通过 `useTiptapLocale()` 读取（`RenderItem`、`bubble-menu`、`floating-menu`、`findAndReplace`、各个 dialog-button）；
 - 语言包位于 `src/locales/zh.ts` / `en.ts`，覆盖全部工具栏词条；
 - 扩展按钮通过扩展 `button` 回调中的 `t` 函数获取翻译文本。
 
@@ -199,7 +211,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 | Underline 下划线             | 自定义（基于 @tiptap/extension-underline）                            | 图标按钮                              |
 | Strike 删除线                | 自定义（基于 @tiptap/extension-strike）                               | 图标按钮                              |
 | Code 行内代码                | 自定义（基于 @tiptap/extension-code）                                 | 图标按钮                              |
-| Highlight 高亮               | 自定义（基于 @tiptap/extension-highlight）                            | 图标按钮                              |
+| Highlight 高亮               | 自定义（基于 @tiptap/extension-highlight）                            | 无工具栏按钮（无 `button`），仅出现在气泡菜单 |
 | Subscript 下标               | 自定义（基于 @tiptap/extension-subscript）                            | 图标按钮                              |
 | Superscript 上标             | 自定义（基于 @tiptap/extension-superscript）                          | 图标按钮                              |
 | Heading 标题                 | 自定义（基于 @tiptap/extension-heading，H1/H2/H3）                    | 下拉菜单按钮（正文/H1/H2/H3）         |
@@ -209,11 +221,21 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 | Link 链接                    | 自定义（基于 @tiptap/extension-link，自动识别/粘贴链接）              | 弹窗按钮（输入 URL）                  |
 | CodeBlock 代码块             | 自定义（基于 @tiptap/extension-code-block-lowlight，lowlight/highlight.js 语法高亮） | 图标按钮                              |
 | Details 折叠块               | 自定义（基于 @tiptap/extension-details）                              | 图标按钮                              |
-| Image 图片                   | 自定义（基于 @tiptap/extension-image）                                | URL 弹窗按钮（也可拖拽/粘贴图片文件）；四角拖拽改尺寸 |
+| Image 图片                   | 自定义（基于 @tiptap/extension-image）                                | 按钮插入内联上传区（`imageUpload` 节点，点击/拖放后替换为图片）；四角拖拽改尺寸 |
+| ImageUpload 图片上传区       | 自定义（基于 @tiptap/core 的 Node 独立实现）                          | 无按钮（由 `image` 按钮插入）；上传交给 `upload` 选项，未配置则把文件读成 base64 |
 | Video 视频                   | 自定义（基于 @tiptap/extension-video，URL 自动转嵌入：YouTube/B站/腾讯/优酷/爱奇艺/西瓜/芒果/抖音/网易） | URL 弹窗按钮；四角拖拽改尺寸          |
 | Audio 音频                   | 自定义（基于 @tiptap/extension-audio）                                | URL 弹窗按钮                          |
 | Color 文字颜色               | 自定义（基于 @tiptap/extension-text-style 的 Color）                  | 颜色选择菜单（色板 + 自定义色值）     |
 | FontFamily 字体              | 自定义（基于 @tiptap/extension-text-style 的 FontFamily）             | 下拉菜单（无衬线/衬线/等宽/雅黑）     |
+| FontSize 字号                | 自定义（基于 @tiptap/extension-text-style 的 FontSize）               | 下拉菜单（12/14/16/20/24/32 px）      |
+| LineHeight 行高              | 自定义（块级 `line-height` 全局属性）                                 | 下拉菜单（1.15/1.5/1.75/2）           |
+| FirstLineIndent 首行缩进     | 自定义（`text-indent` 全局属性）                                      | 图标按钮（2em 开关）                  |
+| Emoji 表情                   | 自定义（基于 @tiptap/extension-emoji）                                | 面板（搜索 + 网格）                   |
+| Mathematics 公式             | 自定义（基于 @tiptap/extension-mathematics，KaTeX 静态引入）          | 弹窗按钮（LaTeX 输入 + 模板 + 预览）  |
+| Markdown                     | 官方 @tiptap/markdown（行为扩展，无按钮）                             | 无按钮（`contentType` / `getMarkdown()`） |
+| TableOfContents 目录         | 自定义（基于 @tiptap/extension-table-of-contents）                    | 无按钮（右缘折叠导轨 `outline/`）     |
+| Mention 提及                 | 自定义（基于 @tiptap/extension-mention + suggestion）                 | 无按钮（输入 `@` 触发）               |
+| DragHandle 块级拖拽          | 官方 @tiptap/extension-drag-handle 的薄封装                           | 无按钮（块左侧抓手）                  |
 | Table 表格                   | 自定义（基于 @tiptap/extension-table 的 TableKit，可调整列宽）        | 下拉菜单（插入/行列/合并/表头/删除）  |
 | FindAndReplace 查找替换      | 自定义（基于 @tiptap/extension-find-and-replace）                     | 弹窗面板（查找/替换/全部/前后跳转）   |
 | InvisibleCharacters 隐藏字符 | 自定义（基于 @tiptap/extension-invisible-characters）                 | 图标按钮（切换）                      |
@@ -252,7 +274,7 @@ export const Bold = TiptapBold.extend<BoldOptions>({
 | 粘贴视频 URL 重写 | 用户粘贴视频链接 | 匹配视频 URL 时替换为 `video` 节点，`src` 存储为 embed 地址（`toEmbedUrl()`），非用户粘贴原文 |
 | 排版替换 | 用户输入 | Tiptap 官方 `Typography`：直引号→弯引号、`--`→–、`->`→→ 等 |
 | 自动链接 | 用户输入 / 粘贴 | Tiptap 官方 `Link`：`autolink` + `linkOnPaste`，输入或粘贴 URL 自动加链接 mark |
-| 图片粘贴/拖放 | 用户操作 | 文件读为 base64 data-URL 存入文档（仅 jpeg/png/gif/webp，**不允许 SVG** 以避免存储型 XSS） |
+| 图片粘贴/拖放 | 用户操作 | 在落点插入 `imageUpload` 上传区节点（仅 jpeg/png/gif/webp，**不允许 SVG** 以避免存储型 XSS）；上传走 `upload` 选项，宿主没配时把文件读成 base64 data-URL |
 | 列表键位 | 用户按键 | Tiptap 官方 `ListKeymap`：列表内 Enter/Backspace/Tab 会执行合并 / 提升 / 缩进等非显然操作 |
 | 媒体尺寸持久化 | 用户拖拽调尺寸 | 拖拽结束后 `updateAttributes` 将 px 尺寸写入节点属性 |
 
