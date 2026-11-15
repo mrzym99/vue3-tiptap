@@ -56,18 +56,18 @@ describe("StarterKit", () => {
   it("expands into the built-in extensions", () => {
     const editor = createKitEditor();
     const names = editor.extensionManager.extensions.map((e) => e.name);
-    for (const expected of ["bold", "italic", "link", "image", "table", "mention"]) {
+    for (const expected of ["bold", "italic", "link", "image", "imageUpload", "table", "mention"]) {
       expect(names, expected).toContain(expected);
     }
     editor.destroy();
   });
 
   it("`false` removes an extension, an object configures it", () => {
-    const editor = createKitEditor({ audio: false, image: { upload: async () => "https://cdn/x.png" } });
+    const editor = createKitEditor({ audio: false, imageUpload: { upload: async () => "https://cdn/x.png" } });
     const names = editor.extensionManager.extensions.map((e) => e.name);
     expect(names).not.toContain("audio");
-    const image = editor.extensionManager.extensions.find((e) => e.name === "image");
-    expect(typeof (image!.options as { upload?: unknown }).upload).toBe("function");
+    const imageUpload = editor.extensionManager.extensions.find((e) => e.name === "imageUpload");
+    expect(typeof (imageUpload!.options as { upload?: unknown }).upload).toBe("function");
     editor.destroy();
   });
 

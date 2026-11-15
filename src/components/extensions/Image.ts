@@ -1,23 +1,19 @@
 import type { ImageOptions as TiptapImageOptions } from "@tiptap/extension-image";
-import type { GeneralOptions, ImageUploader } from "@/types";
+import type { GeneralOptions } from "@/types";
 
 import { Image as TiptapImage } from "@tiptap/extension-image";
-import ImageDialogButton from "@/components/ui-editor/toolbar/dialog-buttons/ImageDialogButton.vue";
+import ImageButton from "@/components/ui-editor/toolbar/buttons/ImageButton.vue";
 import { resizableDirections } from "@/constants";
 import { createResizableMediaView } from "@/utils/resizableMediaView";
 import { withButton } from "@/utils/button";
 
-export interface ImageOptions extends TiptapImageOptions, GeneralOptions {
-  /** Custom uploader; enables the "upload" tab: `Image.configure({ upload: async (file) => url })` */
-  upload?: ImageUploader;
-}
+export interface ImageOptions extends TiptapImageOptions, GeneralOptions {}
 
 export const Image = /* @__PURE__ */ TiptapImage.extend<ImageOptions>({
   addOptions() {
     return {
       ...(this.parent?.() as TiptapImageOptions),
-      upload: undefined,
-      button: withButton(ImageDialogButton),
+      button: withButton(ImageButton),
     };
   },
 

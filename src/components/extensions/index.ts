@@ -22,6 +22,7 @@ import { Heading } from "./Heading";
 import { Highlight } from "./Highlight";
 import { HorizontalRule } from "./HorizontalRule";
 import { Image } from "./Image";
+import { ImageUpload } from "./ImageUpload";
 import { InvisibleCharacters } from "./InvisibleCharacters";
 import { Italic } from "./Italic";
 import { LineHeight } from "./LineHeight";
@@ -70,6 +71,7 @@ export * from "./Heading";
 export * from "./Highlight";
 export * from "./HorizontalRule";
 export * from "./Image";
+export * from "./ImageUpload";
 export * from "./InvisibleCharacters";
 export * from "./Italic";
 export * from "./LineHeight";
@@ -138,6 +140,7 @@ export const builtinExtensionMap = {
   details: Details,
   // Media
   image: Image,
+  imageUpload: ImageUpload,
   video: Video,
   audio: Audio,
   fileHandler: FileHandler,
