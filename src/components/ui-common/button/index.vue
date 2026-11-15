@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-/** Shared text button (Notion Style): default variant deepens bg on hover; primary is accent-filled; danger marks destructive actions. */
+/** Shared text button (Notion Style): default variant deepens bg on hover; primary is accent-filled with white text; danger marks destructive actions with the same flat shape. */
 const props = withDefaults(
   defineProps<{
     variant?: "default" | "primary" | "danger";

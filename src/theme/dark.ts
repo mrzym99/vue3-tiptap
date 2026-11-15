@@ -5,10 +5,10 @@ export const darkTheme: Theme = {
   // native widgets (scrollbars, form controls) follow the theme
   "--tiptap-color-scheme": "dark",
 
-  // --- surfaces (hover/active are interaction feedback: accent-tinted via color-mix) ---
+  // --- surfaces (hover/active both derive from the accent hue) ---
   "--tiptap-color-bg": "#1F1F1F",
-  "--tiptap-color-bg-hover": "color-mix(in srgb, var(--tiptap-accent-primary) 10%, #1F1F1F)",
-  "--tiptap-color-bg-active": "color-mix(in srgb, var(--tiptap-accent-primary) 16%, #1F1F1F)",
+  "--tiptap-color-bg-hover": "color-mix(in srgb, var(--tiptap-accent-primary) 12%, #1F1F1F)",
+  "--tiptap-color-bg-active": "color-mix(in srgb, var(--tiptap-accent-primary) 20%, #1F1F1F)",
   "--tiptap-color-bg-subtle": "#26272B",
 
   // --- text ---
@@ -31,16 +31,16 @@ export const darkTheme: Theme = {
   "--tiptap-btn-bg": "transparent",
   "--tiptap-btn-bg-hover": "var(--tiptap-color-bg-hover)",
   "--tiptap-btn-bg-active": "var(--tiptap-color-bg-active)",
-  "--tiptap-btn-primary-bg": "#E6E6E6",
-  "--tiptap-btn-primary-bg-hover": "#FFFFFF",
-  "--tiptap-btn-primary-text": "#1F1F1F",
-  "--tiptap-btn-primary-shadow": "0 1px 2px rgba(0, 0, 0, 0.4)",
-  "--tiptap-btn-primary-shadow-hover": "0 3px 8px rgba(0, 0, 0, 0.5)",
+  "--tiptap-btn-primary-bg": "var(--tiptap-accent-primary)",
+  "--tiptap-btn-primary-bg-hover": "color-mix(in srgb, var(--tiptap-accent-primary) 88%, white)",
+  "--tiptap-btn-primary-text": "#FFFFFF",
+  "--tiptap-btn-primary-shadow": "none",
+  "--tiptap-btn-primary-shadow-hover": "none",
   "--tiptap-btn-danger-bg": "var(--tiptap-accent-danger)",
-  "--tiptap-btn-danger-bg-hover": "#F26D6D",
+  "--tiptap-btn-danger-bg-hover": "color-mix(in srgb, var(--tiptap-accent-danger) 88%, white)",
   "--tiptap-btn-danger-text": "#FFFFFF",
-  "--tiptap-btn-danger-shadow": "0 4px 14px rgba(0, 0, 0, 0.35), 0 4px 14px rgba(235, 87, 87, 0.22)",
-  "--tiptap-btn-danger-shadow-hover": "0 8px 20px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(235, 87, 87, 0.28)",
+  "--tiptap-btn-danger-shadow": "0 1px 2px rgba(0, 0, 0, 0.4)",
+  "--tiptap-btn-danger-shadow-hover": "0 2px 6px rgba(0, 0, 0, 0.5)",
 
   // --- interaction feedback (Halo Focus: soft large-radius ring) ---
   "--tiptap-focus-ring": "color-mix(in srgb, var(--tiptap-accent-primary) 30%, transparent)",

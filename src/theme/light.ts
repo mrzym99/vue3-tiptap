@@ -5,10 +5,10 @@ export const lightTheme: Theme = {
   // native widgets (scrollbars, form controls) follow the theme
   "--tiptap-color-scheme": "light",
 
-  // --- surfaces (hover/active are interaction feedback: accent-tinted via color-mix) ---
+  // --- surfaces (hover/active both derive from the accent hue) ---
   "--tiptap-color-bg": "#FFFFFF",
   "--tiptap-color-bg-hover": "color-mix(in srgb, var(--tiptap-accent-primary) 8%, white)",
-  "--tiptap-color-bg-active": "color-mix(in srgb, var(--tiptap-accent-primary) 15%, white)",
+  "--tiptap-color-bg-active": "color-mix(in srgb, var(--tiptap-accent-primary) 14%, white)",
   "--tiptap-color-bg-subtle": "#F6F7F9",
 
   // --- text ---
@@ -31,16 +31,16 @@ export const lightTheme: Theme = {
   "--tiptap-btn-bg": "transparent",
   "--tiptap-btn-bg-hover": "var(--tiptap-color-bg-hover)",
   "--tiptap-btn-bg-active": "var(--tiptap-color-bg-active)",
-  "--tiptap-btn-primary-bg": "#1F1F1F",
-  "--tiptap-btn-primary-bg-hover": "#3A3A3A",
+  "--tiptap-btn-primary-bg": "var(--tiptap-accent-primary)",
+  "--tiptap-btn-primary-bg-hover": "color-mix(in srgb, var(--tiptap-accent-primary) 88%, black)",
   "--tiptap-btn-primary-text": "#FFFFFF",
-  "--tiptap-btn-primary-shadow": "0 1px 2px rgba(15, 23, 42, 0.18)",
-  "--tiptap-btn-primary-shadow-hover": "0 2px 6px rgba(15, 23, 42, 0.24)",
+  "--tiptap-btn-primary-shadow": "none",
+  "--tiptap-btn-primary-shadow-hover": "none",
   "--tiptap-btn-danger-bg": "var(--tiptap-accent-danger)",
-  "--tiptap-btn-danger-bg-hover": "#D64545",
+  "--tiptap-btn-danger-bg-hover": "color-mix(in srgb, var(--tiptap-accent-danger) 88%, black)",
   "--tiptap-btn-danger-text": "#FFFFFF",
-  "--tiptap-btn-danger-shadow": "0 4px 14px rgba(235, 87, 87, 0.25)",
-  "--tiptap-btn-danger-shadow-hover": "0 8px 20px rgba(235, 87, 87, 0.32)",
+  "--tiptap-btn-danger-shadow": "0 1px 2px rgba(15, 23, 42, 0.18)",
+  "--tiptap-btn-danger-shadow-hover": "0 2px 6px rgba(15, 23, 42, 0.24)",
 
   // --- interaction feedback (Halo Focus: soft large-radius ring) ---
   "--tiptap-focus-ring": "color-mix(in srgb, var(--tiptap-accent-primary) 25%, transparent)",
