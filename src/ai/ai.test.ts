@@ -33,6 +33,8 @@ function fakeEditor(options: { extensions?: string[]; editable?: boolean; select
     commands: { setContent },
     chain,
     getHTML: vi.fn(() => docHtml),
+    getMarkdown: vi.fn(() => "# doc"),
+    getText: vi.fn(() => "doc"),
     state: { doc: { descendants: () => undefined }, selection: { empty: options.selectionEmpty ?? false } },
     extensionManager: {
       extensions: (options.extensions ?? []).map((name) => ({ name })),
@@ -53,8 +55,14 @@ describe("createAiToolkit", () => {
     await expect(toolkit.execute("get_document", {})).resolves.toMatchObject({ ok: true });
   });
 
-  it("gates danger tools behind confirmDangerous (fail-safe without one)", async () => {
-    const editor = fakeEditor();
+  it("get_document returns html by default and markdown/text on request", async () => {
+    const toolkit = createAiToolkit(fakeEditor());
+    await expect(toolkit.execute("get_document", {})).resolves.toEqual({ ok: true, message: "<p>doc</p>" });
+    await expect(toolkit.execute("get_document", { format: "markdown" })).resolves.toEqual({ ok: true, message: "# doc" });
+    await expect(toolkit.execute("get_document", { format: "text" })).resolves.toEqual({ ok: true, message: "doc" });
+  });
+
+  it("gates danger tools behind confirmDangerous (fail-safe without one)", async () => {    const editor = fakeEditor();
     const toolkit = createAiToolkit(editor);
     await expect(toolkit.execute("set_document", { html: "<p>x</p>" })).resolves.toMatchObject({ ok: false });
     expect(editor.setContent).not.toHaveBeenCalled();

@@ -83,7 +83,7 @@ interface EditorAgent {
 ## 工具清单（共 25 个，映射到库内已有 extension）
 
 **查询类（只读，不进确认）**
-- `get_document` — 返回 HTML 与字符数
+- `get_document` — 返回文档内容与字符数；`format` 可选 `html`（默认）/ `markdown`（需启用 markdown 扩展）/ `text`
 - `get_selection` — 选区内容
 - `get_outline` — 标题大纲（层级+文本+位置）
 

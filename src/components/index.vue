@@ -85,9 +85,6 @@ const effectivePlaceholder = computed(() => {
 // Later entries win on name conflicts
 const STRUCTURAL_NAMES = new Set(["doc", "paragraph", "text", "placeholder"]);
 
-// Read once at creation: over-limit content is left untouched and only
-// reported via the `truncated` event (see useEditorModel)
-// the outline rail is part of the ToC extension, not the toolbar: load it and it shows up
 const hasToc = computed(() => !!editor.value?.extensionManager.extensions.some((e) => e.name === "tableOfContents"));
 
 const needsLimit = props.limit > 0;
@@ -164,15 +161,15 @@ watch(effectivePlaceholder, () => {
   view.dispatch(state.tr.setSelection(state.selection));
 });
 
-/** Imperative helpers for template-ref access: `editorRef.value.focus()` */
 defineExpose({
-  /** The underlying tiptap editor instance (`undefined` until mounted) */
   editor,
   focus: (position?: "start" | "end" | number | null) => editor.value?.commands.focus(position),
   blur: () => editor.value?.commands.blur(),
   clear: () => editor.value?.commands.clearContent(),
   getHTML: () => editor.value?.getHTML() ?? "",
   getJSON: () => editor.value?.getJSON(),
+  getMarkdown: () => editor.value?.getMarkdown?.() ?? "",
+  getText: () => editor.value?.getText() ?? "",
 });
 </script>
 <style lang="scss" scoped>

@@ -25,9 +25,21 @@ export function collectOutline(editor: Editor): OutlineItem[] {
 export const queryTools: AiTool[] = [
   {
     name: "get_document",
-    description: "Get the current document content as HTML plus its character count.",
-    parameters: { type: "object", properties: {} },
-    run(_args, { editor }) {
+    description:
+      "Get the current document content as HTML (default), Markdown or plain text, plus its character count.",
+    parameters: {
+      type: "object",
+      properties: {
+        format: {
+          type: "string",
+          enum: ["html", "markdown", "text"],
+          description: "Default 'html'. 'markdown' needs the markdown extension enabled.",
+        },
+      },
+    },
+    run(args, { editor }) {
+      if (args.format === "markdown") return { ok: true, message: editor.getMarkdown?.() ?? "" };
+      if (args.format === "text") return { ok: true, message: editor.getText() };
       return { ok: true, message: editor.getHTML() };
     },
   },

@@ -223,6 +223,8 @@ const extensions = [
 | `clear()`   | 清空内容                                                   |
 | `getHTML()` | 获取当前内容的 HTML 字符串                                 |
 | `getJSON()` | 获取当前内容的 JSON 文档                                   |
+| `getMarkdown()` | 获取当前内容的 Markdown 字符串（需启用官方 markdown 扩展；关掉时返回空串） |
+| `getText()` | 获取纯文本                                                 |
 | `editor`    | 底层 Tiptap `Editor` 实例（可直接调 `commands`、监听事件） |
 
 ## Toolbar keys

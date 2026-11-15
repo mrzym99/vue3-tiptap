@@ -138,6 +138,8 @@ pnpm build:lib
 
 事件：`focus` / `blur`（payload `{ editor, event }`）、`ready`（`editor`）、`update`（`{ editor, transaction }`，在防抖写回之前触发）、`truncated`（`{ limit }`）。
 
+模板 ref 暴露（`defineExpose`）：`editor`（底层实例）、`focus()`、`blur()`、`clear()`、`getHTML()`、`getJSON()`、`getMarkdown()`（需保留内置 `markdown` 扩展，关掉时返回空串）、`getText()`（纯文本）。
+
 组件内部逻辑：
 
 - 通过 `useEditor` 创建编辑器实例，注册 `Document` / `Paragraph` / `Text` / `Placeholder` 及自定义扩展；

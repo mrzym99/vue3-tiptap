@@ -223,6 +223,8 @@ The toolbar is a focusable `role="toolbar"` region: once focused with `Tab`, `Ar
 | `clear()` | Clear the content |
 | `getHTML()` | Get the current content as an HTML string |
 | `getJSON()` | Get the current content as a JSON document |
+| `getMarkdown()` | Get the current content as a Markdown string (needs the official markdown extension; returns `""` when it is disabled) |
+| `getText()` | Get the current content as plain text |
 | `editor` | The underlying Tiptap `Editor` instance (call `commands`, listen to events directly) |
 
 ## Toolbar keys
