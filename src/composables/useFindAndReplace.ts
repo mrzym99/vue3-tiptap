@@ -1,4 +1,4 @@
-import { computed, onScopeDispose, ref, type ComputedRef } from "vue";
+import { computed, onScopeDispose, ref, watch, type ComputedRef } from "vue";
 import type { Editor } from "@tiptap/core";
 
 /**
@@ -48,11 +48,15 @@ export function useFindAndReplace(editor: Editor) {
     editor.commands.replaceAll();
   }
 
-  function clear() {
-    editor.commands.clearSearch();
-    searchTerm.value = "";
-    replaceTerm.value = "";
-  }
+  // Clearing the field (× or backspace) must drop the highlights too — the
+  // results live in plugin state, not in the ref.
+  watch(
+    searchTerm,
+    (value) => {
+      if (!value) editor.commands.clearSearch();
+    },
+    { flush: "sync" },
+  );
 
-  return { searchTerm, replaceTerm, totalResults, hasResults, goNext, goPrev, replaceOne, replaceAll, clear };
+  return { searchTerm, replaceTerm, totalResults, hasResults, goNext, goPrev, replaceOne, replaceAll };
 }

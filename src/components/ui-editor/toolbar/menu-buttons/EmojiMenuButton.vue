@@ -84,7 +84,8 @@ function pick(item: EmojiItem) {
   padding: 8px;
 }
 
-.emoji-search {
+/* the class lands on the input inside TiptapInput's wrapper, not on its root */
+:deep(.emoji-search) {
   margin-bottom: 8px;
 }
 

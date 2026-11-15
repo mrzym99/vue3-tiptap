@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { nextTick } from "vue";
 import { Editor } from "@tiptap/core";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
@@ -45,15 +46,14 @@ describe("useFindAndReplace", () => {
     expect(editor.state.doc.textBetween(from, to)).toBe("foo");
   });
 
-  it("clear empties the results and the terms", () => {
+  it("emptying the search term clears the results", async () => {
     const editor = createEditor();
     const ui = useFindAndReplace(editor);
     ui.searchTerm.value = "foo";
     ui.goNext();
     expect(ui.totalResults.value).toBe(3);
-    ui.clear();
+    ui.searchTerm.value = "";
+    await nextTick();
     expect(ui.totalResults.value).toBe(0);
-    expect(ui.searchTerm.value).toBe("");
-    expect(ui.replaceTerm.value).toBe("");
   });
 });

@@ -10,11 +10,21 @@
   >
     <div class="fr-panel">
       <div class="fr-row">
-        <TiptapInput v-model="searchTerm" :placeholder="t('findPlaceholder')" @keydown.enter.prevent="goNext" />
+        <TiptapInput
+          v-model="searchTerm"
+          clearable
+          :placeholder="t('findPlaceholder')"
+          @keydown.enter.prevent="goNext"
+        />
         <span class="fr-count">{{ totalResults }}</span>
       </div>
       <div class="fr-row">
-        <TiptapInput v-model="replaceTerm" :placeholder="t('replacePlaceholder')" @keydown.enter.prevent="replaceOne" />
+        <TiptapInput
+          v-model="replaceTerm"
+          clearable
+          :placeholder="t('replacePlaceholder')"
+          @keydown.enter.prevent="replaceOne"
+        />
       </div>
       <div class="fr-actions">
         <TiptapButton @click="goPrev">
@@ -28,9 +38,6 @@
         </TiptapButton>
         <TiptapButton variant="primary" @click="replaceAll">
           {{ t("replaceAll") }}
-        </TiptapButton>
-        <TiptapButton variant="danger" @click="clear">
-          {{ t("clear") }}
         </TiptapButton>
       </div>
     </div>
@@ -47,8 +54,9 @@ import { useFindAndReplace } from "@/composables/useFindAndReplace";
 
 const props = defineProps<EXTActionButtonProps>();
 
-const { searchTerm, replaceTerm, totalResults, hasResults, goNext, goPrev, replaceOne, replaceAll, clear } =
-  useFindAndReplace(props.editor);
+const { searchTerm, replaceTerm, totalResults, hasResults, goNext, goPrev, replaceOne, replaceAll } = useFindAndReplace(
+  props.editor,
+);
 </script>
 
 <style lang="scss" scoped>
@@ -62,10 +70,16 @@ const { searchTerm, replaceTerm, totalResults, hasResults, goNext, goPrev, repla
   align-items: center;
   display: flex;
   gap: var(--tiptap-gap);
+
+  > :first-child {
+    flex: 1;
+    min-width: 0;
+  }
 }
 
 .fr-count {
   color: var(--tiptap-color-text-muted);
+  flex: 0 0 auto;
   font-size: var(--tiptap-font-size);
   white-space: nowrap;
 }
